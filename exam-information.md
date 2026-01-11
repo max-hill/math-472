@@ -6,20 +6,14 @@ permalink: /exam-information/
 
 ## midterm 1
 
-- in class
-
-- February 18 
-
+- Wednesday, February 18 in class
 
 ## midterm 2
-- in class
 
-- March 27
-
-
+- Friday, March 27 in class
 
 ## final exam
 
-- Friday, May 15 at 12:00-2:00 pm
+- Friday, May 15 at 9:45-11:45am
 
 
