@@ -1,0 +1,261 @@
+\documentclass[10pt]{article}
+% Math Packages
+\usepackage{amsmath, mathtools}
+\usepackage{amssymb}
+\usepackage{amsthm}
+\usepackage{amsfonts}
+\usepackage{bbm}
+\usepackage{breqn}
+\usepackage[margin=1in]{geometry}
+\usepackage{graphicx}
+\usepackage{tikz}
+\usetikzlibrary{arrows.meta}
+\usetikzlibrary{calc}
+\usepackage{forest}
+\usepackage{tikz-qtree}
+\graphicspath{ {./images/} }
+\usepackage{hyperref}
+\usepackage[capitalize]{cleveref}
+\usepackage[shortlabels]{enumitem}
+\usetikzlibrary{arrows,matrix,positioning}
+\usepackage{multicol}
+
+
+% for the pipe symbol
+\usepackage[T1]{fontenc}
+
+% Citing theorems by name. (source: https://tex.stackexchange.com/questions/109843/cleveref-and-named-theorems)
+\makeatletter
+\newcommand{\ncref}[1]{\cref{#1}\mynameref{#1}{\csname r@#1\endcsname}}
+
+\def\mynameref#1#2{%
+  \begingroup
+  \edef\@mytxt{#2}%
+  \edef\@mytst{\expandafter\@thirdoffive\@mytxt}%
+  \ifx\@mytst\empty\else
+  \space(\nameref{#1})\fi
+  \endgroup
+}
+\makeatother
+
+% Colorful Notes
+\usepackage{color} \definecolor{Red}{rgb}{1,0,0} \definecolor{Blue}{rgb}{0,0,1}
+\definecolor{Purple}{rgb}{.5,0,.5} \def\red{\color{Red}} \def\blue{\color{Blue}}
+\def\gray{\color{gray}} \def\purple{\color{Purple}}
+\newcommand{\rnote}[1]{{\red [#1]}} % \rnote{foo} gives '[foo]' in red
+\newcommand{\pnote}[1]{{\purple [#1]}} % \pnote{foo} gives '[foo]' in purple
+\newcommand{\bnote}[1]{{\blue #1}} % \bnote{foo} gives 'foo' in blue
+\newcommand{\gnote}[1]{{\gray #1}} % \gnote{foo} gives 'foo' in gray
+\newcommand{\Max}[1]{{\purple [#1]}} % \bnote{foo} then 'foo' is blue
+
+
+% Claim numbering (the counter restarts after each proof environment)
+\newcounter{claimcount}
+\setcounter{claimcount}{0}
+\newenvironment{claim}{\refstepcounter{claimcount}\par\addvspace{\medskipamount}\noindent\textbf{Claim \arabic{claimcount}:}}{}
+\usepackage{etoolbox}
+\AtBeginEnvironment{proof}{\setcounter{claimcount}{0}}
+\newenvironment{claimproof}{\par\addvspace{\medskipamount}\noindent\textit{Proof of Claim  \arabic{claimcount}.}}{\hfill\ensuremath{\qedsymbol} \tiny{Claim}
+
+  \medskip}
+% Add claim support to cleverref
+\crefname{claimcount}{Claim}{Claims}
+
+
+% Math Environments
+\newtheorem{theorem}{Theorem}
+\newtheorem{assumption}[theorem]{Assumption}
+\newtheorem{lemma}[theorem]{Lemma}
+\newtheorem{proposition}[theorem]{Proposition}
+\newtheorem{corollary}[theorem]{Corollary}
+\newtheorem{question}[theorem]{Question}
+\theoremstyle{definition}
+\newtheorem{definition}[theorem]{Definition}
+\newtheorem{remark}[theorem]{Remark}
+\newtheorem{example}[theorem]{Example}
+\newtheorem{notation}[theorem]{Notation}
+\newtheorem{problem}[theorem]{Problem}
+
+% Matrices and Column Vectors. 
+\usepackage{stackengine}
+\setstackgap{L}{1.0\normalbaselineskip}
+\usepackage{tabstackengine}
+\setstackEOL{;}% row separator
+\setstackTAB{,}% column separator
+\setstacktabbedgap{1ex}% inter-column gap
+\setstackgap{L}{1.5\normalbaselineskip}% inter-row baselineskip
+\let\nmatrix\bracketMatrixstack  %Usage: \nmatrix{1,2,3\4,5,6}
+\newcommand\cv[1]{\setstackEOL{,}\bracketMatrixstack{#1}} %usage: \cv{1,2,3}
+
+% Custom Math Coqmmands
+\newcommand{\vt}{\vskip 5mm} % vertical space
+\newcommand{\fl}{\noindent\textbf} % first line
+\newcommand{\Fl}{\vt\noindent\textbf} % first line with space above
+\newcommand{\norm}[1]{\left\lVert#1\right\rVert} % norm
+\newcommand{\pnorm}[1]{\left\lVert#1\right\rVert_p} % p-norm
+\newcommand{\qnorm}[1]{\left\lVert#1\right\rVert_q} % q-norm
+\newcommand{\1}[1]{\textbf{1}_{\left[#1\right]}} % indicator function 
+\def\limn{\lim_{n\to\infty}} % shortcut for lim as n-> infinity
+\def\sumn{\sum_{n=1}^{\infty}} % shortcut for sum from n=1 to infinity
+\def\sumkn{\sum_{k=1}^{n}} % shortcut for sum from k=1 to n
+\def\sumin{\sum_{i=1}^{n}} % shortcut for sum from i=1 to n
+\def\SAs{\sigma\text{-algebras}} % shortcut for $\sigma$-algebras
+\def\SA{\sigma\text{-algebra}} % shortcut for $\sigma$-algebra
+\def\Ft{\mathcal{F}_t} % time-indexed sigma-algebra (t)
+\def\Fs{\mathcal{F}_s} % time-indexed sigma-algebra (s)
+\def\F{\mathcal{F}} % sigma-algebra
+\def\G{\mathcal{G}} % sigma-algebra
+\def\R{\mathbb{R}} % Real numbers
+\def\N{\mathbb{N}} % Natural numbers
+\def\Z{\mathbb{Z}} % Integers
+\def\E{\mathbb{E}} % Expectation
+\def\P{\mathbb{P}} % Probability
+\def\Q{\mathbb{Q}} % Q probability
+\def\dist{\text{dist}} %Text 'dist' for things like 'dist(x,y)'
+\newcommand{\indep}{\perp \!\!\! \perp}  %independence symbol
+\def\Var{\mathrm{Var}} % Variance
+\def\tr{\mathrm{tr}} % trace
+
+% Brackets and Parentheses
+\def\[{\left [}
+    \def\]{\right ]}
+% \def\({\left (}
+%   \def\){\right )}
+
+
+
+\usepackage{color}
+\definecolor{Red}{rgb}{1,0,0}
+\definecolor{Blue}{rgb}{0,0,1}
+\definecolor{Purple}{rgb}{.5,0,.5}
+\def\red{\color{Red}}
+\def\blue{\color{Blue}}
+\def\gray{\color{gray}}
+\def\purple{\color{Purple}}
+\definecolor{RoyalBlue}{cmyk}{1, 0.50, 0, 0}
+\newcommand{\dempfcolor}[1]{{\color{RoyalBlue}#1}} 
+\newcommand{\demph}[1]{\dempfcolor{{\sl #1}}}
+
+\usepackage{emoji}
+% comment exactly one of the following line to show / hide the solutions
+% \newcommand{\solution}[1]{{\purple #1}} % uncomment to show the solutions
+\newcommand{\solution}[1]{} % uncomment to hide the solutions
+
+
+
+\title{Math 472: Homework 01 \\Statistical Inference}
+\date{Last updated: \today}
+% \author{mh}
+
+\begin{document}
+\begin{center}
+  \section*{Math 472: Homework 01} %
+  \textit{Due Wednesday, September 10 (at the beginning of class)}
+\end{center}
+
+
+\begin{problem}
+  Install a bunch of software on your laptop:
+  \begin{enumerate}[(a)]
+    \item Install the statistical software \texttt{R}, available at the \url{https://cran.rstudio.com/}
+    \item Install \texttt{RStudio Desktop}, available at
+    \url{https://posit.co/download/rstudio-desktop/}
+    \item Do the \texttt{R} tutorial
+    \item DO \url{https://swcarpentry.github.io/shell-novice/} or
+    \url{https://carpentries-incubator.github.io/git-novice-branch-pr/} or \url{https://cecileane.github.io/computingtools/pages/notes0922-markdown.html}
+    \item Write an R function to generate and plot a 1 dimensional brownian motion
+  \end{enumerate}
+\end{problem}
+
+
+\begin{remark}
+  The next problem is intended to introduce/review some central concepts in
+  probability. For the remainder of this course, any terms defined using
+  \demph{this format} are precise definitions and should be memorized (they
+  are fair game for in-class quizzes) Any terms that \textbf{are bolded} are
+  important and should be reviewed if you are not familiar with them.
+\end{remark}
+
+\begin{problem}
+  An urn contains 5 balls, three red balls and two blue balls:
+  \begin{center}
+    \emoji{red-circle} \emoji{red-circle} \emoji{red-circle}
+    \emoji{blue-circle} \emoji{blue-circle}
+  \end{center}
+  We consider the problem of sampling 3 balls from the urn, drawing the balls
+  ``without replacement''. This means we draw one ball at random, then draw
+  another ball at random, and then draw a third ball at random, without ever
+  putting any of the balls back into the urn.
+
+  For $k=1,2,$ and $3$, we will use the notation $R_{k}$ to denote the event
+  that the $k^{\rm th}$ drawn ball is red, and $B_{k}$ to denote the event
+  that the $k^{\rm th}$ drawn ball is blue. Obviously, $\P\left[R_{1}
+  \right]=3/5$ and $\P\left[B_{1} \right]=2/5$.
+  \begin{enumerate}[(a)]
+    \item \label{item:1} Compute the conditional probabililities
+    $\P\left[R_{2}\mid B_{1} \right]$ and $\P\left[R_{2}\mid R_{1} \right]$.
+    \item Use the\textbf{ Law of Total Probability} (Theorem 2.8 in the textbook, p70)
+    and your answer to part \ref{item:1} to compute $\P\left[R_{2} \right]$.
+    \item \label{item:2} If $E$ and $F$ are events, we use the notation $EF$
+    to denote the event that both $E$ and $F$ occur (i.e., $EF=E\cap F$).
+    Compute the probabilities of the four events $R_{1}R_{2}$, $R_{1}B_{2}$,
+    $B_{1}R_{2}$ and $B_{1}B_{2}$.
+    \item Use the Law of Total Probability and your answer to part
+    \ref{item:2} to compute $\P\left[R_{3} \right]$.
+    \item In the remainder of this problem, we will compute the expected
+    proportion of red balls among our 3 draws. To do this, we will introduce a
+    standard technique: the use of indicator functions.
+
+    Given an event $E$, the \demph{indicator function of $E$} is the function
+    \begin{equation*}
+      \mathbf{1}_{E} = \left\{ \begin{array}{l@{\quad:\quad}l} 1 & \text{the event }E
+          \text{ occurs}\\ 0& \text{the event }E \text{ does not occur} \end{array}\right.
+    \end{equation*}
+    Indicator functions are random variables. Taking $E=R_{k}$, we have
+    \begin{equation*}
+      \mathbf{1}_{R_{k}} = \left\{ \begin{array}{l@{\quad:\quad}l} 1 & \text{the }k^{\rm th}
+          \text{ ball drawn is red}\\ 0& \text{the }k^{\rm th} \text{ ball drawn is blue.} \end{array}\right.
+    \end{equation*}
+    A random variable is \demph{discrete} if it can assume only a finite or
+    countably infinite number of distinct values.
+
+    % If $X$ is a random variable, the \demph{support} of $X$ is the smallest
+    % closed set $S$ such that $\P\left[X\in S \right]=1$. We will denote the
+    % support of $X$ either by $\text{supp}(X)$ or more commonly $S_{X}$.
+    % Informally, the support of $X$ is the set of all possible values that it
+    % can take.
+
+    % A random variable $X$ is \demph{discrete} if $S_{X}$ is
+    % countable.
+
+    If $X$ is a discrete random variable, and $S_{X}\subseteq \R$ is the set
+    of possible values that $X$ can take, then the \demph{expectation} of $X$,
+    denoted $\E\left[X \right]$, is defined as
+    \begin{equation*}
+      \E\left[X \right]:= \sum_{x\in S_{X}}x \P\left[X=x \right],
+    \end{equation*}
+    provided that this sum converges absolutely.
+
+    
+    Using the above definition of expectation, prove that
+    $\E\left[\mathbf{1}_{R_{k}} \right]= \P\left[R_{k} \right]$ for $k=1,2,3$.
+    \item Observe that
+    \begin{equation*}
+      (\#\text{ of red balls in 3 draws}) = \mathbf{1}_{R_{1}}+\mathbf{1}_{R_{2}}+\mathbf{1}_{R_{3}},
+    \end{equation*}
+    and hence
+    \begin{equation}\label{eq:1}
+      \text{(the proportion of red balls in 3 draws)} = \frac{\mathbf{1}_{R_{1}}+\mathbf{1}_{R_{2}}+\mathbf{1}_{R_{3}}}{3}
+    \end{equation}
+    The \textbf{linearity of expectation} says that if $X,Y$ are random
+    variables, and $a,b$ are scalars, then
+    $\E\left[X+Y \right]= \E\left[X \right]+ \E\left[Y \right]$, and
+    $\E\left[aX+b \right]=a \E\left[X \right]+b$. Use the linearity of
+    expectations and \cref{eq:1} to compute the expected proportion of red
+    balls in 3 draws. \textit{(Note: if you've done all parts of this problem
+      correct, you'll get 3/5.)}
+    
+  \end{enumerate}
+\end{problem}
+
+\end{document}

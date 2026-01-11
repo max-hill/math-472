@@ -1,5 +1,5 @@
 ---
-layout: latex
+layout: home
 title: Lecture notes
 permalink: /lecture-notes/
 #

@@ -1,0 +1,276 @@
+\documentclass[10pt]{article}
+\usepackage[margin=1in]{geometry}
+\usepackage{graphicx}
+\graphicspath{{./images/}}
+
+\usepackage{amsmath, amssymb, amsthm, amsfonts, mathtools, bbm, breqn}
+\usepackage{enumitem}       % for shortlabels
+\usepackage{multicol}       % multiple columns
+\usepackage{abraces}        % asymmetric braces
+\usepackage{skull}
+\usepackage{tikz}
+\usetikzlibrary{arrows.meta, arrows, calc, matrix, positioning}
+
+\usepackage{hyperref}
+\usepackage[capitalize]{cleveref}
+
+
+% Citing theorems by name. (source: https://tex.stackexchange.com/questions/109843/cleveref-and-named-theorems)
+\makeatletter
+\newcommand{\ncref}[1]{\cref{#1}\mynameref{#1}{\csname r@#1\endcsname}}
+
+\def\mynameref#1#2{%
+  \begingroup
+  \edef\@mytxt{#2}%
+  \edef\@mytst{\expandafter\@thirdoffive\@mytxt}%
+  \ifx\@mytst\empty\else
+  \space(\nameref{#1})\fi
+  \endgroup
+}
+\makeatother
+
+% for the pipe symbol
+\usepackage[T1]{fontenc}
+
+\usepackage{xcolor} % Enables a broader range of colors
+
+% Define custom colors
+\definecolor{RoyalBlue}{cmyk}{1, 0.50, 0, 0}
+
+% Note commands
+\definecolor{Red}{rgb}{1,0,0}
+\definecolor{Blue}{rgb}{0,0,1}
+\definecolor{Purple}{rgb}{.75,0,.25}
+\newcommand{\rnote}[1]{\textcolor{Red}{[#1]}}       % Red note
+\newcommand{\pnote}[1]{\textcolor{Purple}{[#1]}}    % Purple note
+\newcommand{\bnote}[1]{\textcolor{Blue}{#1}}        % Blue text
+
+\usepackage{xparse} % allows paragraph-spaning color environment
+\NewDocumentCommand{\Max}{+m}{%
+  {\color{Red}#1}%
+}
+
+% Emphasized text
+\newcommand{\demph}[1]{\textcolor{RoyalBlue}{\slshape #1}} % Slanted RoyalBlue text
+
+
+% Claim numbering (the counter restarts after each proof environment)
+\newcounter{claimcount}
+\setcounter{claimcount}{0}
+\newenvironment{claim}{\refstepcounter{claimcount}\par\addvspace{\medskipamount}\noindent\textbf{Claim \arabic{claimcount}:}}{}
+\usepackage{etoolbox}
+\AtBeginEnvironment{proof}{\setcounter{claimcount}{0}}
+\newenvironment{claimproof}{\par\addvspace{\medskipamount}\noindent\textit{Proof of Claim  \arabic{claimcount}.}}{\hfill\ensuremath{\qedsymbol} \tiny{Claim}
+
+  \medskip}
+% Add claim support to cleverref
+\crefname{claimcount}{Claim}{Claims}
+
+
+% Math Environments
+\newtheorem{theorem}{Theorem}
+\newtheorem{assumption}[theorem]{Assumption}
+\newtheorem{lemma}[theorem]{Lemma}
+\newtheorem{proposition}[theorem]{Proposition}
+\newtheorem{corollary}[theorem]{Corollary}
+\newtheorem{question}[theorem]{Question}
+\theoremstyle{definition}
+\newtheorem{definition}[theorem]{Definition}
+\newtheorem{remark}[theorem]{Remark}
+\newtheorem{example}[theorem]{Example}
+\newtheorem{notation}[theorem]{Notation}
+\newtheorem{problem}[theorem]{Problem}
+
+% Redefine the Example environment to include "End of example [number]"
+\makeatletter
+\let\oldexample\example
+\renewenvironment{example}
+{\begin{oldexample}}
+  {\par\smallskip\hfill   End of Example~\theexample. $\square$    \par\end{oldexample}}
+\makeatother
+
+% Custom Math Commands
+\newcommand{\vt}{\vspace{5mm}}                       % Vertical space
+\newcommand{\fl}[1]{\noindent\textbf{#1}}            % Bold first line
+\newcommand{\Fl}[1]{\vspace{5mm}\noindent\textbf{#1}}% Bold first line with space above
+\newcommand{\norm}[1]{\left\lVert #1 \right\rVert}   % Norm
+
+% Common math symbols
+\newcommand{\R}{\mathbb{R}}           % Real numbers
+\newcommand{\N}{\mathbb{N}}           % Natural numbers
+\newcommand{\C}{\mathbb{C}}           % Complex numbers
+\newcommand{\Z}{\mathbb{Z}}           % Integers
+\newcommand{\Q}{\mathbb{Q}}           % Rational numbers
+\newcommand{\E}{\mathbb{E}}           % Expectation
+\renewcommand{\P}{\mathbb{P}}         % Probability (renamed to avoid \P clash)
+\newcommand{\indep}{\perp\!\!\!\perp} % Independence symbol
+
+% Operators
+\newcommand{\Var}{\mathrm{Var}}   % Variance
+\newcommand{\tr}{\mathrm{tr}}     % Trace
+\newcommand{\dist}{\mathrm{dist}} % Distance
+
+
+\usepackage{biblatex}
+\addbibresource{refs.bib}
+
+
+\begin{document}
+\begin{center}
+  \section*{Syllabus for Math 472: Statistical Inference}
+  \subsection*{Spring 2026}
+\end{center}
+
+
+\section{Course description}
+
+\subsection{Locations and Times}
+\fl{Instructor:} Max Hill\\
+\fl{Office:} Physical Sciences Building 304\\
+\fl{Office Hours:} ?? (or other times by appointment)\\
+\fl{Class location and time:} Keller Hall 313 at 10:30-11:20am (MWF)\\
+\fl{Textbook:} \textit{Mathematical Statistics with Applications}, by
+Wackerly, Mendenhall, and Scheaffer, (7th ed.~2008).
+
+
+\subsection{Prerequisites}
+The official prerequisites are MATH 472 or instructor consent. In practice,
+you will need to have had some exposure to probability theory, proof writing,
+and multivariate calculus.
+
+\subsection{Learning objectives}
+This course is intended to introduce you to the art of mathematical statistics
+either in preparation for (1) further graduate-level study or (2) application
+in careers in industry involving statistics, data science, or analytics. We
+will focus on mathematical tools used in classical (i.e., frequentist)
+statistics developed in the first half of the 20th century. At a high level,
+my hope is for this course to begin a process of demystifying the techniques,
+capabilities, and limitations of mathematical statistics. You will learn
+standard terminology, key objects, frameworks, and methods. You will be better
+at writing proofs and performing sophisticated, multi-stage computations. You
+will learn the basics of the statistical software \texttt{R}.
+
+
+\subsection{Tentative course outline}
+The following topics will be covered:
+\begin{enumerate}
+  \item \textbf{Weeks 1-2.} Sampling distributions (4 lessons).
+
+  chi-squared, t, and F distributions, distributions of sample mean and
+  variance
+
+  \item \textbf{Weeks 3-4.} Point estimation (5 lessons)
+
+  properties and methods of point estimation
+
+  \item \textbf{Weeks 5-6.} Interval estimation (4 lessons)
+
+  Confidence intervals for means, variances, proportions and differences
+
+  \item \textbf{Weeks 7-12.} Hypothesis Testing (19 lessons)
+
+  Neyman-Pearson lemma, likelihood ratio test; tests concerning means and
+  variances, tests based on count data, nonparametric tests, analysis of variance
+
+  \item \textbf{Weeks 13-14.} Regression and correlation (6 lessons)
+
+  regression, bivariate normal distributions, method of least squares
+\end{enumerate}
+
+
+
+
+\newpage
+\section{Grading}
+Final grades will be computed as a weighted average of the following three
+categories:
+
+\begin{itemize}
+  \item \textbf{homework (20\%)}
+  Homeworks will be due approximately weekly. I will incorporate coding elements
+  into the homework, using the statistical software \texttt{R}. This is the most
+  widely-used statistical software. This is something you will be able to put on
+  your cv/resume.
+
+  You have one `no questions asked' homework estension. 
+
+  \item \textbf{quizzes (10\%)}
+  There will be regular in-class quizzes in which I ask you to state precise
+  mathematical definitions. These quizzes will be only a few minutes.
+
+  You can retake up to two quizzes in office hours.
+
+  \item \textbf{exams (70\%)}
+  There are two midterms (17.5\% each) and one final exam (35\%). All exams will
+  be closed-book, and my include some homework problems. The final exam will be
+  cumulative.
+
+  Make-up exams are allowed only in three types of circumstances: (1) in
+  accordance with university policies, such as conflict with a religious
+  observation, (2) conflicts with another university-related event, or (3)
+  exceptional circumstances, such as a last-minute medical or family emergency
+  with verification. In the first two cases, notice must be given to the
+  instructor two weeks in advance.
+\end{itemize}
+The following grade cutoffs will be used at
+the end of the semester to determine final grades:
+\begin{center}
+  \begin{tabular}{|c|c|c|c|c|c|c|c|c|c|c|}
+    \hline
+    D&D+&C-&C&C+&B-&B&B+&A-&A&A+  \\
+    \hline
+    60\%&67\%&70\%&73\%&77\%&80\%&83\%&87\%&90\%&93\%&97\%\\
+    \hline
+  \end{tabular}
+\end{center}
+\section{Important Dates}
+
+Non-instructional days are January 19, February 16, March 16-20.
+
+\begin{center} \begin{minipage}{5.0in}
+    \begin{flushleft}
+      Midterm 1 \dotfill~Wednesday, Feb 18 (in class) \\
+      Midterm 2 \dotfill~Friday, March 27 (in class) \\
+      Final exam \dotfill~Friday, May 15 at 9:45-11:45am\\
+    \end{flushleft}
+  \end{minipage}
+\end{center}
+The last day of instruction is May 6.
+
+\section{Other policies}
+
+\subsection{Collaboration and outside resources}
+
+You may collaborate with classmates on the homeworks. But if you do so, you
+must (1) make an effort write up your solutions on your own, using your own
+words, and (2) list the names of those who you worked with.
+
+Use of outside resources is allowed but must be cited, in the sense that you
+need to tell me what you used and how you used it. I do not know how best to
+use AI tools to increase learning, so this is something I'd like you to think
+about over the course of the semester, and give me feedback if you have any.
+
+\subsection{Incompletes}
+An incomplete is possible only if all of the following apply: (1) you have a
+compelling personal reason, e.g., serious illness or accident (a proof, e.g.,
+report from a doctor or police must be shown); (2) your work so far would
+receive a passing grade; and (3) there is a good chance you will complete the
+course with a passing grade within the allotted time. Thus, expecting to fail
+the class is not a reason to ask for an incomplete.
+
+\subsection{Accommodation statement}
+The University of Hawai'i, M\={a}noa is committed to providing an equal
+educational opportunity for all students. A student with a documented
+physical, psychological, or learning disability on file with KOKUA Program
+(Disability Access Services, \url{http://www.hawaii.edu/kokua/}) may be
+eligible for reasonable academic accommodations to help succeed in this
+course. If you have a documented disability that requires an accommodation,
+please ask KOKUA office to notify the instructor within the first two weeks of
+the semester in order to make appropriate arrangements.
+
+
+
+
+
+\printbibliography
+\end{document}
