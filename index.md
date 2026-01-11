@@ -11,7 +11,8 @@ permalink: /lecture-notes/
 ---
 
 
-[Tentative course schedule](/lectures/lecture-notes-by-day/tentative-course-schedule.pdf)
+[Syllabus](/syllabus/syllabus.pdf)
+
 
  Date        | Lecture Notes              | Topics Covered
 -------------|----------------------------|-------------
