@@ -258,4 +258,128 @@
   \end{enumerate}
 \end{problem}
 
+
+\begin{problem}[Exercise 1.2 in the textbook]
+  Are some cities more windy than others? Does Chicago deserve to be nicknamed
+  `The Windy City'? Given below are the average wind speeds (in miles per
+  hour) for 45 selected U.S. cities:
+
+  
+  \begin{equation*}
+    \begin{array}{ccccccccc}
+      8.9 & 7.1 & 9.1 & 8.8 & 10.2 & 12.4 & 11.8 & 10.9 & 12.7 \\
+      10.3 & 8.6 & 10.7 & 10.3 & 8.4 & 7.7 & 11.3 & 7.6 & 9.6 \\
+      7.8 & 10.6 & 9.2 & 9.1 & 7.8 & 5.7 & 8.3 & 8.8 & 9.2 \\
+      11.5 & 10.5 & 8.8 & 35.1 & 8.2 & 9.3 & 10.5 & 9.5 & 6.2 \\
+      9.0 & 7.9 & 9.6 & 8.8 & 7.0 & 8.7 & 8.8 & 8.9 & 9.4
+    \end{array}
+  \end{equation*}
+  \begin{enumerate}[(a)]
+    \item Use \textrm{R} to construct a relative frequency histogram for these
+    data. (Play around with the number of breaks and find one that is
+    reasonable).
+    \item The value 35.1 was recorded at Mt. Washington, New Hampshire. Does
+    the geography of that city explain the magnitude of its average wind
+    speed?
+    \item The average wind speed for Chicago is 10.3 miles per hour. What
+    percentage of the cities have average wind speeds in excess of Chicago's?
+    \item Do you think that Chicago is unusually windy?
+  \end{enumerate}
+\end{problem}
+
+\begin{problem}[Exercise 1.9 in the textbook]
+  Resting breathing rates for college-age students are approximately normally distributed with
+  mean 12 and standard deviation 2.3 breaths per minute. What fraction of all college-age students
+  have breathing rates in the following intervals?
+  \begin{enumerate}[(a)]
+    \item   9.7 to 14.3 breaths per minute
+    \item   7.4 to 16.6 breaths per minute
+    \item   9.7 to 16.6 breaths per minute
+    \item   Less than 5.1 or more than 18.9 breaths per minute
+  \end{enumerate}
+\end{problem}
+
+
+\begin{problem}[Exercise 1.20 in the textbook]
+  Weekly maintenance costs for a factory, recorded over a long period of time
+  and adjusted for inﬂation, tend to have an approximately normal distribution
+  with an average of \$420 and a standard deviation of \$30. If \$450 is
+  budgeted for next week, what is an approximate probability that this
+  budgeted ﬁgure will be exceeded?
+\end{problem}
+
+
+\begin{problem}
+  The \demph{power set} of $\R$, denoted $2^{\R}$ is the set
+  \begin{equation*}
+    2^{\R} := \left\{A: A\subseteq \R\right\}. 
+  \end{equation*}
+  Let $P:2^{\R} \to \left\{0,1\right\}$ be the function defined by
+  \begin{equation*}
+    P(A) := \left\{ \begin{array}{l@{\quad:\quad}l} 1 & A\text{ is
+          uncountable}\\ 0& \text{ otherwise} \end{array}\right.
+  \end{equation*}
+  Verify that $P$ is a probability measure on $2^{\R}$.
+\end{problem}
+
+\begin{problem}
+  A discrete random variable $X$ is said to be \demph{binomially distributed}
+  with parameters $n$ (\demph{number of trials}) and $p$ (the \demph{success
+    probability}) if it has probability mass fucntion
+  \begin{equation*}
+    f_{X}(k) = {n\choose k} p^{k}(1-p)^{n-k}
+  \end{equation*}
+  for $k\in \left\{0,1,2,\ldots,n\right\}.$
+  Fix $\lambda>0$. Suppose that $p=\lambda/n$. Show that
+  \begin{equation*}
+    \lim_{n\to\infty} f_{X}(k) = \frac{\lambda^{k}}{k!}e^{-\lambda}
+  \end{equation*}
+  This shows that, in some sense, the Poisson distribution is the limit of the
+  binomial distribution.
+\end{problem}
+
+\begin{problem}
+  \begin{enumerate}[(a)]
+    Let $x\in \R$ be arbitrary.
+    \item Prove that 
+    \begin{equation*}
+      \lim_{n\to\infty} \left( 1+ \frac{x}{n} \right)^{n} = e^{x} 
+    \end{equation*}
+    \item Suppose that $(x_{n})$ is a sequence converging to $x$. Prove that
+    \begin{equation*}
+      \lim_{n\to\infty} \left( 1+\frac{x_{n}}{n} \right)^{n}=e^{x}. 
+    \end{equation*}
+  \end{enumerate}
+\end{problem}
+
+\begin{problem}
+  Prove that if $P(\cdot)$ is a probability function and that $B$ is an event
+  with $P(B)>0$, then the function $P(\cdot \mid B)$ is also a probability
+  function.
+\end{problem}
+
+\begin{problem}
+  A pair of events $A$ and $B$ cannot be simultaneously \textit{mutually
+    exclusive} and \textit{independent}. Prove that if $P(A)>0$ and $P(B)>0$,
+  then:
+  \begin{enumerate}[(a)]
+    \item If $A$ and $B$ are mutually exclusive, then they cannot be
+    independent.
+    \item If $A$ and $B$ are independent, then they cannot be mutually
+    exclusive.
+  \end{enumerate}
+\end{problem}
+
+\begin{problem}
+  An example of a random variable whose expected value does not exist is the
+  \demph{Cauchy random variable}, that is, one with pdf
+  \begin{equation*}
+    f_{X}(x) = \frac{1}{\pi} \frac{1}{1+x^{2}}, \ x\in \R.
+  \end{equation*}
+  \begin{enumerate}[(a)]
+    \item Show that $f_{X}$ is a probability density function.
+    \item Show that $E|X|=+\infty$.
+  \end{enumerate}
+\end{problem}
+
 \end{document}

@@ -225,7 +225,7 @@ help(sample)
 # Sometimes we'll want to sample according to prespecified distributions.
 
 # UNIFORM DISTRIBUTION
-n=1000
+n=10
 U = runif(n, min=0, max=4)
 U
 head(U)
@@ -283,12 +283,27 @@ hist(Z)
 hist(U,breaks=20) 
 hist(Z,breaks=100) # ooh pretty <(^-^)>
 
+# COMMENTARY: The above are FREQUNCY HISTOGRAMS (the heights of the bars are
+# counts, so if sum the heights, you get n).
+
+# Another type of histogram is the DENSITY HISTOGRAM (an example
+# of what our textbook calls "Relative frequency histograms"), which is
+# normalized to have total area one. To construct probability density
+# hisogram, we simply adding the optional argument 'probability = TRUE'
+hist(Z, breaks=100, probability = TRUE) 
+# Note that the heights of the bars do not need to sum to 1. Their areas do.
+# Here's another example:
+n=10
+V = runif(n, min=0, max=4)
+hist(V, breaks = 12, probability = TRUE)
+# Density histograms are useful because they give us a visual approximation of
+# the probability density function of the data.
+
 # REMARK: You can also adjust histogram properties, like (1) exactly where the
 # breaks are, (2) the labels, and (3) the height of the vertical axes using
 # various options. See help(hist). Creating pretty figures is one area where
 # ChatGPT is pretty useful and probably doesn't result in a significant loss
 # of gray matter.
-
 
 
 #_______________________________________________________________________________
@@ -425,3 +440,13 @@ for(k in 2:1000)
 }
 x
 plot(x)
+
+
+
+## ## Exercise 1.2 in the textbook
+
+## w = c(8.9,7.1,9.1,8.8,10.2,12.4,11.8,10.9,12.7,10.3,8.6,10.7,10.3,8.4,7.7,11.3,7.6,9.6,7.8,10.6,9.2,9.1,7.8,5.7,8.3,8.8,9.2,11.5,10.5,8.8,35.1,8.2,9.3,10.5,9.5,6.2,9.0,7.9,9.6,8.8,7.0,8.7,8.8,8.9,9.4)
+## hist(w, breaks =37, probability = TRUE)
+
+## F <- ecdf(w)
+## F(10.3)
