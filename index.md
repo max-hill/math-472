@@ -10,12 +10,8 @@ title: Lecture Notes
 ---
 
 
-[Syllabus](/syllabus/syllabus.pdf)
 
 [Lecture notes (working draft)](/lectures/lecture-notes-472.pdf)
-
-[My old notes for math 372](/lectures/math-372/old-372-lecture-notes.pdf)
-
 
 
 
@@ -24,3 +20,7 @@ title: Lecture Notes
 2026-01-12  | 01   | What is probability?
  
 
+
+Possibly useful: [My old notes for math 372](/lectures/math-372/old-372-lecture-notes.pdf)
+
+[Course syllabus](/syllabus/syllabus.pdf)
