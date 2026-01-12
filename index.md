@@ -20,7 +20,9 @@ title: Lecture Notes
 2026-01-12  | 01   | What is probability?
  
 
+# Other links
+
+[Course syllabus](/syllabus/syllabus.pdf)
 
 Possibly useful: [My old notes for math 372](/lectures/math-372/old-372-lecture-notes.pdf)
 
-[Course syllabus](/syllabus/syllabus.pdf)
