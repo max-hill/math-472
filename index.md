@@ -1,6 +1,6 @@
 ---
 layout: latex
-title: Lecture Notes
+title: Main page
 #
 # By default, content added below the "---" mark will appear in the home page
 # between the top bar and the list of recent posts.
@@ -9,7 +9,7 @@ title: Lecture Notes
 #
 ---
 
-
+# lecture notes
 
 [Lecture notes (working draft)](/lectures/lecture-notes-472.pdf)
 
@@ -20,7 +20,7 @@ title: Lecture Notes
 2026-01-12  | 01   | What is probability?
  
 
-# Other links
+# other links
 
 [Course syllabus](/syllabus/syllabus.pdf)
 

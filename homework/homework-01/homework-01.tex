@@ -167,6 +167,13 @@
   \textit{Due Wednesday, Jan 21}
 \end{center}
 
+\Fl{Remark:} The problems in this homework are intended to either introduce you
+to \texttt{R} or introduce/review some central concepts in probability that we
+will need throughout this course. For the remainder of this course, any terms
+defined using \demph{this format} are precise definitions and should be
+memorized precisely (they are fair game for in-class quizzes after the homework
+is due). Text in \textbf{bold} should be definitely reviewed if you are not
+familiar with it.
 
 \begin{problem}
   Install a bunch of software on your laptop:
@@ -175,7 +182,9 @@
     \item Install \texttt{RStudio Desktop}, available at
     \url{https://posit.co/download/rstudio-desktop/}. (If you already know
     \textrm{R} with a different IDE, you can skip this.)
-    \item Do the \texttt{R} tutorial
+    \item Do the \texttt{R} tutorial. (There are two optional exercises in this,
+    but you don't have to turn anything in.)
+    
     % \item DO \url{https://swcarpentry.github.io/shell-novice/} or
     % \url{https://carpentries-incubator.github.io/git-novice-branch-pr/} or \url{https://cecileane.github.io/computingtools/pages/notes0922-markdown.html}
     % \item Write an R function to generate and plot a 1 dimensional brownian motion
@@ -183,12 +192,7 @@
 \end{problem}
 
 
-\Fl{Remark:} The problems in this homework are intended to either introduce you
-to \texttt{R} or introduce/review some central concepts in probability that we
-will need throughout this course. For the remainder of this course, any terms
-defined using \demph{this format} are precise definitions and should be
-memorized (they are fair game for in-class quizzes). Text in \textbf{bold}
-should be reviewed if you are not familiar with it.
+
 
 \begin{problem}[Exercise 1.2 in the textbook]
   Are some cities more windy than others? Does Chicago deserve to be nicknamed
@@ -218,6 +222,209 @@ should be reviewed if you are not familiar with it.
   \end{enumerate}
 \end{problem}
 
+
+
+\begin{problem}
+  A pair of events $A$ and $B$ cannot be simultaneously \textit{mutually
+    exclusive} and \textit{independent}. Prove that if $P(A)>0$ and $P(B)>0$,
+  then:
+  \begin{enumerate}[(a)]
+    \item If $A$ and $B$ are mutually exclusive, then they cannot be
+    independent.
+    \item If $A$ and $B$ are independent, then they cannot be mutually
+    exclusive.
+  \end{enumerate}
+\end{problem}
+
+
+\begin{problem}
+  Let $\P$ be a probability measure and let $B$ be an event with
+  $\P\left[B \right]>0$. Define the function $\P'$ by
+  \begin{equation*}
+    \P'\left[A \right]:= \P\left[A\mid B \right]
+  \end{equation*}
+  for every event $A$. Prove that $\P'$ is a probability measure.
+\end{problem}
+
+
+\begin{problem}[Exercise 1.20 in the textbook]
+  Weekly maintenance costs for a factory, recorded over a long period of time
+  and adjusted for inﬂation, tend to have an approximately normal distribution
+  with an average of \$420 and a standard deviation of \$30. If \$450 is
+  budgeted for next week, what is an approximate probability that this
+  budgeted ﬁgure will be exceeded?
+\end{problem}
+
+
+\begin{problem}[This is essentially Example 2.1 in the textbook]
+  A drone manufacturer has six seemingly-identical drones available for
+  shipping. Unknown to her, two of the six have defective optics. A particular
+  order calls for two drones and is filled by randomly selecting two of the six
+  that are available.
+  \begin{enumerate}[(a)]
+    \item Label four good drones by $G_{1},G_{2},G_{3},G_{4}$ and the two
+    defective drones by $B_{1}$ and $B_{2}$. List the sample space for this
+    experiment.
+    \item Let $A$ denote the event that the order is filled with two
+    non-defective drones. List the sample points in $A$.
+    \item Assign probabilities to each of the simple events in such a way that
+    the information about the experiment is used (and such that the probability
+    measure axioms are met).
+    \item Find the probability of $A$.
+    \item The following \texttt{R} code
+    \begin{lstlisting}
+      drones = c(1,1,1,1,0,0)
+      sum(sample(drones,2,replace=FALSE))==2
+    \end{lstlisting}
+    represents the drones as 1's (nondefective) and 0's (defective), samples 2
+    of them without replacement, and returns TRUE iff both drones are
+    nondefective.
+
+    Use the \texttt{R} function \texttt{replicate()} to repeat this experiment
+    10,000 times and use your result to estimate the probability of $A$.
+
+  \end{enumerate}
+\end{problem}
+
+
+\begin{problem}[Exercise 2.73 in the textbook]
+  In 1865, the Austrian monk Gregor Mendel proposed a theory of inheritance
+  which later became the foundation of modern genetics. In his experiments on
+  flower color, Mendel studied heterozygous plants possesing two alleles:
+  \begin{align*}
+    \text{w} &=\text{ recessive white-color allele}\\
+    \text{R} &=\text{ dominant red-color allele}.
+  \end{align*}
+  When two heterozygous plants were crossed, approximately $3/4$ of the
+  offspring had red flowers and approximately $1/4$ had white flowers. The
+  following table summarizes the possible allele combinations for the offspring;
+  each parent contributes one allele, chosen at random, to the offspring:
+  
+  \begin{equation*}
+    \begin{array}{c|cc}
+      & \multicolumn{2}{c}{\textbf{Parent 1}} \\[-0.5ex]
+      \textbf{Parent 2} & \text{w} & \text{R} \\ \hline
+      \text{w} & \text{ww} & \text{wR} \\
+      \text{R} & \text{wR} & \text{RR}
+    \end{array}    
+  \end{equation*}
+  Assume each parent is equally likely to pass on either allele (w or R), and
+  that the offspring has red flowers if and only if at least one of its alleles
+  is dominant~(R), the offspring will have red ﬂowers. 
+  \begin{enumerate}[(a)]
+    \item What is the probability that an offspring has at least one dominant allele?
+    \item What is the probability that an offspring has at least one recessive allele?
+    \item Given that an offspring has red flowers, what is the probability that
+    it has exactly one recessive allele?
+  \end{enumerate}
+\end{problem}
+
+
+\begin{problem}[Exercise 2.86 in the textbook]
+  Suppose that $A$ and $B$ are two events such that
+  \begin{equation*}
+    \P\left[A \right]=.8 \quad \text{and} \quad \P\left[B \right]=.7.
+  \end{equation*}
+  \begin{enumerate}[(a)]
+    \item Is it possible that $\P\left[A\cap B \right]= .1$? Why or why not?
+    \item What is the smallest possible value for $\P\left[A\cap B \right]$?
+    \item Is it possible that $\P\left[A\cap B \right]=.77$? Why or why not?
+    \item What is the largest possible value for $\P\left[A\cap B \right]$?
+  \end{enumerate}
+\end{problem}
+
+
+
+\begin{problem}[The Law of Rare Events]
+  A random variable $Y$ is said to have a \demph{Poisson probability
+    distribution} with parameter $\lambda>0$, written
+  $Y\sim \text{Pois}(\lambda)$ if its probability mass function is
+  \begin{equation*}
+    \P\left[Y=y \right] = \frac{\lambda^{y}}{y!}e^{-y}, \quad y \in  \left\{0,1,2,\ldots\right\}.
+  \end{equation*}
+  A random variable $X$ is said to be \demph{binomially distributed}, written
+  $X\sim \text{Bin}(n,p)$, with parameters $n$ (called the ``size'' or
+  ``number of trials'') and $p$ (the ``success probability'') if its
+  probability mass function is
+  \begin{equation*}
+    \P\left[X=x \right] = {n\choose x} p^{x}(1-p)^{n-x}, \quad x\in \left\{0,1,2,\ldots,n\right\}.
+  \end{equation*}
+  \textit{[These are two important distributions; see Sections 3.4 and 3.8 in
+    the textbook for good discussions of both.]} In this problem, we'll show how
+  to approximate a binomial distribution with a Poisson distribution. (This
+  approximation is sometimes called \textit{The Law of Rare Events}).
+
+  \begin{enumerate}[(a)]
+    \item \label{item:3} Show that for any $x\in \R$,
+    \begin{equation*}
+      \lim_{n\to\infty} \left( 1+\frac{x}{n} \right)^{n} = e^{x}.
+    \end{equation*}
+    \item \label{item:4} For fixed $\lambda>0$ and
+    $k\in \left\{0,1,2,\ldots\right\}$, show that
+    \begin{equation*}
+      \lim_{n\to\infty} {n\choose k} \left( \frac{\lambda}{n} \right)^{k} = \frac{\lambda^{k}}{k!}.
+    \end{equation*}
+    \item \label{item:5} Fix $\lambda>0$ and $k\in \left\{0,1,2,\ldots\right\}$. Assume that
+    $p=\lambda/n$ (which is getting smaller as $n \to \infty$). Use parts
+    \ref{item:3} and \ref{item:4} to show that
+    \begin{equation*}
+      \P\left[Y=k \right] = \lim_{n\to\infty} \P\left[X=k \right]
+    \end{equation*}
+    \item In part \ref{item:5} you showed that if $n$ is large and $p$ is small
+    (and $\lambda=np$ isn't too big), then a random variable
+    $X\sim \text{Bin}(n,p)$ is well-approximated by the distribution Pois$(np)$.
+    Let's apply this approximation to a real-world problem!
+
+    In the popular role-playing game \textit{Dungeons \& Dragons}, a 20-sided
+    dice is commonly rolled. When a `1' is rolled on the dice, that's called
+    \textit{critical failure}, which usually results in something terrible
+    happening. Suppose that in the course of a game, a 20-sided dice is rolled
+    $n=100$ times. Let $X$ be the number of critical failures during the game.
+    The probability of a critical failure is $p = 1/20 = .05$, so
+  \begin{equation*}
+    X\sim \text{Bin}(100,.05).
+  \end{equation*}
+  \begin{enumerate}[(i)]
+    \item Suppose we wish to approximate $X$ with a
+    $Y\sim \text{Pois}(\lambda)$. What would be a good value of $\lambda$?
+    \item Using the \texttt{R} functions \texttt{rpois()} and \texttt{rbinom()},
+    generate $100,000$ samples from the distributions of $X$ and $Y$, which
+    you should save as vectors \texttt{X_samples} and \texttt{Y_samples} respectively.
+    Then use the following code to plot two overlapping histograms:
+    \begin{lstlisting}[resetmargins=false]
+      hist(X_samples, probability=TRUE, breaks=20, col=rgb(1,0,0,0.4), border="red",
+           main="Critical Failures: Binomial (X) vs Poisson (Y)",
+           xlab="Number of critical failures in 100 rolls", xlim = c(0,20))
+           
+      hist(Y_samples, probability=TRUE, breaks=20, col=rgb(0,0,1,0.4), border="blue",
+           add=TRUE)
+
+      legend("topright", legend = c("approx. distribution of X",
+             "approx. distribution of Y"), fill=c(rgb(1,0,0,0.4), rgb(0,0,1,0.4)))
+    \end{lstlisting}
+    \item Using your Poisson approximation, what is the approximate probability
+    of 2 or fewer critical failures during the course of the game?
+  \end{enumerate}
+  \end{enumerate}
+\end{problem}
+
+
+
+% \begin{problem}
+%   \begin{enumerate}[(a)]
+%     Let $x\in \R$ be arbitrary.
+%     \item Prove that 
+%     \begin{equation*}
+%       \lim_{n\to\infty} \left( 1+ \frac{x}{n} \right)^{n} = e^{x} 
+%     \end{equation*}
+%     \item Suppose that $(x_{n})$ is a sequence converging to $x$. Prove that
+%     \begin{equation*}
+%       \lim_{n\to\infty} \left( 1+\frac{x_{n}}{n} \right)^{n}=e^{x}. 
+%     \end{equation*}
+%   \end{enumerate}
+% \end{problem}
+
+\newpage
 \begin{problem}
   An urn contains 5 balls, three red balls and two blue balls:
   \begin{center}
@@ -301,249 +508,4 @@ should be reviewed if you are not familiar with it.
 \end{problem}
 
 
-
-\begin{problem}[Exercise 1.9 in the textbook]
-  Resting breathing rates for college-age students are approximately normally distributed with
-  mean 12 and standard deviation 2.3 breaths per minute. What fraction of all college-age students
-  have breathing rates in the following intervals?
-  \begin{enumerate}[(a)]
-    \item   9.7 to 14.3 breaths per minute
-    \item   7.4 to 16.6 breaths per minute
-    \item   9.7 to 16.6 breaths per minute
-    \item   Less than 5.1 or more than 18.9 breaths per minute
-  \end{enumerate}
-\end{problem}
-
-
-\begin{problem}[Exercise 1.20 in the textbook]
-  Weekly maintenance costs for a factory, recorded over a long period of time
-  and adjusted for inﬂation, tend to have an approximately normal distribution
-  with an average of \$420 and a standard deviation of \$30. If \$450 is
-  budgeted for next week, what is an approximate probability that this
-  budgeted ﬁgure will be exceeded?
-\end{problem}
-
-
-\begin{problem}
-  The \demph{power set} of $\R$, denoted $2^{\R}$ is the set
-  \begin{equation*}
-    2^{\R} := \left\{A: A\subseteq \R\right\}. 
-  \end{equation*}
-  Let $P:2^{\R} \to \left\{0,1\right\}$ be the function defined by
-  \begin{equation*}
-    P(A) := \left\{ \begin{array}{l@{\quad:\quad}l} 1 & A\text{ is
-          uncountable}\\ 0& \text{ otherwise} \end{array}\right.
-  \end{equation*}
-  Verify that $P$ is a probability measure on $2^{\R}$.
-\end{problem}
-
-\begin{problem}[The Law of Rare Events]
-  A random variable $Y$ is said to have a \demph{Poisson probability
-    distribution} with parameter $\lambda>0$, written
-  $Y\sim \text{Pois}(\lambda)$ if its probability mass function is
-  \begin{equation*}
-    \P\left[Y=y \right] = \frac{\lambda^{y}}{y!}e^{-y}, \quad y \in  \left\{0,1,2,\ldots\right\}.
-  \end{equation*}
-  A random variable $X$ is said to be \demph{binomially distributed}, written
-  $X\sim \text{Bin}(n,p)$, with parameters $n$ (called the ``size'' or
-  ``number of trials'') and $p$ (the ``success probability'') if its
-  probability mass function is
-  \begin{equation*}
-    \P\left[X=x \right] = {n\choose x} p^{x}(1-p)^{n-x}, \quad x\in \left\{0,1,2,\ldots,n\right\}.
-  \end{equation*}
-  \textit{[These are two important distributions; see Sections 3.4 and 3.8 in
-    the textbook for good discussions of both.]} In this problem, we'll show how
-  to approximate a binomial distribution with a Poisson distribution. (This
-  approximation is sometimes called \textit{The Law of Rare Events}).
-
-  \begin{enumerate}[(a)]
-    \item \label{item:3} Show that for any $x\in \R$,
-    \begin{equation*}
-      \lim_{n\to\infty} \left( 1+\frac{x}{n} \right)^{n} = e^{x}.
-    \end{equation*}
-    \item \label{item:4} For fixed $\lambda>0$ and
-    $k\in \left\{0,1,2,\ldots\right\}$, show that
-    \begin{equation*}
-      \lim_{n\to\infty} {n\choose k} \left( \frac{\lambda}{n} \right)^{k} = \frac{\lambda^{k}}{k!}.
-    \end{equation*}
-    \item \label{item:5} Fix $\lambda>0$ and $k\in \left\{0,1,2,\ldots\right\}$. Assume that
-    $p=\lambda/n$ (which is getting smaller as $n \to \infty$). Use parts
-    \ref{item:3} and \ref{item:4} to show that
-    \begin{equation*}
-      \P\left[Y=k \right] = \lim_{n\to\infty} \P\left[X=k \right]
-    \end{equation*}
-    \item Part \ref{item:5} shows that if $n$ is large and $p$ is small (and
-    $\lambda=np$ isn't too big), then a random variable $X\sim
-    \text{Bin}(n,p)$ is well-approximated by the distribution Pois$(np)$.
-
-    In the popular role-playing game \textit{Dungeons \& Dragons}, a 20-sided
-    dice is commonly rolled. When a `1' is rolled on the dice, that's called
-    \textit{critical failure}, which usually results in something terrible
-    happening. Suppose that in the course of a game, a 20-sided dice is rolled
-    $n=100$ times. Let $X$ be the number of critical failures during the game.
-    The probability of a critical failure is $p = 1/20 = .05$, so
-  \begin{equation*}
-    X\sim \text{Bin}(100,.05).
-  \end{equation*}
-  \begin{enumerate}
-    \item Suppose we wish to approximate $X$ with a
-    $Y\sim \text{Pois}(\lambda)$. What would be a good value of $\lambda$?
-    \item Using the \texttt{R} functions \texttt{rpois()} and \texttt{rbinom()},
-    generate $100,000$ samples from the distributions of $X$ and $Y$, which
-    you should save as vectors \texttt{X_samples} and \texttt{Y_samples} respectively.
-    Then use the following code to plot two overlapping histograms:
-    \begin{lstlisting}[resetmargins=false]
-      hist(X_samples, probability=TRUE, breaks=20, col=rgb(1,0,0,0.4), border="red",
-           main="Critical Failures: Binomial (X) vs Poisson (Y)",
-           xlab="Number of critical failures in 100 rolls", xlim = c(0,20))
-           
-      hist(Y_samples, probability=TRUE, breaks=20, col=rgb(0,0,1,0.4), border="blue",
-           add=TRUE)
-
-      legend("topright", legend = c("approx. distribution of X",
-             "approx. distribution of Y"), fill=c(rgb(1,0,0,0.4), rgb(0,0,1,0.4)))
-    \end{lstlisting}
-    \item Using your Poisson approximation, what is the approximate probability
-    of 2 or fewer critical failures during the course of the game?
-  \end{enumerate}
-  \end{enumerate}
-\end{problem}
-
-
-\begin{problem}[This is like Example 2.1 in the textbook]
-  A drone manufacturer has six seemingly-identical drones available for
-  shipping. Unknown to her, two of the six have defective optics. A particular
-  order calls for two drones and is filled by randomly selecting two of the six
-  that are available.
-  \begin{enumerate}[(a)]
-    \item Label four good drones by $G_{1},G_{2},G_{3},G_{4}$ and the two
-    defective drones by $B_{1}$ and $B_{2}$. List the sample space for this
-    experiment.
-    \item Let $A$ denote the event that the order is filled with two
-    non-defective drones. List the sample points in $A$.
-    \item Assign probabilities to each of the simple events in such a way that
-    the information about the experiment is used (and such that the probability
-    measure axioms are met).
-    \item Find the probability of $A$.
-    \item The following \texttt{R} code
-    \begin{lstlisting}
-      drones = c(1,1,1,1,0,0)
-      sum(sample(drones,2,replace=FALSE))==2
-    \end{lstlisting}
-    represents the drones as 1's (nondefective) and 0's (defective), samples 2
-    of them without replacement, and returns TRUE iff both drones are
-    nondefective.
-
-    Use the \texttt{R} function \texttt{replicate()} to repeat this experiment
-    10,000 times and use your result to estimate the probability of $A$.
-
-  \end{enumerate}
-\end{problem}
-
-\begin{problem}
-  Prove proposition 2 in the lecture notes.
-  
-  \textit{If you get stuck, you can find this proof in my old math 372 lecture
-    notes (Week 2, Class 4, available on the course website).}
-\end{problem}
-% \begin{problem}
-%   \begin{enumerate}[(a)]
-%     Let $x\in \R$ be arbitrary.
-%     \item Prove that 
-%     \begin{equation*}
-%       \lim_{n\to\infty} \left( 1+ \frac{x}{n} \right)^{n} = e^{x} 
-%     \end{equation*}
-%     \item Suppose that $(x_{n})$ is a sequence converging to $x$. Prove that
-%     \begin{equation*}
-%       \lim_{n\to\infty} \left( 1+\frac{x_{n}}{n} \right)^{n}=e^{x}. 
-%     \end{equation*}
-%   \end{enumerate}
-% \end{problem}
-
-
-\begin{problem}
-  Let $\P$ be a probability measure and let $B$ be an event with
-  $\P\left[B \right]>0$. Define the function $\P'$ by
-  \begin{equation*}
-    \P'\left[A \right]:= \P\left[A\mid B \right]
-  \end{equation*}
-  for every event $A$. Prove that $\P'$ is a probability measure.
-\end{problem}
-
-\begin{problem}
-  A pair of events $A$ and $B$ cannot be simultaneously \textit{mutually
-    exclusive} and \textit{independent}. Prove that if $P(A)>0$ and $P(B)>0$,
-  then:
-  \begin{enumerate}[(a)]
-    \item If $A$ and $B$ are mutually exclusive, then they cannot be
-    independent.
-    \item If $A$ and $B$ are independent, then they cannot be mutually
-    exclusive.
-  \end{enumerate}
-\end{problem}
-
-\begin{problem}
-  An example of a random variable whose expected value does not exist is the
-  \demph{Cauchy random variable}, that is, one with pdf
-  \begin{equation*}
-    f_{X}(x) = \frac{1}{\pi} \frac{1}{1+x^{2}}, \ x\in \R.
-  \end{equation*}
-  \begin{enumerate}[(a)]
-    \item Show that $f_{X}$ is a probability density function.
-    \item  Show that $\E\left[X \right]$ is not defined by showing that
-    $E|X|=+\infty$.
-  \end{enumerate}
-\end{problem}
-
-\begin{problem}[Exercise 2.86 in the textbook]
-  Suppose that $A$ and $B$ are two events such that $\P\left[A \right]=.8$
-  and $\P\left[B \right]=.7$.
-  \begin{enumerate}[(a)]
-    \item Is it possible that $\P\left[A\cap B \right]= .1$? Why or why not?
-    \item What is the smallest possible value for $\P\left[A\cap B \right]$?
-    \item Is it possible that $\P\left[A\cap B \right]=.77$? Why or why not?
-    \item What is the largest possible value for $\P\left[A\cap B \right]$?
-\end{enumerate}
-\end{problem}
-
-\begin{problem}[Exercise 2.73 in the textbook]
-  Gregor Mendel was a monk who, in 1865, suggested a theory of inheritance based
-  on the science of genetics. He identiﬁed heterozygous individuals for ﬂower
-  color that had two alleles (one r = recessive white color allele and one R =
-  dominant red color allele). When these individuals were mated, 3/4 of the
-  offspring were observed to have red ﬂowers, and 1/4 had white ﬂowers. The
-  following table summarizes this mating; each parent gives one of its alleles
-  to form the gene of the offspring.
- 
-  \begin{equation*}
-    \begin{array}{c|cc}
-      & \multicolumn{2}{c}{\textbf{Parent 1}} \\[-0.5ex]
-      \textbf{Parent 2} & r & R \\ \hline
-      r & rr & rR \\
-      R & rR & RR
-    \end{array}    
-  \end{equation*}
-  We assume that each parent is equally likely to give either of the two
-  alleles. We also assume that if either one or two of the alleles in a pair is
-  dominant (R), the offspring will have red ﬂowers. What is the probability that
-  an offspring has
-  \begin{enumerate}[(a)]
-    \item at least one dominant allele?
-    \item at least one recessive allele?
-    \item one recessive allele, given that the offspring has red ﬂowers?
-  \end{enumerate}
-\end{problem}
-
-
-\begin{problem}
-  A \demph{median} of a distribution is a value $m$ such that $\P\left[X \leq
-    m\right] \geq \frac{1}{2}$ and $\P\left[X \geq m\right] \geq \frac{1}{2}$.
-  (If $X$ is continuous, $m$ satisfies $\int_{-\infty}^{m}f(x)dx =
-  \int_{m}^{\infty}f(x)dx=\frac{1}{2}$, where $f$ is the pdf of $X$.) Find the
-  median of the following distributions
-  \begin{enumerate}[(a)]
-    \item $f(x)=3x^{2},\ 0<x<1$
-    \item $f(x)= \frac{1}{\pi} \frac{1}{1+x^{2}},\ x\in \R$.
-  \end{enumerate}
-\end{problem}
 \end{document}
