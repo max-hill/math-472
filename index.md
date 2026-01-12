@@ -19,7 +19,7 @@ title: Lecture Notes
 
 
 
- Date        | Lecture number             | Topics Covered
+ Date        | Class number             | Topics Covered
 -------------|----------------------------|-------------
 2026-01-12  | 01   | What is probability?
  
