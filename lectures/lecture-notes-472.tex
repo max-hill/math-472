@@ -1,0 +1,599 @@
+\documentclass[10pt]{article}
+% Math Packages
+\usepackage{float} % Required to use [H]
+\usepackage{amsmath, mathtools}
+\usepackage{amssymb}
+\usepackage{amsthm}
+\usepackage{amsfonts}
+\usepackage{bbm}
+\usepackage{breqn}
+\usepackage[margin=1in]{geometry}
+\usepackage{graphicx}
+\usepackage{tikz}
+\usetikzlibrary{arrows.meta}
+\usetikzlibrary{calc}
+\usepackage{forest}
+\usepackage{tikz-qtree}
+\graphicspath{ {./images/} }
+\usepackage{hyperref}
+\usepackage[capitalize]{cleveref}
+\usepackage[shortlabels]{enumitem}
+\usetikzlibrary{arrows,matrix,positioning}
+\usepackage{multicol}
+
+\usepackage{mathtools}% http://ctan.org/pkg/mathtools
+\usepackage{abraces} %xyz
+
+
+
+\usepackage{empheq} % for boxed equations
+\usepackage[most]{tcolorbox}
+\newtcbox{\mymath}[1][]{%
+  nobeforeafter, math upper, tcbox raise base,
+  enhanced, colframe=blue!30!black,
+  colback=blue!30, boxrule=1pt,
+  #1}
+\newtcbox{\boxmath}[1][]{%
+  nobeforeafter, math upper, tcbox raise base,
+  enhanced, colframe=blue!30!black,
+  boxrule=1pt,
+  #1}
+
+% for the pipe symbol
+\usepackage[T1]{fontenc}
+
+
+% Citing theorems by name. (source: https://tex.stackexchange.com/questions/109843/cleveref-and-named-theorems)
+\makeatletter
+\newcommand{\ncref}[1]{\cref{#1}\mynameref{#1}{\csname r@#1\endcsname}}
+
+\def\mynameref#1#2{%
+  \begingroup
+  \edef\@mytxt{#2}%
+  \edef\@mytst{\expandafter\@thirdoffive\@mytxt}%
+  \ifx\@mytst\empty\else
+  \space(\nameref{#1})\fi
+  \endgroup
+}
+\makeatother
+
+% Colorful Notes
+\usepackage{color} \definecolor{Red}{rgb}{1,0,0} \definecolor{Blue}{rgb}{0,0,1}
+\definecolor{Purple}{rgb}{.5,0,.5} \def\red{\color{Red}} \def\blue{\color{Blue}}
+\def\gray{\color{gray}} \def\purple{\color{Purple}}
+\newcommand{\rnote}[1]{{\red [#1]}} % \rnote{foo} gives '[foo]' in red
+\newcommand{\pnote}[1]{{\purple [#1]}} % \pnote{foo} gives '[foo]' in purple
+\newcommand{\bnote}[1]{{\blue #1}} % \bnote{foo} gives 'foo' in blue
+\newcommand{\gnote}[1]{{\gray #1}} % \gnote{foo} gives 'foo' in gray
+\newcommand{\Max}[1]{{\purple [#1]}} % \bnote{foo} then 'foo' is blue
+
+
+% Claim numbering (the counter restarts after each proof environment)
+\newcounter{claimcount}
+\setcounter{claimcount}{0}
+\newenvironment{claim}{\refstepcounter{claimcount}\par\addvspace{\medskipamount}\noindent\textbf{Claim \arabic{claimcount}:}}{}
+\usepackage{etoolbox}
+\AtBeginEnvironment{proof}{\setcounter{claimcount}{0}}
+\newenvironment{claimproof}{\par\addvspace{\medskipamount}\noindent\textit{Proof of Claim  \arabic{claimcount}.}}{\hfill\ensuremath{\qedsymbol} \tiny{Claim}
+
+  \medskip}
+% Add claim support to cleverref
+\crefname{claimcount}{Claim}{Claims}
+
+
+% Math Environments
+\newtheorem{theorem}{Theorem}
+\newtheorem{assumption}[theorem]{Assumption}
+\newtheorem{lemma}[theorem]{Lemma}
+\newtheorem{proposition}[theorem]{Proposition}
+\newtheorem{corollary}[theorem]{Corollary}
+\newtheorem{question}[theorem]{Question}
+\theoremstyle{definition}
+\newtheorem{definition}[theorem]{Definition}
+\newtheorem{remark}[theorem]{Remark}
+\newtheorem{example}[theorem]{Example}
+\newtheorem{notation}[theorem]{Notation}
+\newtheorem{problem}[theorem]{Problem}
+
+
+\usepackage{skull}
+
+% Redefine the Example environment to include "End of example [number]"
+\makeatletter
+\let\oldexample\example
+\renewenvironment{example}
+{\begin{oldexample}}
+  {\par\smallskip\hfill   End of Example~\theexample. $\square$    \par\end{oldexample}}
+\makeatother
+
+
+% Matrices and Column Vectors. 
+\usepackage{stackengine}
+\setstackgap{L}{1.0\normalbaselineskip}
+\usepackage{tabstackengine}
+\setstackEOL{;}% row separator
+\setstackTAB{,}% column separator
+\setstacktabbedgap{1ex}% inter-column gap
+\setstackgap{L}{1.5\normalbaselineskip}% inter-row baselineskip
+\let\nmatrix\bracketMatrixstack  %Usage: \nmatrix{1,2,3\4,5,6}
+\newcommand\cv[1]{\setstackEOL{,}\bracketMatrixstack{#1}} %usage: \cv{1,2,3}
+
+% Custom Math Coqmmands
+\newcommand{\vt}{\vskip 5mm} % vertical space
+\newcommand{\fl}{\noindent\textbf} % first line
+\newcommand{\Fl}{\vt\noindent\textbf} % first line with space above
+\newcommand{\norm}[1]{\left\lVert#1\right\rVert} % norm
+\newcommand{\pnorm}[1]{\left\lVert#1\right\rVert_p} % p-norm
+\newcommand{\qnorm}[1]{\left\lVert#1\right\rVert_q} % q-norm
+\newcommand{\1}[1]{\textbf{1}_{\left[#1\right]}} % indicator function 
+\def\limn{\lim_{n\to\infty}} % shortcut for lim as n-> infinity
+\def\sumn{\sum_{n=1}^{\infty}} % shortcut for sum from n=1 to infinity
+\def\sumkn{\sum_{k=1}^{n}} % shortcut for sum from k=1 to n
+\def\sumin{\sum_{i=1}^{n}} % shortcut for sum from i=1 to n
+\def\SAs{\sigma\text{-algebras}} % shortcut for $\sigma$-algebras
+\def\SA{\sigma\text{-algebra}} % shortcut for $\sigma$-algebra
+\def\Ft{\mathcal{F}_t} % time-indexed sigma-algebra (t)
+\def\Fs{\mathcal{F}_s} % time-indexed sigma-algebra (s)
+\def\F{\mathcal{F}} % sigma-algebra
+\def\G{\mathcal{G}} % sigma-algebra
+\def\R{\mathbb{R}} % Real numbers
+\def\N{\mathbb{N}} % Natural numbers
+\def\Z{\mathbb{Z}} % Integers
+\def\E{\mathbb{E}} % Expectation
+\def\P{\mathbb{P}} % Probability
+\def\Q{\mathbb{Q}} % Q probability
+\def\dist{\text{dist}} %Text 'dist' for things like 'dist(x,y)'
+\newcommand{\indep}{\perp \!\!\! \perp}  %independence symbol
+\def\Var{\mathrm{Var}} % Variance
+\def\tr{\mathrm{tr}} % trace
+
+% Brackets and Parentheses
+\def\[{\left [}
+    \def\]{\right ]}
+% \def\({\left (}
+%   \def\){\right )}
+
+
+
+
+\usepackage{color}
+\definecolor{Red}{rgb}{1,0,0}
+\definecolor{Blue}{rgb}{0,0,1}
+\definecolor{Purple}{rgb}{.5,0,.5}
+\def\red{\color{Red}}
+\def\blue{\color{Blue}}
+\def\gray{\color{gray}}
+\def\purple{\color{Purple}}
+\definecolor{RoyalBlue}{cmyk}{1, 0.50, 0, 0}
+\newcommand{\dempfcolor}[1]{{\color{RoyalBlue}#1}} 
+\newcommand{\demph}[1]{\textcolor{RoyalBlue}{\textbf{\slshape #1}}} % Slanted
+% RoyalBlue text
+
+% comment exactly one of the following line to show / hide the solutions
+% \newcommand{\solution}[1]{{\purple #1}} % uncomment to show the solutions
+\newcommand{\solution}[1]{} % uncomment to hide the solutions
+
+
+
+\title{Lecture Notes for Math 372: \\Elementary Probability and Statistics}
+\date{Last updated: \today}
+% \author{mh}
+
+\begin{document}
+\maketitle
+
+
+
+
+\tableofcontents
+\newpage
+\setcounter{section}{-1}
+\section{Tentative course outline}
+
+This course is a problem-oriented introduction to the basic concepts of probability and statistics,
+providing a foundation for applications and further study.
+\begin{enumerate}
+  \item \textbf{Weeks 1-2.} Sampling distributions (4 lessons).
+
+  chi-squared, t, and F distributions, distributions of sample mean and
+  variance
+
+  \item \textbf{Weeks 3-4.} Point estimation (5 lessons)
+
+  properties and methods of point estimation
+
+  \item \textbf{Weeks 5-6.} Interval estimation (4 lessons)
+
+  Confidence intervals for means, variances, proportions and differences
+
+  \item \textbf{Weeks 7-12.} Hypothesis Testing (19 lessons)
+
+  Neyman-Pearson lemma, likelihood ratio test; tests concerning means and
+  variances, tests based on count data, nonparametric tests, analysis of variance
+
+  \item \textbf{Weeks 13-14.} Regression and correlation (6 lessons)
+
+  regression, bivariate normal distributions, method of least squares
+\end{enumerate}
+
+
+
+\newpage
+\section{2025-01-12 | Week 01 |  Class 01}
+
+\begin{itemize}
+  \item give syllabus
+  \item do activity with why you're in this course
+\end{itemize}
+
+
+\begin{center}
+  \begin{tcolorbox}[width=0.9\textwidth, colback=white, colframe=black]
+    \textit{\textbf{The nexus question of this lecture:} What is a
+      probability?}
+  \end{tcolorbox}
+\end{center}
+\textbf{Reading assignment:} Sections 1.1, 1.2, 1.3, 2.1, 2.4 of the textbook.
+
+\subsection{What is probability?}
+\subsubsection{A general framework: sample space, events, etc}
+We begin with a general framework and some terminology to formalize the
+notions of probability. This is based on section 2.4 in the textbook.
+
+\begin{itemize}
+  \item An \demph{experiment} is an activity or process whose outcome is
+  subject to uncertainty, and about which an observation is made.
+
+  Examples include flipping a coin, rolling a dice, measuring the size of a
+  wave, or the amount of rainfall, conducting a poll, performing a diagnostic
+  test, opening a pack of Pokemon cards, etc.
+
+  \item The \demph{sample space} $S$ of an experiment is the set of all
+  possible outcomes. The elements of the sample space are called \demph{sample
+    points}.
+
+  We think of each sample point as representing a unique outcome of the
+  experiment. In the case of rolling a dice, the sample points are $1,2,3,4,5$
+  and $6$, and the sample space is $S=\left\{1,2,3,4,5,6\right\}$.
+
+
+  \item We use the term \demph{event} to refer to a collection of
+  outcomes, i.e., a subset of $S$.
+
+  Example: if our experiment is rolling a 6-sided dice, here are some events
+
+  \begin{equation*}
+    \begin{aligned}
+      A &= [\text{observe an odd number}]\\
+      B &= [\text{observe an even number}]\\
+      C &= [\text{observe a number less than 5}]\\
+      D &= [\text{observe a 2 or a 3}]\\
+      E_1 &= [\text{observe a 1}]
+    \end{aligned}
+    \qquad
+    \begin{aligned}
+      E_2 &= [\text{observe a 2}]\\
+      E_3 &= [\text{observe a 3}]\\
+      E_4 &= [\text{observe a 4}]\\
+      E_5 &= [\text{observe a 5}]\\
+      E_6 &= [\text{observe a 6}]
+    \end{aligned}
+  \end{equation*}
+
+  \item There are two types of events: \demph{compound events}, which can be
+  decomposed into other events, and \demph{simple events}, which cannot.
+
+  In the above example, the events $A,B,C$ and $D$ are compound events. $E_{1},\ldots,E_{6}$ are simple events.
+
+  \item A sample space is \demph{discrete} if it is countable (i.e., finite or
+  countably infinite). In a discrete sample space $S$, the set of all possible
+  events is the \textit{power set} of $S$.\footnote{If $S$ is not discrete, a
+    complication arises: in that case, some subsets of $S$ are too wild and
+    untameable for us to treat them mathematically as ``events''. Resolving
+    that issue requires introducing measure theory, which is beyond the scope
+    of this class, so we will ignore it and simply steer clear of any setting
+    where any issues might arise.}
+
+  In the dice-rolling example, the set of all possible events is
+  $\left\{E: E\subseteq \left\{1,2,3,4,5,6\right\} \right\}$. 
+  
+  \begin{equation*}
+    \begin{aligned}
+      A &= [\text{observe an odd number}] = \{1,3,5\} \\
+      B &= [\text{observe an even number}] = \{2,4,6\} \\
+      C &= [\text{observe a number less than 5}] = \{1,2,3,4\} \\
+      D &= [\text{observe a 2 or a 3}] = \{2,3\}\\
+      E_1 &= [\text{observe a 1}] = \{1\}
+    \end{aligned}
+    \qquad
+    \begin{aligned}
+      E_2 &= [\text{observe a 2}] = \{2\} \\
+      E_3 &= [\text{observe a 3}] = \{3\} \\
+      E_4 &= [\text{observe a 4}] = \{4\} \\
+      E_5 &= [\text{observe a 5}] = \{5\} \\
+      E_6 &= [\text{observe a 6}] = \{6\}
+    \end{aligned}
+  \end{equation*}
+
+  \item Some observations about events:
+  \begin{itemize}
+    \item The sample points are \textit{elements} of $S$. The simple events are
+    \textit{singleton subsets} of $S$. In the dice example, we have:
+    \begin{itemize}
+      \item Sample points: 1,2,3,4,5,6.
+      \item Simple events: $\left\{1\right\},\left\{2\right\},\left\{3\right\},\left\{4\right\},\left\{5\right\},\left\{6\right\}$.
+    \end{itemize}
+    \item The empty set $\emptyset$ and the whole sample space $S$ are always
+    both events: $\emptyset$ is the event ``nothing happens'' and $S$ is the
+    event ``something happens''.
+    \item Events satisfy a the properties of a boolean algebra:
+    \begin{itemize}
+      \item \textbf{``And'':} If $E$ and $F$ are events, then $E\cap F$ is the
+      event that $E$ and $F$ occur.
+      \item \textbf{``Or'':} If $E$ and $F$ are events, then $E\cup F$ is the
+      event that $E$ or $F$ occurs.
+      \item \textbf{``Not'':} If $E$ is an event, then $E^{c}= S\backslash E$
+      is the event that $E$ does not occur.
+    \end{itemize}
+  \end{itemize}
+  \item Two events $E$ and $F$ are \demph{mutually exclusive} if
+  $E\cap F =\emptyset$. This means that $E$ and $F$ cannot both happen at the
+  same time.
+
+  In the dice example, the events $A$ and $B$ are mutually exclusive, since
+  the dice roll cannot be both even and odd. But $A$ and $C$ are not mutually
+  exclusive because $A\cap C =\left\{1,3\right\}\neq \emptyset$. If a 1 or a 3
+  is rolled, then both $A$ and $C$ occur.
+\end{itemize}
+
+\subsubsection{Definition of probability measure}
+\begin{definition}[Probability measure]
+  Let $S$ be a sample space associated with an experiment. A function $\P$ is
+  said to be a \demph{probability measure} on $S$ if it satisfies the
+  following three axioms:
+  \begin{enumerate}[label=\textbf{A.\arabic*}]
+    \item (Nonnegativity) \label{item:probability-axiom-nonnegativity} For
+    every event $E\subseteq S$,
+    \begin{equation*}
+      \P\left[E\right] \geq 0.
+    \end{equation*}
+    \item (Total mass one) $\P\left[S \right] =1$.
+    \item (Countable additivity) If $E_{1},E_{2},\ldots$ is a sequence of
+    events which are pairwise mutually exclusive (meaning
+    $E_{i}\cap E_{j}=\emptyset$ if $i\neq j$), then
+    \begin{equation*}
+      \P\left[E_{1}\cup E_{2}\cup \ldots \right] = \sum_{i=1}^{\infty} \P\left[E_{i} \right].
+    \end{equation*}
+  \end{enumerate}
+  If $\P$ is a probability measure, then for every event $E\subseteq S$, the
+  number $\P\left[E \right]$ is called the \demph{probability} of $E$.
+\end{definition}
+
+The above definition only tells us the conditions an assignment of
+probabilities must satisfy; it doesn't tell us how to assign specific
+propbabilities to events.
+
+Probability measures satisfy some basic properties:
+
+\begin{proposition}[Basic properties of probability measure]
+  \label{prop:some-deductions-from-axioms}
+  If $\P$ is a probability measure, then the following properties hold:
+  \begin{enumerate}[label=\rm{(\roman*.)}]
+    \item []
+    \item (The null event has probability zero) \label{item:empty-set-has-prob-zero}
+    $\P\left[\emptyset \right] = 0$.
+    \item (Finite additivity) \label{item:finite-additivity} Let $\left\{E_{1},\ldots,E_{n}\right\}$ be a
+    \textit{finite} sequence of events. If the sequence is pairwise disjoint, then
+    \begin{equation*}
+      \P\left[E_{1}\cup E_{2}\cup\ldots\cup E_{n} \right] 
+      = \P\left[E_{1} \right]+\P\left[E_{2} \right]+\ldots+\P\left[E_{n} \right].
+    \end{equation*}
+    \item (``With probability one, an event $E$ either does occur or doesn't'') \label{item:complements} $\P\left[E^{c} \right] = 1-\P\left[E \right]$.
+    \item (Excision Property) \label{item:excision-property} If $A,B$ are events and $A\subseteq B$, then
+    \begin{equation*}
+      \P\left[B\backslash A \right] = \P\left[B \right] - \P\left[A \right].
+    \end{equation*}
+    \item (``The particular is less likely than the general'') \label{item:subsets} If $A,B$ are events and $A\subseteq B$, then
+    $\P\left[ A\right] \leq \P\left[B \right]$.
+    \item (``Probabilities are between 0 and 1'') \label{item:probabilities-are-in-unit-interval} For any event $E$,  $\P\left[E \right]\in [0,1]$.
+  \end{enumerate}
+\end{proposition}
+
+\subsection{Conditional probabilities and independence}
+\begin{definition}[Independence]
+  \label{def:independence}
+  Two events $A$ and $B$ are said to be \demph{independent} if $\P\left[A\cap
+    B \right] = \P\left[A \right] \P\left[B \right]$. Otherwise, the events
+  are said to be dependent.
+\end{definition}
+
+\begin{definition}[Conditional probability]
+  Let $A,B$ be events, and assume that $\P\left[B\right]>0$. Then the
+  \demph{conditional probability of $A$, given $B$}, denoted
+  $\P\left[A\mid B \right]$, is given by the formula
+  \begin{equation*}
+    \P\left[A\mid B \right] := \frac{\P\left[A\cap B \right]}{\P\left[B \right]}.
+  \end{equation*}
+\end{definition}
+(Intuitively, $\P\left[A\mid B \right]$ is the probability of $A$ when we know
+that event $B$ happened.)
+
+\begin{example}
+  Roll a dice. Let $B$ be the event that an odd number was observed, and $A$
+  the event that a `1' was rolled.
+
+  \begin{itemize}
+    \item The unconditional probability: $\P\left[A
+    \right]=1/6$.
+    \item The conditional probability: $\P\left[A\mid B \right] = 1/3$
+  \end{itemize}
+\end{example}
+\begin{proposition}
+  If $A,B$ are independent events with positive probabilities, then
+  \begin{equation*}
+    \P\left[A\mid B \right] = \P\left[A \right]
+    \quad \text{and} \quad
+    \P\left[B\mid A \right] = \P\left[B \right]
+  \end{equation*}
+\end{proposition}
+This proposition provides the basis for the following intuition about
+independence: the occurance of one of the events is unaffected by the
+occurrence or nonoccurence of the other.
+
+\subsection{Random variables}
+\textit{Section 2.11}
+
+
+\begin{definition}[Random variable]
+  A \demph{random variable} is a real-valued function whose domain is a sample
+  space.
+\end{definition}
+
+The value of a random variable is thought of as varying depending on the
+outcome of the experiment.
+
+
+\begin{example}
+  Consider an experiment in which we flip a coin twice. The sample space is
+  consists of four sample points:
+  \begin{equation*}
+    E_{1} = HH, \quad E_{2}= HT, \quad E_{3} = TH, \quad E_{4} = TT
+  \end{equation*}
+  Let $Y$ be the number of heads flipped. So $Y$ can take three values: $0,1$
+  and $2$. These are examples of events:
+  \begin{equation*}
+    \left[ Y=0 \right] = \left\{E_{4}\right\},
+    \quad \left[ Y=1 \right] = \left\{E_{2},E_{3}\right\},
+    \quad \text{and} \quad  \left[ Y=2 \right] = \left\{E_{1}\right\}.    
+  \end{equation*}
+  We can compute the probabilities of these:
+  \begin{equation*}
+    \P\left[Y=0 \right] = \P\left[E_{4} \right] = 1/4.
+  \end{equation*}
+  and
+  \begin{equation*}
+    \P\left[Y=1 \right] = \P\left[E_{2} \right]+ \P\left[E_{3} \right] = 1/4+1/4 = 1/2.
+  \end{equation*}
+\end{example}
+\begin{definition}[Distribution function - section 4.2]
+  Let $X$ be any real-valued random variable. The \demph{(cumulative)
+    distribution function} of $X$ is the function
+  \begin{equation*}
+    F(x) = \P\left[X \leq x\right]
+  \end{equation*}
+  for $-\infty<x<\infty$.
+\end{definition}
+
+A distribution function is a nondecreasing function with $F(-\infty)=0$ and
+$F(+\infty)=1$. For discrete random variables, the distribution function is
+always a step function.
+
+A real-valued random variable $X$ is said to be \demph{continuous} if there
+exists a nonnegative function $f_{X}$ such that
+\begin{equation*}
+  F(x) = \int_{-\infty}^{x}f_{X}(t)dt
+\end{equation*}
+for all $x\in \R$, where $F$ is the distribution function of $X$. The function
+$f_{X}$ is called the \demph{probability density function} of $X$ (this
+usually shortened to ``pdf'' or just ``density'').
+
+The distribution function $F$ of a continuous random variable is always
+continuous (because it is differentiable by the fundamental theorem of
+calculus with derivative $F'(x)=f(x)$, and differentiability implies
+continuity).
+
+\begin{theorem}[Theorem 4.3 in textbook]
+  If a random variable $Y$ has density $f_{Y}$ then
+  \begin{equation*}
+    \P\left[a \leq Y \leq b\right] = \int_{a}^{b}f_{Y}(y)dy 
+  \end{equation*}
+  for all $-\infty \leq a \leq b\leq +\infty$.
+\end{theorem}
+
+If a random variable $Y$ has pdf $f_{Y}$, then its \demph{expectation} is
+$\E\left[ Y\right] = \int y f(y)dy$, where ther integral ranges over the
+support of the function $f$, provided that $\int |y|f(y)dy<\infty$.
+
+If $Y_{1},Y_{2}$ are discrete random variables, the joint probability mass
+function for $Y_{1}$ and $Y_{2}$ is
+\begin{equation*}
+  f(y_{1},y_{2}) = \P\left[Y_{1}=y_{1}, Y_{2}=y_{2} \right]
+\end{equation*}
+for $-\infty<y_{1},y_{2}<+\infty$.
+
+
+\textbf{Add definition 5.2 and 5.3.}
+
+
+\textbf{Add definitions of marginal pdfs and pms}
+
+\begin{definition}
+  Two random variabes $X$ and $Y$ are independent if
+  \begin{equation*}
+    F_{(X,Y)}(x,y) = F_{X}(x)F_{Y}(y)
+  \end{equation*}
+  for all $x,y\in \R$.
+\end{definition}
+Here, $F_{(X,Y)}(x,y) = \P\left[X \leq x, Y \leq y\right]$ and $F_{X}(x) = \P\left[X \leq
+  x\right]$ and $F_{Y}(y) = \P\left[Y \leq y\right]$.
+
+\textbf{Add Theorem 5.4, 5.5 -- important}
+\subsection{Statistics}
+
+Random sample is section 2.12.
+
+
+
+A \demph{population} is a large body of data that is the target of our
+interest. The subset collected from it is our \demph{sample}.
+
+\textit{The objective of statistics to is to make an inference about a population
+  based on information contained in a sample from that population and to provide
+  an associated measure of goodness for the inference.}
+
+\begin{definition}[Point Estimator]
+  A \textbf{point estimator} is any function $W(X_{1},\ldots,X_{n})$ of a
+  sample. Thus, any statistic is a point estimator. In general we refer to an
+  \textit{estimator} as a function of the sample, while an \textit{estimate} is
+  the realized value of an estimator (e.g., a number) that is obtained when a
+  sample is actually taken.
+\end{definition}
+
+
+\begin{definition}[Statistic, Sampling Distribution]
+  \label{def:statistic-sampling-distribution}
+  Let $X_1,\ldots,X_n$ be a random sample of size $n$ from a population and let
+  $T(x_1,\ldots,x_n)$ be a real-valued or vector-valued function whose domain
+  includes the sample space of $(X_1,\ldots,X_n)$. Then the random variable or
+  random vector
+  \begin{equation*}
+    Y\triangleq T(X_1,\ldots,X_n)
+  \end{equation*}
+  is called a \textbf{statistic}. The probability distribution of a statistic
+  $Y$ is called the \textbf{sampling distribution} of $Y$.
+\end{definition}
+\begin{definition}[Sample Mean, Sample Variance]
+  The \textbf{sample mean} is the statistic defined by
+  \begin{equation*}
+    \overline{X} \triangleq \frac{1}{n}\sum_{i=1}^{n}X_{i},
+  \end{equation*}
+  and the \textbf{sample variance} is the statistic defined by
+  \begin{equation*}
+    S^{2} \triangleq \frac{1}{n-1} \sum_{i=1}^{n} (X_{i}-\overline{X})^{2}.
+  \end{equation*}
+\end{definition}
+
+
+Chebychev's theorem
+\begin{theorem}[Chebychev's theorem]
+  \label{thm:chebychevs-theorem}
+  Let $Y$ be a random variable with mean $\mu$ and finite variance
+  $\sigma^{2}$. Then for any constant $c$,
+  \begin{equation*}
+    \P\left[|Y-\mu| \geq k\sigma\right] \leq \frac{1}{k^{2}}
+  \end{equation*}
+\end{theorem}
+Law of large numbers
+
+
+\end{document}
