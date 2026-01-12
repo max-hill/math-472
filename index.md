@@ -19,7 +19,7 @@ title: Lecture Notes
 2026-01-12  | 1   | What is probability?
  
 
-# other links
+# Other Links
 
 [Course syllabus](/syllabus/syllabus.pdf)
 
