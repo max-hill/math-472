@@ -20,7 +20,21 @@
 \usetikzlibrary{arrows,matrix,positioning}
 \usepackage{multicol}
 
+\usepackage{listings}
+\usepackage{xcolor}
 
+\lstset{
+  language=R,
+  basicstyle=\ttfamily\footnotesize,
+  keywordstyle=\color{blue},
+  commentstyle=\color{gray},
+  stringstyle=\color{red!70!black},
+  framesep=2pt,
+  framexleftmargin=0pt, 
+  frame=single,
+  breaklines=false,
+  showstringspaces=false
+}
 % for the pipe symbol
 \usepackage[T1]{fontenc}
 
@@ -134,7 +148,7 @@
 \def\purple{\color{Purple}}
 \definecolor{RoyalBlue}{cmyk}{1, 0.50, 0, 0}
 \newcommand{\dempfcolor}[1]{{\color{RoyalBlue}#1}} 
-\newcommand{\demph}[1]{\dempfcolor{{\sl #1}}}
+\newcommand{\demph}[1]{\textcolor{RoyalBlue}{\textbf{\slshape #1}}} % Slanted
 
 \usepackage{emoji}
 % comment exactly one of the following line to show / hide the solutions
@@ -150,7 +164,7 @@
 \begin{document}
 \begin{center}
   \section*{Math 472: Homework 01} %
-  \textit{Due Wednesday, September 10 (at the beginning of class)}
+  \textit{Due Wednesday, Jan 21}
 \end{center}
 
 
@@ -159,22 +173,50 @@
   \begin{enumerate}[(a)]
     \item Install the statistical software \texttt{R}, available at the \url{https://cran.rstudio.com/}
     \item Install \texttt{RStudio Desktop}, available at
-    \url{https://posit.co/download/rstudio-desktop/}
+    \url{https://posit.co/download/rstudio-desktop/}. (If you already know
+    \textrm{R} with a different IDE, you can skip this.)
     \item Do the \texttt{R} tutorial
-    \item DO \url{https://swcarpentry.github.io/shell-novice/} or
-    \url{https://carpentries-incubator.github.io/git-novice-branch-pr/} or \url{https://cecileane.github.io/computingtools/pages/notes0922-markdown.html}
-    \item Write an R function to generate and plot a 1 dimensional brownian motion
+    % \item DO \url{https://swcarpentry.github.io/shell-novice/} or
+    % \url{https://carpentries-incubator.github.io/git-novice-branch-pr/} or \url{https://cecileane.github.io/computingtools/pages/notes0922-markdown.html}
+    % \item Write an R function to generate and plot a 1 dimensional brownian motion
   \end{enumerate}
 \end{problem}
 
 
-\begin{remark}
-  The next problem is intended to introduce/review some central concepts in
-  probability. For the remainder of this course, any terms defined using
-  \demph{this format} are precise definitions and should be memorized (they
-  are fair game for in-class quizzes) Any terms that \textbf{are bolded} are
-  important and should be reviewed if you are not familiar with them.
-\end{remark}
+\Fl{Remark:} The problems in this homework are intended to either introduce you
+to \texttt{R} or introduce/review some central concepts in probability that we
+will need throughout this course. For the remainder of this course, any terms
+defined using \demph{this format} are precise definitions and should be
+memorized (they are fair game for in-class quizzes). Text in \textbf{bold}
+should be reviewed if you are not familiar with it.
+
+\begin{problem}[Exercise 1.2 in the textbook]
+  Are some cities more windy than others? Does Chicago deserve to be nicknamed
+  `The Windy City'? Given below are the average wind speeds (in miles per
+  hour) for 45 selected U.S. cities:
+
+  
+  \begin{equation*}
+    \begin{array}{ccccccccc}
+      8.9 & 7.1 & 9.1 & 8.8 & 10.2 & 12.4 & 11.8 & 10.9 & 12.7 \\
+      10.3 & 8.6 & 10.7 & 10.3 & 8.4 & 7.7 & 11.3 & 7.6 & 9.6 \\
+      7.8 & 10.6 & 9.2 & 9.1 & 7.8 & 5.7 & 8.3 & 8.8 & 9.2 \\
+      11.5 & 10.5 & 8.8 & 35.1 & 8.2 & 9.3 & 10.5 & 9.5 & 6.2 \\
+      9.0 & 7.9 & 9.6 & 8.8 & 7.0 & 8.7 & 8.8 & 8.9 & 9.4
+    \end{array}
+  \end{equation*}
+  \begin{enumerate}[(a)]
+    \item Use \textrm{R} to construct a relative frequency histogram for these
+    data. (Play around with the number of breaks and find one that is
+    reasonable).
+    \item The value 35.1 was recorded at Mt. Washington, New Hampshire. Does
+    the geography of that city explain the magnitude of its average wind
+    speed?
+    \item The average wind speed for Chicago is 10.3 miles per hour. What
+    percentage of the cities have average wind speeds in excess of Chicago's?
+    \item Do you think that Chicago is unusually windy?
+  \end{enumerate}
+\end{problem}
 
 \begin{problem}
   An urn contains 5 balls, three red balls and two blue balls:
@@ -209,7 +251,7 @@
     Given an event $E$, the \demph{indicator function of $E$} is the function
     \begin{equation*}
       \mathbf{1}_{E} = \left\{ \begin{array}{l@{\quad:\quad}l} 1 & \text{the event }E
-          \text{ occurs}\\ 0& \text{the event }E \text{ does not occur} \end{array}\right.
+          \text{ occurs}\\ 0& \text{the event }E \text{ does not occur.} \end{array}\right.
     \end{equation*}
     Indicator functions are random variables. Taking $E=R_{k}$, we have
     \begin{equation*}
@@ -234,7 +276,7 @@
     \begin{equation*}
       \E\left[X \right]:= \sum_{x\in S_{X}}x \P\left[X=x \right],
     \end{equation*}
-    provided that this sum converges absolutely.
+    \textit{provided that this sum converges absolutely}.
 
     
     Using the above definition of expectation, prove that
@@ -251,7 +293,7 @@
     variables, and $a,b$ are scalars, then
     $\E\left[X+Y \right]= \E\left[X \right]+ \E\left[Y \right]$, and
     $\E\left[aX+b \right]=a \E\left[X \right]+b$. Use the linearity of
-    expectations and \cref{eq:1} to compute the expected proportion of red
+    expectation and \cref{eq:1} to compute the expected proportion of red
     balls in 3 draws. \textit{(Note: if you've done all parts of this problem
       correct, you'll get 3/5.)}
     
@@ -259,33 +301,6 @@
 \end{problem}
 
 
-\begin{problem}[Exercise 1.2 in the textbook]
-  Are some cities more windy than others? Does Chicago deserve to be nicknamed
-  `The Windy City'? Given below are the average wind speeds (in miles per
-  hour) for 45 selected U.S. cities:
-
-  
-  \begin{equation*}
-    \begin{array}{ccccccccc}
-      8.9 & 7.1 & 9.1 & 8.8 & 10.2 & 12.4 & 11.8 & 10.9 & 12.7 \\
-      10.3 & 8.6 & 10.7 & 10.3 & 8.4 & 7.7 & 11.3 & 7.6 & 9.6 \\
-      7.8 & 10.6 & 9.2 & 9.1 & 7.8 & 5.7 & 8.3 & 8.8 & 9.2 \\
-      11.5 & 10.5 & 8.8 & 35.1 & 8.2 & 9.3 & 10.5 & 9.5 & 6.2 \\
-      9.0 & 7.9 & 9.6 & 8.8 & 7.0 & 8.7 & 8.8 & 8.9 & 9.4
-    \end{array}
-  \end{equation*}
-  \begin{enumerate}[(a)]
-    \item Use \textrm{R} to construct a relative frequency histogram for these
-    data. (Play around with the number of breaks and find one that is
-    reasonable).
-    \item The value 35.1 was recorded at Mt. Washington, New Hampshire. Does
-    the geography of that city explain the magnitude of its average wind
-    speed?
-    \item The average wind speed for Chicago is 10.3 miles per hour. What
-    percentage of the cities have average wind speeds in excess of Chicago's?
-    \item Do you think that Chicago is unusually windy?
-  \end{enumerate}
-\end{problem}
 
 \begin{problem}[Exercise 1.9 in the textbook]
   Resting breathing rates for college-age students are approximately normally distributed with
@@ -322,40 +337,137 @@
   Verify that $P$ is a probability measure on $2^{\R}$.
 \end{problem}
 
-\begin{problem}
-  A discrete random variable $X$ is said to be \demph{binomially distributed}
-  with parameters $n$ (\demph{number of trials}) and $p$ (the \demph{success
-    probability}) if it has probability mass fucntion
+\begin{problem}[The Law of Rare Events]
+  A random variable $Y$ is said to have a \demph{Poisson probability
+    distribution} with parameter $\lambda>0$, written
+  $Y\sim \text{Pois}(\lambda)$ if its probability mass function is
   \begin{equation*}
-    f_{X}(k) = {n\choose k} p^{k}(1-p)^{n-k}
+    \P\left[Y=y \right] = \frac{\lambda^{y}}{y!}e^{-y}, \quad y \in  \left\{0,1,2,\ldots\right\}.
   \end{equation*}
-  for $k\in \left\{0,1,2,\ldots,n\right\}.$
-  Fix $\lambda>0$. Suppose that $p=\lambda/n$. Show that
+  A random variable $X$ is said to be \demph{binomially distributed}, written
+  $X\sim \text{Bin}(n,p)$, with parameters $n$ (called the ``size'' or
+  ``number of trials'') and $p$ (the ``success probability'') if its
+  probability mass function is
   \begin{equation*}
-    \lim_{n\to\infty} f_{X}(k) = \frac{\lambda^{k}}{k!}e^{-\lambda}
+    \P\left[X=x \right] = {n\choose x} p^{x}(1-p)^{n-x}, \quad x\in \left\{0,1,2,\ldots,n\right\}.
   \end{equation*}
-  This shows that, in some sense, the Poisson distribution is the limit of the
-  binomial distribution.
+  \textit{[These are two important distributions; see Sections 3.4 and 3.8 in
+    the textbook for good discussions of both.]} In this problem, we'll show how
+  to approximate a binomial distribution with a Poisson distribution. (This
+  approximation is sometimes called \textit{The Law of Rare Events}).
+
+  \begin{enumerate}[(a)]
+    \item \label{item:3} Show that for any $x\in \R$,
+    \begin{equation*}
+      \lim_{n\to\infty} \left( 1+\frac{x}{n} \right)^{n} = e^{x}.
+    \end{equation*}
+    \item \label{item:4} For fixed $\lambda>0$ and
+    $k\in \left\{0,1,2,\ldots\right\}$, show that
+    \begin{equation*}
+      \lim_{n\to\infty} {n\choose k} \left( \frac{\lambda}{n} \right)^{k} = \frac{\lambda^{k}}{k!}.
+    \end{equation*}
+    \item \label{item:5} Fix $\lambda>0$ and $k\in \left\{0,1,2,\ldots\right\}$. Assume that
+    $p=\lambda/n$ (which is getting smaller as $n \to \infty$). Use parts
+    \ref{item:3} and \ref{item:4} to show that
+    \begin{equation*}
+      \P\left[Y=k \right] = \lim_{n\to\infty} \P\left[X=k \right]
+    \end{equation*}
+    \item Part \ref{item:5} shows that if $n$ is large and $p$ is small (and
+    $\lambda=np$ isn't too big), then a random variable $X\sim
+    \text{Bin}(n,p)$ is well-approximated by the distribution Pois$(np)$.
+
+    In the popular role-playing game \textit{Dungeons \& Dragons}, a 20-sided
+    dice is commonly rolled. When a `1' is rolled on the dice, that's called
+    \textit{critical failure}, which usually results in something terrible
+    happening. Suppose that in the course of a game, a 20-sided dice is rolled
+    $n=100$ times. Let $X$ be the number of critical failures during the game.
+    The probability of a critical failure is $p = 1/20 = .05$, so
+  \begin{equation*}
+    X\sim \text{Bin}(100,.05).
+  \end{equation*}
+  \begin{enumerate}
+    \item Suppose we wish to approximate $X$ with a
+    $Y\sim \text{Pois}(\lambda)$. What would be a good value of $\lambda$?
+    \item Using the \texttt{R} functions \texttt{rpois()} and \texttt{rbinom()},
+    generate $100,000$ samples from the distributions of $X$ and $Y$, which
+    you should save as vectors \texttt{X_samples} and \texttt{Y_samples} respectively.
+    Then use the following code to plot two overlapping histograms:
+    \begin{lstlisting}[resetmargins=false]
+      hist(X_samples, probability=TRUE, breaks=20, col=rgb(1,0,0,0.4), border="red",
+           main="Critical Failures: Binomial (X) vs Poisson (Y)",
+           xlab="Number of critical failures in 100 rolls", xlim = c(0,20))
+           
+      hist(Y_samples, probability=TRUE, breaks=20, col=rgb(0,0,1,0.4), border="blue",
+           add=TRUE)
+
+      legend("topright", legend = c("approx. distribution of X",
+             "approx. distribution of Y"), fill=c(rgb(1,0,0,0.4), rgb(0,0,1,0.4)))
+    \end{lstlisting}
+    \item Using your Poisson approximation, what is the approximate probability
+    of 2 or fewer critical failures during the course of the game?
+  \end{enumerate}
+  \end{enumerate}
 \end{problem}
 
-\begin{problem}
+
+\begin{problem}[This is like Example 2.1 in the textbook]
+  A drone manufacturer has six seemingly-identical drones available for
+  shipping. Unknown to her, two of the six have defective optics. A particular
+  order calls for two drones and is filled by randomly selecting two of the six
+  that are available.
   \begin{enumerate}[(a)]
-    Let $x\in \R$ be arbitrary.
-    \item Prove that 
-    \begin{equation*}
-      \lim_{n\to\infty} \left( 1+ \frac{x}{n} \right)^{n} = e^{x} 
-    \end{equation*}
-    \item Suppose that $(x_{n})$ is a sequence converging to $x$. Prove that
-    \begin{equation*}
-      \lim_{n\to\infty} \left( 1+\frac{x_{n}}{n} \right)^{n}=e^{x}. 
-    \end{equation*}
+    \item Label four good drones by $G_{1},G_{2},G_{3},G_{4}$ and the two
+    defective drones by $B_{1}$ and $B_{2}$. List the sample space for this
+    experiment.
+    \item Let $A$ denote the event that the order is filled with two
+    non-defective drones. List the sample points in $A$.
+    \item Assign probabilities to each of the simple events in such a way that
+    the information about the experiment is used (and such that the probability
+    measure axioms are met).
+    \item Find the probability of $A$.
+    \item The following \texttt{R} code
+    \begin{lstlisting}
+      drones = c(1,1,1,1,0,0)
+      sum(sample(drones,2,replace=FALSE))==2
+    \end{lstlisting}
+    represents the drones as 1's (nondefective) and 0's (defective), samples 2
+    of them without replacement, and returns TRUE iff both drones are
+    nondefective.
+
+    Use the \texttt{R} function \texttt{replicate()} to repeat this experiment
+    10,000 times and use your result to estimate the probability of $A$.
+
   \end{enumerate}
 \end{problem}
 
 \begin{problem}
-  Prove that if $P(\cdot)$ is a probability function and that $B$ is an event
-  with $P(B)>0$, then the function $P(\cdot \mid B)$ is also a probability
-  function.
+  Prove proposition 2 in the lecture notes.
+  
+  \textit{If you get stuck, you can find this proof in my old math 372 lecture
+    notes (Week 2, Class 4, available on the course website).}
+\end{problem}
+% \begin{problem}
+%   \begin{enumerate}[(a)]
+%     Let $x\in \R$ be arbitrary.
+%     \item Prove that 
+%     \begin{equation*}
+%       \lim_{n\to\infty} \left( 1+ \frac{x}{n} \right)^{n} = e^{x} 
+%     \end{equation*}
+%     \item Suppose that $(x_{n})$ is a sequence converging to $x$. Prove that
+%     \begin{equation*}
+%       \lim_{n\to\infty} \left( 1+\frac{x_{n}}{n} \right)^{n}=e^{x}. 
+%     \end{equation*}
+%   \end{enumerate}
+% \end{problem}
+
+
+\begin{problem}
+  Let $\P$ be a probability measure and let $B$ be an event with
+  $\P\left[B \right]>0$. Define the function $\P'$ by
+  \begin{equation*}
+    \P'\left[A \right]:= \P\left[A\mid B \right]
+  \end{equation*}
+  for every event $A$. Prove that $\P'$ is a probability measure.
 \end{problem}
 
 \begin{problem}
@@ -378,8 +490,60 @@
   \end{equation*}
   \begin{enumerate}[(a)]
     \item Show that $f_{X}$ is a probability density function.
-    \item Show that $E|X|=+\infty$.
+    \item  Show that $\E\left[X \right]$ is not defined by showing that
+    $E|X|=+\infty$.
   \end{enumerate}
 \end{problem}
 
+\begin{problem}[Exercise 2.86 in the textbook]
+  Suppose that $A$ and $B$ are two events such that $\P\left[A \right]=.8$
+  and $\P\left[B \right]=.7$.
+  \begin{enumerate}[(a)]
+    \item Is it possible that $\P\left[A\cap B \right]= .1$? Why or why not?
+    \item What is the smallest possible value for $\P\left[A\cap B \right]$?
+    \item Is it possible that $\P\left[A\cap B \right]=.77$? Why or why not?
+    \item What is the largest possible value for $\P\left[A\cap B \right]$?
+\end{enumerate}
+\end{problem}
+
+\begin{problem}[Exercise 2.73 in the textbook]
+  Gregor Mendel was a monk who, in 1865, suggested a theory of inheritance based
+  on the science of genetics. He identiﬁed heterozygous individuals for ﬂower
+  color that had two alleles (one r = recessive white color allele and one R =
+  dominant red color allele). When these individuals were mated, 3/4 of the
+  offspring were observed to have red ﬂowers, and 1/4 had white ﬂowers. The
+  following table summarizes this mating; each parent gives one of its alleles
+  to form the gene of the offspring.
+ 
+  \begin{equation*}
+    \begin{array}{c|cc}
+      & \multicolumn{2}{c}{\textbf{Parent 1}} \\[-0.5ex]
+      \textbf{Parent 2} & r & R \\ \hline
+      r & rr & rR \\
+      R & rR & RR
+    \end{array}    
+  \end{equation*}
+  We assume that each parent is equally likely to give either of the two
+  alleles. We also assume that if either one or two of the alleles in a pair is
+  dominant (R), the offspring will have red ﬂowers. What is the probability that
+  an offspring has
+  \begin{enumerate}[(a)]
+    \item at least one dominant allele?
+    \item at least one recessive allele?
+    \item one recessive allele, given that the offspring has red ﬂowers?
+  \end{enumerate}
+\end{problem}
+
+
+\begin{problem}
+  A \demph{median} of a distribution is a value $m$ such that $\P\left[X \leq
+    m\right] \geq \frac{1}{2}$ and $\P\left[X \geq m\right] \geq \frac{1}{2}$.
+  (If $X$ is continuous, $m$ satisfies $\int_{-\infty}^{m}f(x)dx =
+  \int_{m}^{\infty}f(x)dx=\frac{1}{2}$, where $f$ is the pdf of $X$.) Find the
+  median of the following distributions
+  \begin{enumerate}[(a)]
+    \item $f(x)=3x^{2},\ 0<x<1$
+    \item $f(x)= \frac{1}{\pi} \frac{1}{1+x^{2}},\ x\in \R$.
+  \end{enumerate}
+\end{problem}
 \end{document}

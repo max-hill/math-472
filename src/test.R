@@ -64,8 +64,8 @@ exp(3) # e³
 # a 'population' in stats jargon).
 population = 1:6 # this is the set {1,2,3,4,5,6}. This is the 'population' we
                  # will sample from.
-n = 40 # sample size
-X = sample(population,n,replace=TRUE)
+n <- 40 # sample size
+X <- sample(population,n,replace=TRUE)
 # COMMENTARY: the above code samples n random numbers independently according
 # to the unform distribution on the set {1,2,...,6}, which we've called the
 # 'population'. The tag replace=TRUE tells us that we are sampling 'with
@@ -75,7 +75,7 @@ X = sample(population,n,replace=TRUE)
 # the sample() function allows us to choose any finite set as our population.
 # For example, our population might consist of an urn with 3 red balls and 2
 # blue balls:
-urn = c("red","red","red","blue","blue")
+urn <- c("red","red","red","blue","blue")
 
 sample(urn,3,replace=TRUE) 
 # COMMENTARY: the above line of code draws three balls out of the urn, putting
@@ -90,14 +90,14 @@ sample(urn,3,replace=FALSE)
 # Let's say we want to know what proportion of draws will be red balls. We'll
 # use the command '==', which allows comparison of values in vectors. For
 # example, the line
-draw = sample(urn,3,replace=TRUE)
+draw <- sample(urn,3,replace=TRUE)
 draw
 draw=="red"
 
 # The above line returns a vector of Boolean values (TRUE or FALSE) depending
 # on whether the draws are red or not. We can save this last vector as b (for
 # boolean):
-b = draw=="red"
+b <- draw=="red"
 b
 # R treats TRUE and FALSE as 1 and zero, so we can count the number of balls
 # that were red with the command
