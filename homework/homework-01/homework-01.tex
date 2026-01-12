@@ -164,7 +164,7 @@
 \begin{document}
 \begin{center}
   \section*{Math 472: Homework 01} %
-  \textit{Due Wednesday, Jan 21}
+  \textit{Due Friday, Jan 23}
 \end{center}
 
 \Fl{Remark:} The problems in this homework are intended to either introduce you
@@ -337,6 +337,7 @@ familiar with it.
 
 
 \begin{problem}[The Law of Rare Events]
+  \label{problem:law-rare-events}
   A random variable $Y$ is said to have a \demph{Poisson probability
     distribution} with parameter $\lambda>0$, written
   $Y\sim \text{Pois}(\lambda)$ if its probability mass function is
@@ -352,8 +353,8 @@ familiar with it.
   \end{equation*}
   \textit{[These are two important distributions; see Sections 3.4 and 3.8 in
     the textbook for good discussions of both.]} In this problem, we'll show how
-  to approximate a binomial distribution with a Poisson distribution. (This
-  approximation is sometimes called \textit{The Law of Rare Events}).
+  to approximate a binomial distribution with a Poisson distribution, an
+  approximation which is sometimes called ``The Law of Rare Events''.
 
   \begin{enumerate}[(a)]
     \item \label{item:3} Show that for any $x\in \R$,
@@ -371,21 +372,25 @@ familiar with it.
     \begin{equation*}
       \P\left[Y=k \right] = \lim_{n\to\infty} \P\left[X=k \right]
     \end{equation*}
-    \item In part \ref{item:5} you showed that if $n$ is large and $p$ is small
-    (and $\lambda=np$ isn't too big), then a random variable
-    $X\sim \text{Bin}(n,p)$ is well-approximated by the distribution Pois$(np)$.
-    Let's apply this approximation to a real-world problem!
+  \end{enumerate}
+\end{problem}
 
-    In the popular role-playing game \textit{Dungeons \& Dragons}, a 20-sided
-    dice is commonly rolled. When a `1' is rolled on the dice, that's called
-    \textit{critical failure}, which usually results in something terrible
-    happening. Suppose that in the course of a game, a 20-sided dice is rolled
-    $n=100$ times. Let $X$ be the number of critical failures during the game.
-    The probability of a critical failure is $p = 1/20 = .05$, so
+\begin{problem}
+  In \cref{problem:law-rare-events} part \ref{item:5}, you showed that if $n$ is
+  large and $p$ is small (and $\lambda=np$ isn't too big), then a random
+  variable $X\sim \text{Bin}(n,p)$ is well-approximated by the distribution
+  Pois$(np)$. Let's apply this approximation to a real-world problem!
+
+  In the popular role-playing game \textit{Dungeons \& Dragons}, a 20-sided
+  dice is commonly rolled. When a `1' is rolled on the dice, that's called
+  \textit{critical failure}, which usually results in something terrible
+  happening. Suppose that in the course of a game, a 20-sided dice is rolled
+  $n=100$ times. Let $X$ be the number of critical failures during the game.
+  The probability of a critical failure is $p = 1/20 = .05$, so
   \begin{equation*}
     X\sim \text{Bin}(100,.05).
   \end{equation*}
-  \begin{enumerate}[(i)]
+  \begin{enumerate}[(a)]
     \item Suppose we wish to approximate $X$ with a
     $Y\sim \text{Pois}(\lambda)$. What would be a good value of $\lambda$?
     \item Using the \texttt{R} functions \texttt{rpois()} and \texttt{rbinom()},
@@ -394,21 +399,20 @@ familiar with it.
     Then use the following code to plot two overlapping histograms:
     \begin{lstlisting}[resetmargins=false]
       hist(X_samples, probability=TRUE, breaks=20, col=rgb(1,0,0,0.4), border="red",
-           main="Critical Failures: Binomial (X) vs Poisson (Y)",
-           xlab="Number of critical failures in 100 rolls", xlim = c(0,20))
-           
+      main="Critical Failures: Binomial (X) vs Poisson (Y)",
+      xlab="Number of critical failures in 100 rolls", xlim = c(0,20))
+      
       hist(Y_samples, probability=TRUE, breaks=20, col=rgb(0,0,1,0.4), border="blue",
-           add=TRUE)
+      add=TRUE)
 
       legend("topright", legend = c("approx. distribution of X",
-             "approx. distribution of Y"), fill=c(rgb(1,0,0,0.4), rgb(0,0,1,0.4)))
+      "approx. distribution of Y"), fill=c(rgb(1,0,0,0.4), rgb(0,0,1,0.4)))
     \end{lstlisting}
     \item Using your Poisson approximation, what is the approximate probability
     of 2 or fewer critical failures during the course of the game?
   \end{enumerate}
-  \end{enumerate}
-\end{problem}
 
+\end{problem}
 
 
 % \begin{problem}
