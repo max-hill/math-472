@@ -326,7 +326,7 @@ notions of probability. This is based on section 2.4 in the textbook.
     \item The empty set $\emptyset$ and the whole sample space $S$ are always
     both events: $\emptyset$ is the event ``nothing happens'' and $S$ is the
     event ``something happens''.
-    \item Events satisfy a the properties of a boolean algebra:
+    \item Events satisfy the properties of a boolean algebra:
     \begin{itemize}
       \item \textbf{``And'':} If $E$ and $F$ are events, then $E\cap F$ is the
       event that $E$ and $F$ occur.
@@ -371,7 +371,7 @@ notions of probability. This is based on section 2.4 in the textbook.
 
 The above definition only tells us the conditions an assignment of
 probabilities must satisfy; it doesn't tell us how to assign specific
-propbabilities to events.
+propabilities to events.
 
 Probability measures satisfy some basic properties:
 
@@ -379,7 +379,6 @@ Probability measures satisfy some basic properties:
   \label{prop:some-deductions-from-axioms}
   If $\P$ is a probability measure, then the following properties hold:
   \begin{enumerate}[label=\rm{(\roman*.)}]
-    \item []
     \item (The null event has probability zero) \label{item:empty-set-has-prob-zero}
     $\P\left[\emptyset \right] = 0$.
     \item (Finite additivity) \label{item:finite-additivity} Let $\left\{E_{1},\ldots,E_{n}\right\}$ be a
@@ -400,6 +399,13 @@ Probability measures satisfy some basic properties:
 \end{proposition}
 
 \section{2026-01-15 | Week 01 | Lecture 02}
+\begin{center}
+  \begin{tcolorbox}[width=0.9\textwidth, colback=white, colframe=black]
+    \textit{\textbf{The nexus question of this lecture:} What is a
+      probability?}
+  \end{tcolorbox}
+\end{center}
+
 \subsection{Conditional probabilities and independence}
 \begin{definition}[Independence]
   \label{def:independence}
@@ -522,6 +528,24 @@ function for $Y_{1}$ and $Y_{2}$ is
 \end{equation*}
 for $-\infty<y_{1},y_{2}<+\infty$.
 
+
+\begin{theorem}[Law of the unconscious statistician]
+  \label{thm:law-unconscious-statistician}
+  Let $X$ be a real-valued random variable and $g:\R \to \R$ is a (measurable)
+  function.
+  \begin{enumerate}
+    \item If $X$ has pdf $f_{X}$, then
+    \begin{equation*}
+      \E\left[g(X) \right] = \int_{-\infty}^{\infty}g(x)f_{X}(x)dx.
+    \end{equation*}
+    \item If $X$ has pmf $p_{X}$, then
+    \begin{equation*}
+      \E\left[g(X) \right]= \sum_{x} g(x)p_{X}(x)
+    \end{equation*}
+    where the sum runs over all $x$ in the support of $X$.
+  \end{enumerate}
+  
+\end{theorem}
 
 \textbf{Add definition 5.2 and 5.3.}
 
