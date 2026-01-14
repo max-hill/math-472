@@ -398,15 +398,17 @@ Probability measures satisfy some basic properties:
   \end{enumerate}
 \end{proposition}
 
-\section{2026-01-15 | Week 01 | Lecture 02}
+\section{2026-01-14 | Week 01 | Lecture 02}
 \begin{center}
   \begin{tcolorbox}[width=0.9\textwidth, colback=white, colframe=black]
-    \textit{\textbf{The nexus question of this lecture:} What is a
-      probability?}
+    \textit{\textbf{The topic of this lecture:} independent events, conditional
+      probabilities, random variables}
   \end{tcolorbox}
 \end{center}
 
-\subsection{Conditional probabilities and independence}
+\subsection{Independent events and conditional probabilities}
+\textit{This section is based on section 2.7 in the textbook.}
+
 \begin{definition}[Independence]
   \label{def:independence}
   Two events $A$ and $B$ are said to be \demph{independent} if $\P\left[A\cap
@@ -419,150 +421,372 @@ Probability measures satisfy some basic properties:
   \demph{conditional probability of $A$, given $B$}, denoted
   $\P\left[A\mid B \right]$, is given by the formula
   \begin{equation*}
-    \P\left[A\mid B \right] := \frac{\P\left[A\cap B \right]}{\P\left[B \right]}.
+    \P\left[A\mid B \right] = \frac{\P\left[A\cap B \right]}{\P\left[B \right]}.
   \end{equation*}
 \end{definition}
-(Intuitively, $\P\left[A\mid B \right]$ is the probability of $A$ when we know
-that event $B$ happened.)
+
+\fl{Interpretation:} $\P\left[A\mid B \right]$ is the probability of $A$ when
+we know that event $B$ happened.
+
+\begin{definition}
+  \label{def:positive-relationship}
+  We say that there exists a \demph{positive relationship} between events $A$
+  and $B$ if
+  \begin{equation*}
+    \P\left[A\mid B \right]> \P\left[A \right],
+  \end{equation*}
+  and a \demph{negative relationship} if
+  \begin{equation*}
+    \P\left[A\mid B \right]< \P\left[A \right].
+  \end{equation*}
+\end{definition}
+
+\begin{remark}
+  Note the the conditions of \cref{def:positive-relationship} are symmetric in
+  the sense that
+  \begin{equation*}
+    \P\left[A\mid B \right]> \P\left[A \right] \iff \P\left[B\mid A \right]>
+    \P\left[B \right],
+  \end{equation*}
+  provided that both $A$ and $B$ have positive probability.
+\end{remark}
 
 \begin{example}
-  Roll a dice. Let $B$ be the event that an odd number was observed, and $A$
-  the event that a `1' was rolled.
+  Roll a 6-sided dice. Let $A$ be the event that a `2' was rolled, and $B$ be
+  the event that an even number was observed.
 
   \begin{itemize}
-    \item The unconditional probability: $\P\left[A
-    \right]=1/6$.
-    \item The conditional probability: $\P\left[A\mid B \right] = 1/3$
+    \item The unconditional probability: $\P\left[A \right]=1/6$.
+    \item The conditional probability: $\P\left[A\mid B \right] = 1/3$.
   \end{itemize}
+  Since $\frac{1}{3}>\frac{1}{6}$, we conclude there is a positive
+  relationship between rolling a `2' and rolling an even number.
 \end{example}
+
+The notion of independence formalizes the idea of ``no relationship''.
+
 \begin{proposition}
-  If $A,B$ are independent events with positive probabilities, then
-  \begin{equation*}
-    \P\left[A\mid B \right] = \P\left[A \right]
-    \quad \text{and} \quad
-    \P\left[B\mid A \right] = \P\left[B \right]
-  \end{equation*}
+  \label{prop:independence-interpretation}
+  If $A,B$ are events with positive probabilities then the following are
+  equivalent:
+  \begin{enumerate}[label=\rm{(\roman*.)}]
+    \item $A$ and $B$ are independent.
+    \item $\P\left[A\mid B \right] = \P\left[A \right]$
+    and $\P\left[B\mid A \right] = \P\left[B \right]$.
+  \end{enumerate}
 \end{proposition}
-This proposition provides the basis for the following intuition about
-independence: the occurance of one of the events is unaffected by the
-occurrence or nonoccurence of the other.
+In words, independence means that the probabilities of each event are
+unaffected by whether or not the other event occurs.
+\cref{prop:independence-interpretation} simply formalizes this idea using
+conditional probabilities.
+
 
 \subsection{Random variables}
-\textit{Section 2.11}
+\textit{Based on Sections 2.11, 4.2 in the textbook}
 
 
 \begin{definition}[Random variable]
-  A \demph{random variable} is a real-valued function whose domain is a sample
+  A \demph{random variable} (or \demph{rv}) is a real-valued function whose domain is a sample
   space.
 \end{definition}
 
 The value of a random variable is thought of as varying depending on the
-outcome of the experiment.
+outcome of the experiment (the sample point). Random variables are usually
+denoted with capital letters, like $X,Y,Z$.
 
+\begin{example}[Sum 2d4]
+  \label{ex:sum-2d4}
+  Roll a 4-sided dice twice (this is the \textit{experiment}). There are 16 possible
+  \textit{outcomes}. The \textit{sample space} is
+  \begin{equation*}
+    S = \left\{(x,y): x,y\in \left\{1,2,3,4\right\} \right\}.
+  \end{equation*}
+  Let $X$ be the sum of the two rolls. We can represent $X$ by the following table:
+  \begin{equation*}
+    \begin{array}{c@{\quad}c|cccc} & \multicolumn{5}{c}{\text{Dice 2}} \\ & &
+      1 & 2 & 3 & 4 \\ \cline{2-6}  & 1 & 2 & 3 & 4 & 5 \\ \text{Dice 1} & 2 & 3 & 4 & 5 & 6 \\ & 3 & 4 & 5 & 6 & 7 \\ & 4 & 5 & 6 & 7 & 8 \end{array}
+  \end{equation*}
+  \textit{Events} are often defined using preimages of random variables. For
+  example, the event that $X=6$ is:
+  \begin{align*}
+    [X=6] 
+    &= \left\{\omega\in S: X(\omega) = 6\right\} \\
+    &= \left\{(1,5), (2,4), (3,3), (4,2), (5,1)\right\}.
+  \end{align*}
+  The textbook uses the notation $\left\{X=6\right\}$ instead of
+  $\left[ X=6 \right]$.
 
-\begin{example}
-  Consider an experiment in which we flip a coin twice. The sample space is
-  consists of four sample points:
-  \begin{equation*}
-    E_{1} = HH, \quad E_{2}= HT, \quad E_{3} = TH, \quad E_{4} = TT
-  \end{equation*}
-  Let $Y$ be the number of heads flipped. So $Y$ can take three values: $0,1$
-  and $2$. These are examples of events:
-  \begin{equation*}
-    \left[ Y=0 \right] = \left\{E_{4}\right\},
-    \quad \left[ Y=1 \right] = \left\{E_{2},E_{3}\right\},
-    \quad \text{and} \quad  \left[ Y=2 \right] = \left\{E_{1}\right\}.    
-  \end{equation*}
-  We can compute the probabilities of these:
-  \begin{equation*}
-    \P\left[Y=0 \right] = \P\left[E_{4} \right] = 1/4.
-  \end{equation*}
-  and
-  \begin{equation*}
-    \P\left[Y=1 \right] = \P\left[E_{2} \right]+ \P\left[E_{3} \right] = 1/4+1/4 = 1/2.
-  \end{equation*}
+  Here's another example of an event. Let $E = \left\{2,4,6,8\right\}$. Then
+  \begin{align*}
+    \left[ X \text{ is even} \right]
+    &= \left[ X \in E \right]\\
+    &= \left\{\omega\in S: X(\omega) \in E \right\} \\
+    &= \left\{(1,1), (1,3), (2,2), (2,4), (3,1), (3,3), (4,2), (4,4) \right\}.
+  \end{align*}
+
+  When writing random variables, we usually suppress the arguments, e.g.,
+  writing $X$ rather than $X(\omega)$.
 \end{example}
-\begin{definition}[Distribution function - section 4.2]
-  Let $X$ be any real-valued random variable. The \demph{(cumulative)
-    distribution function} of $X$ is the function
-  \begin{equation*}
-    F(x) = \P\left[X \leq x\right]
-  \end{equation*}
-  for $-\infty<x<\infty$.
+% \begin{example}
+%   Consider an experiment in which we flip a coin twice. The sample space is
+%   consists of four sample points:
+%   \begin{equation*}
+%     E_{1} = HH, \quad E_{2}= HT, \quad E_{3} = TH, \quad E_{4} = TT
+%   \end{equation*}
+%   Let $Y$ be the number of heads flipped. So $Y$ can take three values: $0,1$
+%   and $2$. These are examples of events:
+%   \begin{equation*}
+%     \left[ Y=0 \right] = \left\{E_{4}\right\},
+%     \quad \left[ Y=1 \right] = \left\{E_{2},E_{3}\right\},
+%     \quad \text{and} \quad  \left[ Y=2 \right] = \left\{E_{1}\right\}.    
+%   \end{equation*}
+%   We can compute the probabilities of these:
+%   \begin{equation*}
+%     \P\left[Y=0 \right] = \P\left[E_{4} \right] = 1/4.
+%   \end{equation*}
+%   and
+%   \begin{equation*}
+%     \P\left[Y=1 \right] = \P\left[E_{2} \right]+ \P\left[E_{3} \right] = 1/4+1/4 = 1/2.
+%   \end{equation*}
+% \end{example}
+
+% \begin{definition}[Support]
+%   Let $X$ be a random variable. The \demph{support} of $X$, denoted
+%   $\text{supp}(X)$ or $S_{X}$, is the smallest closed set $F\subseteq \R$ such
+%   that $\P\left[X\in F \right]=1$.
+% \end{definition}
+% Informally, the support of a random variable is the set of all possible values
+% that it can take. In \cref{ex:sum-2d4},
+% $\text{supp}(X)= \left\{2,3,4,5,6,7,8\right\}$.
+\newpage
+
+\section{2026-01-16 | Week 01 | Lecture 03}
+\begin{definition}[Discrete random variable]
+  \label{def:discrete-random-variable}
+  We say that a random variable $X$ is a \demph{discrete random variable} if
+  it can assume only a finite or countably infinite number of distinct values.
 \end{definition}
 
-A distribution function is a nondecreasing function with $F(-\infty)=0$ and
-$F(+\infty)=1$. For discrete random variables, the distribution function is
-always a step function.
 
-A real-valued random variable $X$ is said to be \demph{continuous} if there
-exists a nonnegative function $f_{X}$ such that
-\begin{equation*}
-  F(x) = \int_{-\infty}^{x}f_{X}(t)dt
-\end{equation*}
-for all $x\in \R$, where $F$ is the distribution function of $X$. The function
-$f_{X}$ is called the \demph{probability density function} of $X$ (this
-usually shortened to ``pdf'' or just ``density'').
+\begin{definition}[Probability mass function, pmf]
+  Let $X$ be a discrete random variable. The \demph{probability mass function}
+  (or \demph{pmf}) of $X$ is the function
+  \begin{equation*}
+    p(x) = \P\left[X=x \right],
+  \end{equation*}
+  defined for every $x\in \R$.
+\end{definition}
 
-The distribution function $F$ of a continuous random variable is always
-continuous (because it is differentiable by the fundamental theorem of
-calculus with derivative $F'(x)=f(x)$, and differentiability implies
-continuity).
+\begin{example}
+  The pmf of $X$ in \cref{ex:sum-2d4} is
+  \begin{equation*}
+    p(2) = 1/16 \quad p(3) = 2/16, \quad p(4) = 3/16, \quad p(5) = 4/16, \quad p(6) = 3/16, \quad p(7)=2/16, \quad p(8) = 1/16
+  \end{equation*}
+  and $p(x)=0$ for all other $x\in \R$.
+\end{example}
+
+
+\begin{definition}[Distribution function - section 4.2]
+  Let $X$ be any random variable. The \demph{cumulative distribution function}
+  (or \demph{cdf}) of $X$ is the function
+  \begin{equation*}
+    F(x) = \P\left[X \leq x\right],
+  \end{equation*}
+  defined for all $x\in \R$.
+\end{definition}
+
+\begin{remark}
+  The domain of a cdf is always $\R$, and it is always a nondecreasing
+  function with $F(-\infty)=0$ and $F(+\infty)=1$. The cdf of a discrete
+  random variable is always a step function.
+\end{remark}
+
+\begin{definition}[Continuous rv]
+  \label{def:continuous-rv}
+  Let $Y$ be a random variable with distribution function $F$. We say that $Y$
+  is a \demph{continuous random variable} if there exists a nonnegative
+  function $f$ such that
+  \begin{equation}\label{eq:1}
+    F(y) = \int_{-\infty}^{y}f(t)dt
+  \end{equation}
+  for all $y\in \R$. The function $f$ is called the \demph{probability density
+    function} (or \demph{pdf}) of $Y$.
+\end{definition}
+
+
+\begin{remark}
+  For continuous random variables, the distribution function $F$ is always
+  continuous. Moreover, for a continuous random variable $Y$,
+  $\P\left[Y=b \right]=0$ for all $b\in \R$.
+  % \begin{equation*}
+  %   \P\left[Y=b \right] 
+  %   = \P\left[Y \leq b\right] - \lim_{a \to b^{-}}\P\left[Y \leq a\right] 
+  %   = F(b) - \lim_{a \to b^{-}}F(a) = 0
+  % \end{equation*}
+  % where the last equality follows from continuity of $F$.
+\end{remark}
 
 \begin{theorem}[Theorem 4.3 in textbook]
-  If a random variable $Y$ has density $f_{Y}$ then
+  If $Y$ is a continuous random variable with pdf $f$, then
   \begin{equation*}
-    \P\left[a \leq Y \leq b\right] = \int_{a}^{b}f_{Y}(y)dy 
+    \P\left[a \leq Y \leq b\right] = \int_{a}^{b}f(t)dt
   \end{equation*}
   for all $-\infty \leq a \leq b\leq +\infty$.
 \end{theorem}
+% \begin{proof}
+%   \begin{equation*}
+%     \P\left[a \leq Y \leq b\right] = \P\left[Y=a \right]+ \P\left[a<Y \leq b\right]
+%   \end{equation*}
+%   The result then follows from the following two computations:
+%   \begin{align*}
+%     \P\left[Y=a \right] = F(a) - F(a-) = \lim_{\epsilon \to 0} \int_{a-\epsilon}^{a}f(t)dt = 0,
+%   \end{align*}
+%   and
+%   \begin{align*}
+%     \P\left[a < Y \leq  b\right]
+%     &= F(b) - F(a)\\
+%     &= \int_{-\infty}^{b}f(t)dt - \int_{-\infty}^{a}f(t)dt\\ 
+%     &= \int_{a}^{b}f(t)dt. 
+%   \end{align*}
+% \end{proof}
 
-If a random variable $Y$ has pdf $f_{Y}$, then its \demph{expectation} is
-$\E\left[ Y\right] = \int y f(y)dy$, where ther integral ranges over the
-support of the function $f$, provided that $\int |y|f(y)dy<\infty$.
 
-If $Y_{1},Y_{2}$ are discrete random variables, the joint probability mass
-function for $Y_{1}$ and $Y_{2}$ is
-\begin{equation*}
-  f(y_{1},y_{2}) = \P\left[Y_{1}=y_{1}, Y_{2}=y_{2} \right]
-\end{equation*}
-for $-\infty<y_{1},y_{2}<+\infty$.
+\begin{definition}[Expectation of a continuous random variable]
+  \label{def:expectation-continuous-random-variable}
+  If $Y$ is a random variable with pdf $f$, then the \demph{expected value} of
+  $Y$, denoted $\E\left[Y \right]$, is the quantity
+  \begin{equation*}
+    \E\left[ Y\right] = \int_{-\infty}^{\infty} y f(y)dy,
+  \end{equation*}
+  provided that $\int_{-\infty}^{\infty} |y|f(y)dy<\infty$. 
+\end{definition}
+
+\begin{remark}
+  $\E\left[Y \right]$ is the long-run average of $Y$, if we were to repeat the
+  experiment many times.
+\end{remark}
 
 
 \begin{theorem}[Law of the unconscious statistician]
   \label{thm:law-unconscious-statistician}
-  Let $X$ be a real-valued random variable and $g:\R \to \R$ is a (measurable)
-  function.
-  \begin{enumerate}
-    \item If $X$ has pdf $f_{X}$, then
+  Let $g:\R \to \R$ be a function.
+  \begin{enumerate}[label=\rm{(\roman*.)}]
+    \item If $X$ has pmf $p$, then
     \begin{equation*}
-      \E\left[g(X) \right] = \int_{-\infty}^{\infty}g(x)f_{X}(x)dx.
+      \E\left[g(X) \right]= \sum_{\rm{all}\ x} g(x)p(x).
     \end{equation*}
-    \item If $X$ has pmf $p_{X}$, then
+    \item If $Y$ has pdf $f$, then
     \begin{equation*}
-      \E\left[g(X) \right]= \sum_{x} g(x)p_{X}(x)
+      \E\left[g(Y) \right] = \int_{-\infty}^{\infty}g(y)f(y)dy.
     \end{equation*}
-    where the sum runs over all $x$ in the support of $X$.
+
   \end{enumerate}
-  
 \end{theorem}
 
-\textbf{Add definition 5.2 and 5.3.}
+\newpage
+\subsection{Independence of random variables}
+The aim of this section is to define what it means for random variables to be
+independent.
 
+\begin{definition}[Joint pmf]
+  \label{def:joint-pmf}
+  Let $X_{1}$ and $X_{2}$ be discrete random variables. The \demph{joint
+    probability mass function} for $X_{1}$ and $X_{2}$ is the function
+  \begin{equation*}
+    p(x_{1},x_{2}) = \P\left[X_{1}=x_{1},X_{2}=x_{2} \right],
+  \end{equation*}
+  defined for all $x_{1},x_{2}\in \R$.
+\end{definition}
 
-\textbf{Add definitions of marginal pdfs and pms}
+\begin{definition}[Joint pdf]
+  \label{def:joint-pdf}
+  Let $X_{1}$ and $X_{2}$ be continuous random variables. We say that $X_{1}$ and $X_{2}$
+  are \demph{jointly continuous} if there exists a function
+  $f:\R^{2} \to \R_{ \geq 0}$ such that 
+  \begin{equation*}
+    \P\left[X_{1} \leq x_{1}, X_{2} \leq  x_{2}\right] =  \int_{-\infty}^{x_{1}}\int_{-\infty}^{x_{2}}    f(t_{1},t_{2}) dt_{2}dt_{1}.
+  \end{equation*}
+  for all $x_{1},x_{2}\in \R$. The function $f$ is called the \demph{joint probability
+  density function} for $X_{1}$ and $X_{2}$.
+\end{definition}
 
 \begin{definition}
-  Two random variabes $X$ and $Y$ are independent if
+  \label{def:independence-random-variables}
+  We say that the random variables $X_{1},X_{2}$ are \demph{independent} if
   \begin{equation*}
-    F_{(X,Y)}(x,y) = F_{X}(x)F_{Y}(y)
+    \P\left[X_{1}\leq x_{1},X_{2}\leq x_{2}\right] = \P\left[X_{1}\leq x_{1}\right] \P\left[X_{2}\leq x_{2}\right]
   \end{equation*}
-  for all $x,y\in \R$.
+  for all $x_{1},x_{2}\in \R$. 
 \end{definition}
-Here, $F_{(X,Y)}(x,y) = \P\left[X \leq x, Y \leq y\right]$ and $F_{X}(x) = \P\left[X \leq
-  x\right]$ and $F_{Y}(y) = \P\left[Y \leq y\right]$.
 
-\textbf{Add Theorem 5.4, 5.5 -- important}
+\begin{theorem}[Factorization theorem -- Theorem 5.4 in textbook]
+  \label{thm:factorization-theorem}
+  For discrete/continuous random variables, independence is equivalent to
+  factorizability of the joint pdf/pmf. More formally, we have:
+  
+  \begin{itemize}
+    \item \textbf{Discrete case:} Let $X_{1},X_{2}$ be discrete random
+    variables with pmfs $p_{1},p_{2}$ and joint pmf $p$. Then $X_{1}$ and
+    $X_{2}$ are independent if and only if
+    \begin{equation*}
+      p(x_{1},x_{2}) = p_{1}(x_{1})\cdot p_{2}(x_{2})
+    \end{equation*}
+    for all $x_{1},x_{2}\in \R$.
+    \item \textbf{Continuous case:} Let $Y_{1}$ and $Y_{2}$ be continuous
+    random variables with pdfs $f_{1}$ and $f_{2}$, and joint pdf
+    $f$. Then $Y_{1}$ and $Y_{2}$ are independent if and only if
+    \begin{equation*}
+      f(y_{1},y_{2}) = f_{1}(y_{1}) \cdot f_{2}(y_{2})
+    \end{equation*}
+    for all $y_{1},y_{2}\in \R$.
+  \end{itemize}
+\end{theorem}
+
+\begin{remark}
+  \label{rmk:independence-intuition}
+  If two random variables are independent, then observing one of them does not
+  give any information about what value the other one takes.
+\end{remark}
+
+\begin{theorem}
+  If $X_{1}$ and $X_{2}$ are independent, then
+  \begin{equation*}
+    \E\left[X_{1}X_{2} \right] = \E\left[X_{1} \right] \E\left[X_{2} \right].
+  \end{equation*}
+\end{theorem}
+
+
+\begin{remark}
+  In this course, we will frequently work with ``samples'' of $n$ independent
+  random variables $X_{1},\ldots,X_{n}$. For that setting, note that
+  \cref{def:joint-pmf,def:joint-pdf,def:independence-random-variables,thm:factorization-theorem}
+  all generalize in the natural way (i.e., with $n$ variables rather than
+  $2$). In that case, the intuition is that observing any number of them
+  doesn't give you any information about the others.
+\end{remark}
+
+\begin{definition}[Variance of a random variable]
+  If $X$ is a random variable and $\mu= \E\left[X \right]$, the
+  \demph{variance} of $X$, denoted $V(X)$ or $\Var(X)$, is the quantity
+  \begin{equation*}
+    V(X) = \Var(X) = \E\left[(X-\mu)^{2} \right]
+  \end{equation*}
+  The positive square root of the variance is the \demph{standard deviation}
+  of $X$. 
+\end{definition}
+
+\begin{theorem}
+  If $X$ and $Y$ are independent random variables and $a$ are scalars, then
+ \begin{equation*}
+    \Var(X+Y) = \Var(X)+\Var(Y)
+  \end{equation*}
+  and
+  \begin{equation*}
+    \Var(aX+b) = a^{2}\Var(X)
+  \end{equation*}
+\end{theorem}
+
+
 \subsection{Statistics}
 
 Random sample is section 2.12.
@@ -609,16 +833,16 @@ interest. The subset collected from it is our \demph{sample}.
 \end{definition}
 
 
-Chebychev's theorem
-\begin{theorem}[Chebychev's theorem]
+
+\begin{theorem}[Chebychev's inequality]
   \label{thm:chebychevs-theorem}
   Let $Y$ be a random variable with mean $\mu$ and finite variance
-  $\sigma^{2}$. Then for any constant $c$,
+  $\sigma^{2}$. Then for any constant $c>0$,
   \begin{equation*}
-    \P\left[|Y-\mu| \geq k\sigma\right] \leq \frac{1}{k^{2}}
+    \P\left[|Y-\mu| \geq c\right] \leq \frac{\sigma^{2}}{c^{2}}
   \end{equation*}
 \end{theorem}
-Law of large numbers
+
 
 
 \end{document}
