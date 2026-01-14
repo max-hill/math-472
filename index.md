@@ -17,6 +17,7 @@ title: Lecture Notes
  Date        | Lecture number          | Topics Covered
 -------------|----------------------------|-------------
 2026-01-12  | 1   | What is probability?
+2026-01-14  | 2   | Independent events, conditional probabilites, random variables
  
 
 # Other Links
