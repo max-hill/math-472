@@ -689,25 +689,24 @@ denoted with capital letters, like $X,Y,Z$.
 \begin{remark}
   \label{rmk:need-for-joint-distn}
   Often we wish to compute probabilities of functions of multiple random
-  variables, for example
+  variables, for example:
   \begin{itemize}
     \item What is the probability that
     $\frac{X_{1}+\ldots+X_{n}}{n}\in (0,1)$? Here, the function is
     $g(x_{1},\ldots,x_{n})= \frac{x_{1}+\ldots+x_{n}}{n}$.
     \item What is the probability that $\max(X,Y) \leq 10$? Here the function is
-    $g(x,y)=\max(x,y) $
+    $g(x,y)=\max(x,y).$
     \item Suppose we roll two dice and take the maximum. What is the expected
     value? In this case, our dice rolls are $X,Y$ and we want to compute
     $\E\left[g(X,Y) \right]$, where $g(x,y) = \max(x,y)$.
-    
   \end{itemize}
   To answer these sorts of questions, we need the notion of a ``joint distribution''.
 \end{remark}
 
 \subsubsection{Joint distributions}
-\textit{Based on section 5.4 in the textbook. Everything in this section
-  generalizes naturally to $n$ variables, but the results are simpler to state
-  for just 2 random variables.}
+\textit{This subsection is based on section 5.4 in the textbook. Everything in
+  this section generalizes naturally to $n$ variables, but the results are
+  simpler to state for just 2 random variables.}
 
 
 
@@ -723,14 +722,14 @@ denoted with capital letters, like $X,Y,Z$.
 
 \begin{definition}[Joint pdf]
   \label{def:joint-pdf}
-  Let $X_{1}$ and $X_{2}$ be continuous random variables. We say that $X_{1}$ and $X_{2}$
+  Let $Y_{1}$ and $Y_{2}$ be continuous random variables. We say that $Y_{1}$ and $Y_{2}$
   are \demph{jointly continuous} if there exists a function
   $f:\R^{2} \to \R_{ \geq 0}$ such that 
   \begin{equation*}
-    \P\left[X_{1} \leq x_{1}, X_{2} \leq  x_{2}\right] =  \int_{-\infty}^{x_{1}}\int_{-\infty}^{x_{2}}    f(t_{1},t_{2}) dt_{2}dt_{1}.
+    \P\left[Y_{1} \leq y_{1}, Y_{2} \leq  y_{2}\right] =  \int_{-\infty}^{y_{1}}\int_{-\infty}^{y_{2}}    f(t_{1},t_{2}) dt_{2}dt_{1}.
   \end{equation*}
-  for all $x_{1},x_{2}\in \R$. The function $f$ is called the \demph{joint probability
-  density function} for $X_{1}$ and $X_{2}$.
+  for all $y_{1},y_{2}\in \R$. The function $f$ is called the \demph{joint probability
+  density function} for $Y_{1}$ and $Y_{2}$.
 \end{definition}
 
 
@@ -752,7 +751,7 @@ denoted with capital letters, like $X,Y,Z$.
 
 \begin{remark}
   \cref{thm:lotus-multivariable-case} generalizes to $n$ variables. It gives
-  us a way to answer questions like those posed in
+  us a way to answer questions like the third question posed in
   \cref{rmk:need-for-joint-distn}.
 \end{remark}
 
