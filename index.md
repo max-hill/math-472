@@ -1,4 +1,4 @@
----
+\---
 layout: latex
 title: Lecture Notes
 #
@@ -18,6 +18,7 @@ title: Lecture Notes
 -------------|----------------------------|-------------
 2026-01-12  | 1   | What is probability?
 2026-01-14  | 2   | Independent events, conditional probabilites, random variables
+2026-01-16  | 3   | Random variables, expected value, joint distributions, independence
  
 
 # Other Links
