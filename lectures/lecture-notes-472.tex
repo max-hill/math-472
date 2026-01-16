@@ -496,8 +496,8 @@ denoted with capital letters, like $X,Y,Z$.
 
 \begin{example}[Sum 2d4]
   \label{ex:sum-2d4}
-  Roll a 4-sided dice twice (this is the \textit{experiment}). There are 16 possible
-  \textit{outcomes}. The \textit{sample space} is
+  Roll a 4-sided dice twice (this is the \textbf{experiment}). There are 16 possible
+  \textbf{outcomes}. The \textbf{sample space} is
   \begin{equation*}
     S = \left\{(x,y): x,y\in \left\{1,2,3,4\right\} \right\}.
   \end{equation*}
@@ -506,7 +506,7 @@ denoted with capital letters, like $X,Y,Z$.
     \begin{array}{c@{\quad}c|cccc} & \multicolumn{5}{c}{\text{Dice 2}} \\ & &
       1 & 2 & 3 & 4 \\ \cline{2-6}  & 1 & 2 & 3 & 4 & 5 \\ \text{Dice 1} & 2 & 3 & 4 & 5 & 6 \\ & 3 & 4 & 5 & 6 & 7 \\ & 4 & 5 & 6 & 7 & 8 \end{array}
   \end{equation*}
-  \textit{Events} are often defined using preimages of random variables. For
+  \textbf{Events} are often defined using preimages of random variables. For
   example, the event that $X=6$ is:
   \begin{align*}
     [X=6] 
@@ -561,6 +561,9 @@ denoted with capital letters, like $X,Y,Z$.
 \newpage
 
 \section{2026-01-16 | Week 01 | Lecture 03}
+
+\subsection{Random variables}
+\subsubsection{Discrete vs continuous}
 \begin{definition}[Discrete random variable]
   \label{def:discrete-random-variable}
   We say that a random variable $X$ is a \demph{discrete random variable} if
@@ -650,7 +653,7 @@ denoted with capital letters, like $X,Y,Z$.
 %   \end{align*}
 % \end{proof}
 
-
+\subsubsection{Expected value}
 \begin{definition}[Expectation of a continuous random variable]
   \label{def:expectation-continuous-random-variable}
   If $Y$ is a random variable with pdf $f$, then the \demph{expected value} of
@@ -667,13 +670,13 @@ denoted with capital letters, like $X,Y,Z$.
 \end{remark}
 
 
-\begin{theorem}[Law of the unconscious statistician]
+\begin{theorem}[LOTUS - single variable case]
   \label{thm:law-unconscious-statistician}
   Let $g:\R \to \R$ be a function.
   \begin{enumerate}[label=\rm{(\roman*.)}]
     \item If $X$ has pmf $p$, then
     \begin{equation*}
-      \E\left[g(X) \right]= \sum_{\rm{all}\ x} g(x)p(x).
+      \E\left[g(X) \right]= \sum_{x\in \R:\ p(x)>0} g(x)p(x).
     \end{equation*}
     \item If $Y$ has pdf $f$, then
     \begin{equation*}
@@ -683,10 +686,24 @@ denoted with capital letters, like $X,Y,Z$.
   \end{enumerate}
 \end{theorem}
 
-\newpage
-\subsection{Independence of random variables}
-The aim of this section is to define what it means for random variables to be
-independent.
+\begin{remark}
+  \label{rmk:need-for-joint-distn}
+  Often we wish to compute probabilities of functions of multiple random
+  variables, for example
+  \begin{itemize}
+    \item What is the probability that
+    $\frac{X_{1}+\ldots+X_{n}}{n}\in (0,1)$? Here, the function is
+    $\phi(x_{1},\ldots,x_{n})= \frac{x_{1}+\ldots+x_{n}}{n}$.
+    \item What is the probability that $\max(X,Y) \leq 10$? Here the function is
+    $\phi(x,y)=\max(x,y) $
+  \end{itemize}
+  To answer these sorts of questions, we need joint distributions.
+\end{remark}
+
+\subsubsection{Joint distributions}
+\textit{Based on section 5.4 in the textbook.}
+
+
 
 \begin{definition}[Joint pmf]
   \label{def:joint-pmf}
@@ -710,6 +727,34 @@ independent.
   density function} for $X_{1}$ and $X_{2}$.
 \end{definition}
 
+
+\begin{theorem}[LOTUS - multivariable case]
+  \label{thm:lotus-multivariable-case}
+  Let $g:\R^{2}\to \R$.
+  \begin{itemize}
+    \item   If $X_{1},X_{2}$ have joint pmf $p(x_{1},x_{2})$, then
+    \begin{equation*}
+      \E\left[g(X_{1},X_{2}) \right] = \sum_{\substack{(x_{1},x_{2})\in \R^{2}:\\ p(x_{1},x_{2})>0}} g(x_{1},x_{2})p(x_{1},x_{2}).
+    \end{equation*}
+    \item If $Y_{1},Y_{2}$ are jointly continuous random variables with joint
+    pdf $f(y_{1},y_{2})$, then
+    \begin{equation*}
+      \E\left[g(Y_{1},Y_{2}) \right] = \int_{-\infty}^{\infty}\int_{-\infty}^{\infty}g(y_{1},y_{2})f(y_{1},y_{2})dy_{1}dy_{2}.  
+    \end{equation*}
+  \end{itemize}
+\end{theorem}
+
+\begin{remark}
+  \cref{thm:lotus-multivariable-case} generalizes to $n$ variables. It gives
+  us a way to answer questions like those posed in
+  \cref{rmk:need-for-joint-distn}.
+\end{remark}
+
+\subsection{Independence}
+\subsubsection{Definition and characterization}
+The aim of this section is to define what it means for random variables to be
+independent.
+
 \begin{definition}
   \label{def:independence-random-variables}
   We say that the random variables $X_{1},X_{2}$ are \demph{independent} if
@@ -722,7 +767,7 @@ independent.
 \begin{theorem}[Factorization theorem -- Theorem 5.4 in textbook]
   \label{thm:factorization-theorem}
   For discrete/continuous random variables, independence is equivalent to
-  factorizability of the joint pdf/pmf. More formally, we have:
+  factorizability of the joint pmf/pdf. More formally, we have:
   
   \begin{itemize}
     \item \textbf{Discrete case:} Let $X_{1},X_{2}$ be discrete random
@@ -748,12 +793,6 @@ independent.
   give any information about what value the other one takes.
 \end{remark}
 
-\begin{theorem}
-  If $X_{1}$ and $X_{2}$ are independent, then
-  \begin{equation*}
-    \E\left[X_{1}X_{2} \right] = \E\left[X_{1} \right] \E\left[X_{2} \right].
-  \end{equation*}
-\end{theorem}
 
 
 \begin{remark}
@@ -764,6 +803,19 @@ independent.
   $2$). In that case, the intuition is that observing any number of them
   doesn't give you any information about the others.
 \end{remark}
+
+\subsubsection{Some useful consequences of independence}
+\begin{theorem}
+  If $X_{1}$ and $X_{2}$ are independent, then
+  \begin{equation*}
+    \E\left[X_{1}X_{2} \right] = \E\left[X_{1} \right] \E\left[X_{2} \right].
+  \end{equation*}
+\end{theorem}
+\begin{proof}
+  This can be proven for continuous/discrete random variables using
+  \cref{thm:lotus-multivariable-case}.
+\end{proof}
+
 
 \begin{definition}[Variance of a random variable]
   If $X$ is a random variable and $\mu= \E\left[X \right]$, the
@@ -782,12 +834,13 @@ independent.
   \end{equation*}
   and
   \begin{equation*}
-    \Var(aX+b) = a^{2}\Var(X)
+    \Var(aX+b) = a^{2}\Var(X).
   \end{equation*}
 \end{theorem}
 
-
-\subsection{Statistics}
+\newpage
+\section{2026-01-21 | Week 02 | Lecture 04}
+\subsection{What is a statistic?}
 
 Random sample is section 2.12.
 
