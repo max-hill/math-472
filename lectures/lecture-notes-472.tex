@@ -693,15 +693,21 @@ denoted with capital letters, like $X,Y,Z$.
   \begin{itemize}
     \item What is the probability that
     $\frac{X_{1}+\ldots+X_{n}}{n}\in (0,1)$? Here, the function is
-    $\phi(x_{1},\ldots,x_{n})= \frac{x_{1}+\ldots+x_{n}}{n}$.
+    $g(x_{1},\ldots,x_{n})= \frac{x_{1}+\ldots+x_{n}}{n}$.
     \item What is the probability that $\max(X,Y) \leq 10$? Here the function is
-    $\phi(x,y)=\max(x,y) $
+    $g(x,y)=\max(x,y) $
+    \item Suppose we roll two dice and take the maximum. What is the expected
+    value? In this case, our dice rolls are $X,Y$ and we want to compute
+    $\E\left[g(X,Y) \right]$, where $g(x,y) = \max(x,y)$.
+    
   \end{itemize}
-  To answer these sorts of questions, we need joint distributions.
+  To answer these sorts of questions, we need the notion of a ``joint distribution''.
 \end{remark}
 
 \subsubsection{Joint distributions}
-\textit{Based on section 5.4 in the textbook.}
+\textit{Based on section 5.4 in the textbook. Everything in this section
+  generalizes naturally to $n$ variables, but the results are simpler to state
+  for just 2 random variables.}
 
 
 
@@ -750,6 +756,8 @@ denoted with capital letters, like $X,Y,Z$.
   \cref{rmk:need-for-joint-distn}.
 \end{remark}
 
+\newpage
+\section{2026-01-21 | Week 02 | Lecture 04}
 \subsection{Independence}
 \subsubsection{Definition and characterization}
 The aim of this section is to define what it means for random variables to be
@@ -839,7 +847,6 @@ independent.
 \end{theorem}
 
 \newpage
-\section{2026-01-21 | Week 02 | Lecture 04}
 \subsection{What is a statistic?}
 
 Random sample is section 2.12.
