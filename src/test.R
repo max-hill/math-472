@@ -450,3 +450,41 @@ plot(x)
 
 ## F <- ecdf(w)
 ## F(10.3)
+
+
+d = rexp(10, rate = 1/2)
+f = round(d,digits=1)
+f
+2.0 0.8 0.1 2.3 3.2 5.4 2.0 0.4 2.8 3.4
+sum(f)
+
+sum((1:6 - 3.5)^2 * (1/6))
+
+
+# This problem relates to examle 7.1 in the textbook. In lecture, we noted
+# that the variance of a sample mean decreases as the size of the sample
+# increases. In this problem, we'll visualize that for dice rolls.
+
+# For any positive integer k, the R code
+
+mean(sample(1:6, k, replace=TRUE))
+
+# simulates rolling k 6-sided dice. Write code to compute the sample mean of
+# this sample.
+
+# Use the function replicate() to plot histograms consisting of 10000 sample
+# means for k=3,10,100, and 1000. When plotting the histograms with the hist()
+# function, add the optional argument xlim=c(0,6).
+n=10
+x = replicate(10000,mean(sample(1:6,n,replace=TRUE)))
+hist(x,probability=TRUE,xlim=c(0,6))
+
+curve(dnorm(x,mean = 3.5, sd = sqrt(2.9167/n)), add=TRUE, n=10000)
+
+x=rnorm(100)
+help(dnorm)
+
+for (n in c(3,30,60,100,1000,10000,100000,500000,1000000,10000000,100000000)) {
+  print(var(sample(1:6, n, replace=TRUE)))
+}
+35/12

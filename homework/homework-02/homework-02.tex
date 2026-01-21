@@ -1,0 +1,366 @@
+\documentclass[10pt]{article}
+% Math Packages
+\usepackage{amsmath, mathtools}
+\usepackage{amssymb}
+\usepackage{amsthm}
+\usepackage{amsfonts}
+\usepackage{bbm}
+\usepackage{breqn}
+\usepackage[margin=1in]{geometry}
+\usepackage{graphicx}
+\usepackage{tikz}
+\usetikzlibrary{arrows.meta}
+\usetikzlibrary{calc}
+\usepackage{forest}
+\usepackage{tikz-qtree}
+\graphicspath{ {./images/} }
+\usepackage{hyperref}
+\usepackage[capitalize]{cleveref}
+\usepackage[shortlabels]{enumitem}
+\usetikzlibrary{arrows,matrix,positioning}
+\usepackage{multicol}
+
+\usepackage{listings}
+\usepackage{xcolor}
+
+\lstset{
+  language=R,
+  basicstyle=\ttfamily\footnotesize,
+  keywordstyle=\color{blue},
+  commentstyle=\color{gray},
+  stringstyle=\color{red!70!black},
+  framesep=2pt,
+  framexleftmargin=0pt, 
+  frame=single,
+  breaklines=false,
+  showstringspaces=false
+}
+% for the pipe symbol
+\usepackage[T1]{fontenc}
+
+% Citing theorems by name. (source: https://tex.stackexchange.com/questions/109843/cleveref-and-named-theorems)
+\makeatletter
+\newcommand{\ncref}[1]{\cref{#1}\mynameref{#1}{\csname r@#1\endcsname}}
+
+\def\mynameref#1#2{%
+  \begingroup
+  \edef\@mytxt{#2}%
+  \edef\@mytst{\expandafter\@thirdoffive\@mytxt}%
+  \ifx\@mytst\empty\else
+  \space(\nameref{#1})\fi
+  \endgroup
+}
+\makeatother
+
+% Colorful Notes
+\usepackage{color} \definecolor{Red}{rgb}{1,0,0} \definecolor{Blue}{rgb}{0,0,1}
+\definecolor{Purple}{rgb}{.5,0,.5} \def\red{\color{Red}} \def\blue{\color{Blue}}
+\def\gray{\color{gray}} \def\purple{\color{Purple}}
+\newcommand{\rnote}[1]{{\red [#1]}} % \rnote{foo} gives '[foo]' in red
+\newcommand{\pnote}[1]{{\purple [#1]}} % \pnote{foo} gives '[foo]' in purple
+\newcommand{\bnote}[1]{{\blue #1}} % \bnote{foo} gives 'foo' in blue
+\newcommand{\gnote}[1]{{\gray #1}} % \gnote{foo} gives 'foo' in gray
+\newcommand{\Max}[1]{{\purple [#1]}} % \bnote{foo} then 'foo' is blue
+
+
+% Claim numbering (the counter restarts after each proof environment)
+\newcounter{claimcount}
+\setcounter{claimcount}{0}
+\newenvironment{claim}{\refstepcounter{claimcount}\par\addvspace{\medskipamount}\noindent\textbf{Claim \arabic{claimcount}:}}{}
+\usepackage{etoolbox}
+\AtBeginEnvironment{proof}{\setcounter{claimcount}{0}}
+\newenvironment{claimproof}{\par\addvspace{\medskipamount}\noindent\textit{Proof of Claim  \arabic{claimcount}.}}{\hfill\ensuremath{\qedsymbol} \tiny{Claim}
+
+  \medskip}
+% Add claim support to cleverref
+\crefname{claimcount}{Claim}{Claims}
+
+
+% Math Environments
+\newtheorem{theorem}{Theorem}
+\newtheorem{assumption}[theorem]{Assumption}
+\newtheorem{lemma}[theorem]{Lemma}
+\newtheorem{proposition}[theorem]{Proposition}
+\newtheorem{corollary}[theorem]{Corollary}
+\newtheorem{question}[theorem]{Question}
+\theoremstyle{definition}
+\newtheorem{definition}[theorem]{Definition}
+\newtheorem{remark}[theorem]{Remark}
+\newtheorem{example}[theorem]{Example}
+\newtheorem{notation}[theorem]{Notation}
+\newtheorem{problem}[theorem]{Problem}
+
+% Matrices and Column Vectors. 
+\usepackage{stackengine}
+\setstackgap{L}{1.0\normalbaselineskip}
+\usepackage{tabstackengine}
+\setstackEOL{;}% row separator
+\setstackTAB{,}% column separator
+\setstacktabbedgap{1ex}% inter-column gap
+\setstackgap{L}{1.5\normalbaselineskip}% inter-row baselineskip
+\let\nmatrix\bracketMatrixstack  %Usage: \nmatrix{1,2,3\4,5,6}
+\newcommand\cv[1]{\setstackEOL{,}\bracketMatrixstack{#1}} %usage: \cv{1,2,3}
+
+% Custom Math Coqmmands
+\newcommand{\vt}{\vskip 5mm} % vertical space
+\newcommand{\fl}{\noindent\textbf} % first line
+\newcommand{\Fl}{\vt\noindent\textbf} % first line with space above
+\newcommand{\norm}[1]{\left\lVert#1\right\rVert} % norm
+\newcommand{\pnorm}[1]{\left\lVert#1\right\rVert_p} % p-norm
+\newcommand{\qnorm}[1]{\left\lVert#1\right\rVert_q} % q-norm
+\newcommand{\1}[1]{\textbf{1}_{\left[#1\right]}} % indicator function 
+\def\limn{\lim_{n\to\infty}} % shortcut for lim as n-> infinity
+\def\sumn{\sum_{n=1}^{\infty}} % shortcut for sum from n=1 to infinity
+\def\sumkn{\sum_{k=1}^{n}} % shortcut for sum from k=1 to n
+\def\sumin{\sum_{i=1}^{n}} % shortcut for sum from i=1 to n
+\def\SAs{\sigma\text{-algebras}} % shortcut for $\sigma$-algebras
+\def\SA{\sigma\text{-algebra}} % shortcut for $\sigma$-algebra
+\def\Ft{\mathcal{F}_t} % time-indexed sigma-algebra (t)
+\def\Fs{\mathcal{F}_s} % time-indexed sigma-algebra (s)
+\def\F{\mathcal{F}} % sigma-algebra
+\def\G{\mathcal{G}} % sigma-algebra
+\def\R{\mathbb{R}} % Real numbers
+\def\N{\mathbb{N}} % Natural numbers
+\def\Z{\mathbb{Z}} % Integers
+\def\E{\mathbb{E}} % Expectation
+\def\P{\mathbb{P}} % Probability
+\def\Q{\mathbb{Q}} % Q probability
+\def\dist{\text{dist}} %Text 'dist' for things like 'dist(x,y)'
+\newcommand{\indep}{\perp \!\!\! \perp}  %independence symbol
+\def\Var{\mathrm{Var}} % Variance
+\def\tr{\mathrm{tr}} % trace
+
+% Brackets and Parentheses
+\def\[{\left [}
+    \def\]{\right ]}
+% \def\({\left (}
+%   \def\){\right )}
+
+
+
+\usepackage{color}
+\definecolor{Red}{rgb}{1,0,0}
+\definecolor{Blue}{rgb}{0,0,1}
+\definecolor{Purple}{rgb}{.5,0,.5}
+\def\red{\color{Red}}
+\def\blue{\color{Blue}}
+\def\gray{\color{gray}}
+\def\purple{\color{Purple}}
+\definecolor{RoyalBlue}{cmyk}{1, 0.50, 0, 0}
+\newcommand{\dempfcolor}[1]{{\color{RoyalBlue}#1}} 
+\newcommand{\demph}[1]{\textcolor{RoyalBlue}{\textbf{\slshape #1}}} % Slanted
+
+\usepackage{emoji}
+% comment exactly one of the following line to show / hide the solutions
+% \newcommand{\solution}[1]{{\purple #1}} % uncomment to show the solutions
+\newcommand{\solution}[1]{} % uncomment to hide the solutions
+
+
+
+
+\begin{document}
+\begin{center}
+  \section*{Math 472: Homework 02} %
+  \textit{Due Friday, Jan 30}
+\end{center}
+
+
+
+
+
+% \begin{problem}
+%   \begin{enumerate}[(a)]
+%     Let $x\in \R$ be arbitrary.
+%     \item Prove that 
+%     \begin{equation*}
+%       \lim_{n\to\infty} \left( 1+ \frac{x}{n} \right)^{n} = e^{x} 
+%     \end{equation*}
+%     \item Suppose that $(x_{n})$ is a sequence converging to $x$. Prove that
+%     \begin{equation*}
+%       \lim_{n\to\infty} \left( 1+\frac{x_{n}}{n} \right)^{n}=e^{x}. 
+%     \end{equation*}
+%   \end{enumerate}
+% \end{problem}
+
+
+
+
+\begin{problem}
+  Prove \textbf{Proposition 2} in the lecture notes (``Basic properties of probability measures'').
+  
+  \textit{If you get stuck, refer to my old math 372 lecture notes (Week 2,
+    Class 4, available on the course website).}
+\end{problem}
+
+
+\begin{problem}
+  In lecture, we noted that the variance of a sample mean decreases as the
+  size of the sample increases. In this problem, we'll visualize this
+  phenomenon for dice rolls like those of Example 7.1 in the textbook.
+  \begin{enumerate}[(a)]
+    \item For any positive integer $n$, the \texttt{R} code
+
+    \texttt{mean(sample(1:6, n, replace=TRUE))}
+
+    simulates rolling a 6-sided dice $n$ times. This is our sample. Write code
+    to compute the sample mean of this sample.
+    \item For each $k\in \left\{3,10,100,1000\right\}$, use the functions
+    \texttt{replicate()} and \texttt{hist()} to plot a histogram consisting of
+    10,000 sample means (obtained using your code from part (a)).
+
+    When plotting the histograms with the \texttt{hist()} function, add the
+    optional argument \texttt{xlim=c(0,6)} and observe how the histograms get
+    narrower and more concentrated around 3.5. That's the whole point of this
+    problem: the variance of a sample mean tends to zero as $n \to \infty$.
+    
+    \item In part (b), we visualized the variance of the \textit{sample mean}
+    through simulations. In this part, we will consider the \textit{sample
+      variance}, which is a different quantity. For
+    \begin{equation*}
+      n\in \left\{10,30,60,100,1000,10000,100000,500000,1000000,10000000,100000000\right\},
+    \end{equation*}
+    draw a sample of $n$ dice rolls and compute the sample variance $S^{2}$.
+    What quantity does this appear to be converging to?
+  \end{enumerate}
+\end{problem}
+\begin{problem}
+  An example of a random variable whose expected value does not exist is the
+  \demph{Cauchy random variable}, that is, one with pdf
+  \begin{equation*}
+    f(x) = \frac{1}{\pi} \frac{1}{1+x^{2}}, \ x\in \R.
+  \end{equation*}
+  \begin{enumerate}[(a)]
+    \item Show that $f$ is a valid probability density function by showing
+    that it is nonnegative and that $\int_{-\infty}^{\infty}f(x)dx =1.$ 
+    \item  Show that $\E\left[X \right]$ is not defined by showing that
+    $E \left[ |X| \right] = \int_{-\infty}^{\infty}|x|f(x)dx  =+\infty$.
+  \end{enumerate}
+\end{problem}
+
+\begin{problem}
+  A ``median'' of a distribution is a value $m$ such that $\P\left[X \leq
+    m\right] \geq \frac{1}{2}$ and $\P\left[X \geq m\right] \geq \frac{1}{2}$.
+  (If $X$ is continuous, $m$ satisfies $\int_{-\infty}^{m}f(x)dx =
+  \int_{m}^{\infty}f(x)dx=\frac{1}{2}$, where $f$ is the pdf of $X$.) Find the
+  median of the following distributions
+  \begin{enumerate}[(a)]
+    \item $f(x)=3x^{2},\ 0<x<1$
+    \item $f(x)= \frac{1}{\pi} \frac{1}{1+x^{2}},\ x\in \R$.
+  \end{enumerate}
+\end{problem}
+
+\begin{problem}[Exercise 2.18 in textbook]
+  Suppose two fair coins are tossed and the upper faces are observed.
+  \begin{enumerate}[(a)]
+    \item List the sample points for this experiment.
+    \item Assign a reasonable probability to each sample point. (Are the sample
+    points equally likely?)
+    \item Let $A$ denote the event that exactly one head is observed and $B$ the
+    event that at least one head is observed. List the sample points in both $A$ 
+    and $B$. 
+    \item From your answer to part (c), ﬁnd $P(A)$, $P(B)$, $P(A\cap B)$, $P(A\cup B)$, and
+    $P(A \cup B)$. 
+  \end{enumerate}
+\end{problem}
+
+
+
+
+\begin{problem}[Variance]
+  \label{problem:variance}
+  The \demph{variance} of a random variable $X$ is the quantity
+  \begin{equation*}
+    \Var(X) = \E\left[\left( X- \mu \right)^{2}  \right],
+  \end{equation*}
+  where $\mu= \E\left[X \right]$. The positive square root $\Var(X)$ is called
+  the \demph{standard deviation} of $X$.
+
+  In this problem, we'll prove three important facts about variance.
+  \begin{enumerate}[(a)]
+    \item Prove that 
+    \begin{equation*}
+      \Var(X) = \E\left[X^{2} \right] - \left( \E\left[X \right] \right)^{2}. 
+    \end{equation*}
+    \item Prove that if $X$ is a random variable, then for any scalars $a$ and
+    $b$,
+    \begin{equation}\label{eq:1}
+      \Var(aX+b) = a^{2}\Var(X).
+    \end{equation}
+    \item If $X$ and $Y$ are independent random variables, 
+    \begin{equation}\label{eq:2}
+      \Var(X+ Y) = \Var(X)+\Var(Y).
+    \end{equation}
+    \textit{Hint: Since $X$ and $Y$ are independent,
+     $\E\left[\left(
+        X- \E\left[X \right]  \right) \left( Y - \E\left[Y \right] \right)
+    \right]= 0$.}
+  \end{enumerate}
+\end{problem}
+
+
+
+\begin{problem}
+  Let $A$ and $B$ be independent events. Show that the following pairs of
+  events are independent.
+  \begin{enumerate}[(a)]
+    \item $A$ and $B^{c}$
+    \item $A^{c}$ and $B$
+    \item $A^{c}$ and $B^{c}$.
+  \end{enumerate}
+\end{problem}
+
+
+% \begin{problem}[The weak law of large numbers]
+%   A coin has probability $p$ of landing on heads and probability $1-p$ of
+%   landing on tails. Suppose we start flipping the coin; for each positive
+%   integer $i$ define
+%   \begin{equation*}
+%     X_{i} = \left\{ \begin{array}{l@{\quad:\quad}l} 1 & \text{ if the $i^{\rm
+%             th}$ flip is heads }\\ 0& \text{ if the $i^{\rm th}$ flip is tails} \end{array}\right.
+%   \end{equation*}
+%   Assume that $X_{1},X_{2},\ldots,$ are independent. Then
+%   $S_{n}=X_{1}+\ldots+X_{n}$ is the \textit{number} of heads in the first $n$
+%   flips, and $\frac{S_{n}}{n}$ is the \textit{proportion} of heads in the
+%   first $n$ flips.
+  
+  
+%   \begin{enumerate}[(a)]
+%     \item Show that $\E\left[\frac{S_{n}}{n} \right]= p$.
+%     \item Show that $\Var(\frac{S_{n}}{n}) = \frac{p(1-p)}{n}$. \textit{(Hint:
+%       use \cref{eq:1,eq:2} from \cref{problem:variance}).}
+%     \item \label{item:1} Let $\epsilon>0$ be arbitrary. Using
+%     Chebychev's inequality and the squeeze theorem, show that
+%     \begin{equation*}
+%       \lim_{n\to\infty} \P\left[\left| \frac{S_{n}}{n}-p \right| >\epsilon\right] = 0.
+%     \end{equation*}
+%     \item Using one or two complete sentences, intepret the limit in part
+%     \ref{item:1} when $\epsilon$ is very small.
+%   \end{enumerate}
+% \end{problem}
+
+
+\begin{problem}
+  Let $X$ be a random variable with pdf $f$ and cdf $F$. Assume that $f$ is uniformly
+  bounded, i.e., that there exists $M>0$ such that $|f(t)| \leq M$ for all
+  $t\in \R$.
+  \begin{enumerate}[(a)]
+    \item Prove that if $x,y\in \R$ then $\left| F(x)-F(y) \right| \leq M \left| x-y
+    \right|$.
+    \item Use part (a) to show that $F$ is continuous on $\R$.
+  \end{enumerate}
+\end{problem}
+
+
+\begin{problem}[Exercise 1.9 in the textbook]
+  Resting breathing rates for college-age students are approximately normally distributed with
+  mean 12 and standard deviation 2.3 breaths per minute. What fraction of all college-age students
+  have breathing rates in the following intervals?
+  \begin{enumerate}[(a)]
+    \item   9.7 to 14.3 breaths per minute
+    \item   7.4 to 16.6 breaths per minute
+    \item   9.7 to 16.6 breaths per minute
+    \item   Less than 5.1 or more than 18.9 breaths per minute
+  \end{enumerate}
+\end{problem}
+
+\end{document}

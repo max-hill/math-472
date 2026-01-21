@@ -506,8 +506,9 @@ denoted with capital letters, like $X,Y,Z$.
     \begin{array}{c@{\quad}c|cccc} & \multicolumn{5}{c}{\text{Dice 2}} \\ & &
       1 & 2 & 3 & 4 \\ \cline{2-6}  & 1 & 2 & 3 & 4 & 5 \\ \text{Dice 1} & 2 & 3 & 4 & 5 & 6 \\ & 3 & 4 & 5 & 6 & 7 \\ & 4 & 5 & 6 & 7 & 8 \end{array}
   \end{equation*}
-  \textbf{Events} are often defined using preimages of random variables. For
-  example, the event that $X=6$ is:
+  \textbf{Events} are often defined using preimages of random variables. Most
+  interesting take the form $[X\in B]$, where $X$ is a random variable and
+  $B\subseteq \R$. For example, the event that $X=6$ is:
   \begin{align*}
     [X=6] 
     &= \left\{\omega\in S: X(\omega) = 6\right\} \\
@@ -526,6 +527,8 @@ denoted with capital letters, like $X,Y,Z$.
 
   When writing random variables, we usually suppress the arguments, e.g.,
   writing $X$ rather than $X(\omega)$.
+
+  
 \end{example}
 % \begin{example}
 %   Consider an experiment in which we flip a coin twice. The sample space is
@@ -669,6 +672,8 @@ denoted with capital letters, like $X,Y,Z$.
   experiment many times.
 \end{remark}
 
+The next theorem is called the \textit{Law of the unconscious statistician (LOTUS)}.
+
 
 \begin{theorem}[LOTUS - single variable case]
   \label{thm:law-unconscious-statistician}
@@ -676,7 +681,7 @@ denoted with capital letters, like $X,Y,Z$.
   \begin{enumerate}[label=\rm{(\roman*.)}]
     \item If $X$ has pmf $p$, then
     \begin{equation*}
-      \E\left[g(X) \right]= \sum_{x\in \R:\ p(x)>0} g(x)p(x).
+      \E\left[g(X) \right]= \sum_{\substack{x\in \R\\ p(x)>0}} g(x)p(x).
     \end{equation*}
     \item If $Y$ has pdf $f$, then
     \begin{equation*}
@@ -757,18 +762,29 @@ denoted with capital letters, like $X,Y,Z$.
 
 \newpage
 \section{2026-01-21 | Week 02 | Lecture 04}
-\subsection{Independence}
+
+\begin{center}
+  \begin{tcolorbox}[width=0.9\textwidth, colback=white, colframe=black]
+    \textit{\textbf{Question for this lecture:} what does it mean for random
+      variables to be independent, and what does it buy us?}
+  \end{tcolorbox}
+\end{center}
+
+
+\subsection{Independence of random variables}
+
 \subsubsection{Definition and characterization}
 The aim of this section is to define what it means for random variables to be
 independent.
 
 \begin{definition}
   \label{def:independence-random-variables}
-  We say that the random variables $X_{1},X_{2}$ are \demph{independent} if
+  We say that the random variables $X_{1},X_{2},\ldots,X_{n}$ are
+  \demph{independent} if the following holds for all possible values
+  $x_{1},\ldots,x_{n}$ in their range:
   \begin{equation*}
-    \P\left[X_{1}\leq x_{1},X_{2}\leq x_{2}\right] = \P\left[X_{1}\leq x_{1}\right] \P\left[X_{2}\leq x_{2}\right]
+    \P\left[X_{1}\leq x_{1},X_{2}\leq x_{2},\ldots,X_{n}\leq x_{n}\right] = \P\left[X_{1}\leq x_{1}\right] \P\left[X_{2}\leq x_{2}\right] \cdots \P\left[X_{n}\leq x_{n}\right].
   \end{equation*}
-  for all $x_{1},x_{2}\in \R$. 
 \end{definition}
 
 \begin{theorem}[Factorization theorem -- Theorem 5.4 in textbook]
@@ -777,131 +793,573 @@ independent.
   factorizability of the joint pmf/pdf. More formally, we have:
   
   \begin{itemize}
-    \item \textbf{Discrete case:} Let $X_{1},X_{2}$ be discrete random
-    variables with pmfs $p_{1},p_{2}$ and joint pmf $p$. Then $X_{1}$ and
-    $X_{2}$ are independent if and only if
+    \item \textbf{Discrete case:} Let $X_{1},\ldots,X_{n}$ be discrete random
+    variables. Then $X_{1},\ldots,X_{n}$ are independent if and only if
     \begin{equation*}
-      p(x_{1},x_{2}) = p_{1}(x_{1})\cdot p_{2}(x_{2})
+      \P\left[X_{1}=x_{1},X_{2}=x_{2},\ldots, X_{n}=x_{n} \right] = \P\left[X_{1}= x_{1}\right]\P\left[X_{2}= x_{2}\right]\cdots \P\left[X_{n}= x_{n}\right]
     \end{equation*}
-    for all $x_{1},x_{2}\in \R$.
-    \item \textbf{Continuous case:} Let $Y_{1}$ and $Y_{2}$ be continuous
-    random variables with pdfs $f_{1}$ and $f_{2}$, and joint pdf
-    $f$. Then $Y_{1}$ and $Y_{2}$ are independent if and only if
+    for all $x_{1},\ldots,x_{n}\in \R$.
+    \item \textbf{Continuous case:} Let $Y_{1},\ldots,Y_{n}$ be continuous
+    random variables with pdfs $f_{1},\ldots,f_{n}$, and joint pdf
+    $f:\R^{n} \to \R$. Then $Y_{1},\ldots,Y_{n}$ are independent if and only if
     \begin{equation*}
-      f(y_{1},y_{2}) = f_{1}(y_{1}) \cdot f_{2}(y_{2})
+      f(y_{1},\ldots,y_{n}) = f_{1}(y_{1}) f_{2}(y_{2})\cdots f_{n}(y_{n})
     \end{equation*}
-    for all $y_{1},y_{2}\in \R$.
+    for all $y_{1},\ldots,y_{n}\in \R$.
   \end{itemize}
 \end{theorem}
 
 \begin{remark}
-  \label{rmk:independence-intuition}
-  If two random variables are independent, then observing one of them does not
-  give any information about what value the other one takes.
-\end{remark}
-
-
-
-\begin{remark}
   In this course, we will frequently work with ``samples'' of $n$ independent
-  random variables $X_{1},\ldots,X_{n}$. For that setting, note that
-  \cref{def:joint-pmf,def:joint-pdf,def:independence-random-variables,thm:factorization-theorem}
-  all generalize in the natural way (i.e., with $n$ variables rather than
-  $2$). In that case, the intuition is that observing any number of them
-  doesn't give you any information about the others.
+  random variables $X_{1},\ldots,X_{n}$. The intuition about independence for
+  $n$ variables is that observing any number of them doesn't give you any
+  information about the others.
 \end{remark}
+% \begin{definition}[Random vector]
+%   Let $S$ be a sample space. A function\footnote{measureable} $X:S \to \R^{n}$
+%   is called a \demph{random vector}.
+% \end{definition}
 
-\subsubsection{Some useful consequences of independence}
+
+% In other words, it is a vectors whose entries are random variables
+% $X=(X_{1},\ldots,X_{n})$. The distribution of a random vector is simply the
+% joint distribution of $X_{1},\ldots,X_{n}$.
+
+
+\subsubsection{Independence and expectations/variances}
+
+Independence splits the expectation of a product into a product of expectations.
 \begin{theorem}
-  If $X_{1}$ and $X_{2}$ are independent, then
+  \label{thm:independence-splits-expectations}
+  If $X_{1},X_{2},\ldots X_{n},$ are independent, then
   \begin{equation*}
-    \E\left[X_{1}X_{2} \right] = \E\left[X_{1} \right] \E\left[X_{2} \right].
+    \E\left[X_{1}X_{2}\cdots X_{n} \right] = \E\left[X_{1} \right] \E\left[X_{2} \right] \cdots \E\left[X_{n} \right],
   \end{equation*}
+  provided that the expectations exist.
 \end{theorem}
 \begin{proof}
-  This can be proven for continuous/discrete random variables using
-  \cref{thm:lotus-multivariable-case}.
+  This can be proven for continuous/discrete random variables by an
+  application of \cref{thm:lotus-multivariable-case}.
 \end{proof}
 
 
 \begin{definition}[Variance of a random variable]
-  If $X$ is a random variable and $\mu= \E\left[X \right]$, the
-  \demph{variance} of $X$, denoted $V(X)$ or $\Var(X)$, is the quantity
+  \label{def:variance-random-variable}
+  Let $X$ be a random variable. The \demph{variance} of $X$, denoted
+  $\Var(X)$, is the quantity
   \begin{equation*}
-    V(X) = \Var(X) = \E\left[(X-\mu)^{2} \right]
+    \Var(X) = \E\left[(X-\mu)^{2} \right].
   \end{equation*}
-  The positive square root of the variance is the \demph{standard deviation}
-  of $X$. 
+  where $\mu= \E\left[X \right]$. The positive square root of the variance is
+  the \demph{standard deviation} of $X$.
 \end{definition}
 
+\begin{remark}
+  Variance often denoted by $\sigma^{2}$. The textbook uses the notation
+  $V(X)$ instead of $\Var(X)$.
+\end{remark}
+
+
 \begin{theorem}
-  If $X$ and $Y$ are independent random variables and $a$ are scalars, then
- \begin{equation*}
-    \Var(X+Y) = \Var(X)+\Var(Y)
-  \end{equation*}
-  and
+  \label{thm:variance-properties}
+  Let $X$ be a random variable and $a,b$ be scalars. Then
   \begin{equation*}
     \Var(aX+b) = a^{2}\Var(X).
   \end{equation*}
+  If $X$ and $Y$ are independent random variables then
+ \begin{equation*}
+    \Var(X+Y) = \Var(X)+\Var(Y).
+  \end{equation*}
 \end{theorem}
+\begin{proof}
+  Follows by direct computation using the definition of variance.
+\end{proof}
 
-\newpage
-\subsection{What is a statistic?}
+The second part of \cref{thm:variance-properties} says that for independent
+random variables, variance is additive.
 
-Random sample is section 2.12.
+\subsubsection{Independence and long-term behavior: the weak law of large numbers}
+
+Combining many independent sources of randomness tends to produce predictible
+phenmonena. Here we introduce one example of that. 
+
+We will need the following theorem, which says that if the average male height
+is 5 feet tall, then no more than 10\% of men can be more than 50 feet tall.
+
+\begin{theorem}[Markov's inequality]
+  \label{thm:markovs-inequality}
+  Let $X$ be a nonnegative random variable and let $a>0$. Then
+  \begin{equation}\label{eq:2}
+    \P\left[X \geq a\right] \leq \frac{\E\left[X \right]}{a}
+  \end{equation}
+\end{theorem}
+\begin{proof}
+  Let $E= \left[ X \geq a\right]$. Then $X \cdot \mathbf{1}_{E}\leq X$, so
+  \begin{align*}
+    \E\left[X \right] 
+    &\geq \E\left[X \cdot \mathbf{1}_{E} \right]\\
+    &\geq \E\left[a \mathbf{1}_{E}\right]\\
+    &\geq a \E\left[\mathbf{1}_{E} \right]\\
+    &=a \P\left[E \right]\\
+    &=a \P\left[X \geq a\right].
+  \end{align*}
+  Dividing by $a$ implies \cref{eq:2}.
+\end{proof}
+\begin{theorem}[Weak Law of Large Numbers]
+  \label{thm:weak-law-large-numbers}
+  Let $(X_{n})_{n=1}^{\infty}$ be a sequence of independent random variables.
+  Assume that for all $n$, $\mu= \E\left[X_{n} \right]$ and
+  $\Var(X_{n}) \leq B$ for some fixed bound $B<\infty$. Let
+  $S_{n}=X_{1}+\ldots+X_{n}$. Then for all $\epsilon>0$,
+  \begin{equation*}
+    \P\left[ \left| \frac{S_{n}}{n}-\mu \right| >\epsilon\right] \to 0 \text{
+      as } n \to \infty.
+  \end{equation*}
+\end{theorem}
+\begin{proof}
+  First observe that by independence,
+  \begin{equation}\label{eq:3}
+    \Var(S_{n}) = \Var(X_{1})+\ldots+\Var(X_{n}) \leq nB.
+  \end{equation}
+  Next, let $\epsilon>0$ be arbitrary.
+  \begin{align*}
+    \P\left[\left| \frac{S_{n}}{n}-\mu \right| >\epsilon\right]
+    &= \P\left[\left| S_{n}-n\mu \right|> n\epsilon \right]\\
+    &= \P\left[ \left( S_{n}-n\mu \right)^{2} > (n\epsilon)^{2}  \right]\\
+    &\leq  \frac{\E\left[\left( S_{n}-n\mu \right)^{2}
+      \right]}{n^{2}\epsilon^{2}} &&\text{by \cref{thm:markovs-inequality}}\\
+    &= \frac{\Var(S_{n})}{n^{2}\epsilon^{2}} &&\text{by definition of variance }\\
+    &\leq \frac{B}{\epsilon^{2}n} &&\text{by \cref{eq:3}}.
+  \end{align*}
+  The right hand side tends to zero as $n \to \infty$, proving the theorem.
+\end{proof}
+
+\subsection{Equality in distribution}
+\begin{definition}[Identically distributed]
+  \label{def:identically-distributed}
+  Two random variables $X$ and $Y$ are \demph{identically distributed} if they
+  have the same cdf.
+\end{definition}
+\begin{remark}
+  Identically distributed random variables are said to ``have the same
+  distribution''. For discrete/continuous random variables, this is equivalent
+  to them having the same pmf/pdf.
+\end{remark}
+
+The next example shows that identically distributed random variables need not
+be equal as functions.
+
+\begin{example}
+  Flip a coin. Define two random variables
+  \begin{equation*}
+    X = \left\{ \begin{array}{l@{\quad:\quad}l} 1 &\text{coin is heads} \\ 0&
+        \text{coin is tails} \end{array}\right.
+  \end{equation*}
+  \begin{equation*}
+    Y = \left\{ \begin{array}{l@{\quad:\quad}l} 0 &\text{coin is heads} \\ 1&
+        \text{coin is tails} \end{array}\right.
+  \end{equation*}
+  Then $X$ and $Y$ are identically distributed, since they have the same pmf:
+  \begin{equation*}
+    \P\left[X=1 \right] = \P\left[Y=1 \right]=\frac{1}{2}
+    \quad \text{and} \quad
+    \P\left[X=0 \right] = \P\left[Y=0 \right]=\frac{1}{2}.
+  \end{equation*}
+  But of course $X$ and $Y$ are never equal, i.e., $\P\left[X\neq Y \right]=1$.
+\end{example}
+
+% \begin{theorem}[Law of Large Numbers]
+%   \label{thm:law-large-numbers}
+%   Let $X_{1},X_{2},\ldots$ be a sequence of independent random variables with
+%   finite variance and common mean $\mu$. Then
+%   \begin{equation*}
+%     \frac{X_{1}+\ldots+X_{n}}{n} \to \mu
+%   \end{equation*}
+% \end{theorem}
+
+% \begin{theorem}[Central Limit Theorem]
+%   \label{thm:central-limit-theorem}
+%   Let $X_{1},\ldots,X_{n}$ be independent identically distributed random
+%   variables with $\E\left[X_{i} \right]=\mu$ and $\Var(X_{i}) =
+%   \sigma^{2}<\infty$. Let
+%   \begin{equation*}
+%     U_{n} = \frac{\overline{X}-\mu}{\sigma \sqrt{n}}  \to \mathcal{N}(0,1)
+%   \end{equation*}
+% \end{theorem}
 
 
+\subsection{Populations and samples}
+
+\textit{For discussions of ``random sample'', see sections 2.12 and 6.1 in the textbook.}
+
+Here we introduce a conceptual framework for mathematical statistics.
 
 A \demph{population} is a large body of data that is the target of our
-interest. The subset collected from it is our \demph{sample}.
+interest. The subset collected from it is our \demph{sample}. 
 
-\textit{The objective of statistics to is to make an inference about a population
-  based on information contained in a sample from that population and to provide
-  an associated measure of goodness for the inference.}
+\begin{example}[Populations]
+  A population can be real or theoretical. Here are some examples
+  \begin{itemize}
+    \item The set of people in Hawaii (real, finite)
+    \item The set of voters in the 2026 Midterm elections (hypothetical, finite)
+    \item The decimal expansion of $\pi$ (countably infinite)
+    \item The infinitely many observations that could be made during a
+    laboratory experiment if the experiment were repeated over and over again
+    (hypothetical)
+    \item The lifetimes of light bulbs produced by a factory
+  \end{itemize}
+  Importantly, a population can also be a \textit{probability distribution},
+  specified by a pdf, pmf, or cdf
+  \begin{itemize}
+    \item Observations made from an exponential distribution with mean
+    $\lambda>0$ (i.e., the distribution with pdf
+    $f(x)=\lambda e^{-\lambda x}\mathbf{1}_{\left[ x>0 \right] }$.)
+  \end{itemize}
+\end{example}
 
-\begin{definition}[Point Estimator]
-  A \textbf{point estimator} is any function $W(X_{1},\ldots,X_{n})$ of a
-  sample. Thus, any statistic is a point estimator. In general we refer to an
-  \textit{estimator} as a function of the sample, while an \textit{estimate} is
-  the realized value of an estimator (e.g., a number) that is obtained when a
-  sample is actually taken.
+
+The simpleset sampling procedure is called simple random sampling.
+
+\begin{definition}[Simple random sampling]
+  Let $N$ and $n$ denote the numbers of elements in the population and sample,
+  respectively. If the sampling is conducted in such a way that each of the
+  ${N\choose n}$ samples has an equal probability of being selected, the
+  sampling is called \demph{simple random sampling}, and the result is a
+  \demph{simple random sample}.
+\end{definition}
+
+More commonly in mathematical statistics, we think of the population as a
+distribution.
+
+\begin{definition}[Random sample from a distribution]
+  Consider a given probability distribution on $\R$ that can be represented by
+  a pdf or pmf $f$. We say that the random variables $X_{1},\ldots,X_{n}$ form
+  a \demph{random sample} from this distribution if these random variables are
+  independent and the distribution of each is given by $f$. Such random
+  variables are also said to be \demph{independent and identically
+    distributed} (iid). The number of random variables $n$ is the
+  \demph{sample size}.
 \end{definition}
 
 
-\begin{definition}[Statistic, Sampling Distribution]
-  \label{def:statistic-sampling-distribution}
-  Let $X_1,\ldots,X_n$ be a random sample of size $n$ from a population and let
-  $T(x_1,\ldots,x_n)$ be a real-valued or vector-valued function whose domain
-  includes the sample space of $(X_1,\ldots,X_n)$. Then the random variable or
-  random vector
-  \begin{equation*}
-    Y\triangleq T(X_1,\ldots,X_n)
-  \end{equation*}
-  is called a \textbf{statistic}. The probability distribution of a statistic
-  $Y$ is called the \textbf{sampling distribution} of $Y$.
+\textit{The objective of statistics to is to make an inference about a
+  population based on information contained in a sample from that population
+  and to provide an associated measure of goodness for the inference.}
+
+
+\subsection{What is a statistic?}
+\textit{Section 7.1 in the textbook.}
+
+\begin{definition}[Statistic]
+  A \demph{statistic} is a function of the observable random variables in a
+  sample and known constants.
 \end{definition}
+
+In other words, if $X_{1},\ldots,X_{n}$ is a random sample and
+$T:\R^{n}\to \R$ is a function, then the random
+variable
+\begin{equation*}
+  Y = T(X_{1},\ldots,X_{n})
+\end{equation*}
+is a statistic.\footnote{A statistic does not need to be real-valued, but we
+  will focus on the case when it is.} The probability distribution of such a
+statistic $Y$ is called its \demph{sampling distribution}.
+
+Often, we have some quantity of interest, called a \demph{target parameter},
+and we want a single ``best guess'' of some quantity of interest. When this is
+the case, the we call a statistic an estimator:
+
+\begin{definition}[Estimator]
+  \label{def:estimator}
+  An \demph{estimator} is a statistic, that is a function
+  $T(X_{1},\ldots,X_{n})$ of a sample, that is used to approximate a target
+  parameter.
+  An \demph{estimate} is the realized value of an
+  estimator (e.g., a number) that is obtained when the sample is actually
+  taken.
+\end{definition}
+In words, an estimator is a rule, often expressed as a formula, that tells us
+how to calculate the value of an estimate based on the measurements contained
+in a sample. Here are two important examples of estimators.
+
 \begin{definition}[Sample Mean, Sample Variance]
-  The \textbf{sample mean} is the statistic defined by
+  Let $X_{1},\ldots,X_{n}$ be a random sample. The \demph{sample mean},
+  denoted $\overline{X}$, is the statistic
   \begin{equation*}
-    \overline{X} \triangleq \frac{1}{n}\sum_{i=1}^{n}X_{i},
+    \overline{X} = \frac{1}{n}\sum_{i=1}^{n}X_{i}.
   \end{equation*}
-  and the \textbf{sample variance} is the statistic defined by
+  The \demph{sample variance}, denoted $S^{2}$, is the statistic
   \begin{equation*}
-    S^{2} \triangleq \frac{1}{n-1} \sum_{i=1}^{n} (X_{i}-\overline{X})^{2}.
+    S^{2} = \frac{1}{n-1} \sum_{i=1}^{n} (X_{i}-\overline{X})^{2}.
   \end{equation*}
 \end{definition}
 
+The target parameters these are used to estimate are the mean and variance of
+the population.
 
 
-\begin{theorem}[Chebychev's inequality]
-  \label{thm:chebychevs-theorem}
-  Let $Y$ be a random variable with mean $\mu$ and finite variance
-  $\sigma^{2}$. Then for any constant $c>0$,
+The following examples illustrates some of the terminology we've introduced.
+
+\begin{example}
+  Suppose the lifetime of each light bulb produced in a certain factory is
+  distributed according to the following pdf
   \begin{equation*}
-    \P\left[|Y-\mu| \geq c\right] \leq \frac{\sigma^{2}}{c^{2}}
+    f(y)= \lambda e^{-\lambda y}\mathbf{1}_{\left[ y>0 \right] }.
   \end{equation*}
-\end{theorem}
+  for some parameter $\lambda>0$, where $y$ is measured in minutes. Here, the
+  \textbf{population} is the distribution of lifetimes. Suppose we do not know
+  $\lambda$, and we wish to estimate it. Hence $\lambda$ is the \textbf{target
+    parameter}.
+  
+  A random sample $Y_{1},\ldots,Y_{n}$ is taken. (So the $Y_{i}$'s are
+  independent and each as pdf $f$.)
 
+  \begin{claim}
+    The \textbf{joint pdf} of $Y_{1},\ldots,Y_{n}$ is the function
+    \begin{equation*}
+      g(y_{1},\ldots,y_{n}) = \lambda^{n} e^{-\lambda(y_{1}+\ldots+y_{n})} \mathbf{1}_{\left[ \min(y_{1},\ldots,y_{n})>0 \right]},
+    \end{equation*}
+    defined for all $y_{1},\ldots,y_{n}\in \R$
+  \end{claim}
+  \begin{claimproof}
+    Using the fact that $Y_{1},\ldots,Y_{n}$ in independent continuous random variables,
+    \begin{align*}
+      g(y_{1},\ldots,y_{n}) 
+      &= f(y_{1})\cdots f(y_{n}) &&\text{by \cref{thm:factorization-theorem}}\\
+      &= \prod_{i=1}^{n}\left(\lambda e^{-\lambda y_{i}}\mathbf{1}_{\left[ y_{i}>0 \right] }\right)\\ 
+      &= \lambda^{n} e^{-\lambda(y_{1}+\ldots+y_{n})} \left( \prod_{i=1}^{n}\mathbf{1}_{\left[ y_{i}>0 \right] }  \right)\\ 
+      &= \lambda^{n} e^{-\lambda(y_{1}+\ldots+y_{n})} \mathbf{1}_{\left[ \min(y_{1},\ldots,y_{n})>0 \right]}.
+    \end{align*}
+  \end{claimproof}
+  
+  \begin{claim}
+    If $Y$ has pdf $f$, then $\E\left[Y \right]= \frac{1}{\lambda}$.
+  \end{claim}
+  \begin{claimproof}
+    \begin{align*}
+      \E\left[Y \right]
+      &= \int_{-\infty}^{\infty} y\lambda e^{-\lambda y} \mathbf{1}_{\left[ y>0 \right] }dy\\
+      &= \int_{0}^{\infty} y\lambda e^{-\lambda y}dy\\ 
+      &=\int_{0}^{\infty}e^{-\lambda y}dy &&\text{by integration by parts}\\ 
+      &= \frac{1}{\lambda}.
+    \end{align*}
+  \end{claimproof}
+  By \cref{thm:weak-law-large-numbers} (The Weak Law of Large Numbers), the \textbf{statistic}
+  \begin{equation*}
+    \overline{Y}= \frac{Y_{1}+\ldots+Y_{n}}{n}
+  \end{equation*}
+  is likely to be close to $\E\left[Y \right] = 1/\lambda$ when $n$ is large.
+  Therefore a reasonable \textbf{estimator} for $\lambda$ is
+  \begin{equation*}
+    \frac{1}{\overline{Y}} = \frac{n}{Y_{1}+\ldots+Y_{n}}.
+  \end{equation*}
+  If $n=10$ and the observed values of $Y_{1},\ldots,Y_{10}$ are
+  \begin{equation*}
+    2,~ 0.8,~ 0.1,~ 2.3,~ 3.2,~ 5.4,~ 2,~ 0.4,~ 2.8,~ \text{ and }3.4
+  \end{equation*}
+  then $\overline{Y}=2.24$, and hence our \textbf{estimate} for $\lambda$ would be
+  $\frac{1}{2.24}\approx 0.45$.
+\end{example}
+
+
+\begin{example}[Example 7.1 in textbook]
+  Roll a dice three times. Let $Y_{1},Y_{2},Y_{3}$ be the values of the rolls.
+  The average number observed in this sample of size 3 is
+  \begin{equation*}
+    \overline{Y} = \frac{Y_{1}+Y_{2}+Y_{3}}{3}.
+  \end{equation*}
+  This is the \textbf{sample mean}, and is the first example of a \textbf{statistic}
+  that we'll see. What the mean $\mu_{\overline{Y}}$ and standard deviation
+  $\sigma_{\overline{Y}}$ of the random variable $\overline{Y}$?
+
+  First we compute the mean and variance of a single $Y_{i}$.
+  \setcounter{claimcount}{0}
+  \begin{claim}
+    \label{claim:mean-and-variance-of-dice}
+    $\E\left[Y_{i} \right]=3.5$ and $\Var(Y_{i}) = 35/12 \approx 2.9167$. 
+  \end{claim}
+  \begin{claimproof}
+    Using the definition of expected value,
+    \begin{equation*}
+      \E\left[Y_{i} \right] = \sum_{k=1}^{6}k \P\left[Y_{i}=k \right]=
+      \sum_{k=1}^{6}k \frac{1}{6}=3.5.
+    \end{equation*}
+
+    Next we compute the variance of $Y_{i}$:
+    \begin{align*}
+      \Var(Y_{i}) 
+      &= \E\left[\left( Y_{i}-3.5 \right)^{2}  \right] &&\text{\cref{def:variance-random-variable} }\\
+      &= \sum_{k=1}^{6}(k-3.5)^{2} \P\left[Y_{i}=k \right] &&\text{By \cref{thm:law-unconscious-statistician} (LOTUS) using
+                                                              $g(x)=(x-3.5)^{2}$ }\\
+      &= \sum_{k=1}^{6}(k-3.5)^{2} \frac{1}{6} &&\text{since $\P\left[Y_{i}=k
+                                                  \right]=1/6$ for all $k\in [6]$ }\\
+      &= 35/12.
+    \end{align*}
+  \end{claimproof}
+
+  
+  \begin{claim}
+    $\E\left[\overline{Y} \right] = 3.5$
+  \end{claim}
+  \begin{claimproof}
+    We have:
+    \begin{align*}
+      \E\left[\overline{Y} \right] 
+      &= \E\left[\frac{Y_{1}+Y_{2}+Y_{3}}{3} \right] &&\text{by definition of $\overline{Y}$}\\
+      &= \frac{1}{3} \left( \E\left[Y_{1} \right]+\E\left[Y_{2}
+        \right]+\E\left[Y_{3} \right] \right) &&\text{by linearity of expectation}\\ 
+      &= \frac{1}{3} \left( 3.5+3.5+3.5 \right) &&\text{by \cref{claim:mean-and-variance-of-dice}}\\ 
+      &= 3.5.
+    \end{align*}
+  \end{claimproof}
+
+
+  \begin{claim}
+    \label{claim:variance-of-average-of-3-dice-rolls}
+    $\Var(\overline{Y})= .9722$
+  \end{claim}
+  \begin{claimproof}
+    \begin{align*}
+      \Var(\overline{Y})
+      &= \Var \left(  \frac{Y_{1}+Y_{2}+Y_{3}}{3} \right)\\ 
+      &= \frac{1}{9}\Var \left( Y_{1}+Y_{2}+Y_{3} \right) &&\text{by \cref{thm:variance-properties} }\\ 
+      &= \frac{1}{9}\left( \Var(Y_{1})+\Var(Y_{2})+\Var(Y_{3}) \right)
+      &&\text{by \cref{thm:variance-properties}}\\
+      &= \frac{1}{9} \left(2.9167+2.9167+2.9167 \right) &&\text{by \cref{claim:mean-and-variance-of-dice}}\\
+      &= \frac{2.9167}{3} &&(*) \\
+      &= .9722
+    \end{align*}
+  \end{claimproof}
+
+  Since the standard deviation is the square root of the variance, the
+  standard deviation is $\sqrt{.9722}= .9860$ by
+  \cref{claim:variance-of-average-of-3-dice-rolls}.
+
+  \begin{remark}
+    In equation $(*)$, we had $\Var(\overline{Y}) = \frac{2.9167}{3}$. Notice
+    how, if we computed the variance of four or five dice rolls, we'd get
+    \begin{equation*}
+      \Var(\overline{Y})=\frac{2.9167}{4} \quad \text{or} \quad \Var(\overline{Y})=\frac{2.9167}{5}.
+    \end{equation*}
+    In general, for $n$ dice rolls, we'd get
+    \begin{equation*}
+      \Var(\overline{Y}) = \frac{2.9167}{n}.
+    \end{equation*}
+    This quantity tends to zero as $n \to \infty$. The variance of a sample
+    mean decreases as $n$ grows.
+  \end{remark}
+\end{example}
+
+
+\textit{Begin section 7.2}
+
+\begin{definition}
+  A random variable $Y$ is said to be \demph{normally distributed} with mean
+  $\mu\in \R$ and variance $\sigma^{2}>0$ if it has pdf
+  \begin{equation*}
+    f(y) = \frac{1}{\sqrt{2\pi\sigma^{2}}} \exp\left\{-\frac{(y-\mu)^{2}}{2\sigma^{2}} \right\},
+  \end{equation*}
+  defined for all $y\in \R$. We abbreviate this by writing
+  $Y\sim \mathcal{N}(\mu,\sigma^{2})$. If $Y\sim \mathcal{N}(0,1)$, we say $Y$
+  has \demph{standard normal distribution}.
+\end{definition}
+
+
+\begin{theorem}
+  \label{thm:normal-sample-means}
+  Let $Y_{1},\ldots,Y_{n}$ be a random sample of size $n$ from a normal
+  distribution with mean $\mu$ and variance $\sigma^{2}$. Then
+  \begin{equation*}
+    \overline{Y}= \frac{1}{n} \sum_{i=1}^{n}Y_{i} 
+  \end{equation*}
+  is normally distributed with mean $\mu_{\overline{Y}}=\mu$ and variance
+  $\sigma^{2}_{\overline{Y}}=\sigma^{2}/n$.
+\end{theorem}
+\begin{proof}[Proof sketch]
+  The proof follows from three facts:
+  \begin{itemize}
+    \item Any linear combination of normal random variables is a normal random
+    variable (this can be proved using moment generating functions).
+    \item That $\E\left[\overline{Y} \right]=\mu$ follows by linearity of
+    expectation.
+    \item The variance calculation follows by \cref{thm:variance-properties}.
+  \end{itemize}
+\end{proof}
+
+\begin{remark}
+  \label{rmk:sample-mean-standardized}
+  The random variable $Z =
+  \frac{\overline{Y}-\mu_{\overline{Y}}}{\sigma_{\overline{Y}}} = 
+   \frac{\overline{Y}-\mu}{\sigma/\sqrt{n}} $
+  has a standard normal distribution.
+\end{remark}
+
+
+
+\begin{example}[Example 7.2 in textbook]
+  A bottling machine discharages an average of $\mu$ ounces per bottle. It
+  has been observed that the amount of liquid discharged is normally
+  distributed with standard deviation $\sigma=1$ per ounce.
+
+  A sample of $n=9$ filled bottles is randomly selected, and is measured.
+
+  Find the probability that the sample mean will be within $.3$ ounces of the
+  true mean $\mu$.
+
+
+  \Fl{Solution:} Let $Y_{1},\ldots,Y_{9}$ be the ounces in each of the
+  bottles. Then $Y_{i}\sim \mathcal{N}(\mu,1)$ for $i\in [9]$. By
+  \cref{thm:normal-sample-means}, $\overline{Y}\sim \mathcal{N}(\mu,
+  \sigma^{2}/n)$, and $\sigma^{2}/n=1/9$. We want to find
+  \begin{align}\label{eq:4}
+    \P\left[\left| \overline{Y}-\mu \right| \leq .3\right] 
+    &= \P\left[-.3 \leq \overline{Y}-\mu \leq .3\right] \nonumber\\
+    &= \P\left[- \frac{.3}{\sigma/\sqrt{n}}\leq \frac{\overline{Y}-\mu}{\sigma/\sqrt{n}} \leq \frac{.3}{\sigma/\sqrt{n}}\right].
+  \end{align}
+  By \cref{rmk:sample-mean-standardized},
+  $Z=\frac{\overline{Y}-\mu}{\sigma/\sqrt{n}}\sim \mathcal{N}(0,1)$, and
+  plugging in $\sigma=1$ and $n=9$ and simplifying gives
+  \begin{align*}
+    \P\left[\left| \overline{Y}-\mu \right| \leq .3\right] 
+    &= \P\left[-.9 \leq Z \leq .9\right]\\
+    &= 1- 2 \P\left[Z>.9 \right]\\
+    &=.6318.
+  \end{align*}
+\end{example}
+
+\begin{example}[Example 7.3 in textbook]
+  How many observations need to be included in the sample to ensure that
+  $\overline{Y}$ is within $.3$ ounces of $\mu$ with probability $.95$?
+
+  Now we want
+  \begin{equation*}
+    \P\left[\left| \overline{Y} -\mu \right| \leq .3\right] = .95.
+  \end{equation*}
+  By \cref{eq:4}, 
+  \begin{equation*}
+    \P\left[\left| \overline{Y} -\mu \right| \leq .3\right] = \P\left[- \frac{.3}{\sigma/\sqrt{n}}\leq \frac{\overline{Y}-\mu}{\sigma/\sqrt{n}} \leq \frac{.3}{\sigma/\sqrt{n}}\right].
+  \end{equation*}
+  Recalling that $\sigma=1$ and
+  $Z=\frac{\overline{Y}-\mu}{\sigma/\sqrt{n}}\sim \mathcal{N}(0,1)$, we have
+  \begin{equation*}
+    \P\left[\left| \overline{Y}-\mu \right| \leq .3 \right] = \P\left[.3 \sqrt{n}\leq Z \leq .3 \sqrt{n}\right].
+  \end{equation*}
+  So we need to find $n$ such that $\P\left[.3 \sqrt{n}\leq Z \leq .3
+    \sqrt{n}\right]=.95$.
+
+  It is a well-known fact that
+  \begin{equation*}
+    \P\left[-1.96 \leq Z \leq 1.96\right] = .95.
+  \end{equation*}
+  So we need $.3 \sqrt{n}=1.96$, or equivalently, $n= \left( \frac{1.96}{.3}
+  \right)^{2}= 42.68$.
+
+  So we need at least $43$ samples, since $42$ is not quite enough.
+\end{example}
+
+\subsection{Chi-squired distributions}
+
+Define chi-squared distribution, state theorem 7.2.
 
 
 \end{document}
