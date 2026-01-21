@@ -839,7 +839,8 @@ Independence splits the expectation of a product into a product of expectations.
 \end{theorem}
 \begin{proof}
   This can be proven for continuous/discrete random variables by an
-  application of \cref{thm:lotus-multivariable-case}.
+  application of \cref{thm:lotus-multivariable-case} and
+  \cref{thm:factorization-theorem}.
 \end{proof}
 
 
@@ -855,7 +856,7 @@ Independence splits the expectation of a product into a product of expectations.
 \end{definition}
 
 \begin{remark}
-  Variance often denoted by $\sigma^{2}$. The textbook uses the notation
+  Variance is often denoted by $\sigma^{2}$. The textbook uses the notation
   $V(X)$ instead of $\Var(X)$.
 \end{remark}
 
@@ -881,7 +882,23 @@ random variables, variance is additive.
 \subsubsection{Independence and long-term behavior: the weak law of large numbers}
 
 Combining many independent sources of randomness tends to produce predictible
-phenmonena. Here we introduce one example of that. 
+phenomena. Here we introduce one example of that.
+
+\begin{theorem}[Weak Law of Large Numbers]
+  \label{thm:weak-law-large-numbers}
+  Let $(X_{n})_{n=1}^{\infty}$ be a sequence of independent random variables.
+  Assume that for all $n$, $\mu= \E\left[X_{n} \right]$ and
+  $\Var(X_{n}) \leq B$ for some fixed bound $B<\infty$. Let
+  $S_{n}=X_{1}+\ldots+X_{n}$. Then for all $\epsilon>0$,
+  \begin{equation*}
+    \P\left[ \left| \frac{S_{n}}{n}-\mu \right| >\epsilon\right] \to 0 \text{
+      as } n \to \infty.
+  \end{equation*}
+\end{theorem}
+
+\newpage
+\section{2026-01-23 | Week 02 | Lecture 05}
+\subsection{Proof of the weak law of large numbers}
 
 We will need the following theorem, which says that if the average male height
 is 5 feet tall, then no more than 10\% of men can be more than 50 feet tall.
@@ -905,6 +922,8 @@ is 5 feet tall, then no more than 10\% of men can be more than 50 feet tall.
   \end{align*}
   Dividing by $a$ implies \cref{eq:2}.
 \end{proof}
+
+
 \begin{theorem}[Weak Law of Large Numbers]
   \label{thm:weak-law-large-numbers}
   Let $(X_{n})_{n=1}^{\infty}$ be a sequence of independent random variables.
@@ -916,6 +935,7 @@ is 5 feet tall, then no more than 10\% of men can be more than 50 feet tall.
       as } n \to \infty.
   \end{equation*}
 \end{theorem}
+
 \begin{proof}
   First observe that by independence,
   \begin{equation}\label{eq:3}
