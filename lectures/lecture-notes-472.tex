@@ -911,13 +911,13 @@ is 5 feet tall, then no more than 10\% of men can be more than 50 feet tall.
   \end{equation}
 \end{theorem}
 \begin{proof}
-  Let $E= \left[ X \geq a\right]$. Then $X \cdot \mathbf{1}_{E}\leq X$, so
+  Let $A= \left[ X \geq a\right]$. Then $X \cdot \mathbf{1}_{A}\leq X$, so
   \begin{align*}
     \E\left[X \right] 
-    &\geq \E\left[X \cdot \mathbf{1}_{E} \right]\\
-    &\geq \E\left[a \mathbf{1}_{E}\right]\\
-    &\geq a \E\left[\mathbf{1}_{E} \right]\\
-    &=a \P\left[E \right]\\
+    &\geq \E\left[X \cdot \mathbf{1}_{A} \right]\\
+    &\geq \E\left[a \mathbf{1}_{A}\right]\\
+    &\geq a \E\left[\mathbf{1}_{A} \right]\\
+    &=a \P\left[A \right]\\
     &=a \P\left[X \geq a\right].
   \end{align*}
   Dividing by $a$ implies \cref{eq:2}.
@@ -1038,6 +1038,10 @@ interest. The subset collected from it is our \demph{sample}.
 \end{example}
 
 
+
+\newpage
+\section{2026-01-26 | Week 03 | Lecture 06}
+\subsection{Sampling}
 The simpleset sampling procedure is called simple random sampling.
 
 \begin{definition}[Simple random sampling]
