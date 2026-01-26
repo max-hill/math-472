@@ -16,12 +16,12 @@ title: Lecture Notes
 
  Date        | Lecture number          | Topics Covered
 -------------|----------------------------|-------------
-2026-01-12  | 1   | What is probability?
-2026-01-14  | 2   | Independent events, conditional probabilites, random variables
-2026-01-16  | 3   | Random variables, expected value, joint distributions, independence
+2026-01-12  | 1   | (Section 2.4) What is probability?
+2026-01-14  | 2   | (Sections 2.7, 2.11, 4.2) Independent events, conditional probabilites, random variables
+2026-01-16  | 3   | (Section 4.2, 5.4) Random variables, expected value, joint distributions, independence
 2026-01-21  | 4   | Independence of random variables
-2026-01-23  | 5   | weak law of large numbers, identical distribution, populations 
-2026-01-26  | 6   | What is a statistic? What is a random sample? (sections 2.12, 6.1, 7.1 in textbook)
+2026-01-23  | 5   | Weak law of large numbers, identical distribution, populations 
+2026-01-26  | 6   | (Sections 2.12, 6.1, 7.1) What is a statistic? What is a random sample?
  
 
 # Other Links
