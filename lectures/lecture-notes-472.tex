@@ -1131,13 +1131,45 @@ The following examples illustrates some of the terminology we've introduced.
     f(y)= \lambda e^{-\lambda y}\mathbf{1}_{\left[ y>0 \right] }.
   \end{equation*}
   for some parameter $\lambda>0$, where $y$ is measured in minutes. Here, the
-  \textbf{population} is the distribution of lifetimes. Suppose we do not know
-  $\lambda$, and we wish to estimate it. Hence $\lambda$ is the \textbf{target
-    parameter}.
-  
-  A random sample $Y_{1},\ldots,Y_{n}$ is taken. (So the $Y_{i}$'s are
-  independent and each as pdf $f$.)
+  \textbf{population} is either the set of lightbulbs produced by the factory,
+  which we idealize as the probability distribution given by $f$. Suppose we
+  do not know $\lambda$, and we wish to estimate it. Hence $\lambda$ is the
+  \textbf{target parameter}. A random sample $Y_{1},\ldots,Y_{n}$ is taken.
+  (So the $Y_{i}$'s are independent and each as pdf $f$.)
 
+  In this case $f$ is an exponential distribution with rate $\lambda>0$. The
+  exponential distribution is used to modeling lifetimes of systems that are
+  not subject to degredation (e.g., lifetimes of light bulbs, not diesel
+  engines) as well as waiting times (e.g., the length of time intervals
+  between cars passing by a tree on an idyllic country road). In the road
+  example, if the rate of cars passing is $2$ cars per minute, then on average
+  you have to wait only $1/2$ of a minute for a car to pass. That is, the
+  \textit{rate} and \textit{expected values} are reciprocals of each other.
+  Let's prove this fact in the following claim:
+
+  \begin{claim}
+    If $Y$ has pdf $f$, then $\E\left[Y \right]= \frac{1}{\lambda}$.
+  \end{claim}
+  \begin{claimproof}
+    By definition of expected value for a continuous random variable,
+    \begin{align*}
+      \E\left[Y \right]
+      &= \int_{-\infty}^{\infty} y\lambda e^{-\lambda y} \mathbf{1}_{\left[ y>0 \right] }dy\\
+      &= \int_{0}^{\infty} y\lambda e^{-\lambda y}dy\\ 
+      &= \int_{0}^{\infty}y \frac{d}{dy} \left[ -e^{-\lambda y} \right] dy\\  
+      &=\left[ -ye^{-\lambda y} \right]_{y=0}^{y=\infty}- \int_{0}^{\infty} \frac{d}{dy} \left[ y \right] \left( - e^{-\lambda y} \right) dy &&\text{by integration by parts}\\ 
+      &=\int_{0}^{\infty}e^{-\lambda y}dy\\ 
+      &= \left[ \frac{1}{\lambda}e^{-\lambda y} \right]^{y=0}_{y=\infty} \\
+      &= \frac{1}{\lambda}.
+    \end{align*}
+  \end{claimproof}
+\end{example}
+
+\newpage
+\section{2026-01-28 | Week 03 | Lecture 07}
+\begin{example}[example continued.]
+  
+  
   \begin{claim}
     The \textbf{joint pdf} of $Y_{1},\ldots,Y_{n}$ is the function
     \begin{equation*}
@@ -1156,18 +1188,7 @@ The following examples illustrates some of the terminology we've introduced.
     \end{align*}
   \end{claimproof}
   
-  \begin{claim}
-    If $Y$ has pdf $f$, then $\E\left[Y \right]= \frac{1}{\lambda}$.
-  \end{claim}
-  \begin{claimproof}
-    \begin{align*}
-      \E\left[Y \right]
-      &= \int_{-\infty}^{\infty} y\lambda e^{-\lambda y} \mathbf{1}_{\left[ y>0 \right] }dy\\
-      &= \int_{0}^{\infty} y\lambda e^{-\lambda y}dy\\ 
-      &=\int_{0}^{\infty}e^{-\lambda y}dy &&\text{by integration by parts}\\ 
-      &= \frac{1}{\lambda}.
-    \end{align*}
-  \end{claimproof}
+  
   By \cref{thm:weak-law-large-numbers} (The Weak Law of Large Numbers), the \textbf{statistic}
   \begin{equation*}
     \overline{Y}= \frac{Y_{1}+\ldots+Y_{n}}{n}

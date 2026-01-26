@@ -20,7 +20,8 @@ title: Lecture Notes
 2026-01-14  | 2   | Independent events, conditional probabilites, random variables
 2026-01-16  | 3   | Random variables, expected value, joint distributions, independence
 2026-01-21  | 4   | Independence of random variables
-2026-01-23  | 4   | weak law of large numbers, identical distribution, populations
+2026-01-23  | 5   | weak law of large numbers, identical distribution, populations 
+2026-01-26  | 6   | What is a statistic? What is a random sample? (sections 2.12, 6.1, 7.1 in textbook)
  
 
 # Other Links
