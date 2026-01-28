@@ -1125,7 +1125,8 @@ the population.
 
 The following examples illustrates some of the terminology we've introduced.
 
-\begin{example}
+\begin{example}[Estimating average lightbulb lifetime]
+  \label{ex:estimating-average-lightbulb-lifetime}
   Suppose the lifetime of each light bulb produced in a certain factory is
   distributed according to the following pdf
   \begin{equation*}
@@ -1168,34 +1169,37 @@ The following examples illustrates some of the terminology we've introduced.
 
 \newpage
 \section{2026-01-28 | Week 03 | Lecture 07}
-\begin{example}[example continued.]
-  
-  
-  \begin{claim}
-    The \textbf{joint pdf} of $Y_{1},\ldots,Y_{n}$ is the function
-    \begin{equation*}
-      g(y_{1},\ldots,y_{n}) = \lambda^{n} e^{-\lambda(y_{1}+\ldots+y_{n})} \mathbf{1}_{\left[ \min(y_{1},\ldots,y_{n})>0 \right]},
-    \end{equation*}
-    defined for all $y_{1},\ldots,y_{n}\in \R$
-  \end{claim}
-  \begin{claimproof}
-    Using the fact that $Y_{1},\ldots,Y_{n}$ in independent continuous random variables,
-    \begin{align*}
-      g(y_{1},\ldots,y_{n}) 
-      &= f(y_{1})\cdots f(y_{n}) &&\text{by \cref{thm:factorization-theorem}}\\
-      &= \prod_{i=1}^{n}\left(\lambda e^{-\lambda y_{i}}\mathbf{1}_{\left[ y_{i}>0 \right] }\right)\\ 
-      &= \lambda^{n} e^{-\lambda(y_{1}+\ldots+y_{n})} \left( \prod_{i=1}^{n}\mathbf{1}_{\left[ y_{i}>0 \right] }  \right)\\ 
-      &= \lambda^{n} e^{-\lambda(y_{1}+\ldots+y_{n})} \mathbf{1}_{\left[ \min(y_{1},\ldots,y_{n})>0 \right]}.
-    \end{align*}
-  \end{claimproof}
-  
-  
-  By \cref{thm:weak-law-large-numbers} (The Weak Law of Large Numbers), the \textbf{statistic}
+
+\subsection{Basic examples of statistics and estimators}
+\textit{This lecture is based on section 7.1 in the textbook.}
+
+\begin{example}[\cref{ex:estimating-average-lightbulb-lifetime} continue]
+
+  We have a random sample of $Y_{1},\ldots,Y_{n}$ from the distribution with
+  pdf 
   \begin{equation*}
-    \overline{Y}= \frac{Y_{1}+\ldots+Y_{n}}{n}
+    f(y)= \lambda e^{-\lambda y}\mathbf{1}_{\left[ y>0 \right] },
   \end{equation*}
-  is likely to be close to $\E\left[Y \right] = 1/\lambda$ when $n$ is large.
-  Therefore a reasonable \textbf{estimator} for $\lambda$ is
+  where $\lambda$ is a target parameter.
+
+  In the setting of this example, we interpret the random variables
+  $Y_{1},\ldots,Y_{n}$ as lifetimes (in, say, yearse) of lightbulbs produced
+  by the factor.
+  
+  In the last lecture, we used integration by parts to show that if $Y$ has
+  pdf $f$, then
+  \begin{equation*}
+    \E\left[ Y \right]= \frac{1}{\lambda}.
+  \end{equation*}
+
+  Consider the \textbf{statistic}
+  \begin{equation*}
+    \overline{Y}= \frac{Y_{1}+\ldots+Y_{n}}{n}.
+  \end{equation*} 
+  By \cref{thm:weak-law-large-numbers} (The Weak Law of Large Numbers),
+  $\overline{Y}$ is likely to be close to $\E\left[Y \right] = 1/\lambda$ when
+  $n$ is large. Therefore $\frac{1}{\overline{Y}}$ is likely to be close to
+  $\lambda$. Therefore a reasonable \textbf{estimator} for $\lambda$ is
   \begin{equation*}
     \frac{1}{\overline{Y}} = \frac{n}{Y_{1}+\ldots+Y_{n}}.
   \end{equation*}
@@ -1205,6 +1209,34 @@ The following examples illustrates some of the terminology we've introduced.
   \end{equation*}
   then $\overline{Y}=2.24$, and hence our \textbf{estimate} for $\lambda$ would be
   $\frac{1}{2.24}\approx 0.45$.
+  
+  % Here is one more useful calcuation.
+  
+  % \begin{claim}
+  %   The \textbf{joint pdf} of $Y_{1},\ldots,Y_{n}$ is the function
+  %   \begin{equation*}
+  %     g(y_{1},\ldots,y_{n}) = \lambda^{n} e^{-\lambda(y_{1}+\ldots+y_{n})} \mathbf{1}_{\left[ \min(y_{1},\ldots,y_{n})>0 \right]},
+  %   \end{equation*}
+  %   defined for all $y_{1},\ldots,y_{n}\in \R$
+  % \end{claim}
+  % \begin{claimproof}
+  %   Using the fact that $Y_{1},\ldots,Y_{n}$ in independent continuous random
+  %   variables,
+  %   \begin{align*}
+  %     g(y_{1},\ldots,y_{n}) 
+  %     &= f(y_{1})\cdots f(y_{n}) &&\text{by \cref{thm:factorization-theorem}}\\
+  %     &= \prod_{i=1}^{n}\left(\lambda e^{-\lambda y_{i}}\mathbf{1}_{\left[ y_{i}>0 \right] }\right)\\ 
+  %     &= \lambda^{n} e^{-\lambda(y_{1}+\ldots+y_{n})} \left( \prod_{i=1}^{n}\mathbf{1}_{\left[ y_{i}>0 \right] }  \right)\\ 
+  %     &= \lambda^{n} e^{-\lambda(y_{1}+\ldots+y_{n})} \mathbf{1}_{\left[ \min(y_{1},\ldots,y_{n})>0 \right]}.
+  %   \end{align*}
+  % \end{claimproof} 
+
+  % \begin{remark}
+  %   In Claim 2, we computed the joint distribution of the sample. This is
+  %   \textit{not} the sampling distribution (which is much harder to compute in
+  %   this example).
+  % \end{remark}
+ 
 \end{example}
 
 
@@ -1215,7 +1247,9 @@ The following examples illustrates some of the terminology we've introduced.
     \overline{Y} = \frac{Y_{1}+Y_{2}+Y_{3}}{3}.
   \end{equation*}
   This is the \textbf{sample mean}, and is the first example of a \textbf{statistic}
-  that we'll see. What the mean $\mu_{\overline{Y}}$ and standard deviation
+  that we'll see.
+
+  \Fl{Question:} What the mean $\mu_{\overline{Y}}$ and standard deviation
   $\sigma_{\overline{Y}}$ of the random variable $\overline{Y}$?
 
   First we compute the mean and variance of a single $Y_{i}$.
@@ -1225,19 +1259,19 @@ The following examples illustrates some of the terminology we've introduced.
     $\E\left[Y_{i} \right]=3.5$ and $\Var(Y_{i}) = 35/12 \approx 2.9167$. 
   \end{claim}
   \begin{claimproof}
-    Using the definition of expected value,
+    Fix $i\in [3]$. For simplicity, let $Y = Y_{i}$. Using the definition of
+    expected value,
     \begin{equation*}
-      \E\left[Y_{i} \right] = \sum_{k=1}^{6}k \P\left[Y_{i}=k \right]=
+      \E\left[Y \right] = \sum_{k=1}^{6}k \P\left[Y=k \right]=
       \sum_{k=1}^{6}k \frac{1}{6}=3.5.
     \end{equation*}
-
-    Next we compute the variance of $Y_{i}$:
+    Next we compute the variance of $Y$:
     \begin{align*}
-      \Var(Y_{i}) 
-      &= \E\left[\left( Y_{i}-3.5 \right)^{2}  \right] &&\text{\cref{def:variance-random-variable} }\\
-      &= \sum_{k=1}^{6}(k-3.5)^{2} \P\left[Y_{i}=k \right] &&\text{By \cref{thm:law-unconscious-statistician} (LOTUS) using
-                                                              $g(x)=(x-3.5)^{2}$ }\\
-      &= \sum_{k=1}^{6}(k-3.5)^{2} \frac{1}{6} &&\text{since $\P\left[Y_{i}=k
+      \Var(Y) 
+      &= \E\left[\left( Y-3.5 \right)^{2}  \right] &&\text{\cref{def:variance-random-variable} }\\
+      &= \sum_{y=1}^{6}(y-3.5)^{2} \P\left[Y=y \right] &&\text{By \cref{thm:law-unconscious-statistician} (LOTUS) using
+                                                              $g(y)=(y-3.5)^{2}$ }\\
+      &= \sum_{k=1}^{6}(y-3.5)^{2} \frac{1}{6} &&\text{since $\P\left[Y=y
                                                   \right]=1/6$ for all $k\in [6]$ }\\
       &= 35/12.
     \end{align*}
@@ -1245,7 +1279,7 @@ The following examples illustrates some of the terminology we've introduced.
 
   
   \begin{claim}
-    $\E\left[\overline{Y} \right] = 3.5$
+    $\mu_{\overline{Y}}=\E\left[\overline{Y} \right] = 3.5$
   \end{claim}
   \begin{claimproof}
     We have:
@@ -1262,7 +1296,7 @@ The following examples illustrates some of the terminology we've introduced.
 
   \begin{claim}
     \label{claim:variance-of-average-of-3-dice-rolls}
-    $\Var(\overline{Y})= .9722$
+    $\sigma^{2}_{\overline{Y}}=\Var(\overline{Y})= .9722$
   \end{claim}
   \begin{claimproof}
     \begin{align*}
@@ -1272,14 +1306,17 @@ The following examples illustrates some of the terminology we've introduced.
       &= \frac{1}{9}\left( \Var(Y_{1})+\Var(Y_{2})+\Var(Y_{3}) \right)
       &&\text{by \cref{thm:variance-properties}}\\
       &= \frac{1}{9} \left(2.9167+2.9167+2.9167 \right) &&\text{by \cref{claim:mean-and-variance-of-dice}}\\
-      &= \frac{2.9167}{3} &&(*) \\
-      &= .9722
+      &= \frac{2.9167}{3} &&(*)
     \end{align*}
+    and this is approximately $.97224$.
   \end{claimproof}
 
   Since the standard deviation is the square root of the variance, the
-  standard deviation is $\sqrt{.9722}= .9860$ by
-  \cref{claim:variance-of-average-of-3-dice-rolls}.
+  standard deviation is
+  \begin{equation*}
+    \sigma_{\overline{Y}}=\sqrt{.9722}= .9860
+  \end{equation*}
+   \cref{claim:variance-of-average-of-3-dice-rolls}.
 
   \begin{remark}
     In equation $(*)$, we had $\Var(\overline{Y}) = \frac{2.9167}{3}$. Notice
@@ -1291,15 +1328,19 @@ The following examples illustrates some of the terminology we've introduced.
     \begin{equation*}
       \Var(\overline{Y}) = \frac{2.9167}{n}.
     \end{equation*}
-    This quantity tends to zero as $n \to \infty$. The variance of a sample
-    mean decreases as $n$ grows.
+    This quantity tends to zero as $n \to \infty$. In words, as the number of
+    samples $n$ grows, the variance of the sample mean decreases.
   \end{remark}
 \end{example}
 
+\newpage
+\section{2026-01-30 | Week 03 | Lecture 08}
 
+\subsection{Gaussian Distribution}
 \textit{Begin section 7.2}
 
-\begin{definition}
+\begin{definition}[Normal / Gaussian Distribution]
+  \label{def:gaussian-distribution}
   A random variable $Y$ is said to be \demph{normally distributed} with mean
   $\mu\in \R$ and variance $\sigma^{2}>0$ if it has pdf
   \begin{equation*}
@@ -1310,6 +1351,52 @@ The following examples illustrates some of the terminology we've introduced.
   has \demph{standard normal distribution}.
 \end{definition}
 
+\begin{example}
+  Normal distributions are the classic ``bell curve'' distributions. Whenever
+  a random quantity is the result of adding up many small, independent random
+  effects, we expect it to be approximately normally distributed.
+
+  \begin{itemize}
+    \item A classic example is human height, which is influenced by the
+    combined effects of thousands of genes together with environmental
+    factors.
+    \item Another example is repeated measurements of the same physical
+    quantity (e.g., if we all went out and measured the temperature outside
+    tomorrow at midday), this is because the total error is the sum of many
+    small independent sources of noise (e.g., instrument precision, time,
+    location, shade, wind, etc).
+  \end{itemize}
+\end{example}
+
+
+\begin{remark}[Standardization]
+  \label{rmk:standardization}
+  If $Y \sim \mathcal{N}(\mu,\sigma^{2})$ then the random
+  variable
+  \begin{equation*}
+    Z = \frac{X-\mu}{\sigma}
+  \end{equation*}
+  is a standard normal random variable. The transformation
+  \begin{equation*}
+    X \mapsto \frac{X-\mu}{\sigma}
+  \end{equation*}
+  in which we subtract off the mean of $X$ and then divide by its standard
+  deviation is called \textbf{standardization}.
+\end{remark}
+
+\begin{remark}[The Empirical Rule]
+  The \textbf{Empirical Rule} (also called the \textbf{68-95-99.7 rule}; see
+  textbook section 1.3) is summarized by the following figure, for normal
+  distributions:
+  \begin{center}
+    \includegraphics[scale=.25]{images/empirical-rule-normdist2.jpg}
+    
+    \textit{\tiny Image source: \url{https://andymath.com/wp-content/uploads/2019/12/empirical-rule-normdist2.jpg}}
+  \end{center}
+\end{remark}
+
+The next theorem says that if we have a sample of $Y_{1},\ldots,Y_{n}$ normal
+random variables, then their sample mean is normally distributed as well.
 
 \begin{theorem}
   \label{thm:normal-sample-means}
@@ -1334,10 +1421,10 @@ The following examples illustrates some of the terminology we've introduced.
 
 \begin{remark}
   \label{rmk:sample-mean-standardized}
-  The random variable $Z =
-  \frac{\overline{Y}-\mu_{\overline{Y}}}{\sigma_{\overline{Y}}} = 
-   \frac{\overline{Y}-\mu}{\sigma/\sqrt{n}} $
-  has a standard normal distribution.
+  Applying the idea of standardization, observe that the random variable
+  $Z = \frac{\overline{Y}-\mu_{\overline{Y}}}{\sigma_{\overline{Y}}} =
+  \frac{\overline{Y}-\mu}{\sigma/\sqrt{n}} $ has a standard normal
+  distribution.
 \end{remark}
 
 
