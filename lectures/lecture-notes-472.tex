@@ -861,7 +861,7 @@ Independence splits the expectation of a product into a product of expectations.
 \end{remark}
 
 
-\begin{theorem}
+\begin{theorem}[Properties of Variance]
   \label{thm:variance-properties}
   Let $X$ be a random variable and $a,b$ be scalars. Then
   \begin{equation*}
@@ -1336,7 +1336,7 @@ The following examples illustrates some of the terminology we've introduced.
 \newpage
 \section{2026-01-30 | Week 03 | Lecture 08}
 
-\subsection{Gaussian Distribution}
+\subsection{The Gaussian distribution}
 \textit{Begin section 7.2}
 
 \begin{definition}[Normal / Gaussian Distribution]
@@ -1350,6 +1350,10 @@ The following examples illustrates some of the terminology we've introduced.
   $Y\sim \mathcal{N}(\mu,\sigma^{2})$. If $Y\sim \mathcal{N}(0,1)$, we say $Y$
   has \demph{standard normal distribution}.
 \end{definition}
+
+\begin{remark}
+  Normal random variables/distributions are also called \demph{Gaussian} random variables/distributions.
+\end{remark}
 
 \begin{example}
   Normal distributions are the classic ``bell curve'' distributions. Whenever
@@ -1430,14 +1434,13 @@ random variables, then their sample mean is normally distributed as well.
 
 
 \begin{example}[Example 7.2 in textbook]
-  A bottling machine discharages an average of $\mu$ ounces per bottle. It
-  has been observed that the amount of liquid discharged is normally
-  distributed with standard deviation $\sigma=1$ per ounce.
+  A bottling machine discharages an average of $\mu$ ounces per bottle. It has
+  been observed that the amount of liquid discharged is normally distributed
+  with standard deviation $\sigma=1$ per ounce. A sample of $n=9$ filled
+  bottles is randomly selected, and is measured.
 
-  A sample of $n=9$ filled bottles is randomly selected, and is measured.
-
-  Find the probability that the sample mean will be within $.3$ ounces of the
-  true mean $\mu$.
+  \Fl{Question:} Find the probability that the sample mean will be within
+  $.3$ ounces of the true mean $\mu$.
 
 
   \Fl{Solution:} Let $Y_{1},\ldots,Y_{9}$ be the ounces in each of the
@@ -1490,9 +1493,59 @@ random variables, then their sample mean is normally distributed as well.
   So we need at least $43$ samples, since $42$ is not quite enough.
 \end{example}
 
-\subsection{Chi-squired distributions}
+\newpage
+\section{2026-02-02 | Week 04 | Lecture 09}
+\subsection{Chi-squared distributions}
 
-Define chi-squared distribution, state theorem 7.2.
+\textit{Chapter 7.2}
 
+
+
+A special kind of gamma distribution:
+
+\begin{definition}[Chi-Squared Distribution]
+  \label{def:chi-squared-distribution}
+  Let $k$ be a positive integer. A nonnegative random variable $X$ is said to have
+  \demph{chi-squared distribution with parameter $d$} if it has pdf
+  \begin{equation*}
+    f(x) 
+    = \left\{ 
+      \begin{array}{l@{\quad:\quad}l} \frac{1}{2^{d/2}\Gamma(d/2)}x^{\frac{d}{2}-1}e^{-x/2} & x \geq 0\\ 0& x<0\end{array}\right.
+  \end{equation*}
+  In other words, if $X$ is a Gamma distributed random variable with
+  parameters $\alpha=d/2$ and $\beta=2$. The parameter $d$ is usually called
+  the \demph{degrees of freedom} of $X$.
+\end{definition}
+
+From left-to-right, here's what this looks like for $d=2$, $d=4$, and $d=12$:
+\begin{center}
+  \includegraphics[scale=0.15]{images/chi-squared-d2}
+  \includegraphics[scale=0.15]{images/chi-squared-d4}
+  \includegraphics[scale=0.15]{images/chi-squared-d12}
+\end{center}
+
+Using properties of gamma distribution, we have:
+\begin{proposition}
+  A $\chi^{2}$ random variable $X$ with $d$ degrees of freedom has
+  \begin{equation*}
+    \E\left[X \right] = \alpha\beta = d \quad \text{and} \quad \Var(X) = \alpha\beta^{2} = 2d
+  \end{equation*}
+\end{proposition}
+
+
+\begin{theorem}[Chi-squared is sum of squared normals]
+  \label{thm:chi-squared-sum-squared-normals}
+  Let $n \geq 1$. If $Z_{1},\ldots,Z_{n}$ are independent standard normal
+  random variables, then the random variable $V=Z_{1}^{2}+\ldots+Z_{n}^{2}$
+  has chi-squared distribution with $n$ degrees of freedom.
+\end{theorem}
+\begin{proof}
+  Proved using moment generating functions. (See Example 6.11 in the textbook).
+\end{proof}
+
+\begin{remark}
+  Taking $n=1$, \cref{thm:chi-squared-sum-squared-normals} implies that $Z \sim
+  \mathcal{N}(0,1)$ implies $Z^{2}$ is chi-squared with $1$ degree of freedom.
+\end{remark}
 
 \end{document}

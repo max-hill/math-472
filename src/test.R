@@ -492,3 +492,9 @@ for (n in c(3,30,60,100,1000,10000,100000,500000,1000000,10000000,100000000)) {
 
 help(ppois)
 ppois(0,5)
+
+
+# chi quared blah
+
+qchisq(.95,6) # returns the value ϕ such that P(Y<ϕ) = .95 (quantile function). Here deg freedom =6
+pchisq(12.5916,6) # the cdf of a 6-degree freedom chi-square

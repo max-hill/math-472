@@ -23,6 +23,7 @@ title: Lecture Notes
 2026-01-23  | 5   | Weak law of large numbers, identical distribution, populations 
 2026-01-26  | 6   | (Sections 2.12, 6.1, 7.1) What is a statistic? What is a random sample?
 2026-01-28  | 7   | (Section 7.1) Basic examples of statistics and estimators
+2026-01-30  | 8   | (Section 7.2) The Gaussian distribution
  
 
 # Other Links
