@@ -1,0 +1,440 @@
+\documentclass[10pt]{article}
+% Math Packages
+\usepackage{amsmath, mathtools}
+\usepackage{amssymb}
+\usepackage{amsthm}
+\usepackage{amsfonts}
+\usepackage{bbm}
+\usepackage{breqn}
+\usepackage[margin=1in]{geometry}
+\usepackage{graphicx}
+\usepackage{tikz}
+\usetikzlibrary{arrows.meta}
+\usetikzlibrary{calc}
+\usepackage{forest}
+\usepackage{tikz-qtree}
+\graphicspath{ {./images/} }
+\usepackage{hyperref}
+\usepackage[capitalize]{cleveref}
+\usepackage[shortlabels]{enumitem}
+\usetikzlibrary{arrows,matrix,positioning}
+\usepackage{multicol}
+
+\usepackage{listings}
+\usepackage{xcolor}
+
+\lstset{
+  language=R,
+  basicstyle=\ttfamily\footnotesize,
+  keywordstyle=\color{blue},
+  commentstyle=\color{gray},
+  stringstyle=\color{red!70!black},
+  framesep=2pt,
+  framexleftmargin=0pt, 
+  frame=single,
+  breaklines=false,
+  showstringspaces=false
+}
+% for the pipe symbol
+\usepackage[T1]{fontenc}
+
+% Citing theorems by name. (source: https://tex.stackexchange.com/questions/109843/cleveref-and-named-theorems)
+\makeatletter
+\newcommand{\ncref}[1]{\cref{#1}\mynameref{#1}{\csname r@#1\endcsname}}
+
+\def\mynameref#1#2{%
+  \begingroup
+  \edef\@mytxt{#2}%
+  \edef\@mytst{\expandafter\@thirdoffive\@mytxt}%
+  \ifx\@mytst\empty\else
+  \space(\nameref{#1})\fi
+  \endgroup
+}
+\makeatother
+
+% Colorful Notes
+\usepackage{color} \definecolor{Red}{rgb}{1,0,0} \definecolor{Blue}{rgb}{0,0,1}
+\definecolor{Purple}{rgb}{.5,0,.5} \def\red{\color{Red}} \def\blue{\color{Blue}}
+\def\gray{\color{gray}} \def\purple{\color{Purple}}
+\newcommand{\rnote}[1]{{\red [#1]}} % \rnote{foo} gives '[foo]' in red
+\newcommand{\pnote}[1]{{\purple [#1]}} % \pnote{foo} gives '[foo]' in purple
+\newcommand{\bnote}[1]{{\blue #1}} % \bnote{foo} gives 'foo' in blue
+\newcommand{\gnote}[1]{{\gray #1}} % \gnote{foo} gives 'foo' in gray
+\newcommand{\Max}[1]{{\purple [#1]}} % \bnote{foo} then 'foo' is blue
+
+
+% Claim numbering (the counter restarts after each proof environment)
+\newcounter{claimcount}
+\setcounter{claimcount}{0}
+\newenvironment{claim}{\refstepcounter{claimcount}\par\addvspace{\medskipamount}\noindent\textbf{Claim \arabic{claimcount}:}}{}
+\usepackage{etoolbox}
+\AtBeginEnvironment{proof}{\setcounter{claimcount}{0}}
+\newenvironment{claimproof}{\par\addvspace{\medskipamount}\noindent\textit{Proof of Claim  \arabic{claimcount}.}}{\hfill\ensuremath{\qedsymbol} \tiny{Claim}
+
+  \medskip}
+% Add claim support to cleverref
+\crefname{claimcount}{Claim}{Claims}
+
+
+% Math Environments
+\newtheorem{theorem}{Theorem}
+\newtheorem{assumption}[theorem]{Assumption}
+\newtheorem{lemma}[theorem]{Lemma}
+\newtheorem{proposition}[theorem]{Proposition}
+\newtheorem{corollary}[theorem]{Corollary}
+\newtheorem{question}[theorem]{Question}
+\theoremstyle{definition}
+\newtheorem*{definition}{Definition}
+\newtheorem{remark}[theorem]{Remark}
+\newtheorem{example}[theorem]{Example}
+\newtheorem{notation}[theorem]{Notation}
+\newtheorem{problem}[theorem]{Problem}
+
+% Matrices and Column Vectors. 
+\usepackage{stackengine}
+\setstackgap{L}{1.0\normalbaselineskip}
+\usepackage{tabstackengine}
+\setstackEOL{;}% row separator
+\setstackTAB{,}% column separator
+\setstacktabbedgap{1ex}% inter-column gap
+\setstackgap{L}{1.5\normalbaselineskip}% inter-row baselineskip
+\let\nmatrix\bracketMatrixstack  %Usage: \nmatrix{1,2,3\4,5,6}
+\newcommand\cv[1]{\setstackEOL{,}\bracketMatrixstack{#1}} %usage: \cv{1,2,3}
+
+% Custom Math Coqmmands
+\newcommand{\vt}{\vskip 5mm} % vertical space
+\newcommand{\fl}{\noindent\textbf} % first line
+\newcommand{\Fl}{\vt\noindent\textbf} % first line with space above
+\newcommand{\norm}[1]{\left\lVert#1\right\rVert} % norm
+\newcommand{\pnorm}[1]{\left\lVert#1\right\rVert_p} % p-norm
+\newcommand{\qnorm}[1]{\left\lVert#1\right\rVert_q} % q-norm
+\newcommand{\1}[1]{\textbf{1}_{\left[#1\right]}} % indicator function 
+\def\limn{\lim_{n\to\infty}} % shortcut for lim as n-> infinity
+\def\sumn{\sum_{n=1}^{\infty}} % shortcut for sum from n=1 to infinity
+\def\sumkn{\sum_{k=1}^{n}} % shortcut for sum from k=1 to n
+\def\sumin{\sum_{i=1}^{n}} % shortcut for sum from i=1 to n
+\def\SAs{\sigma\text{-algebras}} % shortcut for $\sigma$-algebras
+\def\SA{\sigma\text{-algebra}} % shortcut for $\sigma$-algebra
+\def\Ft{\mathcal{F}_t} % time-indexed sigma-algebra (t)
+\def\Fs{\mathcal{F}_s} % time-indexed sigma-algebra (s)
+\def\F{\mathcal{F}} % sigma-algebra
+\def\G{\mathcal{G}} % sigma-algebra
+\def\R{\mathbb{R}} % Real numbers
+\def\N{\mathbb{N}} % Natural numbers
+\def\Z{\mathbb{Z}} % Integers
+\def\E{\mathbb{E}} % Expectation
+\def\P{\mathbb{P}} % Probability
+\def\Q{\mathbb{Q}} % Q probability
+\def\dist{\text{dist}} %Text 'dist' for things like 'dist(x,y)'
+\newcommand{\indep}{\perp \!\!\! \perp}  %independence symbol
+\def\Var{\mathrm{Var}} % Variance
+\def\tr{\mathrm{tr}} % trace
+
+% Brackets and Parentheses
+\def\[{\left [}
+    \def\]{\right ]}
+% \def\({\left (}
+%   \def\){\right )}
+
+
+
+\usepackage{color}
+\definecolor{Red}{rgb}{1,0,0}
+\definecolor{Blue}{rgb}{0,0,1}
+\definecolor{Purple}{rgb}{.5,0,.5}
+\def\red{\color{Red}}
+\def\blue{\color{Blue}}
+\def\gray{\color{gray}}
+\def\purple{\color{Purple}}
+\definecolor{RoyalBlue}{cmyk}{1, 0.50, 0, 0}
+\newcommand{\dempfcolor}[1]{{\color{RoyalBlue}#1}} 
+\newcommand{\demph}[1]{\textcolor{RoyalBlue}{\textbf{\slshape #1}}} % Slanted
+
+\usepackage{emoji}
+% comment exactly one of the following line to show / hide the solutions
+% \newcommand{\solution}[1]{{\purple #1}} % uncomment to show the solutions
+\newcommand{\solution}[1]{} % uncomment to hide the solutions
+
+
+
+
+\begin{document}
+\begin{center}
+  \section*{Math 472: Homework 03} %
+  \textit{Due Monday Feb 9}
+\end{center}
+
+\begin{problem}[Binomial distribution, revisited]
+  Let $X\sim \text{Bin(n,p)}$. (That is, $X$ is a binomial random variable
+  with number of trials $n$ and success probability $p$). One way to
+  interpret the random variable $X$ is as follows
+  \begin{equation*}
+    X = \text{(the number of heads in $n$ coin flips)},
+  \end{equation*}
+  where $p$ is the probability that the coin lands on heads. Or, more
+  formally,
+  \begin{equation*}
+    X = \xi_{1}+\xi_{2}+\ldots+\xi_{n}
+  \end{equation*}
+  where each $\xi_{1},\ldots\xi_{n}$ are independent with
+  \begin{equation*}
+    \xi_{i}= \left\{ \begin{array}{l@{\quad:\quad}l} 1 &
+        \text{with probability }p\\ 0 & \text{with probability }1-p \end{array}\right.
+  \end{equation*}
+  \begin{enumerate}[(a)]
+    \item Use this characterization to compute the expected value and variance
+    of $X$.
+    \item Use \texttt{R} to draw a random sample of size 50 from the
+    distribution of $X$ (pick any value of $p\in (0,1)$ that you want) and
+    compute the sample mean and sample variance. Compare with the values you
+    got in part (a).
+  \end{enumerate}
+\end{problem}
+
+\begin{problem}[\texttt{R} problem]
+  \begin{enumerate}[(a)]
+    \item []
+    \item Let $Z_{1},\ldots,Z_{6}$ be a sample of standard normal random variables.
+    Use \texttt{R} to find
+    $\P\left[ \sum_{i=1}^{6}Z_{i}^{2}\leq 6\right]$.
+    \item Let $Y_{1},\ldots,Y_{10} $ be a sample of normal random variables
+    with mean $\mu$ and variance $\sigma^{2}=1$. Let $S^{2}$ be the sample
+    variance. Use \texttt{R} to find $\P\left[S^{2}\geq 3\right]$.
+  \end{enumerate}
+\end{problem}
+
+
+
+\begin{problem}
+  \label{problem:1}
+  Refer to example 7.2 in the textbook (i.e., examples 57 in the typed lecture
+  notes). The amount of ﬁll dispensed by a bottling machine is normally
+  distributed with $\sigma=1$. If $n = 9$ bottles are randomly selected from
+  the output of the machine, we found that the probability that the sample
+  mean will be within .3 ounce of the true mean is .6318. Suppose that $Y$ is
+  to be computed using a sample of size $n$.
+  \begin{enumerate}[(a)]
+    \item If $n=16$, what is $\P\left[\left| \overline{Y} -\mu \right| \leq
+      .3\right]$?
+    \item When $\P\left[\left| \overline{Y}-\mu \right| \leq .3\right]$ when
+    $\overline{Y}$ is computed using samples of sizes $n=25,36,49$ and $64$.
+    \item What patterns do you observe among the values for $\P\left[\left|
+        \overline{Y}-\mu \right| \leq .3\right]$ for the various values of
+    $n$?
+    \item Do the results you obtained in part (b) appear to be consistent with
+    the result obtained in Example 7.3 in the textbook?
+  \end{enumerate}
+\end{problem}
+
+\begin{problem}
+  Refer to example 7.2 in the textbook. Assume now that the amount of fill
+  dispensed by the bottling machine is normally distributed with $\sigma=2$
+  ounces.
+  \begin{enumerate}[(a)]
+    \item If $n=9$ bottles are randomly selected, what is $\P\left[\left|
+        \overline{Y}-\mu \right| \leq .3\right]$? Compare this with the answer
+    found in Example 7.2
+    \item When $\P\left[\left| \overline{Y}-\mu \right| \leq .3\right]$ when
+    $\overline{Y}$ is computed using samples of sizes $n=25,36,49$ and $64$.
+    \item What patterns do you observe among the values for $\P\left[\left|
+        \overline{Y}-\mu \right| \leq .3\right]$ for the various values of
+    $n$?
+    \item How do the respective probabilities obtained in this problem (where
+    $\sigma=2$) compare to those obtained in \cref{problem:1} (where $\sigma=1$)?
+  \end{enumerate}
+\end{problem}
+
+
+\begin{problem}
+  \label{problem:2}
+  A forester studying the effects of fertilization on certain pine forests in
+  the Southeast is interested in estimating the average basal area of pine
+  trees. In studying basal areas of similar trees for many years, he has
+  discovered that these measurements (in square inches) are normally
+  distributed with standard deviation approximately $\sigma=4$ square inches. If the
+  forester samples $n = 9$ trees, ﬁnd the probability that the sample mean will
+  be within 2 square inches of the population mean.
+\end{problem}
+
+\begin{problem}
+  Suppose the forester in \cref{problem:2} would like the sample mean to be
+  within 1 square inch of the population mean, with probability .90. How many
+  trees must he measure in order to ensure this degree of accuracy?
+\end{problem}
+
+
+\begin{problem}[Another \texttt{R} problem]
+  \begin{enumerate}[(a)]
+    \item []
+    \item Use \texttt{R} to plot histograms comparing the standard normal
+    distribution with t-distribution, for various degrees of freedom (e.g., 5,
+    10, etc). [The point of this problem is for you to visually observe how the
+    t-distribution converges to the standard normal as the degrees of freedom
+    increase.] The following code may be helpful:
+
+\begin{verbatim}
+    ## Plotting a histogram of a t-distribution
+    d = 10 # degrees of freedom for the t-distribution (play around with this)
+
+    # generate a ton of samples from t and z distributions
+    t_samples = rt(n=100000, df=d)
+    z_samples = rnorm(n=100000,mean=0,sd=1)
+
+    # truncate the datasets to only samples within the range (-6,6). This is
+    # needed to make the plot pretty
+    z_truncated<- z_samples[z_samples >= -6 & z_samples <= 6]
+    t_truncated<- t_samples[t_samples >= -6 & t_samples <= 6]
+
+    # set histogram box widths to 0.1, and have them range from -6 to 6.
+    my_breaks<-seq(-6,6, by=.1)
+
+    # plot the histograms
+    hist(z_truncated, probability=TRUE, col=rgb(1,0,0,0.4), breaks=my_breaks,
+         border="red", main="t-distribution vs standard normal distribution")
+
+    hist(t_truncated, probability=TRUE, col=rgb(0,0,1,0.4),
+         breaks=my_breaks, border="blue",add=TRUE)
+
+    legend("topright",
+           legend = c("approx. distribution of Z",
+                      paste("approx. t-distribution with df=",degrees_of_freedom)),
+           fill=c(rgb(1,0,0,0.4), rgb(0,0,1,0.4)))
+\end{verbatim}
+    
+    \item Suppose $T$ is a random variable with $t$-distribution and 5 degrees of freedom. The
+    \texttt{R} code \texttt{pt(t,df=5)} returns $\P\left[T \leq t\right]$. Use
+    this to find the probability that $T$ is greater than 2.
+    \item Use \texttt{R} to find the probability that $T$ is less than $-2$.
+    \item \label{item:1} Find the probability that $T$ is between $-2$ and $2$.
+    \item Your answer to part \ref{item:1} is considerably less than
+    $.9544=\P\left[-2 \leq Z \leq 2\right]$. Provide 1-2 sentence explanation
+    of why.
+  \end{enumerate}
+\end{problem}
+
+\newpage
+
+
+The remaining problems involve the idea of \textit{quantiles}, defined here:
+
+\begin{definition}[$p^{\rm th}$-quantile]
+  Let $Y$ be a continuous random variable, and fix a real number $p\in (0,1)$.
+  Then the \demph{$p^{\rm th}$ quantile} of $Y$, denoted $\phi_{p}$, is the
+  smallest value such that
+  \begin{equation*}
+    \P\left[Y \leq \phi_{p}\right]  = p,
+  \end{equation*}
+  
+  For example, when $p=1/2$, then $\phi_{\frac{1}{2}}$ is the median.
+  Quantiles are also referred to using the ``percentile'' terminology, e.g.,
+  if $p=.98,$ then $\phi_{.98}$ is the $98^{\rm th}$ percentile (i.e., the
+  cutoff below which lies 98\% of the population). When reasoning about
+  quantiles, I find it very helpful to draw pictures of bell curves with
+  shaded areas.
+
+  % When the cdf $F$ is invertible, the quantile function defined by $Q(p) :=
+% \phi_{p}$ is the function inverse of $F$ (i.e., for all $Q(F(x))=x$ for all
+% $x\in \R$ and $F(Q(p))=p$ for all $p\in (0,1)$).
+\end{definition}
+
+\begin{problem}
+  Suppose $T$ is a random variable with $t$-distribution and 5 degrees of freedom.
+  \begin{enumerate}[(a)]
+    \item For any $p\in (0,1)$, the \texttt{R} code \texttt{qt(p,df=5)} gives $\phi_{p}$ (the
+    $p^{\rm th}$ quantile of $T$). Let $t_{.10}$ be the number such that
+    $\P\left[T>t_{.10} \right]=.10$. Find the value of $t_{.10}$.
+    \item What quantile does $t_{.10}$ correspond to? What percentile?
+    \item \label{item:2}  Find the value of $t_{.10}$ for t-distributions with $df=30,60$ and
+    $120$.
+    \item When $Z$ has a standard normal distribution, $\P\left[Z>1.282
+    \right]=.10$, and $z_{.10}=1.282$. What property of the $t$ distribution
+    (when compared to the standard normal dsitribution) explains the fact that
+    all the values obtained in \ref{item:2} are larger than $z_{.10}=1.282$?
+    \item Guess what $t_{.10}$ converges to as the number of degrees of
+    freedom gets large.
+  \end{enumerate}
+\end{problem}
+
+\begin{problem}[Exercise 4.12 in textbook]
+  The length of time to failure (in hundreds of hours) for a transistor is a
+  random variable $Y$ with cumulative distribution function given by
+  \begin{equation*}
+    F(y) = \left\{ \begin{array}{l@{\quad:\quad}l} 1-e^{-y^{2}} & y \geq 0\\ 0& y<0\end{array}\right.
+  \end{equation*}
+  \begin{enumerate}[(a)]
+    \item Show that $F$ has the properties of a distribution function (i.e.,
+    that $F(-\infty)=0$, $F(\infty)=1$, and $F$ is nondecreasing).
+    \item Find the $.3$-quantile, $\phi_{.3}$ of $Y$. 
+    \item Find the probability density function of $Y$.
+    \item Find the probability that the transistor operates for at least $200$
+    hours (remember the units are in hundreds of hours. You don't need to
+    evaluate an integral).
+    \item Find $\P\left[Y>100\mid Y \leq 200\right]$. (Again, no need to
+    evaluate an integral :) ).
+  \end{enumerate}
+\end{problem}
+
+
+\begin{problem}[Refer to \cref{problem:2}] Suppose that in the forest
+  fertilization problem the population, standard deviation of basal areas is
+  not known and must be estimated from the sample. If a random sample of $n=9$
+  basal areas is to be measured, ﬁnd a statistic $A$ such that
+  \begin{equation*}
+    \P\left[ \left| \overline{Y}-\mu \right| \leq A \right] = .90
+  \end{equation*}
+  Assume that neither the mean $\mu$ nor the variance $\sigma^{2}$ of the
+  population are known.
+\end{problem}
+
+% \begin{problem}[Geometric distribution]
+%   Consider a sequence of independent coin flips, each of which has probability
+%   $p$ of being heads. Define a random variable $X$ as the length of the run
+%   (either heads or tails) started by the first trial. (For example, if
+%   \texttt{TTTH} or \texttt{HHHT} is observed).
+%   \begin{enumerate}[(a)]
+%     \item What is the sample space? What are the sample points? 
+%     \item Find the distribution of $X$ (i.e., compute the probability mass
+%     function of $X$).
+%     \item Find $\E\left[X \right]$.
+%     \item Use \texttt{R} to generate 50 samples from the distribution of $X$
+%     (use whatever value of $p\in (0,1)$ you want). What is the sample mean?
+%     What is the sample variance?
+%   \end{enumerate}
+% \end{problem}
+
+% \begin{problem}%[CLT: this problem is similar to problem 9 in homework 9]
+%   A mandolin-making machine in Mordecai's mandolin manufactory makes about 5\%
+%   defective mandolins even when properly functioning. The mandolins are then
+%   packed in crates containing 1900 mandolins each. A crate is examined and
+%   found to contain 115 defective mandolins. What is the approximate
+%   probability of finding at least this many defective mandolins if the machine
+%   is properly adjusted? If you were Mordecai, would hire a technician to check
+%   out the machine?
+
+%   \textit{Hint:} The following may be useful $\sqrt{1900}=10 \sqrt{19}$.
+% \end{problem}
+
+
+
+% \begin{problem}%[CLT] % similar to hw 9, problem 6
+%   The nation of Oceania has always been at war with Eurasia. To establish
+%   peace, Oceania's leadership has unanimously authorized a preemptive strike
+%   against 48 pre-selected military targets in Eurasian territory. Analysts at
+%   the \textit{Ministry of Peace} estimate that each target has a probability
+%   of $3/4$ of being destroyed in this first strike.
+
+%   The operation will be regarded as a strategic success under Oceania's peace
+%   doctrine if at least 30 targets are destroyed. Using the Central Limit
+%   Theorem, estimate the probability that the first strike achieves this
+%   benchmark.\footnote{Responses deviating significantly from 100\% confidence
+%     will be flagged for review by the Ministry of Truth.}
+
+%   \textit{Hints:} The following may
+%   be useful $\sqrt{48}= 4 \sqrt{3}$. Also, the graph of the standard
+%   normal pdf is
+%   \begin{center}
+%     \includegraphics[scale=0.3]{images/standard-normal-small}
+%   \end{center}
+% \end{problem}
+
+\end{document}
