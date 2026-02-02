@@ -1490,24 +1490,28 @@ random variables, then their sample mean is normally distributed as well.
 \textit{This lecture is based on Section 7.2 in the textbook. I will be
   skipping the part about F statistics for now.}
 
-\subsection{``Approximate'' standardization}
+\subsection{Motivation: ``Approximate'' standardization}
 
 In \cref{ex:example-7.2-textbook-bottling}, we had a random sample
 $Y_{1},\ldots,Y_{n}$ of normally distributed random variables, and we computed
-\begin{equation*}
-  \P\left[\left| \overline{Y}-\mu \right| \leq .3\right]
-\end{equation*}
-by rewriting the even $\left[ \left| \overline{Y}-\mu \right| \leq .3\right]$
-using the standardization trick:
+$\P\left[\left| \overline{Y}-\mu \right| \leq .3\right]$ by rewriting the even
+$\left[ \left| \overline{Y}-\mu \right| \leq .3\right]$ using the
+standardization trick:
 \begin{align*}
   \left[ \left| \overline{Y}-\mu \right| \leq .3\right] 
   &= \left[ -.3 \leq \overline{Y} -\mu \leq .3\right]\\
   &= \left[ \frac{-.3}{\sigma/\sqrt{n}} \leq \frac{\overline{Y} -\mu}{\sigma/\sqrt{n}} \leq \frac{.3}{\sigma/\sqrt{n}}\right]\\
   &= \left[ \frac{-.3}{\sigma/\sqrt{n}} \leq Z \leq \frac{.3}{\sigma/\sqrt{n}}\right]
 \end{align*}
-where $Z\sim \mathcal{N}(0,1)$. In other words, we used standardization (see
-\cref{rmk:standardization}) to rewrite the probability into something we could
-compute (or look up).
+where $Z\sim \mathcal{N}(0,1)$. Hence,
+\begin{equation}\label{eq:5}
+  \P\left[\left| \overline{Y}-\mu \right| \leq .3\right]
+  = \left[ \frac{-.3}{\sigma/\sqrt{n}} \leq \underbrace{\frac{\overline{Y}
+        -\mu}{\sigma/\sqrt{n}}}_{Z} \leq \frac{.3}{\sigma/\sqrt{n}}\right].
+\end{equation}
+
+In other words, we used standardization (see \cref{rmk:standardization}) to
+rewrite the probability into something we could compute (or look up).
 
 The problem with this approach is that the example is contrived and
 unrealistic because, in the problem statement, we assumed that we knew the
@@ -1516,30 +1520,28 @@ almost never known ahead of time, but instead must be estimated from the data.
 
 A natural estimator of $\sigma$ is $S$, the square root of the sample
 variance. This is because $S^{2} \to \sigma^{2}$ as $n\to \infty$ by the law
-of large numbers, so $S$ should be close to $\sigma$ when $n$ is large.
-
-In that case, we can \textbf{``approximately'' standardize}, by writing
+of large numbers, so $S$ should be close to $\sigma$ when $n$ is large. In
+that case, we can \textbf{``approximately'' standardize.} Replacing $\sigma$
+by $S$ in the calculation above, we obtain
 \begin{equation*}
   \P\left[\left| \overline{Y}-\mu \right| \leq .3\right]
   = \left[ \frac{-.3}{S/\sqrt{n}} \leq \underbrace{\frac{\overline{Y}
-        -\mu}{S/\sqrt{n}}}_{\text{call it }T} \leq \frac{.3}{S/\sqrt{n}}\right]
+        -\mu}{S/\sqrt{n}}}_{\text{call it }T} \leq \frac{.3}{S/\sqrt{n}}\right].
+\end{equation*}
+Here, the random variable $T$ is not normally distributed, but it should be
+pretty close to $\mathcal{N}(0,1)$ when $n$ is large. This is because
+$S\approx \sigma$ when $n$ is large, so
+\begin{equation*}
+  T 
+  = \left( \frac{\overline{Y}-\mu}{S/\sqrt{n}} \right) 
+  \approx \left( \frac{\overline{Y}-\mu}{S/\sqrt{n}} \right)
+  = Z.
 \end{equation*}
 
-The random variable $T$ is not normally distributed, but it should be pretty
-close to $\mathcal{N}(0,1)$ when $n$ is large. This is because
-$S\approx \sigma$ when $n$ is large, so
-\begin{align*}
-  T 
-  &= \left( \frac{\overline{Y}-\mu}{S/\sqrt{n}} \right) \\
-  &\approx \left( \frac{\overline{Y}-\mu}{S/\sqrt{n}} \right)\\
-  &= Z
-\end{align*}
-where $Z\sim \mathcal{N}(0,1)$.
-
-\Fl{Question:} What is the distribution of $T$? Can we quantify ``how close''
+\fl{Question:} What is the distribution of $T$? Can we quantify ``how close''
 it is to $Z$?
 
-\Fl{Short answer:} Assuming a sample size of $n>2$, $T$ has a distribution
+\fl{Short answer:} Assuming a sample size of $n>2$, $T$ has a distribution
 called a $t$-distribution, which is well-known and widely used. It has
 expectation $\E\left[T \right]=0$ and variance $\Var(T) = \frac{\nu}{\nu-2}$,
 where $\nu=n-1$ is called the ``degrees of freeom''. It
@@ -1558,16 +1560,14 @@ $\Var(Z)=1$.
 
 \begin{definition}[Chi-Squared Distribution]
   \label{def:chi-squared-distribution}
-  Let $k$ be a positive integer. A nonnegative random variable $X$ is said to have
+  Let $d$ be a positive integer. A nonnegative random variable $X$ is said to have
   \demph{chi-squared distribution with parameter $d$} if it has pdf
   \begin{equation*}
     f(x) 
     = \left\{ 
       \begin{array}{l@{\quad:\quad}l} \frac{1}{2^{d/2}\Gamma(d/2)}x^{\frac{d}{2}-1}e^{-x/2} & x \geq 0\\ 0& x<0\end{array}\right.
   \end{equation*}
-  In other words, if $X$ is a Gamma distributed random variable with
-  parameters $\alpha=d/2$ and $\beta=2$. The parameter $d$ is usually called
-  the \demph{degrees of freedom} of $X$.
+  The parameter $d$ is usually called the \demph{degrees of freedom} of $X$.
 \end{definition}
 
 From left-to-right, here's what this looks like for $d=2$, $d=4$, and $d=12$:
@@ -1577,11 +1577,10 @@ From left-to-right, here's what this looks like for $d=2$, $d=4$, and $d=12$:
   \includegraphics[scale=0.15]{images/chi-squared-d12}
 \end{center}
 
-Using properties of gamma distribution, we have:
-\begin{proposition}
-  A $\chi^{2}$ random variable $X$ with $d$ degrees of freedom has
+\begin{proposition}[Properties of chi-squared distribution]
+  A chi-squared random variable $X$ with $d$ degrees of freedom has
   \begin{equation*}
-    \E\left[X \right] = \alpha\beta = d \quad \text{and} \quad \Var(X) = \alpha\beta^{2} = 2d
+    \E\left[X \right]  = d \quad \text{and} \quad \Var(X) = 2d
   \end{equation*}
 \end{proposition}
 
@@ -1590,13 +1589,16 @@ squared normal random variables:
 
 \begin{theorem}[Chi-squared is sum of squared normals]
   \label{thm:chi-squared-sum-squared-normals}
-  Let $n \geq 1$. If $Z_{1},\ldots,Z_{n}$ are independent standard normal
-  random variables, then the random variable $V=Z_{1}^{2}+\ldots+Z_{n}^{2}$
-  has chi-squared distribution with $n$ degrees of freedom $(\mathrm{df}=n)$. 
+  Let $n \geq 1$. The following are equivalent
+  \begin{enumerate}[label={\rm (\roman*.)}]
+    \item $X$ has chi-squared distribution with $n$ degrees of freedom
+    \item $X\overset{d}{=}Z_{1}^{2}+\ldots+Z_{n}^{2}$, where
+    $Z_{1},\ldots,Z_{n}$ are independent standard normal random variables
+  \end{enumerate}
 \end{theorem}
-\begin{proof}
-  Proved using moment generating functions. (See Example 6.11 in the textbook).
-\end{proof}
+
+A standard proof of \cref{thm:chi-squared-sum-squared-normals} involves the
+use of moment generating functions. (See Example 6.11 in the textbook).
 
 \begin{remark}
   Taking $n=1$, \cref{thm:chi-squared-sum-squared-normals} implies that $Z \sim
@@ -1671,7 +1673,8 @@ variable does not contribute to knowledge of its variability.
   \end{itemize}
 \end{remark}
 
-
+\newpage
+\section{2026-02-04 | Week 04 | Lecture 10}
 The following theorem illustrates an important example of the
 $t$-distribution, which arises when we ``approximately standardize'' a sample
 mean using $S$ rather thatn $\sigma$.
@@ -1679,7 +1682,7 @@ mean using $S$ rather thatn $\sigma$.
 
 \begin{theorem}
   Let $Y_{1},\ldots,Y_{n}$ be a random sample from
-  $\mathcal{N}(\mu,\sigma^{2})$. The random variable
+  $\mathcal{N}(\mu,\sigma^{2})$. The random variable 
   \begin{equation*}
     \frac{\overline{Y}-\mu}{S/\sqrt{n}}
   \end{equation*}
@@ -1715,7 +1718,7 @@ mean using $S$ rather thatn $\sigma$.
 
   Six pieces of wire are selected from a roll. Let
   \begin{equation*}
-    Y_{i} := \text{the tensile strength for portion }i, \quad (i\in [6]).
+    Y_{i} := \text{the tensile strength for portion }i, \quad i\in [6].
   \end{equation*}
   We can estimate $\mu$ and $\sigma^{2}$ with $\overline{Y}$ and $S^{2}$.
   Because $\sigma^{2}_{\overline{Y}}=\sigma^{2}/n$, it follows that
