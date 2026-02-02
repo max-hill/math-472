@@ -498,3 +498,49 @@ ppois(0,5)
 
 qchisq(.95,6) # returns the value ϕ such that P(Y<ϕ) = .95 (quantile function). Here deg freedom =6
 pchisq(12.5916,6) # the cdf of a 6-degree freedom chi-square
+
+
+
+## Plotting a histogram of a t-distribution
+d = 10 # degrees of freedom for the t-distribution (play around with this)
+
+t_samples = rt(n=100000, df=d)
+z_samples = rnorm(n=100000,mean=0,sd=1)
+
+# truncate the datasets to only samples within the range (-6,6). This is
+# needed to make the plot pretty.
+z_truncated<- z_samples[z_samples >= -6 & z_samples <= 6]
+t_truncated<- t_samples[t_samples >= -6 & t_samples <= 6]
+
+# set breaks to be width=.1 between -6 and 6
+my_breaks<-seq(-6,6, by=.1)
+
+# Plot the histograms
+hist(z_truncated, probability=TRUE, col=rgb(1,0,0,0.4), breaks=my_breaks,
+     border="red", main="t-distribution vs standard normal distribution")
+
+hist(t_truncated, probability=TRUE, col=rgb(0,0,1,0.4),
+     breaks=my_breaks, border="blue",add=TRUE)
+
+legend("topright",
+       legend = c("approx. distribution of Z",
+                  paste("approx. t-distribution with df =",degrees_of_freedom)),
+       fill=c(rgb(1,0,0,0.4), rgb(0,0,1,0.4)))
+
+
+# define the cdf F of T
+F <- function(x){
+  pt(x,df=5)
+}
+
+F(2) - F(-2)
+
+
+qt(.05,df=8,lower.tail = FALSE)
+qt(.9,df=5,lower.tail = TRUE)
+
+Q <- function(p){
+  qt(p,df=5)
+}
+
+Q(.9)
