@@ -1675,19 +1675,30 @@ variable does not contribute to knowledge of its variability.
 
 \newpage
 \section{2026-02-04 | Week 04 | Lecture 10}
+
+\subsection{Using the student t-distribution}
+\textit{This is based on section 7.2 of the textbook.}
+
 The following theorem illustrates an important example of the
 $t$-distribution, which arises when we ``approximately standardize'' a sample
-mean using $S$ rather thatn $\sigma$.
+mean with the transformation
+\begin{equation*}
+  \overline{Y} \mapsto \frac{\overline{Y} - \mu}{S/\sqrt{n}}
+\end{equation*}
+(where we've used the sample standard devation $S$ in place of the unknown
+population paramter $\sigma$).
 
 
 \begin{theorem}
+  \label{thm:approximate-standardization-is-t-distn}
   Let $Y_{1},\ldots,Y_{n}$ be a random sample from
   $\mathcal{N}(\mu,\sigma^{2})$. The random variable 
   \begin{equation*}
     \frac{\overline{Y}-\mu}{S/\sqrt{n}}
   \end{equation*}
-  follows a $T$ distribution with $n-1$ degrees of freedom.
+  follows a Student t-distribution with $n-1$ degrees of freedom.
 \end{theorem}
+
 \begin{proof}
   Observe that
   \begin{itemize}
@@ -1701,7 +1712,7 @@ mean using $S$ rather thatn $\sigma$.
   \end{itemize}
   Hence
   \begin{align*}
-    \frac{Y-\mu}{S/\sqrt{n}}
+    \frac{\overline{Y}-\mu}{S/\sqrt{n}}
     &= \frac{\frac{\overline{Y}-\mu}{\sigma/\sqrt{n}}}{\sqrt{\left[ (n-1)S^{2}/\sigma^{2} \right]/(n-1) }} \\
     &:= \frac{Z}{\sqrt{\chi^{2}_{n-1}/(n-1)}},
   \end{align*}
@@ -1709,14 +1720,61 @@ mean using $S$ rather thatn $\sigma$.
   $\nu=n-1$ degrees of freedom.
 \end{proof}
 
+The third observation in the proof of
+\cref{thm:approximate-standardization-is-t-distn} uses the following theorem
+\begin{theorem}
+  Let $X$ and $Y$ be indepndent random variables. Let $g(x)$ be a function
+  only of $x$ and $h(y)$ a function only of $y$. Then the random variables
+  $U=f(X)$ and $V=h(Y)$ are independent.
+\end{theorem}
+\begin{proof}[Proof idea]
+  We'll show the case where $X,Y$ are discrete random variables, as this
+  illustrate the idea of the general proof. [In lecture, I only sketched this
+  proof, but am including a more detailed version here in the notes for fun.]
+
+  We need to show that for all $u,v\in \R$, we have
+  \begin{equation*}
+    \P\left[U=u,V=v \right]= \P\left[U=u \right] \P\left[V=v \right],
+  \end{equation*}
+  as this will establish that $U$ and $V$ are independent.
+  
+  Let $S_{X}\subseteq \R$ be the set of values that the random variable $X$
+  can take, and define $S_{Y}$ similarly. Let
+  $A_{u}= \left\{x\in S_{X}: g(x) = u\right\}$ and
+  $B_{v} = \left\{y\in S_{Y}: h(y) =v \right\}$. Note that the sets $A_{u}$
+  and $B_{v}$ are defined in such a way that
+  \begin{equation}\label{eq:6}
+    \left[ U=u \right] = \left[ X\in A_{u} \right]
+    \quad \text{and} \quad
+    \left[ V=v  \right] = \left[ Y\in A_{v} \right]    
+  \end{equation}
+  for all $u,v\in \R$. The result then follows from the following calculation:
+  \begin{align*}
+    \P\left[U = u, V = v\right]
+    &= \P\left[X\in A_{u}, Y\in B_{v} \right] &&\text{by \cref{eq:6} }\\
+    &= \E\left[\mathbf{1}_{\left[ X\in A_{u} , Y\in A_{v} \right] } \right]\\
+    &= \sum_{x\in S_{X}} \sum_{y\in S_{Y}} \mathbf{1}_{\left[ X\in A_{u} ,
+      Y\in A_{v}  \right] }  \P\left[X=x ,Y=y \right] &&\text{by \cref{thm:lotus-multivariable-case} }\\
+    &= \sum_{x\in S_{X}} \sum_{y\in S_{Y}} \mathbf{1}_{\left[ X\in A_{u} ,
+       Y\in A_{v}  \right] }  \P\left[X=x\right]\P\left[Y=y \right] &&\text{by \cref{thm:factorization-theorem} }\\
+    &= \sum_{x\in S_{X}} \sum_{y\in S_{Y}} \mathbf{1}_{\left[ X\in
+      A_{u}\right]} \mathbf{1}_{\left[Y\in A_{v}  \right] }
+      \P\left[X=x\right]\P\left[Y=y \right] &&\text{since $\mathbf{1}_{E\cap
+                                               F}=\mathbf{1}_{E}\mathbf{1}_{F}$
+                                               for any events $E,F$ }\\
+    &= \left( \sum_{x\in S_{X}}\mathbf{1}_{X\in A_{u}}\P\left[X=x \right] \right)
+      \left( \sum_{y\in S_{Y}}\mathbf{1}_{Y\in A_{u}}\P\left[Y=y \right] \right)\\ 
+    &= \P\left[X\in A_{u} \right] \P\left[Y\in A_{v} \right] &&\text{by \cref{thm:law-unconscious-statistician} }\\
+    &= \P\left[U=u \right] \P\left[V=v \right] &&\text{by \cref{eq:6}.}
+  \end{align*}
+  Since $u,v\in \R$ are arbitrary, this show that $U$ and $V$ are independent.
+\end{proof}
 
 \begin{example}[Example 7.6 in the textbook]
   \label{ex:example-7.6}
-  The tensile strengh of a type of wire used in the detonator of a
-  plutonium-based nuclear weapon is normally distributed with unknown mean
-  $\mu\in \R$ and variance $\sigma^{2}>0$.
-
-  Six pieces of wire are selected from a roll. Let
+  The tensile strengh of a type of wire is normally distributed with unknown
+  mean $\mu\in \R$ and variance $\sigma^{2}>0$. Six pieces of wire are
+  selected from a roll. Let
   \begin{equation*}
     Y_{i} := \text{the tensile strength for portion }i, \quad i\in [6].
   \end{equation*}
@@ -1741,12 +1799,31 @@ mean using $S$ rather thatn $\sigma$.
     \P\left[-2.015 \leq T \leq  2.015\right] = .9
   \end{equation*}
   Hence, $\P\left[ \left| \overline{Y}-\mu \right| \leq
-    \frac{2S}{\sqrt{n}}\right]$ is slightly less than $.9$.  
+    \frac{2S}{\sqrt{n}}\right]$ is slightly less than $.9$.  In words, the
+  probability that $\overline{Y}$ will be within 2 estimated standard
+  deviations of its mean is slightly less than $.90$.
+
+  Note that if $\sigma^{2}$ were known, the probability that $\overline{Y}$
+  will fall within  $2\sigma_{\overline{Y}}$ of its mean would be given by
+  \begin{align*}
+    \P\left[ \left| \overline{Y}-\mu \right| \leq  -2 \left( \frac{\sigma}{\sqrt{n}} \right)\right] 
+    &= \P\left[-2 \leq  \frac{\overline{Y}-\mu}{\sigma/\sqrt{n}} \leq 2\right]\\
+    &= \P\left[-2 \leq Z \leq 2\right]\\
+    &\approx .95.
+\end{align*}
 \end{example}
 
-\section{2026-02-04 | Week 04 | Lecture 10}
+Section 7.3 ends with a discussion about comparing variances of two
+populations using $F$ statistics. We will skip this, but return to $F$
+statistics later.
 
-\textit{Section 7.3. The central limit theorem :)}
+\newpage
+
+\section{2026-02-06 | Week 04 | Lecture 11}
+\subsection{The central limit theorem}
+
+\textit{This is based on Section 7.3. The central limit theorem :)}
+
 
 We've seen that if $Y_{1},\ldots,Y_{n}$ is a random sample of normal random
 variables, then $\overline{Y}$ is normally distributed.
@@ -1765,7 +1842,7 @@ approximately normal when $n$ is large.
   variables with $\E\left[X_{i} \right]=\mu$ and $\Var(X_{i}) =
   \sigma^{2}<\infty$. Let
   \begin{equation*}
-    U_{n} = \frac{\overline{X}-\mu}{\sigma \sqrt{n}}.
+    U_{n} = \frac{\overline{X}-\mu}{\sigma/ \sqrt{n}}.
   \end{equation*}
   Then
   \begin{equation*}
@@ -1777,14 +1854,84 @@ approximately normal when $n$ is large.
     \int_{-\infty}^{u}\frac{1}{\sqrt{2\pi}}e^{-t^{2}/2}dt \text{ for all $u\in \R$.}
   \end{equation*}
 \end{theorem}
+\begin{remark}
+  In practice, this means that when $n$ is large we have $\P\left[a \leq U_{n} \leq b\right] \approx \P\left[a \leq Z \leq b\right]$
+  for any $a,b\in \R$ with $a \leq b$.
+  
 
-In other words, $\overline{X}$ is \textit{asymptotically normally distributed
-  with mean $\mu$ and variance $\sigma^{2}/n$.}, meaning that for any
-$-\infty \leq a<b \leq \infty$,
-\begin{equation*}
-  \P\left[a \leq \overline{X} \leq b\right] \approx \P\left[a \leq W \leq b\right]
-\end{equation*}
-when $n$ is large, and $W\sim \mathcal{N}(\mu, \sigma^{2}/n)$.
+  The conclusion of the central limit can be summarized in words as the following: $\overline{X}$ is
+  \textit{asymptotically normally distributed with mean
+    $\mu_{\overline{X}}=\mu$ and variance
+    $\sigma^{2}_{\overline{X}}=\sigma^{2}/n$}.
+
+\end{remark}
+
+\begin{example}[Example 7.9 in the textbook]
+  A Ukrainian munitions factory produces a 155mm artillery shell every 1.5
+  minutes, with the production time having a variance of 1.
+
+  \Fl{Question:} Find the probability that the factory will produce more than
+  100 shells in the next two hours.
+
+  \fl{Solution:} We don't need to assume that the production times of the
+  shells are normal, but we'll assume that they are independent. Let
+  \begin{equation*}
+    Y_{i} = \text{(time required to produce the $i^{\rm th}$ shell)}.
+  \end{equation*}
+  With this notation, we want to find the probability of the event
+  $\left[Y_{1}+\ldots+Y_{100}\leq 120\right]$.
+  \begin{align*}
+    \P\left[Y_{1}+\ldots+Y_{100}\leq 120\right]
+    &= \P\left[\overline{Y} \leq \frac{120}{100}\right]\\
+    &= \P\left[\overline{Y} \leq 1.2\right].
+  \end{align*}
+  Because the sample size is large, the central limit theorem tells us that
+  $\overline{Y}$ is approximately normally distributed with mean
+  $\mu_{\overline{Y}}=1.5$ and variance $\sigma^{2}_{\overline{Y}}=1/100$.
+  Standardizing $\overline{Y}$, we have
+  \begin{align*}
+    \P\left[\overline{Y}\leq 1.2\right]
+    &= \P\left[ \frac{\overline{Y}-1.5}{1/\sqrt{100}}\leq \frac{1.2-1.5}{1/\sqrt{100}}\right]\\
+    &\approx \P\left[Z \leq -3\right]\\
+    &=.0013.
+  \end{align*}
+  Therefore it is very unlikely that the factory will produce more than $100$
+  shells in the next two hours.
+\end{example}
+
+\begin{example}[Example 7.10 in the textbook]
+  A candidate believes that she can win a city election if she can earn at
+  least $55\%$ of the votes in precinct 1. She also believes that about $50\%$
+  of the city's voters favor her. If $n=100$ voters show up to vote at precint
+  1, what is the probability that she will recieve at least 55\% of their
+  votes?
+
+  \fl{Solution:} If we think of the $n=100$ voters as a random sample from the
+  city, we have random variables
+  \begin{equation*}
+    X_{i} = \left\{ \begin{array}{l@{\quad:\quad}l} 1 & \text{voter i votes for her}\\0 & \text{otherwise} \end{array}\right.
+  \end{equation*}
+  and the proportion of votes she recieves is
+  \begin{equation*}
+    \overline{X} = \frac{1}{n}\sum_{i=1}^{n}X_{i}.
+  \end{equation*}
+  We need to find $\P\left[\overline{X} \geq .55\right]$. First observe that
+  \begin{equation*}
+    \mu:= \E\left[X_{i} \right]=.5 \quad \text{and} \quad  \sigma^{2}:= \Var(X_{i}) = p(1-p) = (.5)(.5)=.25.
+  \end{equation*}
+  By the central limit theorem, since $n$ is large, $\overline{X}$ is
+  approximately normally distributed with mean $\mu_{\overline{X}}=.5$ and
+  variance $\sigma^{2}_{\overline{X}}=\sigma^{2}/n = .25/100=.0025$.
+  Therefore, standardizing $\overline{X}$, we have
+  \begin{align*}
+    \P\left[\overline{X}\geq .55\right] 
+    &= \P\left[\frac{\overline{X}-.5}{\sqrt{.0025}}\geq \frac{.55-.5}{\sqrt{.0025}}\right]\\
+    &\approx \P\left[Z \geq \frac{.55-.5}{\sqrt{.0025}}\right]\\
+    &\approx \P\left[Z \geq 1\right]\\
+    &=.1587.
+\end{align*}
+  
+\end{example}
 
 
 \end{document}
