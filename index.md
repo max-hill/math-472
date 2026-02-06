@@ -24,6 +24,9 @@ title: Lecture Notes
 2026-01-26  | 6   | (Sections 2.12, 6.1, 7.1) What is a statistic? What is a random sample?
 2026-01-28  | 7   | (Section 7.1) Basic examples of statistics and estimators
 2026-01-30  | 8   | (Section 7.2) The Gaussian distribution
+2026-02-02  | 9   | (Section 7.2) Chi-squared distribution, t-distribution
+2026-02-04  | 10   | (Section 7.2)  t-distribution
+2026-02-06  | 11   | (Section 7.3, 7.4) The Central Limit Theorem, point estimation
  
 
 # Other Links

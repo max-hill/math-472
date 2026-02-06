@@ -24,6 +24,10 @@
 \usepackage{mathtools}% http://ctan.org/pkg/mathtools
 \usepackage{abraces} %xyz
 
+% Hawai'i
+\usepackage{fontspec}
+\newfontface\OkinaFallback{Gentium Plus} % or Noto Serif / Charis SIL / Gentium Plus
+\newcommand{\okina}{{\OkinaFallback ʻ}} % genuine U+02BB
 
 
 \usepackage{empheq} % for boxed equations
@@ -1008,7 +1012,7 @@ interest. The subset collected from it is our \demph{sample}.
 \begin{example}[Populations]
   A population can be real or theoretical. Here are some examples
   \begin{itemize}
-    \item The set of people in Hawaii (real, finite)
+    \item The set of people in Hawai{\okina}i (real, finite)
     \item The set of voters in the 2026 Midterm elections (hypothetical, finite)
     \item The decimal expansion of $\pi$ (countably infinite)
     \item The infinitely many observations that could be made during a
@@ -1822,7 +1826,7 @@ statistics later.
 \section{2026-02-06 | Week 04 | Lecture 11}
 \subsection{The central limit theorem}
 
-\textit{This is based on Section 7.3. The central limit theorem :)}
+\textit{This is based on Section 7.3 and 7.5. The central limit theorem :)}
 
 
 We've seen that if $Y_{1},\ldots,Y_{n}$ is a random sample of normal random
@@ -1929,9 +1933,158 @@ approximately normal when $n$ is large.
     &\approx \P\left[Z \geq \frac{.55-.5}{\sqrt{.0025}}\right]\\
     &\approx \P\left[Z \geq 1\right]\\
     &=.1587.
-\end{align*}
-  
+  \end{align*}
 \end{example}
 
+\subsubsection{Point Estimation}
+\textit{This section is based on section 8.2 in the textbook.}
+
+Suppose we wish to estimate a target parameter $\theta$, say, the fraction of
+people living in Hawai{\okina}i who like broccoli.
+\begin{remark}
+  If our target parameter is $\theta$, we often denote our estimator for that
+  parameter using a ``hat'', i.e., as $\widehat{\theta}$.
+\end{remark}
+
+Recall that the distribution of an estimator $\widehat{\theta}$ is called the
+\textbf{sampling distribution}. It is desirable for the sampling distribution
+to cluster around the target parameter.
+
+One criterion of the ``goodness'' of an estimator is to ask whether it exhibits ``bias''.
+
+\begin{definition}[Biased and unbiased]
+  \label{def:biased-and-unbiased}
+  Let $\widehat{\theta}$ be a point estimator for a parameter $\theta\in \R$.
+
+  If $\E\left[\widehat{\theta} \right]=\theta$ then $\widehat{\theta}$ is
+  \demph{unbiased.}
+  
+  If $\E\left[\widehat{\theta} \right]\neq \theta$, then $\widehat{\theta}$ is
+  said to be \demph{biased}.
+
+  The \demph{bias} of an estimator $\widehat{\theta}$, denoted
+  $B(\widehat{\theta})$ or $\mathrm{Bias}(\widehat{\theta})$, is the number
+  $B(\widehat{\theta})= \E\left[\widehat{\theta} \right]-\theta$.
+\end{definition}
+
+\begin{remark}
+  Since $\widehat{\theta}$ is a statistic, it is a function of a random
+  sample. So when we write $\E\left[\widehat{\theta} \right]$, we really mean
+  $\E\left[\hat{\theta}(X_{1},\ldots,X_{n}) \right]$, where
+  $X_{1},\ldots,X_{n}$ is a random sample from the population.
+\end{remark}
+
+\begin{remark}
+  Confusingly, when given an estimator
+  $\widehat{\theta}= \widehat{\theta}(X_{1},\ldots,X_{n})$ (a random variable
+  which depends on the sample), we also sometimes denote the value of
+  resulting estimate by $\widehat{\theta}$.
+\end{remark}
+
+
+
+
+\begin{example}
+  Suppose I roll a dice behind a screen, shouting out the number rolled each
+  time. Your job is to estimate the number of sides of the dice, which we will
+  call $\theta$.
+
+  Given $n$ rolls, the sample $n$ random variables
+  \begin{equation*}
+    X_{1},\ldots,X_{n}
+  \end{equation*}
+  where $X_{i}$ is the $i^{\rm th}$ dice roll. We'll give two examples of
+  estimators:
+
+  \begin{itemize}
+    \item Our first example is called the \textit{running maximum}, and it is
+    defined as
+    \begin{equation*}
+      \widehat{\theta} = \max(X_{1},\ldots,X_{n}).
+    \end{equation*}
+    For example, if I roll the dice four times and obtain $3,11,7,$ and $4$,
+    then your estimate would be that the dice has 11 sides.
+
+    This sounds silly, but with enough data this estimator will give you the
+    correct answer with high probability. This is because, if I roll the dice
+    enough times, then I will eventually roll the highest number; hence,
+    \begin{equation*}
+      \lim_{n \to \infty} \widehat{\theta}(X_{1},\ldots,X_{n}) = \theta.
+    \end{equation*}
+    One drawback is that this estimator is biased because
+    $\E\left[\widehat{\theta} \right]<\theta$. This is because it will
+    ``usually'' be less than the true number of sides, and will never be more.
+    
+    \item Our second example is what is called the \textit{method of moments
+    estimator}. In this setting, it's defined as
+    \begin{equation*}
+      \widehat{\theta} = 2 \left( \frac{X_{1}+\ldots+X_{n}}{n} \right)-1. 
+    \end{equation*}
+
+    Let's demystify this estimator. We know that since the dice has $\theta$
+    sides, it has expected value
+    \begin{equation*}
+      \E\left[X \right] = \frac{1}{\theta}\left( 1+2+\ldots+\theta \right)  = \frac{\theta+1}{2}.
+    \end{equation*}
+    Rearranging, we get
+    \begin{equation}\label{eq:7}
+      \theta = 2 \E\left[X \right] -1.
+    \end{equation}
+    We also know that by the law of large numbers,
+    \begin{equation*}
+      \frac{X_{1},\ldots,X_{n}}{n} \approx \E\left[X \right].
+    \end{equation*}
+    Combining this with \cref{eq:7} implies
+    \begin{equation*}
+      \theta 
+      \approx 2 \left( \frac{X_{1},\ldots,X_{n}}{n} \right)-1.
+    \end{equation*}
+    The right hand side is what we've chosen to be our $\widehat{\theta}$, and
+    hopefuly this calculation makes it seem like a reasonable choice.
+    
+    This estimator is unbiased. To see why, observe that
+    \begin{align*}
+      \E\left[\widehat{\theta} \right] 
+      &= \E\left[ 2 \left( \frac{X_{1}+\ldots+X_{n}}{n} \right)-1  \right] \\
+      &= 2\E\left[   \frac{X_{1}+\ldots+X_{n}}{n}   \right] -1\\
+      &= 2 \E\left[X \right]-1 \\
+      &= \theta &&\text{by \cref{eq:7}.}
+    \end{align*}
+    
+    In our example, with dice rolls $3,11,7$, and $4$, our estimator
+    $\widehat{\theta}$ returns the estimate
+    \begin{equation*}
+      2 \left( \frac{3+11+7+4}{4} \right) = 2 \left( \frac{25}{4} \right) -1 = 11.5.
+    \end{equation*}
+    So your estimate would be that the dice has 11.5 sides.
+  \end{itemize}
+\end{example}
+
+Given two unbiased estimators, then \textit{ceteris paribus}, we would
+typically prefer the estimator which has lower variance.
+
+\subsubsection{Mean square error}
+
+Here we present another criterion for whether an estimator is ``good''.
+\begin{definition}[Mean square error]
+  \label{def:mean-square-error}
+  The \demph{mean square error} (MSE) of a point estimator $\widehat{\theta}$ is
+  \begin{equation*}
+    \mathrm{MSE}(\widehat{\theta}) = \E\left[\left( \widehat{\theta}-\theta \right)  \right]
+  \end{equation*}
+\end{definition}
+
+This is the average square of the distance between the estimator and the
+target parameter. We want the MSE to be small.
+
+The next theorem says that MSE is a combined measure of both the estimator's
+variance and its bias.
+\begin{theorem}
+  Let $\widehat{\theta}$ be an estimator such that $\E\left[\widehat{\theta}
+  \right]$ is defined. Then,
+  \begin{equation*}
+    \mathrm{MSE}(\widehat{\theta}) = \Var(\widehat{\theta}) + \mathrm{Bias}(\widehat{\theta}). 
+  \end{equation*}
+\end{theorem}
 
 \end{document}
