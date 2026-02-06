@@ -1871,8 +1871,9 @@ approximately normal when $n$ is large.
 \end{remark}
 
 \begin{example}[Example 7.9 in the textbook]
-  A Ukrainian munitions factory produces a 155mm artillery shell every 1.5
-  minutes, with the production time having a variance of 1.
+  A Ukrainian munitions factory produces a 155mm artillery shell on average
+  every $\mu=1.5$ minutes, with the production time having a variance of
+  $\sigma^{2}=1$.
 
   \Fl{Question:} Find the probability that the factory will produce more than
   100 shells in the next two hours.
@@ -1882,6 +1883,7 @@ approximately normal when $n$ is large.
   \begin{equation*}
     Y_{i} = \text{(time required to produce the $i^{\rm th}$ shell)}.
   \end{equation*}
+  Here $\mu= \E\left[Y_{i} \right]=1.5$ and $\sigma^{2}= \Var(Y_{i})=1.$
   With this notation, we want to find the probability of the event
   $\left[Y_{1}+\ldots+Y_{100}\leq 120\right]$.
   \begin{align*}
@@ -1889,15 +1891,13 @@ approximately normal when $n$ is large.
     &= \P\left[\overline{Y} \leq \frac{120}{100}\right]\\
     &= \P\left[\overline{Y} \leq 1.2\right].
   \end{align*}
-  Because the sample size is large, the central limit theorem tells us that
-  $\overline{Y}$ is approximately normally distributed with mean
-  $\mu_{\overline{Y}}=1.5$ and variance $\sigma^{2}_{\overline{Y}}=1/100$.
   Standardizing $\overline{Y}$, we have
   \begin{align*}
     \P\left[\overline{Y}\leq 1.2\right]
     &= \P\left[ \frac{\overline{Y}-1.5}{1/\sqrt{100}}\leq \frac{1.2-1.5}{1/\sqrt{100}}\right]\\
-    &\approx \P\left[Z \leq -3\right]\\
-    &=.0013.
+    &=\P\left[U_{n}\leq 3\right]\\
+    &\approx \P\left[Z \leq -3\right] &&\text{by the CLT}\\
+    &=0.0013.
   \end{align*}
   Therefore it is very unlikely that the factory will produce more than $100$
   shells in the next two hours.
@@ -1906,7 +1906,7 @@ approximately normal when $n$ is large.
 \begin{example}[Example 7.10 in the textbook]
   A candidate believes that she can win a city election if she can earn at
   least $55\%$ of the votes in precinct 1. She also believes that about $50\%$
-  of the city's voters favor her. If $n=100$ voters show up to vote at precint
+  of the city's voters favor her. If $n=100$ voters show up to vote at precinct
   1, what is the probability that she will recieve at least 55\% of their
   votes?
 
@@ -1930,13 +1930,13 @@ approximately normal when $n$ is large.
   \begin{align*}
     \P\left[\overline{X}\geq .55\right] 
     &= \P\left[\frac{\overline{X}-.5}{\sqrt{.0025}}\geq \frac{.55-.5}{\sqrt{.0025}}\right]\\
-    &\approx \P\left[Z \geq \frac{.55-.5}{\sqrt{.0025}}\right]\\
-    &\approx \P\left[Z \geq 1\right]\\
-    &=.1587.
+    &= \P\left[U_{n} \geq 1\right]\\
+    &\approx \P\left[Z \geq 1\right] &&\text{by the CLT} \\
+    &=0.1587.
   \end{align*}
 \end{example}
 
-\subsubsection{Point Estimation}
+\subsection{Point Estimation}
 \textit{This section is based on section 8.2 in the textbook.}
 
 Suppose we wish to estimate a target parameter $\theta$, say, the fraction of
