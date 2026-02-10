@@ -431,17 +431,39 @@ d = rmultinom(1,size=100,prob=c(2/15,1/6,1/6,1/6,1/6,1/5))
 # EXERCISE: Write a function that simulates one-dimensional brownian motion and another function to plot the results.
 x1,x2,x3,... with x1 standard normal and x_k = x_{k-1} + e_i where e_i iid normal(0,.000001). Maybe 2-dimensional brownian motion is more interesting
 
-w = rnorm(1000, mean=0, sd=.000001) # generate white nose
+num_steps = 60*60*9
+w = rnorm(num_steps, mean=0, sd=1/180) # generate white nose
 x = c() # initialize empty vector
-x[1] = w[1] # base case
-for(k in 2:1000)
+x[1] = 0 # base case
+for(k in 2:num_steps)
 {
   x[k] = x[k-1]+w[k]
 }
-x
-plot(x)
+plot(x, type="l")
+y<-x
+plot(x,y, pch=16, type="l")
+end_price <- function(num_steps) {
+  w = rnorm(num_steps, mean=0, sd=1/180) # generate white nose
+  x = c() # initialize empty vector
+  x[1] = 5 # base case
+  for(k in 2:num_steps)
+  {
+    x[k] = x[k-1]+w[k]
+  }
+  return(x[num_steps])
+}
+e = replicate(5000,end_price(60*60*9))
+sd(e)
+mean(e)
+hist(e,probability=TRUE, breaks=100)
+curve(dnorm(x,mean=5,sd=1), add=TRUE)
 
-
+60*60*24
+x[num_steps]
+sqrt(1440)
+sqrt(60*60*24)
+1/294
+sqrt(8*60*60)
 
 ## ## Exercise 1.2 in the textbook
 
@@ -544,3 +566,55 @@ Q <- function(p){
 }
 
 Q(.9)
+
+
+## For homework 4
+
+# strongly right-skewed
+
+y <- rexp(1000000, rate=.5)
+y <- rchisq(1000000, df=3)
+hist(y, probability = TRUE, breaks = 100)
+
+mean(y)
+var(y)
+sd(y)
+
+
+
+
+k=100000 # number of sample means to compute
+n=64# sample size
+Ybars = replicate(k, sum(rchisq(n,df=3))/n)
+sd(Ybars)
+
+hist(Ybars, probability = TRUE, breaks=100)
+curve(dnorm(x, mean=3, sd=sqrt(6/n)), add=TRUE)
+
+
+
+ sd(Ybars)*sqrt(n)
+mean(Ybars)
+
+sd(y)
+length(Ybars)
+mean(Ybars)
+var(Ybars)
+sd(Ybars)
+sd(y)/sqrt(n)
+
+# 2d brownian motion
+num_steps = 30
+w1 = rnorm(num_steps, mean=0, sd=1/sqrt(num_steps)) # generate white nose
+w2 = rnorm(num_steps, mean=0, sd=1/sqrt(num_steps)) # generate white nose
+x = c() # initialize empty vector
+y = c() # initialize empty vector
+x[1] = 0 # base case
+y[1] = 0 # base case
+for(k in 2:num_steps)
+{
+  x[k] = x[k-1]+w1[k]
+  y[k] = y[k-1]+w2[k]
+}
+plot(x,y, pch=16, type="l")
+

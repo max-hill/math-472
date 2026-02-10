@@ -10,6 +10,8 @@
 \usepackage[margin=1in]{geometry}
 \usepackage{graphicx}
 \usepackage{tikz}
+\usepackage{pgfplots}
+\pgfplotsset{compat=1.18}
 \usetikzlibrary{arrows.meta}
 \usetikzlibrary{calc}
 \usepackage{forest}
@@ -1408,7 +1410,7 @@ random variables, then their sample mean is normally distributed as well.
 \begin{proof}[Proof sketch]
   The proof follows from three facts:
   \begin{itemize}
-    \item Any linear combination of normal random variables is a normal random
+    \item Any linear combination of independent normal random variables is a normal random
     variable (this can be proved using moment generating functions).
     \item That $\E\left[\overline{Y} \right]=\mu$ follows by linearity of
     expectation.
@@ -1727,7 +1729,7 @@ population paramter $\sigma$).
 The third observation in the proof of
 \cref{thm:approximate-standardization-is-t-distn} uses the following theorem
 \begin{theorem}
-  Let $X$ and $Y$ be indepndent random variables. Let $g(x)$ be a function
+  Let $X$ and $Y$ be independent random variables. Let $g(x)$ be a function
   only of $x$ and $h(y)$ a function only of $y$. Then the random variables
   $U=f(X)$ and $V=h(Y)$ are independent.
 \end{theorem}
@@ -1866,7 +1868,7 @@ approximately normal when $n$ is large.
   The conclusion of the central limit can be summarized in words as the following: $\overline{X}$ is
   \textit{asymptotically normally distributed with mean
     $\mu_{\overline{X}}=\mu$ and variance
-    $\sigma^{2}_{\overline{X}}=\sigma^{2}/n$}.
+    $\sigma^{2}_{\overline{X}}=\frac{\sigma^{2}}{n}$}.
 
 \end{remark}
 
@@ -1964,12 +1966,12 @@ One criterion of the ``goodness'' of an estimator is to ask whether it exhibits 
 
   The \demph{bias} of an estimator $\widehat{\theta}$, denoted
   $B(\widehat{\theta})$ or $\mathrm{Bias}(\widehat{\theta})$, is the number
-  $B(\widehat{\theta})= \E\left[\widehat{\theta} \right]-\theta$.
+  $B(\widehat{\theta})= \E[\widehat{\theta} ]-\theta$.
 \end{definition}
 
 \begin{remark}
   Since $\widehat{\theta}$ is a statistic, it is a function of a random
-  sample. So when we write $\E\left[\widehat{\theta} \right]$, we really mean
+  sample. So when we write $\E[\widehat{\theta} ]$, we really mean
   $\E\left[\hat{\theta}(X_{1},\ldots,X_{n}) \right]$, where
   $X_{1},\ldots,X_{n}$ is a random sample from the population.
 \end{remark}
@@ -1989,7 +1991,7 @@ One criterion of the ``goodness'' of an estimator is to ask whether it exhibits 
   time. Your job is to estimate the number of sides of the dice, which we will
   call $\theta$.
 
-  Given $n$ rolls, the sample $n$ random variables
+  Given $n$ rolls, the sample consists of the $n$ random variables
   \begin{equation*}
     X_{1},\ldots,X_{n}
   \end{equation*}
@@ -2012,8 +2014,9 @@ One criterion of the ``goodness'' of an estimator is to ask whether it exhibits 
       \lim_{n \to \infty} \widehat{\theta}(X_{1},\ldots,X_{n}) = \theta.
     \end{equation*}
     One drawback is that this estimator is biased because
-    $\E\left[\widehat{\theta} \right]<\theta$. This is because it will
-    ``usually'' be less than the true number of sides, and will never be more.
+    $\E[\widehat{\theta} ]<\theta$. This is because the estimator will
+    ``usually'' be less than the true number of sides, and will never be
+    more---so on average, $\widehat{\theta}$ will be smaller than $\theta$.
     
     \item Our second example is what is called the \textit{method of moments
     estimator}. In this setting, it's defined as
@@ -2021,8 +2024,9 @@ One criterion of the ``goodness'' of an estimator is to ask whether it exhibits 
       \widehat{\theta} = 2 \left( \frac{X_{1}+\ldots+X_{n}}{n} \right)-1. 
     \end{equation*}
 
-    Let's demystify this estimator. We know that since the dice has $\theta$
-    sides, it has expected value
+    Let's demystify this formula. Suppose $X$ a random variable representing
+    one roll of the dice. We know that since the dice has $\theta$ sides, $X$
+    has expected value
     \begin{equation*}
       \E\left[X \right] = \frac{1}{\theta}\left( 1+2+\ldots+\theta \right)  = \frac{\theta+1}{2}.
     \end{equation*}
@@ -2031,10 +2035,8 @@ One criterion of the ``goodness'' of an estimator is to ask whether it exhibits 
       \theta = 2 \E\left[X \right] -1.
     \end{equation}
     We also know that by the law of large numbers,
-    \begin{equation*}
-      \frac{X_{1},\ldots,X_{n}}{n} \approx \E\left[X \right].
-    \end{equation*}
-    Combining this with \cref{eq:7} implies
+    $\E\left[X \right] \approx \frac{X_{1},\ldots,X_{n}}{n}.$ Combining this
+    with \cref{eq:7} implies
     \begin{equation*}
       \theta 
       \approx 2 \left( \frac{X_{1},\ldots,X_{n}}{n} \right)-1.
@@ -2044,7 +2046,7 @@ One criterion of the ``goodness'' of an estimator is to ask whether it exhibits 
     
     This estimator is unbiased. To see why, observe that
     \begin{align*}
-      \E\left[\widehat{\theta} \right] 
+      \E[\widehat{\theta} ] 
       &= \E\left[ 2 \left( \frac{X_{1}+\ldots+X_{n}}{n} \right)-1  \right] \\
       &= 2\E\left[   \frac{X_{1}+\ldots+X_{n}}{n}   \right] -1\\
       &= 2 \E\left[X \right]-1 \\
@@ -2054,7 +2056,7 @@ One criterion of the ``goodness'' of an estimator is to ask whether it exhibits 
     In our example, with dice rolls $3,11,7$, and $4$, our estimator
     $\widehat{\theta}$ returns the estimate
     \begin{equation*}
-      2 \left( \frac{3+11+7+4}{4} \right) = 2 \left( \frac{25}{4} \right) -1 = 11.5.
+      2 \left( \frac{3+11+7+4}{4} \right) -1 = 2 \left( \frac{25}{4} \right) -1 = 11.5.
     \end{equation*}
     So your estimate would be that the dice has 11.5 sides.
   \end{itemize}
@@ -2063,28 +2065,343 @@ One criterion of the ``goodness'' of an estimator is to ask whether it exhibits 
 Given two unbiased estimators, then \textit{ceteris paribus}, we would
 typically prefer the estimator which has lower variance.
 
-\subsubsection{Mean square error}
+\newpage
+\section{2026-02-09 | Week 05 | Lecture 12}
+\textit{Please read 8.2, 8.3, and 8.4.}
+\subsection{Mean square error}
+\textit{This section is based on chapter 8.2 and 8.4.}
 
 Here we present another criterion for whether an estimator is ``good''.
+
 \begin{definition}[Mean square error]
   \label{def:mean-square-error}
-  The \demph{mean square error} (MSE) of a point estimator $\widehat{\theta}$ is
+  The \demph{error of estimation} $\epsilon$ is the distance between an
+  estimator and its target parameter; that is,
+  $\epsilon= | \widehat{\theta}-\theta |$. The \demph{mean square
+    error} (MSE) of a point estimator $\widehat{\theta}$ is
   \begin{equation*}
-    \mathrm{MSE}(\widehat{\theta}) = \E\left[\left( \widehat{\theta}-\theta \right)  \right]
+    \mathrm{MSE}(\widehat{\theta}) = \E\left[| \widehat{\theta}-\theta |^{2}  \right]
   \end{equation*}
 \end{definition}
 
-This is the average square of the distance between the estimator and the
-target parameter. We want the MSE to be small.
+The error of estimation is a random variable, so we cannot say how large or
+small it will be for a particular estimate. But on average, we prefer
+estimators which are, in theory, close to the target parameter on average.
+This is what the what the MSE is measuring: it is \textit{the average square of the
+distance between the estimator and the target parameter}. We want the MSE to be
+small.
 
-The next theorem says that MSE is a combined measure of both the estimator's
-variance and its bias.
+
+
+The MSE is a useful measure because, as the next theorem shows, it is a
+combined measure of both the estimator's variance and its bias (both of which
+we want to be small).
 \begin{theorem}
-  Let $\widehat{\theta}$ be an estimator such that $\E\left[\widehat{\theta}
-  \right]$ is defined. Then,
+  Let $\widehat{\theta}$ be an estimator such that $\E[\widehat{\theta}]$ is defined. Then,
   \begin{equation*}
-    \mathrm{MSE}(\widehat{\theta}) = \Var(\widehat{\theta}) + \mathrm{Bias}(\widehat{\theta}). 
+    \mathrm{MSE}(\widehat{\theta}) = \Var(\widehat{\theta}) + \left[ \mathrm{Bias}(\widehat{\theta}) \right]^{2}. 
   \end{equation*}
 \end{theorem}
+\begin{proof}
+  Let $B = \text{Bias}(\widehat{\theta})= \E[\widehat{\theta}]-\theta$. Note that $B$ is nonrandom; it is just some number.
+  Write
+  \begin{equation*}
+    \widehat{\theta}-\theta 
+    = \widehat{\theta} - \E[\widehat{\theta}] + \E[\widehat{\theta}] -\theta 
+    = \left[ \widehat{\theta}- \E[\widehat{\theta}] \right] + B.
+  \end{equation*}
+  Hence
+  \begin{equation*}
+    \left( \widehat{\theta}-\theta \right)^{2}  = \left( \widehat{\theta}- \E[\widehat{\theta}] \right)^{2} + B^{2} + 2 \left(\widehat{\theta}- \E[ \widehat{\theta}] \right)B.
+  \end{equation*}
+  Taking expectations of both sides gives
+  \begin{align*}
+    \mbox{MSE}(\widehat{\theta})
+    &= \E\left[\left( \widehat{\theta}- \E[\widehat{\theta}] \right)^{2} \right] + \E\left[B^{2} \right] + 2 \E\left[\left(\widehat{\theta}- \E[ \widehat{\theta}] \right)B \right]\\
+    &= \Var(\widehat{\theta})+ B^{2} +2B \underbrace{\E\left[\widehat{\theta}- \E[ \widehat{\theta}]  \right]}_{=0}
+  \end{align*}
+  where the last step follows by linearity of expectation:
+  $\E\left[\widehat{\theta}- \E[ \hat{\theta}] \right]= \E[\widehat{\theta} ]-
+  \E[\widehat{\theta}]$.
+\end{proof}
+
+\subsection{Standard Error}
+\textit{Based on sections 8.3 and 8.4 in the textbook}
+
+\begin{definition}[Standard Error]
+  \label{def:standard-error}
+  Given a point estimator $\widehat{\theta}$, the \demph{standard error} $\sigma_{\widehat{\theta}}$ is
+  the standard deviation of its sampling distribution; that is,
+  \begin{equation*}
+    \sigma_{\widehat{\theta}} = \sqrt{\Var(\widehat{\theta})}.
+  \end{equation*}
+\end{definition}
+
+We've already seen one example of standard error (in the denominator of
+$U_{n}$ in the central limit theorem), which we state plainly in the following
+proposition:
+\begin{proposition}[Standard error of a sample mean]
+  \label{prop:standard-error-sample-mean}
+  Let $X_{1},\ldots,X_{n}$ be a random sample from a population with variance
+  $\sigma^{2}$. Then
+  \begin{equation*}
+    \sigma_{\overline{X}} = \frac{\sigma}{\sqrt{n}}.
+  \end{equation*}
+\end{proposition}
+\begin{proof}
+  Using \cref{thm:variance-properties},
+  \begin{align*}
+    \Var(\overline{X})&= \Var \left( \frac{X_{1}+\ldots+X_{n} }{n} \right)\\ 
+                      &= \frac{1}{n^{2}}\left( \Var(X_{1})+\ldots+\Var(X_{n}) \right)\\ 
+                      &= \frac{1}{n^{2}} \left( n\sigma^{2} \right)\\ 
+                      &= \frac{\sigma^{2}}{n}.
+  \end{align*}
+  Taking square roots implies the statement of the proposition.
+\end{proof}
+
+The following is an example of a \textit{concentration inequality}, i.e., a
+probabilisitic inequality which controls the deviation of a random variable
+from its mean.
+
+\begin{theorem}[Chebychev's Inequality]
+  \label{thm:chebychevs-inequality}
+  Let $Y$ be a random variable with mean $\mu$ and variance $\sigma^{2}$. Then
+  for any $k>0$,
+  \begin{equation*}
+    \P\left[\left| Y-\mu \right| \geq k\sigma\right] \leq \frac{1}{k^{2}}.
+  \end{equation*}
+\end{theorem}
+\begin{proof}
+  The proof follows from an application of Markov's inequality
+  (\cref{thm:markovs-inequality}), which says that for any nonnegative random
+  variable $X$ and scalar $a>0$,
+  \begin{equation}\label{eq:8}
+    \P\left[X \geq a \right] \leq \frac{ \E\left[X \right]}{a}.
+  \end{equation}
+  To see this, observe that
+  \begin{align*}
+    \P\left[\left| Y-\mu \right| \geq k\sigma\right]
+    &= \P\left[\left| Y-\mu \right|^{2} \geq \left( k\sigma \right)^{2} \right]\\
+    &\leq \frac{\E\left[\left| Y-\mu
+      \right|^{2}\right]}{k^{2}\sigma^{2}}&&\text{by \cref{eq:8} with
+                                             $X=Y-\mu$ and $a=(k\sigma)^{2}$ }\\
+    &= \frac{\sigma^{2}}{k^{2}\sigma^{2}} &&\text{by definition of variance}\\
+    &= \frac{1}{k^{2}}.
+  \end{align*}
+\end{proof}
+\begin{remark}
+  The trick of squaring both sides of the inquality and then applying Markov's
+  inequality in the proof of \cref{thm:chebychevs-inequality} was also used in
+  the proof of the weak law of large numbers
+  (\cref{thm:weak-law-large-numbers}).
+\end{remark}
+Since $\widehat{\theta}$ is a random variable, the error of estimation
+$\epsilon=|\hat{\theta}-\theta|$ is also a random quantity, so we cannot say
+how large or small it will be for a particular estimate. But we can make
+probabilistic statements about it.  Here is one such example.
+
+\begin{proposition}
+  Suppose $\widehat{\theta}$ is an unbiased estimator of $\theta$, and let
+  $\epsilon=|\widehat{\theta}-\theta|$ be the estimation error. Then
+  \begin{equation*}
+    \P\left[  \epsilon  \leq k\sigma_{\widehat{\theta}}\right] \geq 1-\frac{1}{k^{2}}.
+  \end{equation*}
+\end{proposition}
+\begin{proof}
+  \begin{align*}
+    \P\left[ \epsilon \leq k\sigma_{\widehat{\theta}}\right] 
+    &=\P\left[ | \widehat{\theta}-\theta | \leq k\sigma_{\widehat{\theta}}\right] \\
+    &=\P\left[ \left| \widehat{\theta}- \E[\widehat{\theta} ] \right| \leq
+      k\sigma_{\widehat{\theta}}\right]  &&\text{since $\theta= \E[\widehat{\theta} ]$}\\
+    &= 1- \P\left[ \left| \widehat{\theta}- \E[\widehat{\theta} ] \right| \geq k\sigma_{\widehat{\theta}}\right]\\
+    &\leq 1-\frac{1}{k^{2}} &&\text{by \cref{thm:chebychevs-inequality} }
+  \end{align*}
+\end{proof}
+The textbook suggests taking $k=2$, which gives
+\begin{equation}\label{eq:two-standard-error-lower-bound}
+  \P\left[ \text{estimation error} \leq 2\sigma_{\widehat{\theta}}\right] \geq .75.
+\end{equation}
+so the error of estimation $\epsilon$ will be less than
+$2\sigma_{\hat{\theta}}$ with probability at least $.75$. This bound is
+conservative; for many random variables the true probability will be much
+higher. For example, it will be around $.95$ when $\widehat{\theta}$ is
+approximately normally distributed (e.g., when $\widehat{\theta}$ is a sample
+mean).
+
+\begin{example}[Example 8.2 in textbook]
+  A sample of $n=1000$ voters randomly selected shoed $y=560$ in favor of
+  candiate Jones. Estimate $p$, the faction of voters in the population
+  favoring Jones, and place a $2$-standard-error bound on the error of
+  estimation.
+
+  \Fl{Solution:} Let $\hat{p}$ be the fraction of of the sample who support
+  Jones. According to this estimator, our estimate is that $56\%$ of voters
+  support Jones.
+
+  How much faith should we put in this value?
+
+
+  To begin with, observe that
+  \begin{equation*}
+    \widehat{p} = \frac{X_{1}+\ldots+X_{1000}}{n}
+  \end{equation*}
+  where
+  \begin{equation*}
+    X_{i} = \left\{ \begin{array}{l@{\quad:\quad}l} 1 & \text{voter i supports
+          Jones}\\ 0& \text{otherwise} \end{array}\right.
+  \end{equation*}
+  Since $\widehat{p}$~is a sample average with $n=1000$, the central limit
+  theorem says that its distribution is approximately Gaussian with mean $p$
+  (since sample averages are unbiased). Thus, the sampling distribution of
+  $\widehat{p}$ looks something like this:
+  \begin{center}
+    \begin{tikzpicture}[scale=.6]
+      \begin{axis}[
+        domain=0.44:0.68,
+        samples=300,
+        no markers,
+        axis lines=left,
+        xlabel={The sampling distribution of $\widehat{p}$},
+        ylabel={},
+        ymin=0,
+        enlargelimits=false,
+        width=12cm,
+        height=6cm,
+        xtick={0.5,0.56,0.62},
+        xticklabels={$p-2\sigma_{\widehat{p}}$,$p$,$p+2\sigma_{\widehat{p}}$},
+        ytick=\empty,
+        clip=false
+        ]
+        % Normal pdf: mean=0.56, sd=0.03
+        \addplot[thick]
+        {1/(0.03*sqrt(2*pi))*exp(-((x-0.56)^2)/(2*(0.03)^2))};
+
+        % Shaded region between 0.50 and 0.62
+        \addplot[
+        draw=none,
+        fill=gray,
+        fill opacity=0.35,
+        domain=0.50:0.62
+        ]
+        {1/(0.03*sqrt(2*pi))*exp(-((x-0.56)^2)/(2*(0.03)^2))}
+        \closedcycle;
+
+        % Optional vertical dashed guides at the bounds
+        \addplot[dashed] coordinates {(0.50,0) (0.50, {1/(0.03*sqrt(2*pi))*exp(-((0.50-0.56)^2)/(2*(0.03)^2))})};
+        \addplot[dashed] coordinates {(0.62,0) (0.62, {1/(0.03*sqrt(2*pi))*exp(-((0.62-0.56)^2)/(2*(0.03)^2))})};
+      \end{axis}
+    \end{tikzpicture}
+  \end{center}
+
+
+  The question is asking us to approximate both $\sigma_{\hat{p}}$ and area of
+  the grey shaded region.
+  
+  To do this, let's first compute the standard error of
+  $\sigma_{\widehat{p}}$.
+
+
+  Observe that $\sigma^{2}:=\Var(X_{i})=p(1-p)$, so $\sigma = \sqrt{p(1-p)}$ \textit{(This was
+    HW 3 exercise 1a).}
+  Therefore by \cref{prop:standard-error-sample-mean},
+  \begin{equation*}
+    \sigma_{\widehat{p}} = \frac{\sigma}{\sqrt{n}}=\sqrt{\frac{p(1-p)}{1000}}.
+  \end{equation*}
+
+  Oops! We don't know $p$, since that's what we're trying to estimate.
+  Instead, we can approximate $\sigma_{\widehat{p}}$ with
+  \begin{equation*}
+    \sigma_{\widehat{p}} \approx \sqrt{\frac{\widehat{p}(1-\widehat{p})}{1000}} = \sqrt{\frac{(.56)(.44)}{1000}}= .015.
+  \end{equation*}
+
+  We can now refine our picture a bit:
+
+  \begin{center}
+    \begin{tikzpicture}[scale=.6]
+      \begin{axis}[
+        domain=0.44:0.68,
+        samples=300,
+        no markers,
+        axis lines=left,
+        xlabel={The sampling distribution of $\widehat{p}$},
+        ylabel={},
+        ymin=0,
+        enlargelimits=false,
+        width=12cm,
+        height=6cm,
+        xtick={0.5,0.56,0.62},
+        xticklabels={$p-.03$,$p$,$p+.03$},
+        ytick=\empty,
+        clip=false
+        ]
+        % Normal pdf: mean=0.56, sd=0.03
+        \addplot[thick]
+        {1/(0.03*sqrt(2*pi))*exp(-((x-0.56)^2)/(2*(0.03)^2))};
+
+        % Shaded region between 0.50 and 0.62
+        \addplot[
+        draw=none,
+        fill=gray,
+        fill opacity=0.35,
+        domain=0.50:0.62
+        ]
+        {1/(0.03*sqrt(2*pi))*exp(-((x-0.56)^2)/(2*(0.03)^2))}
+        \closedcycle;
+
+        % Optional vertical dashed guides at the bounds
+        \addplot[dashed] coordinates {(0.50,0) (0.50, {1/(0.03*sqrt(2*pi))*exp(-((0.50-0.56)^2)/(2*(0.03)^2))})};
+        \addplot[dashed] coordinates {(0.62,0) (0.62, {1/(0.03*sqrt(2*pi))*exp(-((0.62-0.56)^2)/(2*(0.03)^2))})};
+      \end{axis}
+    \end{tikzpicture}
+  \end{center}
+
+  It remains to estimate the area of the shaded region, which represents the
+  probability that the estimation error is less than $.03$. As a first
+  approximation, we can apply \cref{eq:two-standard-error-lower-bound}, which gives
+  \begin{equation*}
+    \P\left[\text{estimation error} \leq .03 \right] \approx \P\left[\left| \widehat{p}-p \right| \geq 2\sigma_{\widehat{p}}\right]  \geq .75.
+  \end{equation*}
+  Hence, the shaded region has area at least $.75$. But this is very conservative.
+
+  Since we know that $\widehat{p}$ has an
+  approximately Gaussian sampling distribution, we can do better than $.75$,
+  as follows:
+
+  \begin{align*}
+    \P\left[ \text{estimation error} \leq .03\right] 
+    &\approx \P\left[\left| \widehat{p}-p \right| \geq
+      2\sigma_{\widehat{p}}\right] &&\text{since $\sigma_{\widehat{p}}\approx .015$ }\\
+    &\approx \P\left[\left| \widehat{p}-p \right| \geq 2\sigma\right]
+    &&\text{assuming $\sigma_{\widehat{p}}\approx \sigma$}\\
+    &= \P\left[-2\leq  \frac{\widehat{p}-p}{\sigma} \leq 2\right] &&\text{standardizing}\\
+    &\approx \P\left[ -2 \leq Z \leq 2\right] &&\text{by CLT}\\
+    &=.95.
+  \end{align*}
+  Thus, if we were to repeat this poll 100 times, we would expect that only in
+  5 such polls would the estimate deviate from the true $p$ by more than
+  $.03$. So we can be reasonably confident that our estimate of $\widehat{p}=.56$ is within
+  $.03$ of the true value of $p$.  
+\end{example}
+
+\section{2026-02-?? | Week ?? | Lecture ??}
+
+\subsection{Confidence intervals}
+\textit{Based on section 8.5 in the textbook.}
+
+\begin{definition}[Interval estimator]
+  \label{def:interval-estimator}
+  An \demph{interval estimator} is a rule specifying a way to calculate two
+  statistics that form endpoints of an interval. Interval estimators are also
+  called \demph{confidence intervals}.
+\end{definition}
+\begin{remark}
+  Desired properties:
+  \begin{itemize}
+    \item the interval contains the target parameter $\theta$ 
+    \item the interval is relatively narrow
+  \end{itemize}
+\end{remark}
+
+A confidence interval varys from sample to sample.
 
 \end{document}
