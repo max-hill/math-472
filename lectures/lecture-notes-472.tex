@@ -2066,7 +2066,7 @@ Given two unbiased estimators, then \textit{ceteris paribus}, we would
 typically prefer the estimator which has lower variance.
 
 \newpage
-\section{2026-02-09 | Week 05 | Lecture 12}
+\section{2026-02-11 | Week 05 | Lecture 12}
 \textit{Please read 8.2, 8.3, and 8.4.}
 \subsection{Mean square error}
 \textit{This section is based on chapter 8.2 and 8.4.}
@@ -2201,8 +2201,9 @@ how large or small it will be for a particular estimate. But we can make
 probabilistic statements about it.  Here is one such example.
 
 \begin{proposition}
-  Suppose $\widehat{\theta}$ is an unbiased estimator of $\theta$, and let
-  $\epsilon=|\widehat{\theta}-\theta|$ be the estimation error. Then
+  Suppose $\widehat{\theta}$ is an unbiased estimator of $\theta$ with finite
+  variance, and let $\epsilon=|\widehat{\theta}-\theta|$ be the estimation
+  error. Then
   \begin{equation*}
     \P\left[  \epsilon  \leq k\sigma_{\widehat{\theta}}\right] \geq 1-\frac{1}{k^{2}}.
   \end{equation*}
@@ -2227,6 +2228,45 @@ conservative; for many random variables the true probability will be much
 higher. For example, it will be around $.95$ when $\widehat{\theta}$ is
 approximately normally distributed (e.g., when $\widehat{\theta}$ is a sample
 mean).
+
+\newpage
+\section{2026-02-13 | Week 05 | Lecture 13}
+
+
+\begin{definition}[$k$-standard-error bound]
+  Let $\widehat{\theta}$ be an point estimator of a target parameter
+  $\theta\in \R$, and let $k>0$. A \demph{$k$-standard-error bound} for the
+  estimator $\widehat{\theta}$ is an inequality of the form
+  \begin{equation}\label{eq:10}
+    \P\left[|\widehat{\theta}-\theta| \leq 2\sigma_{\widehat{\theta}}\right]
+    \geq \alpha
+  \end{equation}
+  where $\alpha\in [0,1]$.
+\end{definition}
+\begin{remark}
+  Recall that $\epsilon=|\widehat{\theta}-\theta|$ is the \textit{error of
+    estimation}, so the left hand side of \cref{eq:10} can be understood as
+  ``the probability that the estimation error is small''. As such, when
+  establishing a $k$-standard-error bound, we want $\alpha$ to be as close to $1$ as
+  possible.
+\end{remark}
+
+In the last lecture, we used Chebychev's inequality to establish the following
+2-standard-error bound for any unbiased estimator $\widehat{\theta}$ that has
+finite variance:
+
+\begin{equation}\label{eq:9}
+  \P\left[|\widehat{\theta}-\theta| \leq 2\sigma_{\widehat{\theta}}\right] \geq .75.
+\end{equation}
+This inequality says that the error of estimation will be less than
+$2\sigma_{\hat{\theta}}$ with probability at least $\alpha=.75$. This bound is
+conservative, since $\alpha=.75$ is not very close to 1.
+
+Usually the true value of $\alpha$ is much higher. For example, $\alpha$ will
+be around $.95$ when $\widehat{\theta}$ is approximately normally distributed
+(e.g., when $\widehat{\theta}$ is a sample mean). We show that with the next
+example.
+
 
 \begin{example}[Example 8.2 in textbook]
   A sample of $n=1000$ voters randomly selected shoed $y=560$ in favor of
