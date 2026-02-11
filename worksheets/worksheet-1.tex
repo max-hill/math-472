@@ -1,0 +1,284 @@
+\documentclass[10pt]{article}
+\usepackage[margin=1in]{geometry}
+\usepackage{graphicx}
+\graphicspath{{./images/}}
+
+\usepackage{amsmath, amssymb, amsthm, amsfonts, mathtools, bbm, breqn}
+\usepackage[shortlabels]{enumitem}
+\usepackage{multicol}       % multiple columns
+\usepackage{abraces}        % asymmetric braces
+\usepackage{skull}
+\usepackage{tikz}
+\usetikzlibrary{arrows.meta, arrows, calc, matrix, positioning}
+
+\usepackage{hyperref}
+\usepackage[capitalize]{cleveref}
+
+
+% Citing theorems by name. (source: https://tex.stackexchange.com/questions/109843/cleveref-and-named-theorems)
+\makeatletter
+\newcommand{\ncref}[1]{\cref{#1}\mynameref{#1}{\csname r@#1\endcsname}}
+
+\def\mynameref#1#2{%
+  \begingroup
+  \edef\@mytxt{#2}%
+  \edef\@mytst{\expandafter\@thirdoffive\@mytxt}%
+  \ifx\@mytst\empty\else
+  \space(\nameref{#1})\fi
+  \endgroup
+}
+\makeatother
+
+% for the pipe symbol
+\usepackage[T1]{fontenc}
+
+\usepackage{xcolor} % Enables a broader range of colors
+
+% Define custom colors
+\definecolor{RoyalBlue}{cmyk}{1, 0.50, 0, 0}
+
+% Note commands
+\definecolor{Red}{rgb}{1,0,0}
+\definecolor{Blue}{rgb}{0,0,1}
+\definecolor{Purple}{rgb}{.75,0,.25}
+\newcommand{\rnote}[1]{\textcolor{Red}{[#1]}}       % Red note
+\newcommand{\pnote}[1]{\textcolor{Purple}{[#1]}}    % Purple note
+\newcommand{\bnote}[1]{\textcolor{Blue}{#1}}        % Blue text
+
+\usepackage{xparse} % allows paragraph-spaning color environment
+\NewDocumentCommand{\Max}{+m}{%
+  {\color{Red}#1}%
+}
+
+% Emphasized text
+\newcommand{\demph}[1]{\textcolor{RoyalBlue}{\textbf{\slshape #1}}} % Slanted
+
+
+% Claim numbering (the counter restarts after each proof environment)
+\newcounter{claimcount}
+\setcounter{claimcount}{0}
+\newenvironment{claim}{\refstepcounter{claimcount}\par\addvspace{\medskipamount}\noindent\textbf{Claim \arabic{claimcount}:}}{}
+\usepackage{etoolbox}
+\AtBeginEnvironment{proof}{\setcounter{claimcount}{0}}
+\newenvironment{claimproof}{\par\addvspace{\medskipamount}\noindent\textit{Proof of Claim  \arabic{claimcount}.}}{\hfill\ensuremath{\qedsymbol} \tiny{Claim}
+
+  \medskip}
+% Add claim support to cleverref
+\crefname{claimcount}{Claim}{Claims}
+
+
+% Math Environments
+\newtheorem{theorem}{Theorem}
+\newtheorem{assumption}[theorem]{Assumption}
+\newtheorem{lemma}[theorem]{Lemma}
+\newtheorem{proposition}[theorem]{Proposition}
+\newtheorem{corollary}[theorem]{Corollary}
+\newtheorem{question}[theorem]{Question}
+\theoremstyle{definition}
+\newtheorem{definition}[theorem]{Definition}
+\newtheorem{remark}[theorem]{Remark}
+\newtheorem{example}[theorem]{Example}
+\newtheorem{notation}[theorem]{Notation}
+\newtheorem{problem}[theorem]{Problem}
+
+% Redefine the Example environment to include "End of example [number]"
+\makeatletter
+\let\oldexample\example
+\renewenvironment{example}
+{\begin{oldexample}}
+  {\par\smallskip\hfill   End of Example~\theexample. $\square$    \par\end{oldexample}}
+\makeatother
+
+% Custom Math Commands
+\newcommand{\vt}{\vspace{5mm}}                       % Vertical space
+\newcommand{\fl}[1]{\noindent\textbf{#1}}            % Bold first line
+\newcommand{\Fl}[1]{\vspace{5mm}\noindent\textbf{#1}}% Bold first line with space above
+\newcommand{\norm}[1]{\left\lVert #1 \right\rVert}   % Norm
+
+% Common math symbols
+\newcommand{\R}{\mathbb{R}}           % Real numbers
+\newcommand{\N}{\mathbb{N}}           % Natural numbers
+\newcommand{\C}{\mathbb{C}}           % Complex numbers
+\newcommand{\Z}{\mathbb{Z}}           % Integers
+\newcommand{\Q}{\mathbb{Q}}           % Rational numbers
+\newcommand{\E}{\mathbb{E}}           % Expectation
+\renewcommand{\P}{\mathbb{P}}         % Probability (renamed to avoid \P clash)
+\newcommand{\indep}{\perp\!\!\!\perp} % Independence symbol
+
+% Operators
+\newcommand{\Var}{\mathrm{Var}}   % Variance
+\newcommand{\tr}{\mathrm{tr}}     % Trace
+\newcommand{\dist}{\mathrm{dist}} % Distance
+
+
+\usepackage{biblatex}
+\addbibresource{refs.bib}
+
+
+
+\begin{document}
+\begin{center}
+  \section*{Math 472: Worksheet 1}
+  \subsection*{February 20, 2026}
+\end{center}
+
+\textit{\textbf{Instructions:} Please work on the problems in groups of 2 or
+  3. You don't need to finish this today, but I will ask each group to submit
+  solutions on February 27.}
+
+\vspace{1em}
+
+\begin{problem}
+  \label{problem:chi-squared}
+  This problem aims to help visualize an answer to the following question:
+  \textit{``Suppose that our population of interest does not have a normal
+    distribution. What does the sampling distribution of $\overline{Y}$ look
+    like, and what is the effect of the sample size on the sampling
+    distribution of $\overline{Y}$?''}
+
+  For this problem we will assume the population is a chi-squared distribution
+  with 3 degrees of freedom. You can visualize the shape of this distribution
+  using the \texttt{R} code
+\begin{verbatim}
+# Draw a random sample of size n=1000000 from a chi-squared distribution with 3 degrees
+# of freedom
+y <- rchisq(1000000, df=3)
+hist(y, probability = TRUE, breaks = 100)
+\end{verbatim}
+  Use \texttt{R} to complete the following.
+  \begin{enumerate}[(a)]
+    \item By drawing samples from the population and computing the sample mean
+    and sample variance, estimate the mean $\mu$, variance $\sigma^{2}$, and
+    standard deviation $\sigma$ of the population. (When $n$ is large, your
+    answers will be close to the values from Proposition 60 in the lecture
+    notes).
+    \item We can visualize the sampling distribution of
+    $\overline{Y}=(Y_{1}+\ldots+Y_{n})/n$ by generating a large number (say,
+    $k=100,000$) of sample means for a specified value of $n$, and then
+    plotting this histogram (use the setting \texttt{probability=TRUE} and
+    specify a reasonable number of breaks).
+
+    Do this for $n=4,16,32$ and $64$.
+    
+    To be extra spicy, you can overlay the normal curve approximation given by
+    the central limit theorem by running the following code after you plot your
+    histogram:
+
+    \texttt{curve(dnorm(x, mean=3, sd=sqrt(6/n)), add=TRUE)}
+    
+    \item What do you notice about the adequacy of the normal approximation of
+    the sampling distribution of $\overline{Y}$ as the sample size $n$
+    increases?
+    \item \label{item:1} What happens to the standard error of $\overline{Y}$ as $n$ goes
+    from $4$ to $16$, from $16$ to $64$, and from $64$ to $256$? Formulate a general
+    conjecture which relates the sample size to the standard error of
+    $\overline{Y}$?  Can you prove your conjecture?
+  \end{enumerate}
+\end{problem}
+
+% \begin{problem}
+%   Do \cref{problem:chi-squared} again, but this time assume the population is
+%   exponentially distributed with mean $2$. Does your conjecture from
+%   \ref{item:1} hold up? Can you prove the conjecture?
+% \end{problem}
+
+
+\begin{problem}[1-dimensional Brownian motion]
+  In this problem, we will model the price of a stock over the course of a
+  day. Let $x(t)$ be the price of the stock at time $t$, where $t$ is
+  measured in seconds. Assume that at the beginning of the day $(t=0)$, the
+  stock trades at $\$5$, and that trading continues for 9 hours.
+
+  We will model the volatility of the stock price in the following way. Assume
+  that each second, the change in the stock prices is normally distributed
+  with mean $\mu=0$ and standard deviation $\sigma = 1/180$. In other words,
+  for every $n=0,1,2,\ldots$, we have
+  \begin{equation}\label{eq:1}
+    x(n+1)= x(n)+V_{n}
+  \end{equation}
+  where $V_{n}$ is an independent normal random variable with mean $\mu=0$ and
+  standard deviation $\sigma=1/294$. We can think of $V_{1},V_{2},\ldots$ as
+  representing the random \textit{volatility} of the stock price from moment
+  to moment.
+
+  
+  \begin{enumerate}[(a)]
+    \item Plot the stock price over the course of the day. (You can use the
+    command \texttt{plot()} to do this, and I recommend using the optional
+    argument \texttt{type="l"} to tell \texttt{R} to draw connected lines.)
+    \item \label{item:2} Let $Y$ be the change in the price of the stock
+    (i.e., the final price minus the initial price). Generate a sample of
+    $n=5000$ values of $Y$, which you should save as the vector \texttt{y_values}.
+
+    (Hint: one way to do this is to first write a function which returns $Y$,
+    and then use the \texttt{replicate()} command.)
+    \item Compute the sample mean and sample standard deviation of \texttt{y_values}.
+    \item Plot a histogram of your sample from \ref{item:2} using
+    \begin{center}
+      \texttt{hist(y_values, probability=TRUE, breaks=100)}
+    \end{center}
+    After doing this, overlay a normal curve on top of your histogram with the command
+    \begin{center}
+      \texttt{curve(dnorm(x,mean=??,sd=??), add=true)}
+    \end{center}
+    (where you have to substitute sensible values for the mean and standard deviation).
+    
+    \item Prove that $Y$ has a standard normal distribution.
+
+    (Hint: use \cref{eq:1}).
+    \item Suppose you purchase the stock at the beginning of the day and sell
+    at the end. What is the probability that you make at least $\$1$?
+  \end{enumerate}
+\end{problem}
+
+\begin{problem}[2-dimensional Brownian motion]
+  Suppose we track the motion of a pollen grain suspended in a petri dish
+  under microscope. The pollen grain is constantly being bombarded by water
+  molecules from every direction, with each collision transferring a small
+  amount of momentum to the pollen grain. This causes the pollen grain to
+  slowly move around in an random, irregular way.
+
+  Let $(x(t),y(t))$ be the position of the pollen grain after
+  $t\in \mathbb{N}$ units of time. Assume that at time $t=0$, the pollen grain
+  starts at position $(x(0),y(0))=(0,0)$, and that at each subsequent time
+  step, its position is given by
+  \begin{equation*}
+    (x(t+1),y(t+1)) = (x(t)+X_{t}, y(t)+Y_{t}),
+  \end{equation*}
+  where $X_{1},X_{2},\ldots,$ and $Y_{1},Y_{2}\ldots$ are independent normal
+  random variables with mean 0 and variance $\sigma^{2}>0$.
+
+  \begin{enumerate}[(a)]
+    \item Assume that $\sigma=1/10$. Plot the motion of the pollen grain from
+    time $t=0$ to $t=100$.
+
+    Hint: One way to do this is generate a vector of 100 $x$-coordinates and a
+    vector of 100 $y$-coordinates independently, and then plot them using the
+    following command:
+    
+    \begin{center}
+      \texttt{plot(x,y, pch=16, type="l")}
+    \end{center}
+    
+    \item \label{item:3} Let $D$ be the distance of the pollen grain from the
+    origin after $100$ times steps (we are still assuming $\sigma=1/10$).
+    Generate a large number of independent samples of $D$. Use them to
+    estimate the mean and variance of $D$, and plot a histogram of your $D$
+    values.
+
+    \item Now, assume that $\sigma=1/100$. Plot the motion of the pollen grain from
+    time $t=0$ to $t=10000$.
+
+    \item \label{item:4} With $\sigma=1/100$, let $D$ be the distance of the pollen grain
+    from the origin after $1000$. Generate a large number of independent
+    samples of $D$. Use them to estimate the mean and variance of $D$, and
+    plot a histogram of your $D$ values.
+    
+    \item Compare the distributions of \ref{item:3} and \ref{item:4}. Does the
+    distribution obtained in change substantially?
+    
+    \item What is the distribution of $D^{2}$ in both cases?
+  \end{enumerate}
+\end{problem}
+\printbibliography
+\end{document}

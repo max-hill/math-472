@@ -1,0 +1,340 @@
+\documentclass[10pt]{article}
+% Math Packages
+\usepackage{amsmath, mathtools}
+\usepackage{amssymb}
+\usepackage{amsthm}
+\usepackage{amsfonts}
+\usepackage{bbm}
+\usepackage{breqn}
+\usepackage[margin=1in]{geometry}
+\usepackage{graphicx}
+\usepackage{tikz}
+\usetikzlibrary{arrows.meta}
+\usetikzlibrary{calc}
+\usepackage{forest}
+\usepackage{tikz-qtree}
+\graphicspath{ {./images/} }
+\usepackage{hyperref}
+\usepackage[capitalize]{cleveref}
+\usepackage[shortlabels]{enumitem}
+\usetikzlibrary{arrows,matrix,positioning}
+\usepackage{multicol}
+
+\usepackage{listings}
+\usepackage{xcolor}
+
+\crefname{problem}{Problem}{Problems}
+\Crefname{problem}{Problem}{Problems}
+
+\lstset{
+  language=R,
+  basicstyle=\ttfamily\footnotesize,
+  keywordstyle=\color{blue},
+  commentstyle=\color{gray},
+  stringstyle=\color{red!70!black},
+  framesep=2pt,
+  framexleftmargin=0pt, 
+  frame=single,
+  breaklines=false,
+  showstringspaces=false
+}
+% for the pipe symbol
+\usepackage[T1]{fontenc}
+
+% Citing theorems by name. (source: https://tex.stackexchange.com/questions/109843/cleveref-and-named-theorems)
+\makeatletter
+\newcommand{\ncref}[1]{\cref{#1}\mynameref{#1}{\csname r@#1\endcsname}}
+
+\def\mynameref#1#2{%
+  \begingroup
+  \edef\@mytxt{#2}%
+  \edef\@mytst{\expandafter\@thirdoffive\@mytxt}%
+  \ifx\@mytst\empty\else
+  \space(\nameref{#1})\fi
+  \endgroup
+}
+\makeatother
+
+% Colorful Notes
+\usepackage{color} \definecolor{Red}{rgb}{1,0,0} \definecolor{Blue}{rgb}{0,0,1}
+\definecolor{Purple}{rgb}{.5,0,.5} \def\red{\color{Red}} \def\blue{\color{Blue}}
+\def\gray{\color{gray}} \def\purple{\color{Purple}}
+\newcommand{\rnote}[1]{{\red [#1]}} % \rnote{foo} gives '[foo]' in red
+\newcommand{\pnote}[1]{{\purple [#1]}} % \pnote{foo} gives '[foo]' in purple
+\newcommand{\bnote}[1]{{\blue #1}} % \bnote{foo} gives 'foo' in blue
+\newcommand{\gnote}[1]{{\gray #1}} % \gnote{foo} gives 'foo' in gray
+\newcommand{\Max}[1]{{\purple [#1]}} % \bnote{foo} then 'foo' is blue
+
+
+% Claim numbering (the counter restarts after each proof environment)
+\newcounter{claimcount}
+\setcounter{claimcount}{0}
+\newenvironment{claim}{\refstepcounter{claimcount}\par\addvspace{\medskipamount}\noindent\textbf{Claim \arabic{claimcount}:}}{}
+\usepackage{etoolbox}
+\AtBeginEnvironment{proof}{\setcounter{claimcount}{0}}
+\newenvironment{claimproof}{\par\addvspace{\medskipamount}\noindent\textit{Proof of Claim  \arabic{claimcount}.}}{\hfill\ensuremath{\qedsymbol} \tiny{Claim}
+
+  \medskip}
+% Add claim support to cleverref
+\crefname{claimcount}{Claim}{Claims}
+
+
+% Math Environments
+\newtheorem{theorem}{Theorem}
+\newtheorem{assumption}[theorem]{Assumption}
+\newtheorem{lemma}[theorem]{Lemma}
+\newtheorem{proposition}[theorem]{Proposition}
+\newtheorem{corollary}[theorem]{Corollary}
+\newtheorem{question}[theorem]{Question}
+\theoremstyle{definition}
+\newtheorem*{definition}{Definition}
+\newtheorem{remark}[theorem]{Remark}
+\newtheorem{example}[theorem]{Example}
+\newtheorem{notation}[theorem]{Notation}
+\newtheorem{problem}[theorem]{Problem}
+
+% Matrices and Column Vectors. 
+\usepackage{stackengine}
+\setstackgap{L}{1.0\normalbaselineskip}
+\usepackage{tabstackengine}
+\setstackEOL{;}% row separator
+\setstackTAB{,}% column separator
+\setstacktabbedgap{1ex}% inter-column gap
+\setstackgap{L}{1.5\normalbaselineskip}% inter-row baselineskip
+\let\nmatrix\bracketMatrixstack  %Usage: \nmatrix{1,2,3\4,5,6}
+\newcommand\cv[1]{\setstackEOL{,}\bracketMatrixstack{#1}} %usage: \cv{1,2,3}
+
+% Custom Math Coqmmands
+\newcommand{\vt}{\vskip 5mm} % vertical space
+\newcommand{\fl}{\noindent\textbf} % first line
+\newcommand{\Fl}{\vt\noindent\textbf} % first line with space above
+\newcommand{\norm}[1]{\left\lVert#1\right\rVert} % norm
+\newcommand{\pnorm}[1]{\left\lVert#1\right\rVert_p} % p-norm
+\newcommand{\qnorm}[1]{\left\lVert#1\right\rVert_q} % q-norm
+\newcommand{\1}[1]{\textbf{1}_{\left[#1\right]}} % indicator function 
+\def\limn{\lim_{n\to\infty}} % shortcut for lim as n-> infinity
+\def\sumn{\sum_{n=1}^{\infty}} % shortcut for sum from n=1 to infinity
+\def\sumkn{\sum_{k=1}^{n}} % shortcut for sum from k=1 to n
+\def\sumin{\sum_{i=1}^{n}} % shortcut for sum from i=1 to n
+\def\SAs{\sigma\text{-algebras}} % shortcut for $\sigma$-algebras
+\def\SA{\sigma\text{-algebra}} % shortcut for $\sigma$-algebra
+\def\Ft{\mathcal{F}_t} % time-indexed sigma-algebra (t)
+\def\Fs{\mathcal{F}_s} % time-indexed sigma-algebra (s)
+\def\F{\mathcal{F}} % sigma-algebra
+\def\G{\mathcal{G}} % sigma-algebra
+\def\R{\mathbb{R}} % Real numbers
+\def\N{\mathbb{N}} % Natural numbers
+\def\Z{\mathbb{Z}} % Integers
+\def\E{\mathbb{E}} % Expectation
+\def\P{\mathbb{P}} % Probability
+\def\Q{\mathbb{Q}} % Q probability
+\def\dist{\text{dist}} %Text 'dist' for things like 'dist(x,y)'
+\newcommand{\indep}{\perp \!\!\! \perp}  %independence symbol
+\def\Var{\mathrm{Var}} % Variance
+\def\tr{\mathrm{tr}} % trace
+
+% Brackets and Parentheses
+\def\[{\left [}
+    \def\]{\right ]}
+% \def\({\left (}
+%   \def\){\right )}
+
+
+
+\usepackage{color}
+\definecolor{Red}{rgb}{1,0,0}
+\definecolor{Blue}{rgb}{0,0,1}
+\definecolor{Purple}{rgb}{.5,0,.5}
+\def\red{\color{Red}}
+\def\blue{\color{Blue}}
+\def\gray{\color{gray}}
+\def\purple{\color{Purple}}
+\definecolor{RoyalBlue}{cmyk}{1, 0.50, 0, 0}
+\newcommand{\dempfcolor}[1]{{\color{RoyalBlue}#1}} 
+\newcommand{\demph}[1]{\textcolor{RoyalBlue}{\textbf{\slshape #1}}} % Slanted
+
+\usepackage{emoji}
+% comment exactly one of the following line to show / hide the solutions
+% \newcommand{\solution}[1]{{\purple #1}} % uncomment to show the solutions
+\newcommand{\solution}[1]{} % uncomment to hide the solutions
+
+
+
+
+\begin{document}
+\begin{center}
+  \section*{Math 472: Homework 04}
+  \textit{Due Monday Feb 16}
+\end{center}
+
+\begin{problem}[Geometric distribution]
+  Consider a sequence of independent coin flips, each of which has probability
+  $p$ of being heads. Define a random variable $X$ as the length of the run
+  (either heads or tails) started by the first trial. (For example, if
+  \texttt{TTTH} or \texttt{HHHT} is observed).
+  \begin{enumerate}[(a)]
+    \item What is the sample space? What are the sample points? 
+    \item Find the distribution of $X$ (i.e., compute the probability mass
+    function of $X$).
+    \item Find $\E\left[X \right]$.
+    \item Use \texttt{R} to generate 50 samples from the distribution of $X$
+    (use whatever value of $p\in (0,1)$ you want). What is the sample mean?
+    What is the sample variance?
+  \end{enumerate}
+\end{problem}
+
+
+
+For \cref{problem:1,problem:2,problem:3,problem:4,problem:5}, the following
+plot may be helpful:
+
+\begin{center}
+  \includegraphics[scale=0.3]{images/standard-normal-small}
+\end{center}
+
+
+
+\begin{problem}%[CLT]
+  \label{problem:2}
+  Let $S$ be the number of heads in 100 tosses of a fair coin. Use the
+  Central Limit Theorem to compute $\P\left[45 \leq S\leq 55\right]$.
+  \textit{Your answer should be a number.}
+\end{problem}
+
+
+\begin{problem}%[CLT]
+  \label{problem:3}
+  Use the Central Limit Theorem to approximate the probability of obtaining
+  more than 65 heads when flipping a fair coin 100 times.
+\end{problem}
+
+\begin{problem}%[CLT] % similar to hw 9, problem 6
+  \label{problem:1}
+  The nation of Oceania has always been at war with the nation of Eurasia. To
+  establish peace, Oceania's leadership has unanimously authorized a
+  preemptive strike to be carried out tomorrow morning against 48 pre-selected
+  military and industrial targets in enemy territory. Analysts at the Ministry
+  of Peace estimate that each target has a probability of $3/4$ of being
+  destroyed in this first strike.
+
+  The operation will be regarded as a strategic success under Oceania's peace
+  doctrine if at least 30 targets are destroyed. Using the Central Limit
+  Theorem, estimate the probability that the first strike achieves this
+  benchmark.\footnote{Responses deviating significantly from 100\% confidence
+    will be flagged for review by the Ministry of Truth.}
+
+\end{problem}
+
+
+
+
+\begin{problem}%[CLT: this problem is similar to problem 9 in homework 9]
+  \label{problem:4}
+  A mandolin-making machine in Mordecai's mandolin manufactory makes about 5\%
+  defective mandolins even when properly functioning. The mandolins are then
+  packed in crates containing 1900 mandolins each. A crate is examined and
+  found to contain 115 defective mandolins. What is the approximate
+  probability of finding at least this many defective mandolins if the machine
+  is properly adjusted? If you were Mordecai, would hire a technician to check
+  out the machine?
+
+  %\textit{Hint:} The following may be useful $\sqrt{1900}=10 \sqrt{19}$.
+\end{problem}
+
+
+\begin{problem}
+  \label{problem:5}
+  A candidate believes that she can win a city election if she can earn at
+  least $55\%$ of the votes in precinct 1. She also believes that about $50\%$
+  of the city's voters favor her. If $n=100$ voters show up to vote at precinct
+  1, what is the probability that she will recieve at least 55\% of their
+  votes?
+\end{problem}
+
+\begin{problem}[Exercises 8.2, 8.3, and 8.4 in the textbook]
+  Suppose $\widehat{\theta}$ is an estimator for a target parameter $\theta$.
+  \begin{enumerate}[(a)]
+    \item If $\widehat{\theta}$ is unbiased, what is $\text{Bias}(\widehat{\theta})$?
+    \item If $\text{Bias}(\widehat{\theta})=5$, what is $\E[\widehat{\theta} ]$?
+    \item Suppose $\E[\widehat{\theta} ]=a\theta+b$ for some
+    nonzero constants $a$ and $b$. In terms of $a$ and $b$, what is
+    $\text{Bias}(\widehat{\theta})$? Find a function of
+    $\widehat{\theta}$---say, $\widehat{\theta}^{*}$---that is an unbiased
+    estimator for $\theta$.
+    \item If $\widehat{\theta}$ is unbiased, how does
+    $\text{MSE}(\widehat{\theta})$ compare to $\text{Var}(\widehat{\theta})$?
+    What about when $\widehat{\theta}$ is biased?
+  \end{enumerate}
+\end{problem}
+
+\begin{problem}[Exercise 8.8 in the textbook]
+  Suppose that $Y_{1},Y_{2},Y_{3}$ are a random sample from an exponential
+  distribution with density function
+  \begin{equation*}
+    f(y) = \frac{1}{\theta}e^{-y/\theta}\mathbf{1}_{\left[ y>0 \right] }
+  \end{equation*}
+  Consider the following estimators
+  \begin{equation*}
+    \hat{\theta}_{1} =Y_{1}, \quad\quad \widehat{\theta}_{2}= \frac{Y_{1}+Y_{2}}{2}, \quad\quad \widehat{\theta}_{3} = \frac{Y_{1}+2Y_{2}}{3}, \quad\quad \hat{\theta}_{4} = \min(Y_{1},Y_{2},Y_{3}), \quad\quad \hat{\theta}_{5}= \overline{Y}
+  \end{equation*}
+  (Hint: recall the fact that the minimum of exponential random variables is
+  itself exponentially distributed.).
+  \begin{enumerate}[(a)]
+    \item Which of these estimators is unbiased? 
+    \item Among the unbiased estimators, which has the smallest variance?
+  \end{enumerate}
+\end{problem}
+
+\begin{problem}[Exercise 8.12 in the textbook]
+  The reading on a voltage meter connected to a test circuit is uniformly
+  distributed over the interval $(\theta,\theta+1)$, where $\theta$ is the
+  true but unknown voltage of the circuit. Suppose that $Y_{1},\ldots,Y_{n}$
+  denote a random sample of such readings
+  \begin{enumerate}[(a)]
+    \item Show that $\overline{Y}$ is a biased estimator of $\theta$ and
+    compute the bias.
+    \item Find a function of $\overline{Y}$ that is an unbiased estimator of
+    $\theta$. 
+    \item Find $\text{MSE}(\overline{Y})$ when $\overline{Y}$ is used as an
+    estimator of $\theta$. 
+  \end{enumerate}
+\end{problem}
+
+\begin{problem}[Exercise 8.23 in the textbook -- similar to textbook Example 8.2]
+  The Environmental Protection Agency and the University of Florida recently
+  cooperated in a large study of the possible effects of trace elements in
+  drinking water on kidney-stone disease. The accompanying table presents data
+  on age, amount of calcium in home drinking water (measured in parts per
+  million), and smoking activity. These data were obtained from individ- uals
+  with recurrent kidney-stone problems, all of whom lived in the Carolinas and
+  the Rocky Mountain states.
+
+  \begin{table}[h]
+    \centering
+    \begin{tabular}{lcc}
+      \hline
+      & Carolinas & Rockies \\
+      \hline
+      Sample size & 467 & 191 \\
+      Mean age & 45.1 & 46.4 \\
+      Standard deviation of age & 10.2 & 9.8 \\
+      Mean calcium component (ppm) & 11.3 & 40.1 \\
+      Standard deviation of calcium & 16.6 & 28.4 \\
+      Proportion now smoking & 0.78 & 0.61 \\
+      \hline
+    \end{tabular}
+  \end{table}
+  \begin{enumerate}[(a)]
+    \item Estimate the average calcium concentration in drinking water for kidney-stone patients in
+    the Carolinas. Place a bound on the error of estimation.
+    \item Estimate the difference in mean ages for kidney-stone patients in the Carolinas and in the
+    Rockies. Place a bound on the error of estimation.
+    \item Estimate and place a 2-standard-deviation bound on the difference in
+    proportions of kidney-stone patients from the Carolinas and Rockies who were
+    smokers at the time of the study.
+  \end{enumerate}
+\end{problem}
+
+
+
+\end{document}

@@ -27,6 +27,10 @@ title: Lecture Notes
 2026-02-02  | 9   | (Section 7.2) Chi-squared distribution, t-distribution
 2026-02-04  | 10   | (Section 7.2)  t-distribution
 2026-02-06  | 11   | (Section 7.3, 7.4) The Central Limit Theorem, point estimation
+2026-02-11  | 12   | (Section 8.2, 8.3, 8.4) Mean square error, standard error 
+2026-02-13  | 13   | ???
+2026-02-18  |    | ???
+2026-02-20  |    | [R coding worksheet](worksheets/worksheet-1.pdf)
  
 
 # Other Links
