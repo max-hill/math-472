@@ -1,0 +1,332 @@
+\documentclass[10pt]{article}
+% Math Packages
+\usepackage{amsmath, mathtools}
+\usepackage{amssymb}
+\usepackage{amsthm}
+\usepackage{amsfonts}
+\usepackage{bbm}
+\usepackage{breqn}
+\usepackage[margin=1in]{geometry}
+\usepackage{graphicx}
+\usepackage{tikz}
+\usetikzlibrary{arrows.meta}
+\usetikzlibrary{calc}
+\usepackage{forest}
+\usepackage{tikz-qtree}
+\graphicspath{ {./images/} }
+\usepackage{hyperref}
+\usepackage[capitalize]{cleveref}
+\usepackage[shortlabels]{enumitem}
+\usetikzlibrary{arrows,matrix,positioning}
+\usepackage{multicol}
+
+\usepackage{listings}
+\usepackage{xcolor}
+
+\crefname{problem}{Problem}{Problems}
+\Crefname{problem}{Problem}{Problems}
+
+\lstset{
+  language=R,
+  basicstyle=\ttfamily\footnotesize,
+  keywordstyle=\color{blue},
+  commentstyle=\color{gray},
+  stringstyle=\color{red!70!black},
+  framesep=2pt,
+  framexleftmargin=0pt, 
+  frame=single,
+  breaklines=false,
+  showstringspaces=false
+}
+% for the pipe symbol
+\usepackage[T1]{fontenc}
+
+% Citing theorems by name. (source: https://tex.stackexchange.com/questions/109843/cleveref-and-named-theorems)
+\makeatletter
+\newcommand{\ncref}[1]{\cref{#1}\mynameref{#1}{\csname r@#1\endcsname}}
+
+\def\mynameref#1#2{%
+  \begingroup
+  \edef\@mytxt{#2}%
+  \edef\@mytst{\expandafter\@thirdoffive\@mytxt}%
+  \ifx\@mytst\empty\else
+  \space(\nameref{#1})\fi
+  \endgroup
+}
+\makeatother
+
+% Colorful Notes
+\usepackage{color} \definecolor{Red}{rgb}{1,0,0} \definecolor{Blue}{rgb}{0,0,1}
+\definecolor{Purple}{rgb}{.5,0,.5} \def\red{\color{Red}} \def\blue{\color{Blue}}
+\def\gray{\color{gray}} \def\purple{\color{Purple}}
+\newcommand{\rnote}[1]{{\red [#1]}} % \rnote{foo} gives '[foo]' in red
+\newcommand{\pnote}[1]{{\purple [#1]}} % \pnote{foo} gives '[foo]' in purple
+\newcommand{\bnote}[1]{{\blue #1}} % \bnote{foo} gives 'foo' in blue
+\newcommand{\gnote}[1]{{\gray #1}} % \gnote{foo} gives 'foo' in gray
+\newcommand{\Max}[1]{{\purple [#1]}} % \bnote{foo} then 'foo' is blue
+
+
+% Claim numbering (the counter restarts after each proof environment)
+\newcounter{claimcount}
+\setcounter{claimcount}{0}
+\newenvironment{claim}{\refstepcounter{claimcount}\par\addvspace{\medskipamount}\noindent\textbf{Claim \arabic{claimcount}:}}{}
+\usepackage{etoolbox}
+\AtBeginEnvironment{proof}{\setcounter{claimcount}{0}}
+\newenvironment{claimproof}{\par\addvspace{\medskipamount}\noindent\textit{Proof of Claim  \arabic{claimcount}.}}{\hfill\ensuremath{\qedsymbol} \tiny{Claim}
+
+  \medskip}
+% Add claim support to cleverref
+\crefname{claimcount}{Claim}{Claims}
+
+
+% Math Environments
+\newtheorem{theorem}{Theorem}
+\newtheorem{assumption}[theorem]{Assumption}
+\newtheorem{lemma}[theorem]{Lemma}
+\newtheorem{proposition}[theorem]{Proposition}
+\newtheorem{corollary}[theorem]{Corollary}
+\newtheorem{question}[theorem]{Question}
+\theoremstyle{definition}
+\newtheorem*{definition}{Definition}
+\newtheorem{remark}[theorem]{Remark}
+\newtheorem{example}[theorem]{Example}
+\newtheorem{notation}[theorem]{Notation}
+\newtheorem{problem}[theorem]{Problem}
+
+% Matrices and Column Vectors. 
+\usepackage{stackengine}
+\setstackgap{L}{1.0\normalbaselineskip}
+\usepackage{tabstackengine}
+\setstackEOL{;}% row separator
+\setstackTAB{,}% column separator
+\setstacktabbedgap{1ex}% inter-column gap
+\setstackgap{L}{1.5\normalbaselineskip}% inter-row baselineskip
+\let\nmatrix\bracketMatrixstack  %Usage: \nmatrix{1,2,3\4,5,6}
+\newcommand\cv[1]{\setstackEOL{,}\bracketMatrixstack{#1}} %usage: \cv{1,2,3}
+
+% Custom Math Coqmmands
+\newcommand{\vt}{\vskip 5mm} % vertical space
+\newcommand{\fl}{\noindent\textbf} % first line
+\newcommand{\Fl}{\vt\noindent\textbf} % first line with space above
+\newcommand{\norm}[1]{\left\lVert#1\right\rVert} % norm
+\newcommand{\pnorm}[1]{\left\lVert#1\right\rVert_p} % p-norm
+\newcommand{\qnorm}[1]{\left\lVert#1\right\rVert_q} % q-norm
+\newcommand{\1}[1]{\textbf{1}_{\left[#1\right]}} % indicator function 
+\def\limn{\lim_{n\to\infty}} % shortcut for lim as n-> infinity
+\def\sumn{\sum_{n=1}^{\infty}} % shortcut for sum from n=1 to infinity
+\def\sumkn{\sum_{k=1}^{n}} % shortcut for sum from k=1 to n
+\def\sumin{\sum_{i=1}^{n}} % shortcut for sum from i=1 to n
+\def\SAs{\sigma\text{-algebras}} % shortcut for $\sigma$-algebras
+\def\SA{\sigma\text{-algebra}} % shortcut for $\sigma$-algebra
+\def\Ft{\mathcal{F}_t} % time-indexed sigma-algebra (t)
+\def\Fs{\mathcal{F}_s} % time-indexed sigma-algebra (s)
+\def\F{\mathcal{F}} % sigma-algebra
+\def\G{\mathcal{G}} % sigma-algebra
+\def\R{\mathbb{R}} % Real numbers
+\def\N{\mathbb{N}} % Natural numbers
+\def\Z{\mathbb{Z}} % Integers
+\def\E{\mathbb{E}} % Expectation
+\def\P{\mathbb{P}} % Probability
+\def\Q{\mathbb{Q}} % Q probability
+\def\dist{\text{dist}} %Text 'dist' for things like 'dist(x,y)'
+\newcommand{\indep}{\perp \!\!\! \perp}  %independence symbol
+\def\Var{\mathrm{Var}} % Variance
+\def\tr{\mathrm{tr}} % trace
+
+% Brackets and Parentheses
+\def\[{\left [}
+    \def\]{\right ]}
+% \def\({\left (}
+%   \def\){\right )}
+
+
+
+\usepackage{color}
+\definecolor{Red}{rgb}{1,0,0}
+\definecolor{Blue}{rgb}{0,0,1}
+\definecolor{Purple}{rgb}{.5,0,.5}
+\def\red{\color{Red}}
+\def\blue{\color{Blue}}
+\def\gray{\color{gray}}
+\def\purple{\color{Purple}}
+\definecolor{RoyalBlue}{cmyk}{1, 0.50, 0, 0}
+\newcommand{\dempfcolor}[1]{{\color{RoyalBlue}#1}} 
+\newcommand{\demph}[1]{\textcolor{RoyalBlue}{\textbf{\slshape #1}}} % Slanted
+
+\usepackage{emoji}
+% comment exactly one of the following line to show / hide the solutions
+% \newcommand{\solution}[1]{{\purple #1}} % uncomment to show the solutions
+\newcommand{\solution}[1]{} % uncomment to hide the solutions
+
+
+
+
+\begin{document}
+\begin{center}
+  \section*{Math 472: Homework 05}
+  \textit{Due Friday, February 27}
+\end{center}
+
+
+\begin{problem}[Exercise 8.31]
+  In a study to compare the perceived effects of two pain relievers, 200 randomly selected
+adults were given the ﬁrst pain reliever, and 93\% indicated appreciable pain relief. Of the 450
+individuals given the other pain reliever, 96\% indicated experiencing
+appreciable relief.
+\begin{enumerate}[(a)]
+  \item Give an estimate for the difference in the proportions of all adults who would indicate
+  perceived pain relief after taking the two pain relievers. Provide a bound on the error of
+  estimation.
+  \item Based on your answer to part (a), is there evidence that proportions experiencing relief
+  differ for those who take the two pain relievers? Why?
+\end{enumerate}
+\end{problem}
+
+\begin{problem}[Exercise 8.17]
+  If $Y$ has a binomial distribution with parameter $n$ and $p$, the
+  $\widehat{p}=\frac{Y}{n}$ is an unbiased estimator of $p$. Another estimator
+  is $\widehat{q}=\frac{Y+1}{n+2}$.
+  \begin{enumerate}[(a)]
+    \item What is the bias of $\widehat{q}$?
+    \item Derive $\mathtt{MSE}(\widehat{p})$ and $\text{MSE}(\widehat{q})$.
+    \item For what values of $p$ is $\text{MSE}(\widehat{p})< \text{MSE}(\widehat{q})$?
+  \end{enumerate}
+\end{problem}
+
+\begin{problem}[Exercise 8.39]
+  Suppose the random variable $Y$ has a gamma distribution with shape parameter
+  $\alpha=2$ and unknown scale parameter $\beta$ (see section 4.6 in
+  textbook). It can be shown that $2Y/\beta$ has a chi-squared distribution with 4
+  degrees of freedom (you don't have to show this).
+
+  \begin{enumerate}[(a)]
+    \item Using $2Y/\beta$ as a pivotal quantity, derive a $90\%$ confidence interval
+    of $\beta$.
+    \item Using \textrm{R}, test your confidence interval by generating 10,000
+    samples $Y_{1},\ldots,Y_{10000}$ (each with a randomly chosen numerical
+    value for $\beta$) and counting the proportion of times that your
+    confidence interval contains the true value of $\beta$. (It should be
+    close to 90\%).
+  \end{enumerate}
+\end{problem}
+
+\begin{problem}[Exercise 8.40]
+  Suppose that the random variable $Y$ is an observation from a normal
+  distribution with unknown mean $\mu$ and variance $1$.
+  \begin{enumerate}[(a)]
+    \item Find a 95\% confidence interval for $\mu$. 
+    \item Find a 95\% upper confidence interval for $\mu$. 
+    \item Find a 95\% lower confidence interval for $\mu$. 
+  \end{enumerate}
+\end{problem}
+
+\begin{problem}[Excercise 8.41]
+  Suppose that $Y$ is normally distributed with mean $\mu=0$ and unknown
+  variance $\sigma^{2}$. Then $Y^{2}/\sigma^{2}$ has a chi-squared
+  distribution with 1 degree of freedom. Use the pivotal quantity
+  $Y^{2}/\sigma^{2}$ to find
+  \begin{enumerate}[(a)]
+    \item A $95\%$ confidence interval for $\sigma^{2}$.
+    \item A $95\%$ upper confidence interval for $\sigma^{2}$.
+    \item A $95\%$ lower confidence interval for $\sigma^{2}$.
+  \end{enumerate}
+\end{problem}
+
+
+\begin{problem}[Part of exercise 6.18]
+  The Pareto distribution is a ``power-law'' distribution used for modeling
+  things like income distributions and earthquake magnitudes. Specifically,
+  given a random variable $X$, we say that distribution of $X$ is a member of
+  the \demph{Pareto family of distributions} if its distribution function is
+  \begin{equation}\label{eq:2}
+    F_{X}(x) = \P\left[X \leq x \right] 
+    = \left\{ 
+      \begin{array}{l@{\quad:\quad}l}
+        1-\left( \frac{\beta}{x} \right)^{\alpha} & x \geq \beta\\
+        0 & x<\beta
+      \end{array}\right.
+  \end{equation}
+  for some positive parameters $\alpha$ and $\beta$.
+  \begin{enumerate}[(a)]
+    \item Big-O notation: Let $f$ and $g$ be real-valued functions whose
+    domains include the positive real numbers. We write $f(x) =O(g(x))$ as
+    $x \to \infty$ if there exist constants $M,k>0$ such that
+    \begin{equation*}
+      \frac{|f(x)|}{|g(x)|} \leq M
+    \end{equation*}
+    for all $x>k$. (This is read as ``$f$ is big-O of $g$''.)
+
+    Show that $\P\left[X \geq x\right] = O(\frac{1}{x^{\alpha}})$ as
+    $x \to \infty$. (In words, this says that the upper tail of the
+    probability distribution of $X$ decays like $\frac{1}{x^{\alpha}}$.)
+    
+    \item Derive the density function of $X$. Make sure to specify the
+    function on all parts of its domain: both when $x \geq \beta$ and when
+    $x<\beta$.
+    \item Show that the improper integral
+    $\int_{1}^{\infty}\frac{1}{x^{\delta}}dx$ diverges to $+\infty$ if
+    $\delta \leq 1$, but converges to $\frac{1}{\delta-1}$ if $\delta>1$.
+    \item What is $\E\left[X \right]$? Consider the cases $\alpha \leq 1$ and
+    $\alpha > 1$ separately.
+  \end{enumerate}
+
+\end{problem}
+
+
+\begin{problem}[Part of exercise 9.28]
+  Let $X_{1},\ldots,X_{n}$ be a random sample from the distribution $F_{X}$ (defined in \cref{eq:2}), and let
+  $T$ be the statistic $T(X_{1},\ldots,X_{n})=\min(X_{1},\ldots,X_{n})$.
+  \begin{enumerate}[(a)]
+    \item  Show that the sampling distribution of $T$ is
+    \begin{equation}\label{eq:1}
+      F_{T}(t) = \left\{ \begin{array}{l@{\quad:\quad}l} 
+          1- \left( \frac{\beta}{t} \right)^{\alpha n} & t \geq \beta \\
+          0 &t < \beta \end{array}\right..
+    \end{equation}
+    (\textit{Hint:} For every real number $t$, we have
+    $\left[ \min(X_{1},X_{2},\ldots,X_{n}) > t\right] = \left[ X_{1}> t,
+      X_{2}> t,\ldots, X_{n}> t\right]$).
+    \item Derive the density function of $T$ from \cref{eq:1}. Make sure to
+    specify the function on all parts of its domain: both when $t \geq \beta$
+    and when $t<\beta$.
+    \item Qualitatively describe what happens to the graph of $f_{T}$ as $n$
+    becomes very large. Sketch this situation, and interpret your picture: is
+    $T$ likely to be close to $\beta$ or far from $\beta$ when $n$ is large?
+  \end{enumerate}
+\end{problem}
+
+\begin{problem}[Exercise 8.15]
+  Let $X_{1},\ldots,X_{n}$ be a random sample from the Pareto distribution
+  with probability density function
+  \begin{equation*}
+    f_{X}(x) = \left\{ \begin{array}{l@{\quad:\quad}l} 3\beta^{3}x^{-4} &  x \geq \beta
+        \\ 0& x<\beta\end{array}\right.,
+  \end{equation*}
+  where $\beta>0$ is unknown. (So $X$ is a Pareto distribution with
+  $\alpha=3$). We shall consider the estimator
+  $\widehat{\beta}=T(X_{1},\ldots,X_{n})=\min(X_{1},\ldots,X_{n})$.
+  \begin{enumerate}[(a)]
+    \item What is the bias of $\widehat{\beta}$?
+    \item What is $\text{MSE}(\widehat{\beta})$?
+  \end{enumerate}
+\end{problem}
+
+
+
+% A \demph{statistical model} is a collection of probability
+% distributions which are all defined on a common sample space; that is, a
+% collection
+% \begin{equation*}
+%   \mathcal{P} = \left\{F_{\theta}:\theta\in \Theta\right\},
+% \end{equation*}
+% where $\Theta$ is an arbitary index set called the \demph{parameter space}
+% and for each $\theta\in \Theta$, $F_{\theta}$ is a probability
+% distribution on the sample space. Moreover, if the parameter space
+% $\Theta$ is a subset of $\R^{d}$ for some $d \geq 1$, then we say that the
+% statistical model $\mathcal{P}$ is \demph{parametric}.
+
+
+% Note the Pareto family is an example of a parametric statistical model
+% with two parameters $\alpha$ and $\beta$, i.e.,
+% $\Theta=\left\{(\alpha,\beta)\in \R^{2}: \alpha,\beta>0\right\}$.
+\end{document}
