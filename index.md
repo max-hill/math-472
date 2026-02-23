@@ -31,6 +31,7 @@ title: Lecture Notes
 2026-02-13  | 13   | ???
 2026-02-18  |    | In-class Midterm 1
 2026-02-20  |    | [R coding worksheet](worksheets/worksheet-1.pdf)
+2026-02-24  | 14   | Confidence intervals, large-sample confidence intervals
  
 
 # Other Links

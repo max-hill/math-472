@@ -2430,9 +2430,9 @@ example.
 \end{example}
 
 \newpage
-\section{2026-02-23 | Week 06 | Lecture 14}
+\section{2026-02-23 | Week 07 | Lecture 14}
 \subsection{Confidence intervals}
-\textit{Based on section 8.5 in the textbook.}
+\textit{This section is based on chapter 8.5 in the textbook.}
 
 \begin{definition}[Interval estimator]
   \label{def:interval-estimator}
@@ -2440,10 +2440,10 @@ example.
   statistics that form endpoints of an interval. Interval estimators are also
   called \demph{confidence intervals}.
 \end{definition}
-A confidence interval is an interval
-$[\widehat{\theta}_{L},\widehat{\theta}_{U}]$, where $\widehat{\theta}_{L}$ and
-$\widehat{\theta}_{U}$ are a pair of random variables (which vary from sample
-to sample).
+In other words, a confidence interval is an interval
+$[\widehat{\theta}_{L},\widehat{\theta}_{U}]$, where $\widehat{\theta}_{L}$
+and $\widehat{\theta}_{U}$ are a pair of random variables (which vary from
+sample to sample).
 \begin{remark}
   Desired properties:
   \begin{itemize}
@@ -2455,36 +2455,38 @@ to sample).
 
 The upper and lower endpoints of a confidence interval are called the
 \demph{upper} and \demph{lower confidence limits}, respectively. The
-probability that a (random) confidence interval will enclose the terget
+probability that a (random) confidence interval will enclose the target
 parameter $\theta$ is called the \demph{confidence coefficient}. If this is
 high, then we can be highly confident that a confidence interval constructed
 using the results of a sample, will enclose $\theta$.
 
-Suppose $\widehat{\theta}_{L}$ and $\widehat{\theta}_{U}$ are the upper and
-lower confidence limits for a parameter $\theta$. If
+Put differently, suppose $\widehat{\theta}_{L}$ and $\widehat{\theta}_{U}$ are
+the upper and lower confidence limits for a parameter $\theta$. If
 \begin{equation*}
   \P\left[\widehat{\theta}_{L}\leq \theta \leq \widehat{\theta}_{U}\right] = 1-\alpha,
 \end{equation*}
 then $(1-\alpha)$ is the \demph{confidence coefficient}.
 
 
-\begin{example}
+\begin{example}[Example 8.4 in textbook]
+  \label{ex:example-8.4-textbook}
   Suppose we obtain a single observation $Y$ from an exponential distribution
   with mean $\theta>0$. Use $Y$ to form a confidence interval for $\theta$ with confidence
   coefficient $0.90$.
 
-  \fl{Solution:} Recall that a random variable $X$ is an exponetial with mean
-  $\mu$ if
+  \Fl{Solution:} First, recall that a random variable $X$ is an exponetial
+  with mean $\mu>0$ if and only if
   \begin{equation}\label{eq:12}
     \P\left[X > t\right] = e^{-\frac{1}{\mu}t}
   \end{equation}
   for every $t>0$.
-
+  
   \begin{claim}
+    \label{claim:pivotal-quantity}
     $U=Y/\theta$ is a mean 1 exponential random variable
   \end{claim}
   \begin{claimproof}
-    Let
+    Let $t>0$. Then
     \begin{align*}
       \P\left[U >t\right] 
       &= \P\left[\frac{Y}{\theta}>t \right]\\
@@ -2494,6 +2496,15 @@ then $(1-\alpha)$ is the \demph{confidence coefficient}.
     \end{align*}
     By \cref{eq:12} we conclude that $U$ is a mean 1 exponential.
   \end{claimproof}
+
+  \begin{remark}
+    In class, I claimed that we also need to consider the case $t \leq 0$ in
+    the proof of \cref{claim:pivotal-quantity}. This was incorrect. It is not
+    necessary to do so because \cref{eq:12} is an ``if and only if''
+    statement.
+  \end{remark}
+
+  
   As a mean 1 exponential, $U$ has density
   $f(u) = e^{-u}\mathbf{1}_{\left[ u>0 \right] }$. Critically, the
   distribution of $U$ does not depend on the unknown parameter $\theta$, and
@@ -2519,22 +2530,151 @@ then $(1-\alpha)$ is the \demph{confidence coefficient}.
     [\widehat{\theta}_{L}, \widehat{\theta}_{U}] = \left[\frac{Y}{2.996},\frac{Y}{.051}\right].
   \end{equation*}
 
-  \textbf{Story:} Suppose you decide to spend your Saturday standing at an idyllic
-  country road waiting for cars to pass, measuring the time between cars. We
-  assume the inter-arrival times between cars is exponentially distributed.
-  The unknown parameter $\theta$ is the average time between cars in, say,
-  minutes. Suppose the time between the first two cars to pass is $Y=12$
-  minutes. Then we compute $\widehat{\theta}_{L}= \frac{12}{2.996} \approx 4$
-  and $\widehat{\theta}_{U}= \frac{9}{.51}\approx 24$. So with probability
-  $90\%$, the next car will take between 4 and 24 minutes to arrive.
+  \textbf{Story:} Suppose you decide to spend your Saturday standing at an
+  idyllic country road waiting for cars to pass, measuring the time between
+  cars. We assume the inter-arrival times between cars is exponentially
+  distributed. The unknown parameter $\theta$ is the average time between cars
+  in, say, minutes. Suppose the time between the first two cars to pass is
+  $Y=12$ minutes. Then we compute
+ \begin{equation*}
+   \widehat{\theta}_{L}= \frac{12}{2.996} \approx 4
+    \quad \text{and} \quad 
+    \widehat{\theta}_{U}= \frac{9}{.051}\approx 240.
+  \end{equation*}
+  The conclusion is that with probability $90\%$, the next car will take
+  between 4 minutes and 4 hours to arrive. This range of this interval is so
+  wide because it's based on very little data---only one sample.
 \end{example}
 
+\begin{remark}
+  \cref{ex:example-8.4-textbook} illustrate the ``pivotal method'' of
+  computing confidence intervals, which has two steps:
+  \begin{enumerate}
+    \item Construct a function of the sample and the target parameter $\theta$
+    whose distribution does not depend on $\theta$. This is called the
+    ``pivotal quantity''. In \cref{ex:example-8.4-textbook} the pivotal
+    quantity was $U=Y/\theta$.
+    \item Use known facts about the distribution of $U$ to derive a confidence
+    interval. In \cref{ex:example-8.4-textbook}, we used the fact that
+    \begin{equation*}
+      \P\left[.051 \leq U \leq 2.996\right]= .90.
+    \end{equation*}
+  \end{enumerate}
+\end{remark}
 
-We've discussed \demph{two-sided confidence intervals}, which take the form
-$[\widehat{\theta}_{L},\widehat{\theta}_{U}]$. A \demph{lower one-sided
+We've discussed \demph{2-sided confidence intervals}, which take the form
+$[\widehat{\theta}_{L},\widehat{\theta}_{U}]$. A \demph{lower 1-sided
   confidence interval} takes the form $[\hat{\theta}_{L},\infty)$, and an
-\demph{upper} one-sided confidence interval takes the form
-$(-\infty,\widehat{\theta}_{U}]$.
+\demph{upper 1-sided confidence} interval takes the form
+$(-\infty,\widehat{\theta}_{U}]$. The theory for 1-sided confidence intervals
+is similar to that of 2-sided confidence intervals.
 
+\subsection{Large-sample confidence intervals}
+\textit{This section is based on chapter 8.6 in the textbook.}
+
+Suppose we wish to construct an $100(1-\alpha)\%$ confidence interval for a
+target parameter $\theta$, where $\alpha\in (0,1)$. For doing this, there are
+two settings which are often qualitatively different:
+\begin{itemize}
+  \item When the sample size $n$ is small
+  \item When the sample size $n$ is large
+\end{itemize}
+We'll treat the large $n$ case first. In this case, it is commonly the case
+that one can find a point estimator $\widehat{\theta}$ which is approximately
+normal (usually due to the central limit theorem), in which case the following
+proposition can be used to construct a confidence interval.
+
+\begin{proposition}[Large $n$ confidence intervals -- This is example 8.6 in
+  the textbook]
+  \label{prop:large-n-confidence-intervals}
+  Suppose that $\widehat{\theta}$ is an unbiased estimator of $\theta$. Assume
+  that $\widehat{\theta}$ is approximately normal (a common situation when the
+  sample size $n$ is large), and denote the standard error of
+  $\widehat{\theta}$ by $\sigma_{\widehat{\theta}}$. Let $\alpha\in (0,1)$ be
+  arbitrary, and choose a number $z_{\alpha/2}\in \R$ such that
+  \begin{equation}\label{eq:15}
+    \P\left[-z_{\alpha/2} \leq
+      Z \leq z_{\alpha/2}\right]=1-\alpha.
+  \end{equation}
+  Then the interval
+  \begin{equation*}
+    [\widehat{\theta}_{L} ,  \widehat{\theta}_{U} ]
+    := [\widehat{\theta} - z_{\alpha/2}\sigma_{\widehat{\theta}},\ \widehat{\theta} + z_{\alpha/2}\sigma_{\widehat{\theta}}]
+  \end{equation*}
+  forms a $100(1-\alpha)\%$ confidence interval for $\theta$.
+\end{proposition}
+\begin{proof}
+  Since $\widehat{\theta}$ is unbiased, $\E[\widehat{\theta}]=\theta$.
+  Therefore, by the central limit theorem / standardization,
+  \begin{equation}\label{eq:14}
+    \frac{\widehat{\theta}-\theta}{\sigma_{\widehat{\theta}}}\approx Z.
+  \end{equation}
+  Plugging \cref{eq:14} into \cref{eq:15},
+  \begin{equation*}
+    \P\left[ -z_{\alpha/2}\leq  \frac{\widehat{\theta}-\theta}{\sigma_{\widehat{\theta}}}\leq z_{\alpha/2}\right] \approx 1-\alpha.
+  \end{equation*}
+  Rearranging terms in the inequalities gives
+  \begin{equation*}
+    \P\left[\widehat{\theta} - z_{\alpha/2}\sigma_{\widehat{\theta}}\leq \theta \leq \widehat{\theta} + z_{\alpha/2}\sigma_{\widehat{\theta}}\right] \approx 1-\alpha,
+  \end{equation*}
+  which implies that statement of the proposition.
+\end{proof}
+
+\newpage
+
+\section{2026-02-25 | Week 07 | Lecture 15}
+\textit{Section 8.6 in text book}
+\begin{example}[Example 8.8 in textbook]
+  Two brands of refridgerators, denoted $B_{1}$ and $B_{2}$, are tested. In a
+  random sample of $n_{1}=50$ fridges from brand $B_{1}$, 12 failed within the
+  first year. In a random sample of $n_{2}=60$ fridges from brand $B_{2}$, 12
+  failed within the first year.
+
+  Let $p_{i}$ be the proportion of brand $B_{i}$ fridges that fail in the
+  first year, and let $\widehat{p}_{i}$ be the observed proportion of the
+  sampe which do so. Estimate the difference $p_{1}-p_{2}$, with confidence
+  coefficient approximately $.98$.
+
+  \Fl{Solution:} Let $\widehat{\theta} = \widehat{p}_{1}-\widehat{p}_{2}$. We
+  will apply \cref{prop:large-n-confidence-intervals} with confidence
+  coefficient $1-\alpha=.98$, so $\alpha=.02$. We need
+  \begin{itemize}
+    \item the value of the estimate $\widehat{\theta}$
+    \item the value of the standard error $\sigma_{\widehat{\theta}}$
+    \item the value of $z_{0.01}$
+  \end{itemize}
+
+  First, the estimate is
+  \begin{equation*}
+    \widehat{\theta} = \widehat{p}_{1}- \widehat{p}_{2} = \frac{12}{50}- \frac{12}{60} = .04.
+  \end{equation*}
+
+  Second, the standard error is
+  \begin{align*}
+    \sigma_{\widehat{\theta}} 
+    &= \sqrt{\Var(\widehat{\theta})}\\
+    &= \sqrt{\Var(p_{1})+\Var(p_{2})}\\
+    &= \sqrt{\frac{p_{1}(1-p_{1})}{n_{1}} +\frac{p_{2}(1-p_{2})}{n_{2}}}\\
+    &= \sqrt{\frac{p_{1}(1-p_{1})}{50} +\frac{p_{2}(1-p_{2})}{60}}.
+  \end{align*}
+  Oops! We don't know $p_{1}$ or $p_{2}$. Luckily, we can use the approximation
+  $p_{i}(1-p_{i})\approx \widehat{p}_{i}(1-\widehat{p}_{i})$ for $i=1,2$, we
+  have
+  \begin{align*}
+    \sigma_{\widehat{\theta}} 
+    &\approx \sqrt{\frac{(.24)(.76)}{50} +\frac{(.20)(.80)}{60}}\\
+    &= .0791
+  \end{align*}
+  Finally, $z_{0.01}=2.33$ (draw a picture).
+
+  Putting these three things together and applying \cref{prop:large-n-confidence-intervals},
+  \begin{equation*}
+    [\widehat{\theta}_{L},\widehat{\theta}_{U}] = [.04-(2.33)(.0791),\ .04+(2.33)(.0791)] = [-.144,\ .224]
+  \end{equation*}
+  is a confidence interval for the difference in proportions $p_{1}-p_{2}$.
+  Since this confidence interval contains zero, it is believable that
+  $p_{1}=p_{2}$. But it also contains $1$, so a value of $p_{1}-p_{2}=.1$ is
+  also a believable value.
+\end{example}
 
 \end{document}
