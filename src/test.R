@@ -618,3 +618,6 @@ for(k in 2:num_steps)
 }
 plot(x,y, pch=16, type="l")
 
+# muzzle velocity
+(910+1070)/2
+rnorm(n=6, mean=990,sd=40)

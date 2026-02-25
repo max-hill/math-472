@@ -26,12 +26,13 @@ title: Lecture Notes
 2026-01-30  | 8   | (Section 7.2) The Gaussian distribution
 2026-02-02  | 9   | (Section 7.2) Chi-squared distribution, t-distribution
 2026-02-04  | 10   | (Section 7.2)  t-distribution
-2026-02-06  | 11   | (Section 7.3, 7.4) The Central Limit Theorem, point estimation
-2026-02-11  | 12   | (Section 8.2, 8.3, 8.4) Mean square error, standard error 
+2026-02-06  | 11   | (Sections 7.3, 7.4) The Central Limit Theorem, point estimation
+2026-02-11  | 12   | (Sections 8.2, 8.3, 8.4) Mean square error, standard error 
 2026-02-13  | 13   | ???
 2026-02-18  |    | In-class Midterm 1
 2026-02-20  |    | [R coding worksheet](worksheets/worksheet-1.pdf)
-2026-02-24  | 14   | Confidence intervals, large-sample confidence intervals
+2026-02-23  | 14   | (Sections 8.5, 8.6) Confidence intervals, large-sample confidence intervals
+2026-02-25  | 15   | (Sections 8.6, 8.7) Large-sample confidence intervals, sample complexity
  
 
 # Other Links

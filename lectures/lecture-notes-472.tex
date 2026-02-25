@@ -1974,7 +1974,7 @@ One criterion of the ``goodness'' of an estimator is to ask whether it exhibits 
 \begin{remark}
   Since $\widehat{\theta}$ is a statistic, it is a function of a random
   sample. So when we write $\E[\widehat{\theta} ]$, we really mean
-  $\E\left[\hat{\theta}(X_{1},\ldots,X_{n}) \right]$, where
+  $\E\left[\widehat{\theta}(X_{1},\ldots,X_{n}) \right]$, where
   $X_{1},\ldots,X_{n}$ is a random sample from the population.
 \end{remark}
 
@@ -2123,7 +2123,7 @@ we want to be small).
     &= \Var(\widehat{\theta})+ B^{2} +2B \underbrace{\E\left[\widehat{\theta}- \E[ \widehat{\theta}]  \right]}_{=0}
   \end{align*}
   where the last step follows by linearity of expectation:
-  $\E\left[\widehat{\theta}- \E[ \hat{\theta}] \right]= \E[\widehat{\theta} ]-
+  $\E\left[\widehat{\theta}- \E[ \widehat{\theta}] \right]= \E[\widehat{\theta} ]-
   \E[\widehat{\theta}]$.
 \end{proof}
 
@@ -2198,7 +2198,7 @@ from its mean.
   (\cref{thm:weak-law-large-numbers}).
 \end{remark}
 Since $\widehat{\theta}$ is a random variable, the error of estimation
-$\epsilon=|\hat{\theta}-\theta|$ is also a random quantity, so we cannot say
+$\epsilon=|\widehat{\theta}-\theta|$ is also a random quantity, so we cannot say
 how large or small it will be for a particular estimate. But we can make
 probabilistic statements about it.  Here is one such example.
 
@@ -2564,7 +2564,7 @@ then $(1-\alpha)$ is the \demph{confidence coefficient}.
 
 We've discussed \demph{2-sided confidence intervals}, which take the form
 $[\widehat{\theta}_{L},\widehat{\theta}_{U}]$. A \demph{lower 1-sided
-  confidence interval} takes the form $[\hat{\theta}_{L},\infty)$, and an
+  confidence interval} takes the form $[\widehat{\theta}_{L},\infty)$, and an
 \demph{upper 1-sided confidence} interval takes the form
 $(-\infty,\widehat{\theta}_{U}]$. The theory for 1-sided confidence intervals
 is similar to that of 2-sided confidence intervals.
@@ -2707,7 +2707,7 @@ example.
           supports candidate Jones }\\0 &\text{otherwise} \end{array}\right.,
   \end{equation*}
   and $n>1$ is to be determined later. By the Law of Large Numbers,
-  $\hat{p} \to p$ as $n$ grows, which implies
+  $\widehat{p} \to p$ as $n$ grows, which implies
   \begin{equation*}
     \P\left[|\widehat{p}-p| \leq .04\right] \to 1 \quad \text{ as $n \to \infty$}.
   \end{equation*}
@@ -2757,21 +2757,42 @@ example.
     1.6 \sqrt{\frac{p(1-p)}{n}} \leq .04.
   \end{equation*}
   Rearranging terms gives
-  \begin{equation*}
+  \begin{equation}\label{eq:16}
     n \geq  1600p(1-p).
-  \end{equation*}
-  Oops! We don't know $p$. But there's a fix. Observe that $p(1-p) \leq 1/4$
-  for any value of $p$. Therefore, to be conservative, it is sufficient for
-  \begin{equation*}
-    n \geq 1600\cdot \frac{1}{4} = 400
-  \end{equation*}
-  since this implies \cref{eq:16} holds regardless of the value of $p$.
-  Therefore the pollster needs to poll at least 400 people.
+  \end{equation}
+  Oops! We don't know $p$. But there's a fix. Observe that
+  $1600p(1-p) \leq 1600\cdot \frac{1}{4}=400$ for any $p\in (0,1)$. Therefore,
+  for any value of $p$, a sample size of at least $n=400$ voters is sufficient
+  (since $n \geq 400$ implies \cref{eq:16} holds). Therefore the pollster
+  needs to poll at least 400 people in order to have $90\%$ confidence that
+  their estimate $\widehat{p}$ is within 4 percentage points of the true
+  proportion of people who support candidate Jones.
 
   (Using the more accurate value of $1.645$ rather than $1.6$ gives the
   requirement of $n \geq 423$.)
 \end{example}
 
+\newpage
+\section{2026-02-27 | Week 07 | Lecture 16}
+\subsection{Small-sample confidence intervals}
+\textit{This part is based on Chapter 8.8 in the textbook.}
 
+
+Recall from \cref{thm:approximate-standardization-is-t-distn} that if
+$Y_{1},\ldots,Y_{n}\overset{iid}{\sim}\mathcal{N}(\mu,\sigma^{2})$, then
+\begin{equation*}
+  T = \frac{\overline{Y}-\mu}{S/\sqrt{n}}
+\end{equation*}
+follows a Student $t$-distribution with $n-1$ degrees of freedom.
+
+
+\begin{example}[Example 8.11 in the textbook]
+  The muzzle velocity of an An artillery  shell 
+
+  \begin{align*}
+    &1062 \quad \ 965 \quad  \ 982\\
+    &1006  \quad \ 960 \quad 1056
+  \end{align*}
+\end{example}
 
 \end{document}
