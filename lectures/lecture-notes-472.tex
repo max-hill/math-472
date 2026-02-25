@@ -2624,6 +2624,10 @@ proposition can be used to construct a confidence interval.
 
 \section{2026-02-25 | Week 07 | Lecture 15}
 \textit{Section 8.6 in text book}
+
+\subsection{Large sample confidence intervals (continued)}
+
+\subsubsection{Comparing two populations}
 \begin{example}[Example 8.8 in textbook]
   Two brands of refridgerators, denoted $B_{1}$ and $B_{2}$, are tested. In a
   random sample of $n_{1}=50$ fridges from brand $B_{1}$, 12 failed within the
@@ -2675,6 +2679,99 @@ proposition can be used to construct a confidence interval.
   Since this confidence interval contains zero, it is believable that
   $p_{1}=p_{2}$. But it also contains $1$, so a value of $p_{1}-p_{2}=.1$ is
   also a believable value.
+
+  To be conservative in our judgement, we would say that we cannot reject the
+  possibility that the brands perform equally well.
 \end{example}
+
+
+\subsubsection{Sample complexity}
+\textit{This part is based on Section 8.7}
+
+One of the most common questions that researchers face when designing
+experiments is ``how many samples do I need?''. This is the topic of
+\textit{sample complexity}, which is a rich and beautiful subject in
+statistics, but can be hard to wrap your head around at first. Here's an
+example.
+\begin{example}[This is like Example 8.9 in the textbook]
+  A pollster is hired to estimate the proportion $p$ of people who support
+  candidate Jones in the upcoming election. The pollster wants to have $90\%$
+  confidence that their poll is no greater than $4$ percentage points away
+  from the true value of $p$. How many people must they poll?
+
+  \Fl{Solution:} We'll take as our estimator the sample mean $\widehat{p}$:
+  \begin{equation*}
+    \widehat{p}=\frac{\xi_{1}+\ldots+\xi_{n}}{n},
+    \quad \text{where} \quad 
+    \xi_{i} = \left\{ \begin{array}{l@{\quad:\quad}l} 1 & \text{person $i$
+          supports candidate Jones }\\0 &\text{otherwise} \end{array}\right.,
+  \end{equation*}
+  and $n>1$ is to be determined later. By the Law of Large Numbers,
+  $\hat{p} \to p$ as $n$ grows, which implies
+  \begin{equation*}
+    \P\left[|\widehat{p}-p| \leq .04\right] \to 1 \quad \text{ as $n \to \infty$}.
+  \end{equation*}
+  Hence we need to find $n$ sufficiently large that
+  \begin{equation*}
+    \P\left[|\widehat{p}-p| \leq .04\right] \geq 0.90.
+  \end{equation*}
+  In other words, our goal is to find a value for $n$ such that the interval
+  \begin{equation}\label{eq:17}
+    [\widehat{p}-.04,\ \widehat{p}+.04]
+  \end{equation}
+  is a $90\%$ confidence interval for $p$.
+
+  We'll assume that the poll is sufficiently large that $\widehat{p}$ is
+  approximately normally distributed (a good rule of thumb for ``sufficiently
+  large'' is that $\min \left\{np,n(1-p)\right\}\geq 10$; usually $n=30$ is
+  sufficient for the approximation to be good enough. Here we'll definitely be
+  polling at least $30$ people, which is enough to conclude that $\widehat{p}$
+  is approximately normal). Make two observations:
+  \begin{itemize}
+    \item First, observe that
+    \begin{equation*}
+      \P\left[-1.6 \leq Z \leq 1.6\right]\approx 0.90.
+    \end{equation*}    
+    Therefore, since $\widehat{p}$ is approximately normal,
+    \cref{prop:large-n-confidence-intervals} implies that the interval
+    \begin{equation*}
+      \left[ \widehat{p}-1.6\sigma_{\widehat{p}},\  \widehat{p}+1.6\sigma_{\widehat{p}} \right] 
+    \end{equation*}
+    is a $90\%$ confidence interval for $p$.
+    \item Second, observe that using $\Var(\xi_{i})=p(1-p)$, we can show that
+    \begin{align*}
+      \sigma_{\widehat{p}} 
+      &= \sqrt{\Var(\widehat{p})}
+      = \sqrt{\Var \left( \frac{\xi_{1}+\ldots+\xi_{n}}{n} \right) } 
+      = \sqrt{\frac{p(1-p)}{n}}.
+    \end{align*}
+  \end{itemize}
+  Therefore the interval
+  \begin{equation*}
+    \left[ \widehat{p}-1.6 \sqrt{\frac{p(1-p)}{n}},\  \widehat{p}+1.6 \sqrt{\frac{p(1-p)}{n}} \right] 
+  \end{equation*}
+  is a $90\%$ confidence interval for $p$. In order for this to take the
+  desired form $[\widehat{p}-.04,\ \widehat{p}+.04]$ or narrower, we need to
+  find the value of $n$ such that
+  \begin{equation*}
+    1.6 \sqrt{\frac{p(1-p)}{n}} \leq .04.
+  \end{equation*}
+  Rearranging terms gives
+  \begin{equation*}
+    n \geq  1600p(1-p).
+  \end{equation*}
+  Oops! We don't know $p$. But there's a fix. Observe that $p(1-p) \leq 1/4$
+  for any value of $p$. Therefore, to be conservative, it is sufficient for
+  \begin{equation*}
+    n \geq 1600\cdot \frac{1}{4} = 400
+  \end{equation*}
+  since this implies \cref{eq:16} holds regardless of the value of $p$.
+  Therefore the pollster needs to poll at least 400 people.
+
+  (Using the more accurate value of $1.645$ rather than $1.6$ gives the
+  requirement of $n \geq 423$.)
+\end{example}
+
+
 
 \end{document}
