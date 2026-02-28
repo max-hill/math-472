@@ -561,6 +561,9 @@ F(2) - F(-2)
 qt(.05,df=8,lower.tail = FALSE)
 qt(.9,df=5,lower.tail = TRUE)
 
+
+qt(.025,df=7,lower.tail=TRUE)
+
 Q <- function(p){
   qt(p,df=5)
 }
@@ -620,4 +623,9 @@ plot(x,y, pch=16, type="l")
 
 # muzzle velocity
 (910+1070)/2
-rnorm(n=6, mean=990,sd=40)
+rnorm(n=8, mean=990,sd=40)
+Y = c(972, 960, 965, 982, 1006, 1053, 1056, 1062)
+mean(Y)
+
+
+1007+1.96*43.7/sqrt(8)

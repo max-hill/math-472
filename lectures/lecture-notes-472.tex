@@ -22,7 +22,6 @@
 \usepackage[shortlabels]{enumitem}
 \usetikzlibrary{arrows,matrix,positioning}
 \usepackage{multicol}
-
 \usepackage{mathtools}% http://ctan.org/pkg/mathtools
 \usepackage{abraces} %xyz
 
@@ -74,17 +73,39 @@
 \newcommand{\Max}[1]{{\purple [#1]}} % \bnote{foo} then 'foo' is blue
 
 
+% % Claim numbering (the counter restarts after each proof environment)
+% \newcounter{claimcount}
+% \setcounter{claimcount}{0}
+% \newenvironment{claim}{\refstepcounter{claimcount}\par\addvspace{\medskipamount}\noindent\textbf{Claim \arabic{claimcount}:}}{}
+
+
 % Claim numbering (the counter restarts after each proof environment)
-\newcounter{claimcount}
-\setcounter{claimcount}{0}
-\newenvironment{claim}{\refstepcounter{claimcount}\par\addvspace{\medskipamount}\noindent\textbf{Claim \arabic{claimcount}:}}{}
 \usepackage{etoolbox}
-\AtBeginEnvironment{proof}{\setcounter{claimcount}{0}}
+\newcounter{claimcount}
+\newcounter{proofcount}
+
+% Make the hyperlink anchor for claims unique:
+\renewcommand{\theHclaimcount}{\arabic{proofcount}.\arabic{claimcount}}
+
+\newenvironment{claim}
+{\refstepcounter{claimcount}\par\addvspace{\medskipamount}\noindent
+  \textbf{Claim \arabic{claimcount}:}}
+
 \newenvironment{claimproof}{\par\addvspace{\medskipamount}\noindent\textit{Proof of Claim  \arabic{claimcount}.}}{\hfill\ensuremath{\qedsymbol} \tiny{Claim}
 
   \medskip}
+
+% reset claim counter after each proof or example enviroment.
+\newcommand{\resetclaims}{%
+  \stepcounter{proofcount}%
+  \setcounter{claimcount}{0}%
+}
+\AtBeginEnvironment{proof}{\resetclaims}
+\AtBeginEnvironment{example}{\resetclaims}
+
 % Add claim support to cleverref
 \crefname{claimcount}{Claim}{Claims}
+
 
 
 % Math Environments
@@ -128,6 +149,7 @@
 \newcommand{\vt}{\vskip 5mm} % vertical space
 \newcommand{\fl}{\noindent\textbf} % first line
 \newcommand{\Fl}{\vt\noindent\textbf} % first line with space above
+\newcommand{\plim}{\overset{P}{\to}} % first line with space above
 \newcommand{\norm}[1]{\left\lVert#1\right\rVert} % norm
 \newcommand{\pnorm}[1]{\left\lVert#1\right\rVert_p} % p-norm
 \newcommand{\qnorm}[1]{\left\lVert#1\right\rVert_q} % q-norm
@@ -222,6 +244,48 @@ providing a foundation for applications and further study.
   regression, bivariate normal distributions, method of least squares
 \end{enumerate}
 
+\section{More realistic course outline}
+\begin{enumerate}
+  \item \textbf{Weeks 1-4.} General framework of probability and statistics
+
+  sample space, probability measure, independent events, random variable,
+  expectation, variance, joint distribution, independent random variables, law
+  of large numbers
+
+  sample-population framework, statistics, {sample mean}, {sample variance},
+  Gaussian distribution, standardization, {t-distribution}, {chi-squared
+    distribution}, studentization, central limit theorem, {point estimation},
+  mean square error
+  
+  \item \textbf{Weeks 5-7.} Interval estimation
+
+  $k$-standard error bounds (8.4), confidence intervals (8.5),
+  {large-sample confidence intervals} (8.6), {comparing two
+    populations} (8.6), sample complexity (8.7), small-sample confidence
+  intervals (8.8), {confidence intervals for variance} (8.9)
+
+  \item \textbf{Weeks 8-9.} Properties and methods of point estimation
+
+  relative efficiency (9.2), consistency (9.3), sufficiency (9.4), likelihood
+  (9.4) factorization theorem (9.4),
+  Rao-Blackwell Theorem (9.5), MVUE (9.5), method of moments (9.6), method of
+  maximum likelihood (9.7)
+
+  \item \textbf{Weeks 10-12.} Hypothesis Testing
+
+  hypothesis testing (10.2), common large-sample tests (10.3), type-II error
+  probabilties (10.4), connection to confidence intervals (10.5), power
+  (10.10), Neyman-Pearson lemma (10.10), likelihood ratio test (10.11),
+  chi-squared test (14.2-14.5)
+
+  Neyman-Pearson lemma, likelihood ratio test; tests concerning means and
+  variances, tests based on count data, nonparametric tests, analysis of variance
+
+  \item \textbf{Weeks 13-14.} Regression and correlation
+
+  (11.2-11.5, 11.8): regression, bivariate normal distributions, method of least
+  squares, ANOVA? (chapter 13)
+\end{enumerate}
 
 
 \newpage
@@ -1499,6 +1563,7 @@ random variables, then their sample mean is normally distributed as well.
   skipping the part about F statistics for now.}
 
 \subsection{Motivation: ``Approximate'' standardization}
+\label{sec:motivation:-approximate-standardization}
 
 In \cref{ex:example-7.2-textbook-bottling}, we had a random sample
 $Y_{1},\ldots,Y_{n}$ of normally distributed random variables, and we computed
@@ -1651,6 +1716,7 @@ variable does not contribute to knowledge of its variability.
 
 
 \subsection{Definition of the Student t-distribution}
+\label{sec:definition-student-t-distribution}
 
 \begin{definition}[Student's t-distribution]
   \label{def:students-t-distribution}
@@ -1685,6 +1751,7 @@ variable does not contribute to knowledge of its variability.
 \section{2026-02-04 | Week 04 | Lecture 10}
 
 \subsection{Using the student t-distribution}
+\label{sec:using-student-t-distribution}
 \textit{This is based on section 7.2 of the textbook.}
 
 The following theorem illustrates an important example of the
@@ -1693,11 +1760,13 @@ mean with the transformation
 \begin{equation*}
   \overline{Y} \mapsto \frac{\overline{Y} - \mu}{S/\sqrt{n}}
 \end{equation*}
-(where we've used the sample standard devation $S$ in place of the unknown
-population paramter $\sigma$).
+(where we've used the sample standard deviation $S$ in place of the unknown
+population paramter $\sigma$). This transformation, which involves dividing by
+$S$ rather than $\sigma$ is called \demph{studentization} (as opposed to
+\demph{standardization} when $\sigma$ is used.)
 
 
-\begin{theorem}
+\begin{theorem}[Distribution of a studentized sample mean]
   \label{thm:approximate-standardization-is-t-distn}
   Let $Y_{1},\ldots,Y_{n}$ be a random sample from
   $\mathcal{N}(\mu,\sigma^{2})$. The random variable 
@@ -1988,7 +2057,8 @@ One criterion of the ``goodness'' of an estimator is to ask whether it exhibits 
 
 
 
-\begin{example}
+\begin{example}[Estimating the sides of a dice]
+  \label{ex:estimating-sides-dice}
   Suppose I roll a dice behind a screen, shouting out the number rolled each
   time. Your job is to estimate the number of sides of the dice, which we will
   call $\theta$.
@@ -2515,7 +2585,7 @@ then $(1-\alpha)$ is the \demph{confidence coefficient}.
   \end{center}
 
   So that
-  \begin{equation*}
+  \begin{equation*} 
     \P\left[a \leq U \leq b\right] = \int_{a}^{b}e^{-u}du = .90. 
   \end{equation*}
   The numbers are $a=.051$ and $b=2.995$. Hence
@@ -2546,7 +2616,8 @@ then $(1-\alpha)$ is the \demph{confidence coefficient}.
   wide because it's based on very little data---only one sample.
 \end{example}
 
-\begin{remark}
+\begin{remark}[Pivotal method]
+  \label{rmk:pivotal-method}
   \cref{ex:example-8.4-textbook} illustrate the ``pivotal method'' of
   computing confidence intervals, which has two steps:
   \begin{enumerate}
@@ -2774,8 +2845,8 @@ example.
 
 \newpage
 \section{2026-02-27 | Week 07 | Lecture 16}
+\textit{This lecture is based on Chapter 8.8 in the textbook.}
 \subsection{Small-sample confidence intervals}
-\textit{This part is based on Chapter 8.8 in the textbook.}
 
 
 Recall from \cref{thm:approximate-standardization-is-t-distn} that if
@@ -2786,13 +2857,382 @@ $Y_{1},\ldots,Y_{n}\overset{iid}{\sim}\mathcal{N}(\mu,\sigma^{2})$, then
 follows a Student $t$-distribution with $n-1$ degrees of freedom.
 
 
-\begin{example}[Example 8.11 in the textbook]
-  The muzzle velocity of an An artillery  shell 
-
+\begin{example}[Similar to example 8.11 in the textbook]
+  The muzzle velocities of a sample of eight high-velocity artillery shells
+  are observed to be
   \begin{align*}
-    &1062 \quad \ 965 \quad  \ 982\\
-    &1006  \quad \ 960 \quad 1056
+    &\phantom{1}972 \quad \phantom{1}960 \quad \phantom{1}965 \quad  \phantom{1}982 \\
+    &1006   \quad 1053 \quad 1056 \quad 1062
   \end{align*}
+  (measured in meters per second). The sample mean is $\overline{Y}=1007$
+  meters per second.
+
+  \Fl{Question:} Find a 95\% confidence interval for the true average velocity $\mu$ of
+  shells of this type. Assume muzzle velocities are normally distributed.
+
+  \Fl{Solution:} Our samples are $Y_{1},\ldots,Y_{8}$. Since $n=8$, so the
+  large-sample techniques discussed earlier are inapplicable. Let
+  \begin{equation*}
+    \overline{Y} = \frac{Y_{1}+\ldots+Y_{8}}{8}.
+  \end{equation*}
+  Then $\overline{Y}\sim \mathcal{N}(\mu,\sigma^{2}/8)$ since
+  $Y_{1},\ldots,Y_{n}\overset{iid}{\sim} \mathcal{N}(\mu,\sigma^{2})$.
+
+  If we were to standardize $\overline{Y}$, we'd have:
+  \begin{equation*}
+    \frac{\overline{Y}-\mu}{\sigma/\sqrt{8}}=Z\sim \mathcal{N}(0,1)
+  \end{equation*}
+  But since we don't know $\sigma$, we can't actually standardize. Instead, we
+  do the ``approximate standarization'' technique discussed in
+  \cref{sec:using-student-t-distribution} (and motivated in
+  \cref{sec:motivation:-approximate-standardization}), whereby we divide by
+  the sample standard deviation $S$ rather than the unknown population
+  standard deviation $\sigma$:
+  \begin{equation*}
+    \overline{Y} \mapsto \frac{\overline{Y}-\mu}{S/\sqrt{8}}
+  \end{equation*}
+  This transformation---when we divided by $S$ rather than $\sigma$---is
+  called \demph{studentization} (as opposed to \demph{standardization} which
+  involves dividing by $\sigma$). Recalling
+  \cref{thm:approximate-standardization-is-t-distn}, it follows that the
+  ``studentized'' statistic
+  \begin{equation}\label{eq:18}
+    T:=\frac{\overline{Y}-\mu}{S/\sqrt{8}}
+  \end{equation}
+  has a $t$-distribution with $n-1=7$ degrees of freedom.
+
+  We can now use the pivotal method (described in \cref{rmk:pivotal-method})
+  to construct a 95\% confidence interval for $\mu$; in this instance our
+  pivotal quantity is $T$, as its distribution does not depend on the
+  parameter $\mu$.
+ 
+  Using the \texttt{R} quantile function
+  \texttt{qt(.025,df=7,lower.tail=TRUE)} and the symmetry of the
+  $t$-distribution, we see that
+  \begin{equation*}
+    \P\left[-2.365 \leq T \leq 2.365\right] = 0.95
+  \end{equation*}
+
+  Therefore, we have:
+  \begin{align*}
+    0.95
+    &=\P\left[-2.365 \leq T \leq 2.365\right]\\
+    &=\P\left[-2.365 \leq \frac{\overline{Y}-\mu}{S/\sqrt{8}} \leq
+      2.365\right] &&\text{by \cref{eq:18}}\\
+    &=\P\left[\overline{Y}-\frac{2.365 S}{\sqrt{8}}\leq \mu \leq \overline{Y} + \frac{2.365S}{\sqrt{8}}\right]
+      &&\text{by doing algebra}\\
+  \end{align*}
+  Therefore, the interval $[\overline{Y}-\frac{2.365 S}{\sqrt{8}},\
+  \overline{Y} + \frac{2.365S}{\sqrt{8}}]$ is a 95\% confidence interval for
+  $\mu$.
+
+  For our data, we have $\overline{Y}=1007$, and by direct computation one can
+  show that $S = 43.7$. Plugging these values in gives the observed confidence
+  interval
+  \begin{equation*}
+    [970.5,1043.5]
+  \end{equation*}
+  for our sample.
 \end{example}
 
+\begin{remark}
+  If we had (falsely) assumed that $T$ from \cref{eq:18} had a standard normal
+  distribution, then our confidence interval would have been
+  \begin{equation*}
+    \left[\overline{Y}-\frac{1.96 S}{\sqrt{8}},\
+    \overline{Y} + \frac{1.96S}{\sqrt{8}}\right] = [977,1037].
+  \end{equation*}
+  This is narrower (which may seem good) but this is because we wouldn't be
+  accounting for the higher variance that $\overline{Y}$ has due our small
+  sample size. As the result, the interval wouldn't truly be a 95\% interval.
+  It might actually be an 80\% interval or something---so our confidence in
+  our estimate would be misplaced.
+\end{remark}
+
+\subsection{Statistical consistency}
+\textit{(This section is based on Chapter 9.3 in the textbook.)}
+
+Our next big topic after confidence intervals will be properties of
+estimators. There are three big ones:
+\begin{itemize}
+  \item Consistency (a benchmark that an estimator should satisfy)
+  \item Relative efficiency (a criteron for comparing estimators)
+  \item Sufficiency (an information-theoretic criterion for statistics in
+  general to consider when constructing estimators)
+\end{itemize}
+
+\begin{definition}[Convergence in probability]
+  \label{def:convergence-probability}
+  Let $(X_{n})_{n=1}^{\infty}$ be a sequence of random variables and let $c\in \R$. We say that the
+  sequence $(X_{n})$ \demph{converges in probability} to $c$ if
+  \begin{equation}\label{eq:20}
+    \lim_{n\to\infty}\P\left[\left| X_{n}-c \right| >\epsilon\right] = 0
+  \end{equation}
+  for every $\epsilon>0$. We denote convergence in probability by writing
+  $X_{n}\plim c$.
+
+  More generally, if $X$ is a random variable, we say that $(X_{n})$ \demph{converges in
+  probability} to $X$ if
+  \begin{equation*}
+    \lim_{n\to\infty} \P\left[\left| X_{n}-X \right|>\epsilon \right] =0
+  \end{equation*}
+  for every $\epsilon>0$. In this case we write $X_{n}\plim X$.
+\end{definition}
+
+\begin{remark}[Interpretation of \cref{def:convergence-probability}]
+  An equivalent formulation of \cref{eq:20} is
+  \begin{equation*}
+    \lim_{n\to\infty} \P\left[\left| X_{n}-c \right| \leq \epsilon\right] =1.
+  \end{equation*}
+  In other words, $X_{n}\plim c$ means that for large $n$, $X_{n}$ will be close to $c$ with high
+  probability.
+\end{remark}
+
+\begin{definition}[Statistical consistency]
+  \label{def:statistical-consistency}
+  Let $\theta$ be a parameter and let $\widehat{\theta}_{n}$ be an estimator
+  of $\theta$ which is calculated using a sample of size $n$. We say that
+  $\widehat{\theta}_{n}$ is \demph{consistent} if
+  $\widehat{\theta}_{n} \plim \theta$ as $n \to \infty$.
+\end{definition}
+
+
+
+You've already seen an important example of a consistent estimator: the sample
+mean.
+
+\begin{example}[Sample mean is consistent]
+  If $X_{1},\ldots,X_{n}$ is a random sample from a distribution
+  with finite variance and expectation $\mu$, then
+  $\overline{X}= \frac{X_{1}+\ldots+X_{n}}{n}$ is a consistent estimator of
+  $\mu$ by the weak law of large numbers (\cref{thm:weak-law-large-numbers}).
+\end{example}
+
+Another example I won't discuss in detail is the following.
+
+\begin{example}
+  If $T_{n}$ is a
+  $t$-distribution with $n$ degrees of freedom, and $Z\sim \mathcal{N}(0,1)$
+  then
+  \begin{equation*}
+    T_{n}\plim Z \text{ as } n \to \infty.
+  \end{equation*}
+  I mentioned something about this in \cref{sec:definition-student-t-distribution}.
+\end{example}
+
+Here is another example
+\begin{example}[Consistency of the running maximum]
+  \label{ex:consistency-of-the-running-maximum}
+  Fix $\theta>0$, and let $Y_{1},\ldots,Y_{n}$ be a random sample from the
+  uniform distribution on the interval $(0,\theta)$.
+  % $\text{unif}(0,\theta)$. (To be precise, this means eachs $Y_{i}$ has
+  % probability density function
+  % $g(y) = \frac{1}{\theta}\mathbf{1}_{\left[ y\in (0,\theta) \right] }$.)
+  Suppose we wish to estimate $\theta$. One natural estimator is the running
+  maximum, defined as $M = \max(Y_{1},\ldots,Y_{n})$. We will show that $M$ is
+  a \textit{consistent} estimator of $\theta$.
+
+  Let $F$ denote the cumulative distribution function of $M$; i.e.,
+  $F(t) := \P\left[M \leq t\right]$ for all $t\in \R$.
+
+  \begin{claim}
+    \label{claim:cdf-of-M}
+    $F(t) = \left( \frac{t}{\theta} \right)^{n}\mathbf{1}_{\left[t\in (0,\theta)\right]}$ for all $t\in \R$.
+  \end{claim}
+  \begin{claimproof}
+    There are three cases, depending on the value of $t$:
+
+    \begin{itemize}
+      \item \textit{Case 1.} If $t \leq 0$ then $F(t)=0$. (This is obvious.)
+      \item \textit{Case 2.} If $t \geq 1$ then $F(t)=1$. (This is also
+      obvious.)
+      \item \textit{Case 3.} If $t\in (0,\theta)$ then
+      \begin{align*}
+        F(t)
+        &= \P\left[M \leq t\right] &&\text{by definition of cdf}\\
+        &= \P\left[\max(Y_{1},\ldots,Y_{n}) \leq t\right] &&\text{by definition of $M$} \\
+        &= \P\left[Y_{1}\leq t,\ldots,Y_{n}\leq t\right] &&\text{think about it}\\
+        &= \prod_{i=1}^{n} \P\left[Y_{i}\leq t\right] &&\text{by independence of $Y_{1},\ldots,Y_{n}$}\\
+        &= \left( \frac{t}{\theta} \right)^{n} &&\text{since
+                                                  $\P\left[Y_{i}\leq t
+                                                  \right]= \frac{t}{\theta}$
+                                                  when $t\in (0,\theta) $ }.
+      \end{align*}
+    \end{itemize}
+    Putting these three cases together implies the statement of the claim.
+  \end{claimproof}
+
+  \begin{claim}
+    \label{claim:M-consistent}
+    $M \plim \theta$ as $n \to \infty$.
+  \end{claim}
+  \begin{claimproof}
+    We need to show that
+    $\P\left[ |M -\theta| >\epsilon \right] \to 0 \text{ as }n \to \infty$ for
+    every $\epsilon>0$.
+
+    Let $\epsilon>0$ be arbitrary. Without loss of generality, we may assume
+    that $\epsilon<\theta$. Then
+    \begin{align*}
+      \P\left[|M-\theta|>\epsilon \right] 
+      &= \P\left[M< \theta-\epsilon \right] &&\text{since $M<\theta$ with
+                                               probability 1}\\
+      &= F(\theta-\epsilon)\\
+      &= \left( \frac{\theta-\epsilon}{\theta} \right)^{n}.
+    \end{align*}
+    Since $0<\frac{\theta-\epsilon}{\theta}<1$, the right-hand side
+    converges to zero as $n \to\infty$.
+  \end{claimproof}
+  By \cref{claim:M-consistent}, $M$ is a consistent estimator of $\theta$. 
+\end{example}
+
+\newpage
+\section{2026-03-02 | Week 08 | Lecture 17}
+\subsection{Relative efficiency}
+\textit{Based on section 9.2 in the textbook.}
+
+
+Recall that if we have two unbiased estimators $\widehat{\theta}_{1}$ and
+$\widehat{\theta}_{2}$ of the same target parameter $\theta$, we prefer the
+one with the smaller variance.
+
+\begin{definition}[Relative efficiency]
+  \label{def:relative-efficiency}
+  If $\widehat{\theta}_{1},\widehat{\theta}_{2}$ are unbiased estimators of a
+  parameter $\theta$,  then the \demph{efficiency} of $\widehat{\theta}_{1}$
+  relative to $\widehat{\theta}_{2}$, is
+  \begin{equation*}
+    \text{eff}(\widehat{\theta}_{1},\widehat{\theta}_{2}) = \frac{\Var(\widehat{\theta}_{2})}{\Var(\widehat{\theta}_{1})}.
+  \end{equation*}
+\end{definition}
+
+\begin{remark}
+  If $\text{eff}(\widehat{\theta}_{1},\widehat{\theta}_{2})>1$, then
+  $\widehat{\theta}_{1}$ is a better estimator than $\widehat{\theta}_{2}$
+  because it has lower variance.
+\end{remark}
+
+The next example considers two estimators which are similar to those
+considered in \cref{ex:estimating-sides-dice} (estimating the sides of a
+dice).
+
+\begin{example}[Example 9.1 in the textbook]
+  Fix $\theta>0$. Suppose $Y_{1},\ldots,Y_{n}$ is a random sample from the
+  uniform distribution on the interval $(0,\theta)$. Let
+  \begin{equation*}
+    \widehat{\theta}_{1} = 2\overline{Y} \quad \text{and} \quad \widehat{\theta}_{2}= \left( \frac{n+1}{n} \right)M,
+  \end{equation*}
+  where $M=\max(Y_{1},\ldots,Y_{n})$.
+
+  We'll compute the relative efficiency of $\widehat{\theta}_{1}$ and
+  $\widehat{\theta}_{2}$. Our computation proceeds through five claims.
+  
+  \begin{claim}
+    $\widehat{\theta}_{1}$ is unbiased. 
+  \end{claim}
+  \begin{claimproof}
+    $\E[\widehat{\theta}_{1} ]= \E\left[2\overline{Y} \right] = 2 \left( \frac{\theta}{2} \right)=\theta$.
+  \end{claimproof}
+
+  \begin{claim}
+    \label{claim:variance-of-theta1}
+    $\Var(\widehat{\theta}_{1})=\frac{\theta^{2}}{3n}$.
+  \end{claim}
+  \begin{claimproof}
+    By \cref{prop:standard-error-sample-mean}, the standard deviation of the
+    sample mean $\overline{Y}=\frac{Y_{1}+\ldots+Y_{n}}{n}$ is
+    \begin{equation}\label{eq:19}
+      \sigma_{\overline{Y}}=\frac{\sigma}{\sqrt{n}},
+    \end{equation}
+    where $\sigma^{2}=\Var(Y_{1})$. Squaring both sides of \cref{eq:19}
+    implies
+    \begin{equation*}
+      \Var(\overline{Y})= \frac{\sigma^{2}}{n}
+    \end{equation*}
+    Therefore
+    \begin{equation}\label{eq:21}
+      \Var(2\overline{Y}) = \frac{4\sigma^{2}}{n}
+    \end{equation}
+    Moreover, a direct computation will show that since
+    $Y_{1}\sim \text{unif}(0,\theta)$, then
+    $\sigma^{2}:=\Var(Y_{i})=\theta^{2}/12$ (exercise). Plugging this into
+    \cref{eq:21} implies the statement of the claim.
+  \end{claimproof}
+
+  \begin{claim}
+    \label{claim:density-of-M}
+    The pdf of $M$ is $f(t) = \frac{n}{\theta^{n}} t^{n-1}\mathbf{1}_{\left[ 0 <t<\theta\right] }$.
+  \end{claim}
+  \begin{claimproof}
+    In \cref{ex:consistency-of-the-running-maximum}, we showed that
+    $M$ has distribution function
+    \begin{equation*}
+      F(t) = \left( \frac{t}{\theta} \right)^{n}\mathbf{1}_{\left[ t\in (0,\theta) \right] }
+    \end{equation*}
+    Differentiating $F$ implies the claim.
+  \end{claimproof}
+
+  \begin{claim}
+    \label{claim:theta2-unbiased}
+    $\widehat{\theta}_{2}$ is unbiased.
+  \end{claim}
+  \begin{claimproof}
+    \begin{align*}
+      \E\left[\widehat{\theta}_{2} \right] 
+      &= \left( \frac{n+1}{n} \right) \E\left[ M  \right] \\
+      &= \left( \frac{n+1}{n} \right) \int_{-\infty}^{\infty} tf(t)dt \\
+      &= \frac{n+1}{n}\int_{0}^{\theta} \frac{n}{\theta^{n}}t^{n} dt &&\text{by \cref{claim:density-of-M}}\\
+      &= \frac{1}{\theta^{n}} \left[ t^{n+1} \right]^{\theta}_{0}\\ 
+      &= \theta.
+    \end{align*}
+  \end{claimproof}
+
+  \begin{claim}
+    \label{claim:variance-of-theta2}
+    $\Var(\widehat{\theta}_{2}) = \frac{\theta^{2}}{n(n+2)}$.
+  \end{claim}
+  \begin{claimproof}
+    Since $\widehat{\theta}_{2} = \left( \frac{n+1}{n} \right)M$, it will be
+    helpful to first compute $\E\left[M^{2} \right]$:
+    \begin{align*}
+      \E\left[M^{2} \right] 
+      &= \int_{-\infty}^{\infty}t^{2}f(t)dt &&\text{by LOTUS (\cref{thm:law-unconscious-statistician})}\\
+      &= ... &&\text{plug in formula for $f(t)$ and integrate}\\
+      &= \left(\frac{n}{n+2}  \right)\theta^{2}.
+    \end{align*}
+    Therefore
+    \begin{equation}\label{eq:22}
+      \E[ \widehat{\theta}_{2}^{2}] = \E\left[\left( \frac{n+1}{n} \right)^{2}M^{2}  \right] = \left( \frac{n+1}{n} \right)^{2} \left(\frac{n}{n+2}  \right)\theta^{2}.
+    \end{equation}
+    We now compute $\Var(\widehat{\theta}_{2})$:
+    \begin{align*}
+      \Var(\widehat{\theta}_{2}) 
+      &= \E[\widehat{\theta}_{2}^{2} ] - \left( \E[\widehat{\theta}_{2} ] \right)^{2}\\
+      &= \E[\widehat{\theta}_{2}^{2} ] - \theta^{2} &&\text{since $\E[\widehat{\theta}_{2}]=\theta$ by \cref{claim:theta2-unbiased}}.
+    \end{align*}
+    Plugging \cref{eq:22} into the above equation and simplifying implies the
+    statement of the claim.
+  \end{claimproof}
+
+  By \cref{claim:variance-of-theta1} and \cref{claim:variance-of-theta2},
+  \begin{equation*}
+    \text{eff}(\theta_{1},\theta_{2}) 
+    = \frac{\left( \frac{\theta^{2}}{n(n-2)} \right) }{ \left( \frac{\theta^{2}}{3n} \right) } 
+    = \frac{3}{n+2}.
+  \end{equation*}
+  The efficiency is less than 1 for all $n \geq 2$, and we conclude that
+  $\widehat{\theta}_{2}$ has a smaller variance than $\widehat{\theta}_{1}$,
+  making it a better estimator.
+\end{example}
+
+
+\begin{theorem}
+  If $\widehat{\theta}_{n}$ is an unbiased esetimator of $\theta$ and
+  $\lim_{n\to\infty} \Var(\widehat{\theta}_{n}) =0$, then
+  $\widehat{\theta}_{n}$ is consistent.
+\end{theorem}
+\begin{proof}[Proof idea]
+  Proof by picture. The technical details are similar to the proof of the weak
+  law of large numbers.
+\end{proof}
 \end{document}

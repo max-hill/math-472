@@ -11,7 +11,7 @@ permalink: /homework/
 2026-01-30  | [homework-02](homework/homework-02/homework-02.pdf)     | probability review, independence, variance
 2026-02-09  | [homework-03](homework/homework-03/homework-03.pdf)     | standardization, t-distribution, quantiles
 2026-02-16  | [homework-04](homework/homework-04/homework-04.pdf)     | central limit theorem, bias, MSE
-2026-02-27  | [homework-05](homework/homework-05/homework-05.pdf)     | confidence intervals, bias, MSE, Pareto distribution
+2026-03-02  | [homework-05](homework/homework-05/homework-05.pdf)     | confidence intervals, bias, MSE, Pareto distribution
 
  
 
