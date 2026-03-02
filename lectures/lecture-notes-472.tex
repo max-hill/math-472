@@ -244,7 +244,7 @@ providing a foundation for applications and further study.
   regression, bivariate normal distributions, method of least squares
 \end{enumerate}
 
-\section{More realistic course outline}
+\section*{More realistic course outline}
 \begin{enumerate}
   \item \textbf{Weeks 1-4.} General framework of probability and statistics
 
@@ -2943,10 +2943,12 @@ follows a Student $t$-distribution with $n-1$ degrees of freedom.
     \overline{Y} + \frac{1.96S}{\sqrt{8}}\right] = [977,1037].
   \end{equation*}
   This is narrower (which may seem good) but this is because we wouldn't be
-  accounting for the higher variance that $\overline{Y}$ has due our small
-  sample size. As the result, the interval wouldn't truly be a 95\% interval.
-  It might actually be an 80\% interval or something---so our confidence in
-  our estimate would be misplaced.
+  accounting for the fact that $\frac{\overline{Y}-\mu}{S/\sqrt{n}}$ has
+  higher variance than $\frac{\overline{Y}-\mu}{\sigma/\sqrt{n}}$ (since $S$
+  is random, but $\sigma$ is not). As the result, the interval wouldn't truly
+  be a 95\% interval. It is actually a lower confidence (say, an $80\%$
+  confidence interval or something)---so our confidence in our estimate would
+  be misplaced.
 \end{remark}
 
 \subsection{Statistical consistency}
@@ -3169,7 +3171,7 @@ dice).
     \begin{equation*}
       F(t) = \left( \frac{t}{\theta} \right)^{n}\mathbf{1}_{\left[ t\in (0,\theta) \right] }
     \end{equation*}
-    Differentiating $F$ implies the claim.
+    Differentiating $F$ with respect to $t$ implies the claim.
   \end{claimproof}
 
   \begin{claim}
@@ -3224,8 +3226,12 @@ dice).
   $\widehat{\theta}_{2}$ has a smaller variance than $\widehat{\theta}_{1}$,
   making it a better estimator.
 \end{example}
+\newpage
+\section{2026-03-04 | Week 08 | Lecture 18}
 
 
+
+\subsection{Note about variance of estimators}
 \begin{theorem}
   If $\widehat{\theta}_{n}$ is an unbiased esetimator of $\theta$ and
   $\lim_{n\to\infty} \Var(\widehat{\theta}_{n}) =0$, then
@@ -3235,4 +3241,123 @@ dice).
   Proof by picture. The technical details are similar to the proof of the weak
   law of large numbers.
 \end{proof}
+
+\subsection{Sufficiency}
+\textit{This section is based on chapter 9.4 in textbook.}
+
+\Fl{Question:} Suppose we wish to estimate a parameter $\theta$ with an
+estimator $\widehat{\theta}$ based on a sample $X_{1},\ldots,X_{n}$. By it's
+nature the statistic summarizes the sample $X_{1},\ldots,X_{n}$. Is any
+information about $\theta$ lost? How can we know if the estimator uses all the
+possible information available in the sample? Or can we learn more about the
+target parameter by considering some other statistic of the sample?
+
+Informally, a statistic that utilizes \textit{all} the information in a sample
+about a target parameter is said to be a \textit{sufficient statistic}, which
+we will define mathematically below.
+
+\begin{remark}[Notation]
+  If $X$ is a discrete random variable whose distribution depends on a
+  parameter $\theta$, and $x\in \R$ we write
+  \begin{equation*}
+    p(x\mid \theta)
+  \end{equation*}
+  to denote the probability that $X=x$ under the parameter value of $\theta$.
+
+  Similarly, if $Y$ is a continuous random variable depending on $\theta$,  we write
+  \begin{equation*}
+    f(y\mid \theta)
+  \end{equation*}
+  to denote the probability density of $y\in \R$, where the dependence on
+  $\theta$ is made explicit.
+\end{remark}
+
+
+\begin{example}
+  Suppose $X_{1},\ldots,X_{n}$ is a random sample such that
+  \begin{equation*}
+    X_{i} = \left\{ \begin{array}{l@{\quad:\quad}l} 1 & \text{with probability
+        }\theta\\ 0& \text{with probability }1-\theta \end{array}\right.
+  \end{equation*}
+  So $p$ is the probability of succes in a $n$ binomial trials.
+
+  Suppose we are given the value
+  \begin{equation*}
+    Y = \sum_{i=1}^{n} X_{i} = (\# \text{ of successes in $n$ trials})
+  \end{equation*}
+
+
+  If we know the value of $Y$, can we gain any further information about $\theta$
+  by looking at other functions of $X_{1},\ldots,X_{n}$?
+
+  Let's look at the conditional distribution of $X_{1},\ldots,X_{n}$, given
+  $Y$:
+
+  Let $k\in [n]$ be arbitrary. There are two cases:
+  \begin{itemize}
+    \item If $x_{1}+\ldots+x_{n}\neq k$, then
+    $\P\left[X_{1}=x_{1},\ldots,X_{n}=x_{n} \mid Y=k\right] =0$ trivially.
+    \item If $x_{1}+\ldots+x_{n}= k$, then
+
+    \begin{itemize}
+      \item First observe that $p(x_{i}\mid \theta) =
+      \theta^{x_{i}}(1-\theta)^{1-x_{i}}$ for $x_{i}\in \left\{0,1\right\}$
+      (this is the probability mass function of a Bernoulli random variable).
+      Therefore by independence
+      \begin{align*}
+        p(x_{1},\ldots,x_{n}\mid \theta) 
+        &= \prod_{i=1}^{n}p(x_{i}\mid \theta) \\
+        &= \theta^{x_{1}+\ldots+x_{n}}(1-\theta)^{n-(x_{1}+\ldots+x_{n})} \\
+        &=\theta^{k}(1-\theta)^{n-k}
+      \end{align*}
+      
+      \item Using the previous result, we have
+      \begin{align*}
+        \P\left[X_{1}=x_{1},\ldots,X_{n}=x_{n} \mid Y=k\right] 
+        &= \frac{\P\left[ X_{1}=x_{1},\ldots,X_{n}=x_{n},Y=k\right]}{\P\left[Y=k \right]}\\
+        &= \frac{p^{k}(1-p)^{n-k}}{{n\choose k} p^{k}(1-p)^{n-k}} = \frac{1}{{n\choose k}}
+      \end{align*}
+    \end{itemize}
+  \end{itemize}
+  The important observation here is that the conditional distribution of
+  $X_{1},\ldots,X_{n}$, given $Y$, does not depend on $p$. Thus, once $Y$ is
+  known, no other function of $X_{1},\ldots,X_{n}$ will shed additional liight
+  on the possible vale of $p$; $Y$ contains all the information abut $p$ in
+  the sample.
+\end{example}
+
+\begin{definition}[Sufficient statistic]
+  \label{def:sufficient-statistic}
+  Let $X_{1},\ldots,X_{n}$ be a random sample from a probability distribution
+  with unknown parameter $\theta$. The statistic $U=g(X_{1},\ldots,X_{n})$ is
+  \demph{sufficient} for $\theta$ if the conditional distribution of the
+  sample $X_{1},\ldots,X_{n}$ given the value of $U(X_{1},\ldots,X_{n})$ does
+  not depend on $\theta$.
+\end{definition}
+
+\begin{definition}
+  Let $y_{1},\ldots,y_{n}$ be sample observations taken on corresponding
+  random variables  $Y_{1},\ldots,Y_{n}$ whose distribution depends on a
+  parameter $\theta$. Then:
+  \begin{itemize}
+    \item If $Y_{1},\ldots,Y_{n} $ are discrete random
+    variables, the \demph{likelihood of the sample}, denoted
+    $L(y_{1},\ldots,y_{n}\mid \theta)$, is defined to be the joint probability
+    of $y_{1},\ldots,y_{n}$.
+    \item If $Y_{1},\ldots,Y_{n}$ are continuous random variables, the
+    likelihood $L(y_{1},\ldots,y_{n}\mid \theta)$ is defined to be the joint
+    density evaluated at $y_{1},\ldots,y_{n}$.
+  \end{itemize}
+\end{definition}
+
+If  $Y_{1},\ldots,Y_{n}$ is a random sample of discrete random variables, then the likelihood is
+\begin{align*}
+  L(y_{1},\ldots,y_{n}\mid \theta) 
+  &= p(y_{1},\ldots,y_{n}\mid \theta)\\
+  &= p(y_{1},\mid \theta) p(y_{2}\mid \theta) \cdots p(y_{n}\mid \theta).
+\end{align*}
+Similarly, if $Y_{1},\ldots,Y_{n}$ are continuos, then
+\begin{equation*}
+  L(y_{1},\ldots,y_{n}\mid \theta) = f(y_{1},\mid \theta) f(y_{2}\mid \theta) \cdots f(y_{n}\mid \theta).
+\end{equation*}
 \end{document}
