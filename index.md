@@ -33,6 +33,8 @@ title: Lecture Notes
 2026-02-20  |    | [R coding worksheet](worksheets/worksheet-1.pdf)
 2026-02-23  | 14   | (Sections 8.5, 8.6) Confidence intervals, large-sample confidence intervals
 2026-02-25  | 15   | (Sections 8.6, 8.7) Large-sample confidence intervals, sample complexity
+2026-02-27  | 16   | (Section 9.3) Small-sample confidence intervals, consistency
+2026-03-02  | 17   | (Section 9.2) Relative efficiency
  
 
 # Other Links
