@@ -3226,12 +3226,8 @@ dice).
   $\widehat{\theta}_{2}$ has a smaller variance than $\widehat{\theta}_{1}$,
   making it a better estimator.
 \end{example}
-\newpage
-\section{2026-03-04 | Week 08 | Lecture 18}
 
 
-
-\subsection{Note about variance of estimators}
 \begin{theorem}
   If $\widehat{\theta}_{n}$ is an unbiased esetimator of $\theta$ and
   $\lim_{n\to\infty} \Var(\widehat{\theta}_{n}) =0$, then
@@ -3242,19 +3238,26 @@ dice).
   law of large numbers.
 \end{proof}
 
+\newpage
+\section{2026-03-04 | Week 08 | Lecture 18}
+
+\subsection{Note about variance of estimators}
+
 \subsection{Sufficiency}
 \textit{This section is based on chapter 9.4 in textbook.}
 
-\Fl{Question:} Suppose we wish to estimate a parameter $\theta$ with an
-estimator $\widehat{\theta}$ based on a sample $X_{1},\ldots,X_{n}$. By it's
-nature the statistic summarizes the sample $X_{1},\ldots,X_{n}$. Is any
-information about $\theta$ lost? How can we know if the estimator uses all the
-possible information available in the sample? Or can we learn more about the
-target parameter by considering some other statistic of the sample?
+\Fl{Nexus question of this lecture:} Suppose we wish to estimate a parameter
+$\theta$ with an estimator $\widehat{\theta}$ based on a sample
+$X_{1},\ldots,X_{n}$. By it's nature the statistic summarizes the sample
+$X_{1},\ldots,X_{n}$. Is any information about $\theta$ lost? How can we know
+if the estimator uses all the possible information available in the sample? Or
+can we learn more about the target parameter by considering some other
+statistic of the sample?
 
-Informally, a statistic that utilizes \textit{all} the information in a sample
-about a target parameter is said to be a \textit{sufficient statistic}, which
-we will define mathematically below.
+
+\Fl{Key definition:} Informally, a statistic that utilizes \textit{all} the
+information in a sample about a target parameter is said to be a
+\textit{sufficient statistic}, which we will define mathematically below.
 
 \begin{remark}[Notation]
   If $X$ is a discrete random variable whose distribution depends on a
@@ -3273,7 +3276,8 @@ we will define mathematically below.
 \end{remark}
 
 
-\begin{example}
+\begin{example}[Sufficiency - motivating example]
+  \label{ex:sufficiency-motivating-example}
   Suppose $X_{1},\ldots,X_{n}$ is a random sample such that
   \begin{equation*}
     X_{i} = \left\{ \begin{array}{l@{\quad:\quad}l} 1 & \text{with probability
@@ -3303,10 +3307,10 @@ we will define mathematically below.
       \item First observe that $p(x_{i}\mid \theta) =
       \theta^{x_{i}}(1-\theta)^{1-x_{i}}$ for $x_{i}\in \left\{0,1\right\}$
       (this is the probability mass function of a Bernoulli random variable).
-      Therefore by independence
+      Therefore the sample distribution of $n$ bernoulli random variables is
       \begin{align*}
-        p(x_{1},\ldots,x_{n}\mid \theta) 
-        &= \prod_{i=1}^{n}p(x_{i}\mid \theta) \\
+        \P\left[X_{1}=x_{1},\ldots,X_{n}=x_{n}  \right]
+        &= \prod_{i=1}^{n}p(x_{i}\mid \theta) &&\text{by independence} \\
         &= \theta^{x_{1}+\ldots+x_{n}}(1-\theta)^{n-(x_{1}+\ldots+x_{n})} \\
         &=\theta^{k}(1-\theta)^{n-k}
       \end{align*}
@@ -3335,6 +3339,8 @@ we will define mathematically below.
   not depend on $\theta$.
 \end{definition}
 
+
+\subsection{The factorization criterion}
 \begin{definition}
   Let $y_{1},\ldots,y_{n}$ be sample observations taken on corresponding
   random variables  $Y_{1},\ldots,Y_{n}$ whose distribution depends on a
@@ -3360,4 +3366,114 @@ Similarly, if $Y_{1},\ldots,Y_{n}$ are continuos, then
 \begin{equation*}
   L(y_{1},\ldots,y_{n}\mid \theta) = f(y_{1},\mid \theta) f(y_{2}\mid \theta) \cdots f(y_{n}\mid \theta).
 \end{equation*}
+
+\begin{remark}
+  We often regard the likelihood as a function of the parameter $\theta$
+  alone, and write $L(\theta)$.
+\end{remark}
+
+
+\begin{theorem}[Factorization criterion -- Theorem 9.4 in text]
+  \label{thm:factorization-criterion-for-sufficiency}
+  Let $T$ be a statistic based on the random sample $X=(X_{1},\ldots,X_{n})$,
+  and let $x=(x_{1},\ldots,x_{n})\in \R^{n}$. Let $T:\R^{n}\to \R$ be
+  function. Then $T(X)$ is a sufficient statistic for estimation of $\theta$
+  if and only if we can factor the likelihood as follows:
+  \begin{equation*}
+    L(x\mid \theta) = g(T(x),\theta)\cdot h(x)
+  \end{equation*}
+  where $g(t,\theta)$ is a function only of $\theta$ and $t=T(x)$, and where
+  $h(x)$ is not a function of $\theta$.
+\end{theorem}
+
+\begin{remark}
+  To find a sufficient statistic using the factorization theorem, we factor
+  the joint pdf/pmf of the sample into two parts, with one part not depending
+  on $\theta$. The part not depending on $\theta$ constitutes the
+  $h(x_{1},\ldots,x_{n})$ function. The other part, the one that depends on
+  $\theta$, usually depends on the sample through some function
+  $T(x_{1},\ldots,x_{n})$; this function $T$ is a sufficient statistic for $\theta$.
+\end{remark}
+
+
+\newpage
+\section{2026-03-06 | Week 08 | Lecture 19}
+\begin{example}
+  The density of a Bernoulli random variable $X_{i}$ with success parameter $\theta$
+  is
+  \begin{equation*}
+    \P_{\theta}\left[X_{i}=x_{i} \right]=p(x_{i}\mid \theta) = \theta^{x_{i}}(1-\theta)^{1-x_{i}}, \quad x_{i}\in \left\{0,1\right\} .
+  \end{equation*}
+  Therefore likelihood of observing $x=(x_{1},\ldots,x_{n})\in
+  \left\{0,1\right\}^{n}$ from a sample of $n$ bernoulli random variables with
+  success parameter $\theta$ is
+  \begin{align*}
+    L(x\mid \theta) 
+    &= \P_{\theta}\left[X_{1}=x_{1},\ldots,X_{n}=x_{n} \right]\\
+    &= \P_{\theta}\left[X_{1}=x_{1},\right]\cdots\P_{\theta}\left[X_{n}=x_{n} \right]\\
+    &= \prod_{i=1}^{n} p(x_{i}\mid \theta)\\
+    &= \prod_{i=1}^{n}\theta^{x_{i}}(1-\theta)^{1-x_{i}}\\ 
+    &= \theta^{\sum_{i=1}^{n} x_{i}}(1-\theta)^{n-\sum_{i=1}^{n} x_{i}}\\ 
+  \end{align*}
+  Letting $T(x)=x_{1}+\ldots+x_{n}$, we have
+  \begin{equation*}
+    L(x\mid \theta) = \underbrace{\theta^{T(x)}(1-\theta)^{n-T(x)}}_{g(T(x),\theta)} \cdot \underbrace{1}_{h(x)}
+  \end{equation*}
+  And therefore we conclude that $T(X)$ is a sufficient statistic for
+  estimating $\theta$.
+\end{example}
+
+
+\begin{example}
+  Let $Y_{1},\ldots,Y_{n}$ be a random sample such that the density of $Y_{i}$
+  is 
+  \begin{equation*}
+    f(y_{i}\mid \theta) = \frac{1}{\theta}e^{-y_{i}/\theta}\mathbf{1}_{y_{i}\geq 0}.
+  \end{equation*}
+  for some parameter $\theta>0$. Show that $\overline{Y}$ is a suffficient
+  statistic for $\theta$.
+
+  \Fl{Solution:} Let $y=(y_{1},\ldots,y_{n})\in \R^{n}$
+  \begin{align*}
+    L(y\mid \theta)
+    &= f(y_{1}\mid \theta)\cdots f(y_{n}\mid \theta)\\
+    &= \frac{e^{-y_{1}/\theta}}{\theta}\times \frac{e^{-y_{2}/\theta}}{\theta}\times \cdots\times \frac{e^{-y_{n}/\theta}}{\theta}\\
+    &= \frac{e^{-\overline{y}/\theta}}{\theta^{n}}
+  \end{align*}
+  again, $h(y)=1$, lol.
+\end{example}
+
+\begin{example}
+  Let $\theta$ be a positive integer. Let $X_{1},\ldots,X_{n}$ an iid sample from the uniform distribution on
+  $\left\{1,\ldots,\theta\right\}$ (aka each $X_{i}$ is a roll of a
+  $\theta$-sided dice). Find a sufficient statistic for $\theta$.
+
+
+  Let $T(x) = \max \left\{x_{1},\ldots,x_{n}\right\}$. This is the running
+  maximum. From previous examples, we know that this is a consistent estimator
+  of $\theta$. We'll show that it is sufficient.
+  
+  \Fl{Solution:} The pmf of $X_{i}$ is
+  \begin{equation*}
+    p(x_{i}\mid \theta) = \frac{1}{\theta}\mathbf{1}_{\left\{x_{i}\in \left\{1,\ldots,\theta\right\} \right\} }
+  \end{equation*}
+  The joint pdf of the sample $X_{1},\ldots,X_{n}$ is defined as follows:
+  given for for each $x=(x_{1},\ldots,x_{n})\in \R^{n}$
+  \begin{align*}
+    p_{X}(x\mid \theta) 
+    &= \P_{\theta}\left[X_{1}=x_{1},\ldots,X_{n}=x_{n} \right] \\
+    &= \prod_{i=1}^{n}p(x_{i}\mid \theta)\\ 
+    &= \left\{ \begin{array}{l@{\quad:\quad}l} \theta^{-n} & x_{1},\ldots,x_{n}\in \left\{1,\ldots,n\right\} \\ 0& \text{else} \end{array}\right.
+  \end{align*}
+  This function depends on $\theta$. We can write it as
+  \begin{align*}
+    p_{X}(x\mid \theta) 
+    &= \theta^{-n}\mathbf{1}_{\left[ x_{1},\ldots,x_{n}\in \left\{1,\ldots,n\right\}  \right] }\\
+    &= \underbrace{\theta^{-n}\mathbf{1}_{\left[ \max(x_{1},\ldots,x_{n}) \leq \theta\right] }}_{g(T(x),\theta)}\cdot\underbrace{\mathbf{1}_{\left[ x_{1},\ldots,x_{n}\in \left\{1,2\ldots,\right\}  \right] }}_{h(x)}
+  \end{align*}
+  The function $g$ depends on the sample $x$ only through the value $T(x)=\max
+  \left\{x_{1},\ldots,x_{n}\right\}$. Therefore by
+  \cref{thm:factorization-criterion-for-sufficiency}, $T(X)$ is sufficient for $\theta$.
+\end{example}
+
 \end{document}

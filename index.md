@@ -35,6 +35,7 @@ title: Lecture Notes
 2026-02-25  | 15   | (Sections 8.6, 8.7) Large-sample confidence intervals, sample complexity
 2026-02-27  | 16   | (Section 9.3) Small-sample confidence intervals, consistency
 2026-03-02  | 17   | (Section 9.2) Relative efficiency
+2026-03-04  | 18   | (Section 9.4) Sufficiency
  
 
 # Other Links
