@@ -1,0 +1,302 @@
+\documentclass[10pt]{article}
+% Math Packages
+\usepackage{amsmath, mathtools}
+\usepackage{amssymb}
+\usepackage{amsthm}
+\usepackage{amsfonts}
+\usepackage{bbm}
+\usepackage{breqn}
+\usepackage[margin=1in]{geometry}
+\usepackage{graphicx}
+\usepackage{tikz}
+\usetikzlibrary{arrows.meta}
+\usetikzlibrary{calc}
+\usepackage{forest}
+\usepackage{tikz-qtree}
+\graphicspath{ {./images/} }
+\usepackage{hyperref}
+\usepackage[capitalize]{cleveref}
+\usepackage[shortlabels]{enumitem}
+\usetikzlibrary{arrows,matrix,positioning}
+\usepackage{multicol}
+
+\usepackage{listings}
+\usepackage{xcolor}
+
+\crefname{problem}{Problem}{Problems}
+\Crefname{problem}{Problem}{Problems}
+
+\lstset{
+  language=R,
+  basicstyle=\ttfamily\footnotesize,
+  keywordstyle=\color{blue},
+  commentstyle=\color{gray},
+  stringstyle=\color{red!70!black},
+  framesep=2pt,
+  framexleftmargin=0pt, 
+  frame=single,
+  breaklines=false,
+  showstringspaces=false
+}
+% for the pipe symbol
+\usepackage[T1]{fontenc}
+
+% Citing theorems by name. (source: https://tex.stackexchange.com/questions/109843/cleveref-and-named-theorems)
+\makeatletter
+\newcommand{\ncref}[1]{\cref{#1}\mynameref{#1}{\csname r@#1\endcsname}}
+
+\def\mynameref#1#2{%
+  \begingroup
+  \edef\@mytxt{#2}%
+  \edef\@mytst{\expandafter\@thirdoffive\@mytxt}%
+  \ifx\@mytst\empty\else
+  \space(\nameref{#1})\fi
+  \endgroup
+}
+\makeatother
+
+% Colorful Notes
+\usepackage{color} \definecolor{Red}{rgb}{1,0,0} \definecolor{Blue}{rgb}{0,0,1}
+\definecolor{Purple}{rgb}{.5,0,.5} \def\red{\color{Red}} \def\blue{\color{Blue}}
+\def\gray{\color{gray}} \def\purple{\color{Purple}}
+\newcommand{\rnote}[1]{{\red [#1]}} % \rnote{foo} gives '[foo]' in red
+\newcommand{\pnote}[1]{{\purple [#1]}} % \pnote{foo} gives '[foo]' in purple
+\newcommand{\bnote}[1]{{\blue #1}} % \bnote{foo} gives 'foo' in blue
+\newcommand{\gnote}[1]{{\gray #1}} % \gnote{foo} gives 'foo' in gray
+\newcommand{\Max}[1]{{\purple [#1]}} % \bnote{foo} then 'foo' is blue
+
+
+% Claim numbering (the counter restarts after each proof environment)
+\newcounter{claimcount}
+\setcounter{claimcount}{0}
+\newenvironment{claim}{\refstepcounter{claimcount}\par\addvspace{\medskipamount}\noindent\textbf{Claim \arabic{claimcount}:}}{}
+\usepackage{etoolbox}
+\AtBeginEnvironment{proof}{\setcounter{claimcount}{0}}
+\newenvironment{claimproof}{\par\addvspace{\medskipamount}\noindent\textit{Proof of Claim  \arabic{claimcount}.}}{\hfill\ensuremath{\qedsymbol} \tiny{Claim}
+
+  \medskip}
+% Add claim support to cleverref
+\crefname{claimcount}{Claim}{Claims}
+
+
+% Math Environments
+\newtheorem{theorem}{Theorem}
+\newtheorem{assumption}[theorem]{Assumption}
+\newtheorem{lemma}[theorem]{Lemma}
+\newtheorem{proposition}[theorem]{Proposition}
+\newtheorem{corollary}[theorem]{Corollary}
+\newtheorem{question}[theorem]{Question}
+\theoremstyle{definition}
+\newtheorem*{definition}{Definition}
+\newtheorem{remark}[theorem]{Remark}
+\newtheorem{example}[theorem]{Example}
+\newtheorem{notation}[theorem]{Notation}
+\newtheorem{problem}[theorem]{Problem}
+
+% Matrices and Column Vectors. 
+\usepackage{stackengine}
+\setstackgap{L}{1.0\normalbaselineskip}
+\usepackage{tabstackengine}
+\setstackEOL{;}% row separator
+\setstackTAB{,}% column separator
+\setstacktabbedgap{1ex}% inter-column gap
+\setstackgap{L}{1.5\normalbaselineskip}% inter-row baselineskip
+\let\nmatrix\bracketMatrixstack  %Usage: \nmatrix{1,2,3\4,5,6}
+\newcommand\cv[1]{\setstackEOL{,}\bracketMatrixstack{#1}} %usage: \cv{1,2,3}
+
+% Custom Math Coqmmands
+\newcommand{\vt}{\vskip 5mm} % vertical space
+\newcommand{\fl}{\noindent\textbf} % first line
+\newcommand{\Fl}{\vt\noindent\textbf} % first line with space above
+\newcommand{\norm}[1]{\left\lVert#1\right\rVert} % norm
+\newcommand{\pnorm}[1]{\left\lVert#1\right\rVert_p} % p-norm
+\newcommand{\qnorm}[1]{\left\lVert#1\right\rVert_q} % q-norm
+\newcommand{\1}[1]{\textbf{1}_{\left[#1\right]}} % indicator function 
+\def\limn{\lim_{n\to\infty}} % shortcut for lim as n-> infinity
+\def\sumn{\sum_{n=1}^{\infty}} % shortcut for sum from n=1 to infinity
+\def\sumkn{\sum_{k=1}^{n}} % shortcut for sum from k=1 to n
+\def\sumin{\sum_{i=1}^{n}} % shortcut for sum from i=1 to n
+\def\SAs{\sigma\text{-algebras}} % shortcut for $\sigma$-algebras
+\def\SA{\sigma\text{-algebra}} % shortcut for $\sigma$-algebra
+\def\Ft{\mathcal{F}_t} % time-indexed sigma-algebra (t)
+\def\Fs{\mathcal{F}_s} % time-indexed sigma-algebra (s)
+\def\F{\mathcal{F}} % sigma-algebra
+\def\G{\mathcal{G}} % sigma-algebra
+\def\R{\mathbb{R}} % Real numbers
+\def\N{\mathbb{N}} % Natural numbers
+\def\Z{\mathbb{Z}} % Integers
+\def\E{\mathbb{E}} % Expectation
+\def\P{\mathbb{P}} % Probability
+\def\Q{\mathbb{Q}} % Q probability
+\def\dist{\text{dist}} %Text 'dist' for things like 'dist(x,y)'
+\newcommand{\indep}{\perp \!\!\! \perp}  %independence symbol
+\def\Var{\mathrm{Var}} % Variance
+\def\tr{\mathrm{tr}} % trace
+
+% Brackets and Parentheses
+\def\[{\left [}
+    \def\]{\right ]}
+% \def\({\left (}
+%   \def\){\right )}
+
+
+
+\usepackage{color}
+\definecolor{Red}{rgb}{1,0,0}
+\definecolor{Blue}{rgb}{0,0,1}
+\definecolor{Purple}{rgb}{.5,0,.5}
+\def\red{\color{Red}}
+\def\blue{\color{Blue}}
+\def\gray{\color{gray}}
+\def\purple{\color{Purple}}
+\definecolor{RoyalBlue}{cmyk}{1, 0.50, 0, 0}
+\newcommand{\dempfcolor}[1]{{\color{RoyalBlue}#1}} 
+\newcommand{\demph}[1]{\textcolor{RoyalBlue}{\textbf{\slshape #1}}} % Slanted
+
+\usepackage{emoji}
+% comment exactly one of the following line to show / hide the solutions
+% \newcommand{\solution}[1]{{\purple #1}} % uncomment to show the solutions
+\newcommand{\solution}[1]{} % uncomment to hide the solutions
+
+
+
+
+\begin{document}
+\begin{center}
+  \section*{Math 472: Homework 06}
+  \textit{Due Wednesday, March 11}
+\end{center}
+
+
+\begin{problem}[Exercise 8.50]
+  Refer to example 8.8 in the textbook. In this example, $p_{1}$ and $p_{2}$
+  were used to denote the proportions of refridgerators of brands $A$ and $B$,
+  respectively, that failed during the guarantee periods.
+  \begin{enumerate}[(a)]
+    \item At the approximate 98\% confidence level, what is the largest
+    ``believable value'' for the difference in the proportions of failures for
+    refridgerators of brands $A$ and $B$?
+    \item At the approximate 98\% conﬁdence level, what is the smallest
+    ``believable value'' for the difference in the proportions of failures for
+    refrigerators of brands $A$ and $B$? 
+    \item If $p_1-p_2$ actually equals $0.2251$, which brand has the larger
+    proportion of failures during the warranty period? How much larger?
+    \item If $p_1-p_2$ actually equals $-0.1451$, which brand has the larger
+    proportion of failures during the warranty period larger? How much larger?
+    \item As observed in Example 8.8, zero is a believable value of the
+    difference. Would you conclude that there is evidence of a difference in the
+    proportions of failures (within the warranty period) for the two brands of
+    refrigerators? Why?
+  \end{enumerate}
+\end{problem}
+
+
+\begin{problem}[Exercise 8.70]
+  Let $Y$ be a binomial random variable with parameter $p$. Find the sample
+  size necessary to estimate $p$ within $.05$ with probability $.95$ in the
+  following situations:
+  \begin{itemize}
+    \item If $p$ is thought to be approximately $.9$
+    \item If no information is known about $p$ (use $p=.5$ in estimating the
+    variance of $\widehat{p}$).
+  \end{itemize}
+\end{problem}
+
+\begin{problem}[Exercise 8.81]
+  The carapace lengths (in mm) of ten lobsters examined in a study of the the
+  infestation of the \textit{Thenus orientalis} lobster by two types of
+  barnacles, \textit{Octolasmis tridens} and \textit{Octolasmis lowei}, are as
+  follows:
+  \begin{center}
+    78 \quad 66 \quad 65 \quad 63 \quad 60 \quad 60 \quad 58 \quad 56 \quad 52
+    \quad 50.
+  \end{center}
+  Find a $95\%$ confidence interval for the mean carapace length (in mm) of
+  \textit{Thenus orientalis} lobsters.
+\end{problem}
+
+\begin{problem}[Exercise 8.85]
+  Two new drugs were given to patients with hypertension. The ﬁrst drug
+  lowered the blood pressure of 16 patients an average of 11 points, with a
+  standard deviation of 6 points. The second drug lowered the blood pressure
+  of 20 other patients an average of 12 points, with a standard deviation of 8
+  points. Determine a 95\% conﬁdence interval for the difference in the
+  mean reductions in blood pressure, assuming that the measurements are
+  normally distributed with equal variances.
+\end{problem}
+
+\begin{problem}[Exercise 9.1]
+  Suppose that $Y_{1},Y_{2},Y_{3}$ are a random sample from an exponential
+  distribution with density function
+  \begin{equation*}
+    f(y) = \frac{1}{\theta}e^{-y/\theta}\mathbf{1}_{\left[ y>0 \right] }
+  \end{equation*}
+  Consider the following estimators
+  \begin{equation*}
+    \hat{\theta}_{1} =Y_{1}, \quad\quad \widehat{\theta}_{2}= \frac{Y_{1}+Y_{2}}{2}, \quad\quad \widehat{\theta}_{3} = \frac{Y_{1}+2Y_{2}}{3}, \quad\quad \widehat{\theta}_{4} = \min(Y_{1},Y_{2},Y_{3}), \quad\quad \widehat{\theta}_{5}= \overline{Y}
+  \end{equation*}
+  In problem \#8 of homework 4, you showed that
+  $\widehat{\theta}_{1},\widehat{\theta}_{2},\widehat{\theta}_{3}$ and $\widehat{\theta}_{5}$ are
+  unbiased estimators of $\theta$. 
+  \begin{enumerate}[(a)]
+    \item Find $\text{eff}(\widehat{\theta}_{1},\widehat{\theta}_{5})$.
+    \item Find $\text{eff}(\widehat{\theta}_{2},\widehat{\theta}_{5})$.
+    \item Find $\text{eff}(\widehat{\theta}_{3},\widehat{\theta}_{5})$.
+  \end{enumerate}
+\end{problem}
+
+\begin{problem}[Exercise 9.6]
+  Suppose $Y_{1},\ldots,Y_{n}$ is a random sample of size $n$ from a Poisson
+  distribution with mean $\lambda$. Consider
+  $\widehat{\lambda}_{1}= \frac{Y_{1}+Y_{2}}{2}$ and
+  $\widehat{\lambda}_{2}=\overline{Y}$. Derive the efficiency of
+  $\widehat{\lambda}_{1}$ relative to $\widehat{\lambda}_{2}$.
+\end{problem}
+
+\begin{problem}[Exercise 9.8]
+  Let  $Y_{1},\ldots,Y_{n}$ denote a random sample from a probability density
+  function $f(y)$, which has unknown parameter $\theta$. If $\widehat{\theta}$
+  is an unbiased estimator of $\theta$, then under very general conditions
+  \begin{equation*}
+    \Var(\widehat{\theta}) \geq \frac{1}{\mathcal{I}(\theta)}
+  \end{equation*}
+  where
+  \begin{equation*}
+    \mathcal{I}(\theta)= n \E\left[- \frac{\partial^{2}}{\partial \theta^{2} }\Big[\log(f(Y)) \Big]  \right].
+  \end{equation*}
+  (This is known as the Cramer-Rao inequality.) If
+  $\Var(\widehat{\theta})=\frac{1}{\mathcal{I}(\theta)}$, the estimator
+  $\widehat{\theta}$ is said to be \textit{efficient}.
+
+  Suppose that $f(y)$ is the normal density with mean $\mu$ and variance
+  $\sigma^{2}$. Show that $\overline{Y}$ is an efficient estimator of $\mu$.
+\end{problem}
+
+\begin{problem}[Exercise 9.17]
+  Suppose that $X_{1},\ldots,X_{n}$ and $Y_{1},\ldots,Y_{n}$ are independent
+  random samples from populations with means $\mu_{1}$ and $\mu_{2}$ and
+  variances $\sigma^{2}_{1}$ and $\sigma_{2}^{2}$ respectively. Show that
+  $\overline{X}-\overline{Y}$ is a consistent estimator of $\mu_{1}-\mu_{2}$.
+\end{problem}
+
+\begin{problem}[Exercise 9.24]
+  Let $Y_{1},\ldots,Y_{n}$ be independent standard normal random variables.
+  \begin{enumerate}[(a)]
+    \item What is the distribution of $\sum_{i=1}^{n} Y_{i}^{2n}$?
+    \item Let $W_{n}= \frac{1}{n} \sum_{i=1}^{n} Y_{i}^{2}$. Does $W_{n}$
+    converge in probability to some constant? If so, what is the value of the
+    constant?
+  \end{enumerate}
+\end{problem}
+
+
+\begin{problem}[Exercise 9.39]
+  Let $X_{1},\ldots,X_{n}$ denote a random sample from a Poisson distribution
+  with parameter $\lambda$.  Show that $\sum_{i=1}^{n} Y_{i}$ is sufficient
+  for $\lambda$. 
+\end{problem}
+
+
+
+
+\end{document}
