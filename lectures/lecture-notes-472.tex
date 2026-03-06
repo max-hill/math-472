@@ -24,6 +24,7 @@
 \usepackage{multicol}
 \usepackage{mathtools}% http://ctan.org/pkg/mathtools
 \usepackage{abraces} %xyz
+\usepackage{ulem}
 
 % Hawai'i
 \usepackage{fontspec}
@@ -268,7 +269,7 @@ providing a foundation for applications and further study.
 
   relative efficiency (9.2), consistency (9.3), sufficiency (9.4), likelihood
   (9.4) factorization theorem (9.4),
-  Rao-Blackwell Theorem (9.5), MVUE (9.5), method of moments (9.6), method of
+  \sout{Rao-Blackwell Theorem (9.5)}, \sout{MVUE (9.5)}, method of moments (9.6), method of
   maximum likelihood (9.7)
 
   \item \textbf{Weeks 10-12.} Hypothesis Testing
@@ -3319,7 +3320,7 @@ information in a sample about a target parameter is said to be a
       \begin{align*}
         \P\left[X_{1}=x_{1},\ldots,X_{n}=x_{n} \mid Y=k\right] 
         &= \frac{\P\left[ X_{1}=x_{1},\ldots,X_{n}=x_{n},Y=k\right]}{\P\left[Y=k \right]}\\
-        &= \frac{p^{k}(1-p)^{n-k}}{{n\choose k} p^{k}(1-p)^{n-k}} = \frac{1}{{n\choose k}}
+        &= \frac{\theta^{k}(1-\theta)^{n-k}}{{n\choose k} \theta^{k}(1-\theta)^{n-k}} = \frac{1}{{n\choose k}}
       \end{align*}
     \end{itemize}
   \end{itemize}
@@ -3356,15 +3357,17 @@ information in a sample about a target parameter is said to be a
   \end{itemize}
 \end{definition}
 
-If  $Y_{1},\ldots,Y_{n}$ is a random sample of discrete random variables, then the likelihood is
+If $Y_{1},\ldots,Y_{n}$ is a random sample of discrete random variables. The
+likelihood is
 \begin{align*}
-  L(y_{1},\ldots,y_{n}\mid \theta) 
+  L(y_{1},\ldots,y_{n}\mid \theta)
+  &= f(y_{1},\ldots,y_{n})
   &= p(y_{1},\ldots,y_{n}\mid \theta)\\
   &= p(y_{1},\mid \theta) p(y_{2}\mid \theta) \cdots p(y_{n}\mid \theta).
 \end{align*}
 Similarly, if $Y_{1},\ldots,Y_{n}$ are continuos, then
 \begin{equation*}
-  L(y_{1},\ldots,y_{n}\mid \theta) = f(y_{1},\mid \theta) f(y_{2}\mid \theta) \cdots f(y_{n}\mid \theta).
+  L(y_{1},\ldots,y_{n}\mid \theta) = f(y_{1}\mid \theta) f(y_{2}\mid \theta) \cdots f(y_{n}\mid \theta).
 \end{equation*}
 
 \begin{remark}
@@ -3375,12 +3378,12 @@ Similarly, if $Y_{1},\ldots,Y_{n}$ are continuos, then
 
 \begin{theorem}[Factorization criterion -- Theorem 9.4 in text]
   \label{thm:factorization-criterion-for-sufficiency}
-  Let $T$ be a statistic based on the random sample $X=(X_{1},\ldots,X_{n})$,
-  and let $x=(x_{1},\ldots,x_{n})\in \R^{n}$. Let $T:\R^{n}\to \R$ be
-  function. Then $T(X)$ is a sufficient statistic for estimation of $\theta$
-  if and only if we can factor the likelihood as follows:
+  Let $T:\R^{n}\to \R$ be a function, so that $T(X)$ is a statistic based on a
+  random sample $X=(X_{1},\ldots,X_{n})$. Then $T(X)$ is a sufficient
+  statistic for estimation of $\theta$ if and only if we can factor the
+  likelihood as follows:
   \begin{equation*}
-    L(x\mid \theta) = g(T(x),\theta)\cdot h(x)
+    L(x\mid \theta) = g(T(x),\theta)\cdot h(x), \quad x=(x_{1},\ldots,x_{n})\in \R^{n},
   \end{equation*}
   where $g(t,\theta)$ is a function only of $\theta$ and $t=T(x)$, and where
   $h(x)$ is not a function of $\theta$.
@@ -3398,14 +3401,24 @@ Similarly, if $Y_{1},\ldots,Y_{n}$ are continuos, then
 
 \newpage
 \section{2026-03-06 | Week 08 | Lecture 19}
-\begin{example}
+
+\subsection{Examples of using the factorization criterion for sufficiency}
+\textit{This part is based on chapter 9.4 in the textbook.}
+
+Today we'll do three examples where we apply
+\cref{thm:factorization-criterion-for-sufficiency} to find sufficent
+statistics.
+
+
+\begin{example}[Application of the factorization criterion]
+  \label{ex:application-factorization-criterion}
   The density of a Bernoulli random variable $X_{i}$ with success parameter $\theta$
   is
   \begin{equation*}
     \P_{\theta}\left[X_{i}=x_{i} \right]=p(x_{i}\mid \theta) = \theta^{x_{i}}(1-\theta)^{1-x_{i}}, \quad x_{i}\in \left\{0,1\right\} .
   \end{equation*}
   Therefore likelihood of observing $x=(x_{1},\ldots,x_{n})\in
-  \left\{0,1\right\}^{n}$ from a sample of $n$ bernoulli random variables with
+  \left\{0,1\right\}^{n}$ from a sample of $n$ Bernoulli random variables with
   success parameter $\theta$ is
   \begin{align*}
     L(x\mid \theta) 
@@ -3419,50 +3432,72 @@ Similarly, if $Y_{1},\ldots,Y_{n}$ are continuos, then
   \begin{equation*}
     L(x\mid \theta) = \underbrace{\theta^{T(x)}(1-\theta)^{n-T(x)}}_{g(T(x),\theta)} \cdot \underbrace{1}_{h(x)}
   \end{equation*}
-  And therefore we conclude that $T(X)$ is a sufficient statistic for
-  estimating $\theta$.
+  Here, $g(t,\theta) =\theta^{t}(1-\theta)^{n-t}$. By
+  \cref{thm:factorization-criterion-for-sufficiency}, we conclude that $T(X)$
+  is a sufficient statistic for estimating $\theta$.
 \end{example}
+
+\begin{remark}
+  In \cref{ex:application-factorization-criterion}, we concluded that $T(X)$
+  is a ``sufficient statistic'' for $\theta$. But it is not an estimator of
+  $\theta$. It's just the number of heads in $n$ coin flips---which isn't an
+  estimator of the probability of heads. An example of a good estimator of
+  $\theta$ is the sample mean $\overline{X}=T(X)/n$, which is a function of
+  $T(X)$. This is not a coincidence. Good estimators are almost always
+  functions of sufficient statistics.
+\end{remark}
 
 
 \begin{example}
   Let $Y_{1},\ldots,Y_{n}$ be a random sample such that the density of $Y_{i}$
   is 
   \begin{equation*}
-    f(y_{i}\mid \theta) = \frac{1}{\theta}e^{-y_{i}/\theta}\mathbf{1}_{y_{i}\geq 0}.
+    f(y_{i}\mid \theta) = \frac{1}{\theta}e^{-y_{i}/\theta}\mathbf{1}_{\left[y_{i}\geq 0\right]}.
   \end{equation*}
-  for some parameter $\theta>0$. Show that $\overline{Y}$ is a suffficient
-  statistic for $\theta$.
-
-  \Fl{Solution:} Let $y=(y_{1},\ldots,y_{n})\in \R^{n}$
+  for some parameter $\theta>0$. Let $f_{Y}(y_{1},\ldots,y_{n}\mid \theta)$ be the joint
+  density of the random vector $Y=(Y_{1},\ldots,Y_{n})$.
+  
+  \Fl{Solution:} The likelihood of the sample $y=(y_{1},\ldots,y_{n})\in \R$
+  is
   \begin{align*}
-    L(y\mid \theta)
-    &= f(y_{1}\mid \theta)\cdots f(y_{n}\mid \theta)\\
-    &= \frac{e^{-y_{1}/\theta}}{\theta}\times \frac{e^{-y_{2}/\theta}}{\theta}\times \cdots\times \frac{e^{-y_{n}/\theta}}{\theta}\\
-    &= \frac{e^{-\overline{y}/\theta}}{\theta^{n}}
+    L(y_{1},\ldots,y_{n}\mid \theta)
+    &= f_{Y}(y_{1},\ldots,y_{n}\mid \theta)\\
+    &= f(y_{1}\mid \theta)f(y_{2}\mid \theta)\cdots f(y_{n}\mid \theta) &&\text{by independence
+                                                        of $Y_{1},\ldots,Y_{n}$ }\\
+    &= \frac{e^{-y_{1}/\theta}}{\theta} \mathbf{1}_{\left[ y_{1}\geq 0\right] }\times \frac{e^{-y_{2}/\theta}}{\theta}\mathbf{1}_{\left[ y_{2}\geq 0\right] }\times \cdots\times \frac{e^{-y_{n}/\theta}}{\theta} \mathbf{1}_{\left[ y_{n}\geq 0\right] }\\
+    &= \frac{1}{\theta^{n}}e^{-\frac{1}{\theta}(y_{1}+\ldots+y_{n})} \cdot \mathbf{1}_{\left[ y_{1},\ldots,y_{n}\geq 0\right] }\\
+    &= \frac{1}{\theta^{n}}e^{-\frac{1}{\theta}T(y)} \cdot \mathbf{1}_{\left[ y_{1},\ldots,y_{n}\geq 0\right]}
   \end{align*}
-  again, $h(y)=1$, lol.
+  where $T(y)= y_{1}+\ldots+y_{n}$. Therefore, letting $g(t,\theta) =
+  \frac{1}{\theta^{n}}e^{-\frac{1}{\theta}t}$ and $h(y)=\mathbf{1}_{\left[
+      y_{1},\ldots,y_{n}\geq 0\right] }$, we have
+  \begin{equation*}
+    L(y_{1},\ldots,y_{n}\mid \theta) = g(T(y),\theta)\cdot h(y).
+  \end{equation*}
+  Therefore $T(y) = y_{1}+\ldots+y_{n}$ is a sufficient statistic for
+  estimating $\theta$.
 \end{example}
 
 \begin{example}
-  Let $\theta$ be a positive integer. Let $X_{1},\ldots,X_{n}$ an iid sample from the uniform distribution on
-  $\left\{1,\ldots,\theta\right\}$ (aka each $X_{i}$ is a roll of a
-  $\theta$-sided dice). Find a sufficient statistic for $\theta$.
+  Let $\theta$ be a positive integer. Let $X_{1},\ldots,X_{n}$ an iid sample
+  from the uniform distribution on the set $\left\{1,\ldots,\theta\right\}$
+  (in other words, each $X_{i}$ is a roll of a $\theta$-sided dice). Find a
+  sufficient statistic for $\theta$ (the number of sides of the dice).
 
 
-  Let $T(x) = \max \left\{x_{1},\ldots,x_{n}\right\}$. This is the running
+  Let $T(x) = \max \left(x_{1},\ldots,x_{n}\right)$. This is the running
   maximum. From previous examples, we know that this is a consistent estimator
   of $\theta$. We'll show that it is sufficient.
   
   \Fl{Solution:} The pmf of $X_{i}$ is
   \begin{equation*}
-    p(x_{i}\mid \theta) = \frac{1}{\theta}\mathbf{1}_{\left\{x_{i}\in \left\{1,\ldots,\theta\right\} \right\} }
+    p(x_{i}\mid \theta) = \frac{1}{\theta}\mathbf{1}_{\left[x_{i}\in \left\{1,\ldots,\theta\right\} \right] }
   \end{equation*}
-  The joint pdf of the sample $X_{1},\ldots,X_{n}$ is defined as follows:
-  given for for each $x=(x_{1},\ldots,x_{n})\in \R^{n}$
+  The likelihood is
   \begin{align*}
-    p_{X}(x\mid \theta) 
-    &= \P_{\theta}\left[X_{1}=x_{1},\ldots,X_{n}=x_{n} \right] \\
-    &= \prod_{i=1}^{n}p(x_{i}\mid \theta)\\ 
+    L(x_{1},\ldots,x_{n}\mid \theta) 
+    &= \P\left[X_{1}=x_{1},\ldots,X_{n}=x_{n}\mid \theta \right] \\
+    &= \prod_{i=1}^{n}p(x_{i}\mid \theta) &&\text{by independence}\\ 
     &= \left\{ \begin{array}{l@{\quad:\quad}l} \theta^{-n} & x_{1},\ldots,x_{n}\in \left\{1,\ldots,n\right\} \\ 0& \text{else} \end{array}\right.
   \end{align*}
   This function depends on $\theta$. We can write it as
@@ -3475,5 +3510,75 @@ Similarly, if $Y_{1},\ldots,Y_{n}$ are continuos, then
   \left\{x_{1},\ldots,x_{n}\right\}$. Therefore by
   \cref{thm:factorization-criterion-for-sufficiency}, $T(X)$ is sufficient for $\theta$.
 \end{example}
+\newpage
+\section{2026-03-09 | Week 09 | Lecture 20}
+\subsection{Why do we care about sufficency? The Rao-Blackwell theorem}
+(\textit{This section is based on chapter 9.5})
+
+In theory, the ``best'' unbiased estimator of a paramter $\theta$  is one which has the smallest
+possible variance. Such estimators are always functions of sufficient
+statistics.
+% \begin{definition}[Conditional distribution]
+%   Let $Y$ be a random variable and $A$ and event with positive probability.
+%   The \demph{conditional distribution function} of $Y$ given $A$ is the
+%   function
+%   \begin{equation*}
+%     F_{Y|A}(y) = \P\left[Y \leq y\mid A\right]
+%   \end{equation*}
+%   If $Y$ is continuous, the \demph{conditional density} of $Y$is the function
+%   \begin{equation*}
+%     f_{Y\mid A}(y) =  F_{Y\mid A}'(y).
+%   \end{equation*}
+% \end{definition}
+
+\begin{definition}[Conditional expectation (for discrete random variables)]
+  Let $X$ be a discrete random variable, and let $A$ be an event with positive probability. Then
+  \begin{equation*}
+    \E\left[X \mid A\right] = \sum_{x}x \P\left[X=x\mid A \right]
+  \end{equation*}
+  Suppose $Y$ is a discrete random variable, and let
+  \begin{equation*}
+    g(y) = \E\left[X\mid Y=y \right].
+  \end{equation*}
+  Then the \demph{conditional expectation of $X$ given $Y$}, denoted
+  $\E\left[X\mid Y \right]$, is the function
+  \begin{equation*}
+    \E\left[X\mid Y \right]=g(Y).
+  \end{equation*}
+\end{definition}
+\Fl{Interpretation:} First note that $\E\left[X\mid Y \right]$ is a random
+variable (since it is a function of $Y$, which is random). Now, recall that
+$\E\left[X \right]$ is, in some sense, our ``best guess'' for the value of
+$X$. But if $X$ and $Y$ are somehow related, observing $Y$ may allow us to
+make a better ``best guess'' for $X$. The conditional expectation
+$\E\left[X\mid Y\right]$ is our best guess for $X$ after observing $Y$. If $X$
+and $Y$ are independent, then observing $Y$ is of no help, so in that case,
+our best guess stays the same, and we have
+$\E\left[X\mid Y \right]= \E\left[X \right]$.
+
+This notion can be defined for non-discrete random variables. The best way to
+do this is using measure theory, so we'll skip it.
+
+
+
+\begin{theorem}[Rao-Blackwell Theorem]
+  \label{thm:rao-blackwell-theorem}
+  Let $\widehat{\theta}$ be an unbiased estimator for $\theta$ such that
+  $\Var(\widehat{\theta})<\infty$. Let $Y$ be any sufficient statistic for
+  $\theta$ and let $g(Y) = \E[\widehat{\theta}\mid Y]$. Then
+  $\widehat{\theta}^{*}:=g(Y)$ is also an unbiased estimator of $\theta$ whose
+  variance is less than or equal to that of $\widehat{\theta}$.
+\end{theorem}
+
+\Fl{Interpretation:} \cref{thm:rao-blackwell-theorem} says that for any
+unbiased estimator, we can find a better (i.e., lower-variance) unbiased
+estimator which is a function of sufficient statistic---namely $g(Y)$.
+Therefore, if we wish to find the ``best'' unbiased estimator (i.e., the one
+with the smallest variance), we need only consider estimators that are
+functions of sufficient statistics.
+
+In most cases, there exists an unbiased estimator of smallest possible
+variance. Such an estimator is called a \demph{minimum-variance unbiased
+  estimator} (MVUE).
 
 \end{document}
