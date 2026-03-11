@@ -3584,6 +3584,10 @@ variance. Such an estimator is called a \demph{minimum-variance unbiased
 \subsection{Maximum likelihood estimation}
 (\textit{See chapter 9.7.})
 
+In this lecture we introduce a powerful and widely-used method of constructing
+estimators: the method of maximum likelihood. The following example
+illustrates the key idea of this method.
+  
 \begin{example}[Motivating example for maximum likelihood]
   Suppose an urn contains $3$ balls, which may be either red or block red or
   black. Let $\theta$ be the number of red balls in the box.
@@ -3596,13 +3600,11 @@ variance. Such an estimator is called a \demph{minimum-variance unbiased
     
     \item If $\theta=2$, then the probability of sampling two red balls is
     $1/3$.
-    \item If $\theta=3$, then the probability of sampleing two red balls is $1$.
+    \item If $\theta=3$, then the probability of sampling two red balls is $1$.
   \end{itemize}
   It seems reasonable to choose $3$ as our estimate for the number of red
   balls, because this estimate \textit{maximizes the probability of obtaining
-    the observed sample}.
-
-  This is the key idea behind the \textit{method of maximum likelihood.}
+    the observed sample}. 
 \end{example}
 
 \begin{definition}[Method of maximum likelihood]
@@ -3616,23 +3618,27 @@ variance. Such an estimator is called a \demph{minimum-variance unbiased
 \end{definition}
 
 \begin{remark}
-  To be extra clear, the maximum likelihood estimate is the solution to the
-  maximization problem
+  When finding the MLE, we maximize the likelihood function over the set of feasible
+  \textit{parameters} while keeping the data fixed. That is, the maximum
+likelihood estimate is the solution to the maximization problem
   \begin{equation*}
     \max_{\theta_{1},\ldots,\theta_{k}}L(y_{1},\ldots,y_{n}\mid \theta_{1},\ldots,\theta_{k}).
   \end{equation*}
-  The \textit{data} is fixed. We are maximizing over the \textit{parameters}.
-  Sometimes there is more than one maximum likelihood estimate (if the
-  likelihood function has more than one global maximizer).
+  If there does not exist a choice of parameters which maximizes the
+  likelihood, then we say that MLE does not exist. (This can occur when the
+  parameter space is not compact.) Also, the MLE need not be unique: if the
+  likelihood has more than one maximizer, you may have more than one MLE. Both
+  of these situations can occur in practice.
 \end{remark}
 
-\begin{example}
+\begin{example}[Example 9.14 in textbook]
   A binomial experiment consisting of $n$ trials resulting in observations
   $y_{1},\ldots,y_{n}\in \left\{0,1\right\}$. Let $p$ be the success
   probability. Find the MLE of $p$.
 
-  \Fl{Solution:} The likelihood of the observed sample is the probability of
-  observing $y_{1},\ldots,y_{n}$. Hence,
+  \Fl{Solution:} Since we are dealing with a discrete random variable, the
+  likelihood of the observed sample is the probability of observing
+  $y_{1},\ldots,y_{n}$. Hence,
   \begin{equation}\label{eq:23}
     L(p) = L(y_{1},\ldots,y_{n}\mid p) = p^{y}(1-p)^{n-y},
   \end{equation}
@@ -3657,9 +3663,9 @@ variance. Such an estimator is called a \demph{minimum-variance unbiased
     This is maximized when $p=1$.
     \item \textit{Case 3 (interior case).} Suppose $y\in (0,1)$. To maximize
     \cref{eq:23}, it will be sufficient to maximize $\log L(\theta)$. (This is
-    because $x\mapsto log(x)$ is a strictly increasing function, so
-    $L(\theta)$ and $\log L(\theta)$ have the same global maxima -- see
-    homework \#7). Therefore, it will be enough to find the $p\in [0,1]$ which
+    because $x\mapsto \log(x)$ is a strictly increasing function, so
+    $L(\theta)$ and $\log L(\theta)$ have the same maximizers -- see homework
+    \#7). Therefore, it will be enough to find the $p\in [0,1]$ which
     maximizes
     \begin{equation*}
       \log L(p) = y \log\left(p \right) + (n-y) \log\left(1-p \right).
@@ -3673,15 +3679,7 @@ variance. Such an estimator is called a \demph{minimum-variance unbiased
     \begin{equation*}
       (1-p)y - (n-y)p=0
     \end{equation*}
-    or
-    \begin{equation*}
-      y-py -np +yp=0
-    \end{equation*}
-    or
-    \begin{equation*}
-      y-np=0
-    \end{equation*}
-    or
+    and solving for $p$ yields
     \begin{equation*}
       p = \frac{y}{n}.
     \end{equation*}
@@ -3697,7 +3695,7 @@ variance. Such an estimator is called a \demph{minimum-variance unbiased
   \end{equation*}
 \end{example}
 
-\begin{example}
+\begin{example}[Example 9.15 in textbook]
   Suppose $Y_{1},\ldots,Y_{n}\overset{\text{iid}}{\sim} \text{unif}(0,\theta)$
   for some parameter $\theta>0$. The density of $Y_{i}$ is
   \begin{equation*}
@@ -3710,9 +3708,9 @@ variance. Such an estimator is called a \demph{minimum-variance unbiased
     L(\theta) 
     &= \prod_{i=1}^{n} f(y_{i}\mid \theta)\\
     &= \prod_{i=1}^{n} \frac{1}{\theta} \mathbf{1}_{\left[ 0 \leq y_{i}\leq \theta\right]}\\
-    &= \frac{1}{\theta^{n}} \mathbf{1}_{\left[ \max(y_{1},\ldots,y_{n}) \leq \theta\right]}.
+    &= \frac{1}{\theta^{n}} \mathbf{1}_{\left[ \max(y_{1},\ldots,y_{n}) \leq \theta\right]}\cdot \mathbf{1}_{\left[ y_{1},\ldots, y_{n}\geq 0\right] }.
   \end{align*}
-  There are two cases
+  There are two cases:
   \begin{itemize}
     \item \textit{Case 1.} Assume $\theta<\max(y_{1},\ldots,y_{n})$. Then
     $L(\theta)=0$ which obviously isn't going to be the maximum.
@@ -3723,11 +3721,8 @@ variance. Such an estimator is called a \demph{minimum-variance unbiased
     $\theta$, which in this case is $\max(y_{1},\ldots,y_{n})$.
 
     Therefore the maximum likelihood estimate is
-    $\widehat{\theta}=\max(y_{1},\ldots,y_{n})$. The maximum likelihood
-    \textit{estimator} is
-    \begin{equation*}
-      \widehat{\theta}_{\rm MLE} = \max(Y_{1},\ldots,Y_{n}).
-    \end{equation*}  
+    $\widehat{\theta}=\max(y_{1},\ldots,y_{n})$, and the maximum likelihood
+    estimator is $\widehat{\theta}_{\rm MLE} = \max(Y_{1},\ldots,Y_{n}). $
   \end{itemize}   
 \end{example}
 
