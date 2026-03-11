@@ -13,6 +13,7 @@ permalink: /homework/
 2026-02-16  | [homework-04](homework/homework-04/homework-04.pdf)     | central limit theorem, bias, MSE
 2026-03-02  | [homework-05](homework/homework-05/homework-05.pdf)     | confidence intervals, bias, MSE, Pareto distribution
 2026-03-11  | [homework-06](homework/homework-06/homework-06.pdf)     | confidence interavls, efficiency, Cramer-Rao, sufficiency
+2026-03-23  | [homework-06](homework/homework-06/homework-06.pdf)     | consistency, sufficiency, maxima and critical points, maximum likelihood
 
  
 

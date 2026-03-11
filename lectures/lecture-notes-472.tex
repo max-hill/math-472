@@ -269,7 +269,7 @@ providing a foundation for applications and further study.
 
   relative efficiency (9.2), consistency (9.3), sufficiency (9.4), likelihood
   (9.4) factorization theorem (9.4),
-  \sout{Rao-Blackwell Theorem (9.5)}, \sout{MVUE (9.5)}, method of moments (9.6), method of
+  Rao-Blackwell Theorem (9.5), MVUE (9.5), \sout{method of moments (9.6)}, method of
   maximum likelihood (9.7)
 
   \item \textbf{Weeks 10-12.} Hypothesis Testing
@@ -3580,5 +3580,215 @@ functions of sufficient statistics.
 In most cases, there exists an unbiased estimator of smallest possible
 variance. Such an estimator is called a \demph{minimum-variance unbiased
   estimator} (MVUE).
+
+\section{Maximum likelihood estimation}
+(\textit{See chapter 9.7.})
+
+\begin{example}[Motivating example for maximum likelihood]
+  Suppose an urn contains $3$ balls, which may be either red or block red or
+  black. Let $\theta$ be the number of red balls in the box.
+
+  Suppose we sample two balls from the urn without replacement, and both are
+  red. Using this information, what is a good estimate for $\theta$?
+  \begin{itemize}
+    \item Obviously, $\theta$ must be two or three, since if $\theta=0$ or
+    $\theta=1$, then it would've been impossible to draw $2$ red balls.
+    
+    \item If $\theta=2$, then the probability of sampling two red balls is
+    $1/3$.
+    \item If $\theta=3$, then the probability of sampleing two red balls is $1$.
+  \end{itemize}
+  It seems reasonable to choose $3$ as our estimate for the number of red
+  balls, because this estimate \textit{maximizes the probability of obtaining
+    the observed sample}.
+
+  This is the key idea behind the \textit{method of maximum likelihood.}
+\end{example}
+
+\begin{definition}[Method of maximum likelihood]
+  \label{def:method-maximum-likelihood}
+  Let $y_{1},\ldots,y_{n}\in \R$ be the observed sample values. Suppose that
+  the likelihood function depends on $k$ parameters
+  $\theta_{1},\ldots\theta_{k}$. Choose as estimates of those values the
+  parameters that maximize the likelihood
+  $L(y_{1},\ldots,y_{n}\mid \theta_{1},\ldots,\theta_{k})$. These estimates
+  are called the \demph{maximum likelihood estimate(s)} (MLE) of the parameters.
+\end{definition}
+
+\begin{remark}
+  To be extra clear, the maximum likelihood estimate is the solution to the
+  maximization problem
+  \begin{equation*}
+    \max_{\theta_{1},\ldots,\theta_{k}}L(y_{1},\ldots,y_{n}\mid \theta_{1},\ldots,\theta_{k}).
+  \end{equation*}
+  The \textit{data} is fixed. We are maximizing over the \textit{parameters}.
+  Sometimes there is more than one maximum likelihood estimate (if the
+  likelihood function has more than one global maximizer).
+\end{remark}
+
+\begin{example}
+  A binomial experiment consisting of $n$ trials resulting in observations
+  $y_{1},\ldots,y_{n}\in \left\{0,1\right\}$. Let $p$ be the success
+  probability. Find the MLE of $p$.
+
+  \Fl{Solution:} The likelihood of the observed sample is the probability of
+  observing $y_{1},\ldots,y_{n}$. Hence,
+  \begin{equation}\label{eq:23}
+    L(p) = L(y_{1},\ldots,y_{n}\mid p) = p^{y}(1-p)^{n-y},
+  \end{equation}
+  where
+  \begin{equation*}
+    y = \sum_{i=1}^{n} y_{i}.
+  \end{equation*}
+  We need to maximize $L(p)$ over all $p\in [0,1]$. There are three cases:
+  \begin{itemize}
+    \item \textit{Case 1 (boundary case \#1).} Suppose $y=0$. In this case, the
+    likelihood reduces to
+    \begin{equation*}
+      L(p) = (1-p)^{n}.
+    \end{equation*}
+    For $p\in [0,1]$, this is a decreasing function of $p$, so it is maximized
+    when $p=0$.
+    \item \textit{Case 2 (boundary case \#2).} Suppose $y=n$. In this case, the
+    likelihood reduces to
+    \begin{equation*}
+      L(p) = p.
+    \end{equation*}
+    This is maximized when $p=1$.
+    \item \textit{Case 3 (interior case).} Suppose $y\in (0,1)$. To maximize
+    \cref{eq:23}, it will be sufficient to maximize $\log L(\theta)$. (This is
+    because $x\mapsto log(x)$ is a strictly increasing function, so
+    $L(\theta)$ and $\log L(\theta)$ have the same global maxima -- see
+    homework \#7). Therefore, it will be enough to find the $p\in [0,1]$ which
+    maximizes
+    \begin{equation*}
+      \log L(p) = y \log\left(p \right) + (n-y) \log\left(1-p \right).
+    \end{equation*}
+    Differentiating with respect to $p$, and setting the derivative equal to
+    zero to find critical points, we get:
+    \begin{equation*}
+      \frac{y}{p} - \frac{n-y}{1-p} \overset{\text{set}}{=} 0.
+    \end{equation*}
+    Rearranging terms gives
+    \begin{equation*}
+      (1-p)y - (n-y)p=0
+    \end{equation*}
+    or
+    \begin{equation*}
+      y-py -np +yp=0
+    \end{equation*}
+    or
+    \begin{equation*}
+      y-np=0
+    \end{equation*}
+    or
+    \begin{equation*}
+      p = \frac{y}{n}.
+    \end{equation*}
+  \end{itemize}
+  From these three cases we conclude that the maximum likelihood estimator,
+  understood as a function of the random sample $Y_{1},\ldots,Y_{n}$ is
+  \begin{equation*}
+    \widehat{p}_{\rm MLE} = \left\{ \begin{array}{l@{\quad:\quad}l} 0 & Y_{1}+\ldots+Y_{n}=0\\ 1 & Y_{1}+\ldots+Y_{n}=n\\ \frac{Y_{1}+\ldots+Y_{n}}{n}& Y_{1}+\ldots+Y_{n}\in (0,n) \end{array}\right.
+  \end{equation*}
+  This simplifies to
+  \begin{equation*}
+    \widehat{p}_{\rm MLE} = \frac{Y_{1}+\ldots+Y_{n}}{n}.
+  \end{equation*}
+\end{example}
+
+\begin{example}
+  Suppose $Y_{1},\ldots,Y_{n}\overset{\text{iid}}{\sim} \text{unif}(0,\theta)$
+  for some parameter $\theta>0$. The density of $Y_{i}$ is
+  \begin{equation*}
+    f(y_{i}\mid \theta) = \frac{1}{\theta} \mathbf{1}_{\left[ 0 \leq y_{i}\leq \theta\right]}.
+  \end{equation*}
+  Find the MLE of $\theta$.
+
+  \Fl{Solution:} By independence, the likelihood is
+  \begin{align*}
+    L(\theta) 
+    &= \prod_{i=1}^{n} f(y_{i}\mid \theta)\\
+    &= \prod_{i=1}^{n} \frac{1}{\theta} \mathbf{1}_{\left[ 0 \leq y_{i}\leq \theta\right]}\\
+    &= \frac{1}{\theta^{n}} \mathbf{1}_{\left[ \max(y_{1},\ldots,y_{n}) \leq \theta\right]}.
+  \end{align*}
+  There are two cases
+  \begin{itemize}
+    \item \textit{Case 1.} Assume $\theta<\max(y_{1},\ldots,y_{n})$. Then
+    $L(\theta)=0$ which obviously isn't going to be the maximum.
+    \item \textit{Case 2.} Assume $\theta \geq \max(y_{1},\ldots,y_{n})$.
+
+    In this case, $\theta\mapsto L(\theta)$ is a decreasing function.
+    Therefore, $L(\theta)$ is maximized at the smallest possible value of
+    $\theta$, which in this case is $\max(y_{1},\ldots,y_{n})$.
+
+    Therefore the maximum likelihood estimate is
+    $\widehat{\theta}=\max(y_{1},\ldots,y_{n})$. The maximum likelihood
+    \textit{estimator} is
+    \begin{equation*}
+      \widehat{\theta}_{\rm MLE} = \max(Y_{1},\ldots,Y_{n}).
+    \end{equation*}  
+  \end{itemize}   
+\end{example}
+
+\begin{example}
+  Let $Y_{1},\ldots,Y_{n}$ be a random sample from a normal distribution with
+  mean $\mu$ and variance $\sigma^{2}$. Find the MLE of $\mu$ and
+  $\sigma^{2}$. 
+
+  \Fl{Solution:} The density function for a normal random variable with mean
+  $\mu$ and variance $\sigma^{2}$ is
+  \begin{equation*}
+    f(y) = (2\pi\sigma^{2})^{\frac{1}{2}}\cdot \exp\left[-\frac{(y-\mu)^{2}}{2\sigma^{2}} \right], \quad (y\in \R).
+  \end{equation*}  
+  Since $Y_{1},\ldots,Y_{n}$ are continuous random variables
+  $L(\mu,\sigma^{2})$ is the joint density of the sample. 
+  \begin{align*}
+    L(\mu,\sigma^{2})
+    &= f(y_{1})\times \cdots\times f(y_{n}) &&\text{by independence}\\
+    &= (2\pi\sigma^{2})^{\frac{1}{2}}\cdot\exp\left[-\frac{(y_{1}-\mu)^{2}}{2\sigma^{2}} \right] \times \cdots \times(2\pi\sigma^{2})^{\frac{1}{2}} \cdot\exp\left[-\frac{(y_{n}-\mu)^{2}}{2\sigma^{2}} \right]\\
+    &= \left( 2\pi \right)^{-\frac{n}{2}} \left( \sigma^{2} \right)^{-\frac{n}{2}}   \exp\left[-\frac{1}{2\sigma^{2}}\sum_{i=1}^{n} (y_{i}-\mu)^{2} \right].
+  \end{align*}
+  We want to find $\mu$ and $\sigma^{2}$ which maximize the right-hand side.
+  Taking the log of both sides,
+  \begin{equation*}
+    \log L(\mu,\sigma^{2}) = -\frac{n}{2}\log\left(2\pi \right)  - \frac{n}{2} \log(\sigma^{2}) - \frac{1}{2\sigma^{2}}\sum_{i=1}^{n} (y_{i}-\mu)^{2}.
+  \end{equation*}
+  To simplify the next steps, write $v=\sigma^{2}$. Then we have
+  \begin{equation}\label{eq:24}
+    \log L(\mu,v) = -\frac{n}{2}\log\left(2\pi \right)  - \frac{n}{2} \log(v) - \frac{1}{2v}\sum_{i=1}^{n} (y_{i}-\mu)^{2}.
+  \end{equation}
+  We need to maximize the right-hand side of \cref{eq:24} over both $\mu$ and
+  $v=\sigma^{2}$. We'll use calculus to do this (i.e., take partial
+  derivatives with respect to $\mu$ and $v$ and setting them equal to zero to
+  find critical points). Taking partial derivatives of \cref{eq:24} and
+  setting them equal to zero yields
+  \begin{equation}\label{eq:25}
+     \frac{1}{v}\sum_{i=1}^{n} (y_{i}-\mu)=0
+  \end{equation}
+  and
+  \begin{equation}\label{eq:26}
+    -\left(\frac{n}{2}\right)\left( \frac{1}{v} \right) + \frac{1}{2v^{2}} \sum_{i=1}^{n} (y_{i}-\mu)^{2} =0.
+  \end{equation}
+  Doing algebra with \cref{eq:25} implies that
+  $\mu=\frac{y_{1}+\ldots+y_{n}}{n}=:\overline{y}$. Plugging this into
+  \cref{eq:26} gives
+  \begin{equation*}
+    -\left(\frac{n}{2}\right)\left( \frac{1}{v} \right) + \frac{1}{2v^{2}} \sum_{i=1}^{n} (y_{i}-\overline{y})^{2} =0.
+  \end{equation*}
+  Solving for $v$ gives
+  \begin{equation*}
+    v = \frac{1}{n}\sum_{i=1}^{n} (y_{i}-\overline{y})^{2}.
+  \end{equation*}
+  Assuming the critical point is indeed a maximum (it is), we can conclude
+  that the likelihood is maximized by taking $\overline{y}$ as our estimate of
+  $\mu$, and $\frac{1}{n}\sum_{i=1}^{n} (y_{i}-\overline{y})^{2}$ as our
+  estimate of $\sigma^{2}$.
+  
+  Thus, the maximum likelihood estimators of $\mu$ and $\sigma^{2}$ are
+  $\widehat{Y}_{\rm MLE} = \overline{Y}$ and
+  $\widehat{\sigma^{2}}_{\rm MLE} = \frac{1}{n}\sum_{i=1}^{n}
+  (Y_{i}-\overline{Y})^{2}$.
+\end{example}
 
 \end{document}
