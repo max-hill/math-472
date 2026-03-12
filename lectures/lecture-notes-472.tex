@@ -3558,6 +3558,47 @@ This notion can be defined for non-discrete random variables. The best way to
 do this is using measure theory, so we'll skip it.
 
 
+\Fl{Tangent:} Similarly, let $X$ be a random variable, and consider the minimization problem
+\begin{equation*}
+  \min_{a\in \R} \E\left[(X-a)^{2} \right].
+\end{equation*}
+We are asking, what number is the ``best guess'' for $X$?
+
+Let $f(a) = \E\left[(X-a)^{2} \right]$. Then
+\begin{equation*}
+  f'(a) = -2 \E\left[(X-a) \right]
+\end{equation*}
+Setting this equal to zero and solving for $a$ gives $a= \E\left[X \right]$.
+So our ``best guess'' for the value of $X$ is $\E\left[X \right]$.
+
+Now, let $V=
+\begin{bmatrix}
+  v_{1}\\v_{2}
+\end{bmatrix}
+\in \R^{2}$ be a vector, and let $P$ be the projection of
+$V$ onto the $x$-axis. Then $P=
+\begin{bmatrix}
+  a\\0
+\end{bmatrix}
+$ is a solution to the minimization problem
+\begin{equation*}
+  \min_{a\in \R} \dist\left(V,
+  \begin{bmatrix}
+    a\\0
+  \end{bmatrix}
+  \right).
+\end{equation*}
+In other words, $P$ is the vector on the $x$-axis which is closest to $V$ (in
+the sense of the usual Euclidean distance). This is what is means to be the
+projection of $V$.
+
+There is a parallel here. The expectation is the ``projection'' of the random
+variable on to $\R$. Similarly, conditional expectations are also projections,
+but the details of this require measure theory.
+
+
+
+
 
 \begin{theorem}[Rao-Blackwell Theorem]
   \label{thm:rao-blackwell-theorem}

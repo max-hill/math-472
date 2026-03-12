@@ -37,7 +37,8 @@ title: Lecture Notes
 2026-03-02  | 17   | (Section 9.2) Relative efficiency
 2026-03-04  | 18   | (Section 9.4) Sufficiency, factorization criterion
 2026-03-06  | 19   | (Section 9.4) Applications of the factorization criterion
-2026-03-08  | 20   | (Section 9.7) The Rao-Blackwell theorem, MVUE
+2026-03-09  | 20   | (Section 9.5) The Rao-Blackwell theorem, MVUE
+2026-03-11  | 21   | (Section 9.7) Maximum likelihood estimation
  
 
 # Other Links
