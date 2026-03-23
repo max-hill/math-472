@@ -3888,7 +3888,7 @@ likelihood estimate is the solution to the maximization problem
 \textit{(Based on section 10.2)}
 
 
-
+\subsubsection{What is a statistical model?}
 \begin{definition}[Statistical model]
   \label{def:statistical-model}
   A \demph{statistical model} $\mathcal{P}$ is a collection of probability
@@ -3918,7 +3918,7 @@ likelihood estimate is the solution to the maximization problem
   Guassians).
 \end{example}
 
-
+\subsubsection{What is a hypothesis test?}
 \begin{definition}[Hypothesis Testing]
   \label{def:hypothesis-testing}
   Given a parameterized statistical model
@@ -3969,7 +3969,7 @@ likelihood estimate is the solution to the maximization problem
 \end{example}
 
 \subsubsection{Decision errors}
-There are two types of decision errors in this framework.
+There are two types of decision errors in the hypothesis testing framework.
 
 
 \begin{definition}[Decision errors]
@@ -4002,11 +4002,11 @@ following table:
   \begin{tabular}{lcc}
     & Reject $H_0$ & Accept $H_0$ \\ \cline{2-3}
     \multicolumn{1}{l|}{$H_0$ true}
-    & \multicolumn{1}{l|}{\makecell[c]{Type I Error \\ $\text{level}=\alpha$}}
-    & \multicolumn{1}{l|}{\makecell[c]{Correctly accept \\ $1-\alpha$}} \\ \cline{2-3}
+    & \multicolumn{1}{l|}{\makecell[c]{Type I error \\ $\text{level}=\alpha$}}
+    & \multicolumn{1}{l|}{\makecell[c]{Correctly accept $H_{0}$ \\ $1-\alpha$}} \\ \cline{2-3}
     \multicolumn{1}{l|}{$H_a$ true}
-    & \multicolumn{1}{l|}{\makecell[c]{Correctly reject \\ $1-\beta$}}
-    & \multicolumn{1}{l|}{\makecell[c]{Type II Error \\ $\text{power}=\beta$}} \\ \cline{2-3}
+    & \multicolumn{1}{l|}{\makecell[c]{Correctly reject $H_{0}$ \\ $\text{power}=1-\beta$}}
+    & \multicolumn{1}{l|}{\makecell[c]{Type II error \\ $\beta$}} \\ \cline{2-3}
   \end{tabular}
 \end{center}
 
@@ -4021,7 +4021,7 @@ following table:
 % \end{table}
 
 
-\begin{remark}
+\begin{example}[\cref{ex:coin-flipping-hypothesis-test} continued]
   In \cref{ex:coin-flipping-hypothesis-test}, the level of the test is
   $\alpha=2.1\%$. Note that $\beta$ is a function of $p$. For example if
   $p=0.4$, then
@@ -4038,12 +4038,12 @@ following table:
 
   On the other hand if the true value of $p$ is $p=.1$, then $\beta(.1)=.264$,
   so the power of the test would be $.736$. We generally don't know what the
-  true power of the test is, since that would require knowing the parameter
-  (in which case we wouldn't be doing a hypothesis test, now would we?).
+  true power of the test is, since that would require knowing the value of the
+  parameter (in which case we wouldn't be doing a hypothesis test...).
 
   It is a common mistake to assume that $\alpha+\beta=1$. In general,
   $\alpha+\beta\neq 1$. 
-\end{remark}
+\end{example}
 
 
 These terms are clarified by an example.
@@ -4078,17 +4078,18 @@ These terms are clarified by an example.
     \item The \textbf{level} of the test is the probability that she orders a
     strike when a civilian goes by. (She wants this to be low).
   \end{itemize}
-  Ideally, the operator would like to eliminite both types of errors
+  Ideally, the operator would like to eliminate both types of errors
   (accidentally killing civilians vs failing to kill enemy). That is, she
   would like
   \begin{equation*}
-    \Pr\left[\text{Type-I error} \right]= \Pr\left[\text{Type-II error} \right]=0.
+    \alpha=\Pr\left[\text{Type I error} \right]= 0 \quad \text{and} \quad
+    \beta=\Pr\left[\text{Type II error} \right]=0.
   \end{equation*}
   Unfortunately, it is impossible to simultaneously eliminate both types of
   error without perfect information. On one hand, the drone operatore could
   mimize the probability of a type I error by simply never ordering a strike,
-  in which case $\alpha= \Pr\left[ \text{Type I error} \right] 0$. But this
-  isn't satisfactory, since in that case,
+  in which case $\alpha= \Pr\left[ \text{Type I error} \right] = 0$. But this
+  is unsatisfactory, since in that case,
   $\beta= \Pr\left[\text{Type II error} \right]=1$. On the other hand, she
   could maximize the power by simply always ordering a strike; in that case,
   $\beta=0$ but $\alpha=1$. This tradeoff is present in every hypothesis test.
@@ -4097,9 +4098,9 @@ These terms are clarified by an example.
   tradeoff is to (1) set a maximal level $\alpha$ that one is willing to
   accept, and then (2) find the most powerful test subject to that constraint.
 
-  The appropriate significance level to set depends on the situation: a truck
-  travelling towards the operator's position is very different from a truck
-  travelling away from the front.
+  Of course, the appropriate significance level to set depends on the
+  situation: a truck speeding towards the operator's position is very
+  different from a truck traveling away from the front.
 \end{remark}
 
 \newpage
