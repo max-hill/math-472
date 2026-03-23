@@ -25,6 +25,7 @@
 \usepackage{mathtools}% http://ctan.org/pkg/mathtools
 \usepackage{abraces} %xyz
 \usepackage{ulem}
+\usepackage{makecell}
 
 % Hawai'i
 \usepackage{fontspec}
@@ -3836,10 +3837,8 @@ likelihood estimate is the solution to the maximization problem
 \section{2026-03-23 | Week 10 | Lecture 22}
 
 
-\subsection{Statistical models}
-\textit{Based on chapter 10.2 in the textbook}
-
-
+% \subsection{Statistical models}
+% \textit{Based on chapter 10.2 in the textbook}
 
 % Suppose we have random variable $X$. How can we represent the distribution of $X$?
 % \begin{enumerate}
@@ -3915,7 +3914,8 @@ likelihood estimate is the solution to the maximization problem
     f_{(\mu,\sigma^{2})}(x) = \frac{1}{\sqrt{2\pi\sigma^{2}}}
     \exp \left\{ -\frac{(x-\mu)^{2}}{2\sigma^{2}}\right\}, \quad (x\in \R),
   \end{equation*}
-  is a parametric statistic model (the family of univariate Guassians).
+  is a parametric statistic model (the family of real-valued univariate
+  Guassians).
 \end{example}
 
 
@@ -3935,9 +3935,10 @@ likelihood estimate is the solution to the maximization problem
   is rejected, and for which values $H_{0}$ is accepted. The statistic $T$ is
   called the \demph{test statistic}.
 
-  The \demph{rejection region} (RR) specifies the values of the test statistic
-  for which the null hypothesis to be rejected in favor of the alternative
-  hypothesis. That is, if $T\in\mathrm{RR}$, then we reject $H_{0}$. If
+  Associated with a hypothesis test is a \demph{rejection region} (RR), the
+  set which specifies the values of the test statistic for which the null
+  hypothesis to be rejected in favor of the alternative hypothesis. That is,
+  if $T\in\mathrm{RR}$, then we reject $H_{0}$. If
   $T\notin \mathrm{\mathrm{RR}}$, we accept $H_{0}$ (or perhaps, it might be
   better to say we ``fail to reject'' the null hypothesis).
 \end{definition}
@@ -3967,6 +3968,7 @@ likelihood estimate is the solution to the maximization problem
   reject $H_{0}$ about $2.1\%$ of the time.
 \end{example}
 
+\subsubsection{Decision errors}
 There are two types of decision errors in this framework.
 
 
@@ -3993,16 +3995,30 @@ There are two types of decision errors in this framework.
   The value $1-\beta$ is called the \demph{power} of the test.
 \end{definition}
 
+These types of errors, and their probabilities, can be summarized in the
+following table:
 
-
-\begin{table}[H]
-  \centering
-  \begin{tabular}{lll}
-    & Reject $H_0$                      & Accept $H_0$                       \\ \cline{2-3} 
-    \multicolumn{1}{l|}{$H_0$ true} & \multicolumn{1}{l|}{\demph{Type-I Error}} & \multicolumn{1}{l|}{Correct}       \\ \cline{2-3} 
-    \multicolumn{1}{l|}{$H_1$ true} & \multicolumn{1}{l|}{Correct}      & \multicolumn{1}{l|}{\demph{Type-II Error}} \\ \cline{2-3} 
+\begin{center}
+  \begin{tabular}{lcc}
+    & Reject $H_0$ & Accept $H_0$ \\ \cline{2-3}
+    \multicolumn{1}{l|}{$H_0$ true}
+    & \multicolumn{1}{l|}{\makecell[c]{Type I Error \\ $\text{level}=\alpha$}}
+    & \multicolumn{1}{l|}{\makecell[c]{Correctly accept \\ $1-\alpha$}} \\ \cline{2-3}
+    \multicolumn{1}{l|}{$H_a$ true}
+    & \multicolumn{1}{l|}{\makecell[c]{Correctly reject \\ $1-\beta$}}
+    & \multicolumn{1}{l|}{\makecell[c]{Type II Error \\ $\text{power}=\beta$}} \\ \cline{2-3}
   \end{tabular}
-\end{table}
+\end{center}
+
+
+% \begin{table}[H]
+%   \centering
+%   \begin{tabular}{lll}
+%     & Reject $H_0$                      & Accept $H_0$                       \\ \cline{2-3} 
+%     \multicolumn{1}{l|}{$H_0$ true} & \multicolumn{1}{l|}{Type-I Error \\ $\alpha$ } & \multicolumn{1}{l|}{Correct \\ $1-\alpha $ }       \\ \cline{2-3} 
+%     \multicolumn{1}{l|}{$H_1$ true} & \multicolumn{1}{l|}{Correct\\ $1-\beta$ }      & \multicolumn{1}{l|}{Type-II Error $\beta$ } \\ \cline{2-3} 
+%   \end{tabular}
+% \end{table}
 
 
 \begin{remark}
@@ -4022,9 +4038,11 @@ There are two types of decision errors in this framework.
 
   On the other hand if the true value of $p$ is $p=.1$, then $\beta(.1)=.264$,
   so the power of the test would be $.736$. We generally don't know what the
-  power of the test is. 
+  true power of the test is, since that would require knowing the parameter
+  (in which case we wouldn't be doing a hypothesis test, now would we?).
 
-  Observe that $\alpha+\beta\neq1$.
+  It is a common mistake to assume that $\alpha+\beta=1$. In general,
+  $\alpha+\beta\neq 1$. 
 \end{remark}
 
 
@@ -4067,9 +4085,25 @@ These terms are clarified by an example.
     \Pr\left[\text{Type-I error} \right]= \Pr\left[\text{Type-II error} \right]=0.
   \end{equation*}
   Unfortunately, it is impossible to simultaneously eliminate both types of
-  error without perfect information.
+  error without perfect information. On one hand, the drone operatore could
+  mimize the probability of a type I error by simply never ordering a strike,
+  in which case $\alpha= \Pr\left[ \text{Type I error} \right] 0$. But this
+  isn't satisfactory, since in that case,
+  $\beta= \Pr\left[\text{Type II error} \right]=1$. On the other hand, she
+  could maximize the power by simply always ordering a strike; in that case,
+  $\beta=0$ but $\alpha=1$. This tradeoff is present in every hypothesis test.
+  
+  The approach that the hypothesis testing framework takes to address this
+  tradeoff is to (1) set a maximal level $\alpha$ that one is willing to
+  accept, and then (2) find the most powerful test subject to that constraint.
+
+  The appropriate significance level to set depends on the situation: a truck
+  travelling towards the operator's position is very different from a truck
+  travelling away from the front.
 \end{remark}
 
+\newpage
+\section{2026-03-25 | Week 10 | Lecture 23}
 \subsection{Common large-sample tests}
 \textit{Section 10.3 in the textbook}
 
