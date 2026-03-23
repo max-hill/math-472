@@ -41,20 +41,6 @@
 % for the pipe symbol
 \usepackage[T1]{fontenc}
 
-% Citing theorems by name. (source: https://tex.stackexchange.com/questions/109843/cleveref-and-named-theorems)
-\makeatletter
-\newcommand{\ncref}[1]{\cref{#1}\mynameref{#1}{\csname r@#1\endcsname}}
-
-\def\mynameref#1#2{%
-  \begingroup
-  \edef\@mytxt{#2}%
-  \edef\@mytst{\expandafter\@thirdoffive\@mytxt}%
-  \ifx\@mytst\empty\else
-  \space(\nameref{#1})\fi
-  \endgroup
-}
-\makeatother
-
 % Colorful Notes
 \usepackage{color} \definecolor{Red}{rgb}{1,0,0} \definecolor{Blue}{rgb}{0,0,1}
 \definecolor{Purple}{rgb}{.5,0,.5} \def\red{\color{Red}} \def\blue{\color{Blue}}
@@ -64,7 +50,6 @@
 \newcommand{\bnote}[1]{{\blue #1}} % \bnote{foo} gives 'foo' in blue
 \newcommand{\gnote}[1]{{\gray #1}} % \gnote{foo} gives 'foo' in gray
 \newcommand{\Max}[1]{{\purple [#1]}} % \bnote{foo} then 'foo' is blue
-
 
 % Claim numbering (the counter restarts after each proof environment)
 \newcounter{claimcount}
@@ -77,7 +62,6 @@
   \medskip}
 % Add claim support to cleverref
 \crefname{claimcount}{Claim}{Claims}
-
 
 % Math Environments
 \newtheorem{theorem}{Theorem}
@@ -139,8 +123,6 @@
 % \def\({\left (}
 %   \def\){\right )}
 
-
-
 \usepackage{color}
 \definecolor{Red}{rgb}{1,0,0}
 \definecolor{Blue}{rgb}{0,0,1}
@@ -167,11 +149,16 @@
   \textit{Due Tuesday, March 31}
 \end{center}
 
+
 \begin{problem}[Exercise 9.82]
   Let $Y_{1},\ldots,Y_{n}$ be a random sample from the density function given
   by
   \begin{equation*}
-    f(y\mid \theta) = \left\{ \begin{array}{l@{\quad:\quad}l} \left( \frac{1}{\theta} \right)r y^{r-1}e^{-y^{r-1}}e^{-y^{r}/\theta}  & \theta>0, y>0\\ 0& \text{elsewhere.}\end{array}\right.
+    f(y\mid \theta)  = \left\{
+      \begin{array}{l@{\quad:\quad}l}
+        \left( \frac{1}{\theta} \right)r y^{r-1}e^{-y^{r-1}}e^{-y^{r}/\theta}
+        & \theta>0, y>0\\
+        0& \text{elsewhere.}\end{array}\right.
   \end{equation*}
   where $r>0$ is a known positive constant.
   \begin{enumerate}[(a)]
@@ -179,6 +166,7 @@
     \item Find the MLE of $\theta$. 
   \end{enumerate}
 \end{problem}
+
 
 \begin{problem}
   Let $X_{1},\ldots,X_{n}$ be a random sample from the pdf
@@ -191,8 +179,8 @@
   \end{enumerate}
 \end{problem}
 
-\begin{problem}[Shifted exponential]
 
+\begin{problem}[Shifted exponential]
   A water supply becomes contaiminated at some unknown time $\mu$.
   
   Suppose there are a total of $n$ sensors in the water. After the
@@ -224,7 +212,6 @@
   for whom the drug dose induces sleep. We wish to test the hypothesis
   $H_{0}:p=.8$ vs the alternative $H_{a}:p<.8$. Assume that the rejection
   region $\left\{y \leq 12\right\}$ is used.
-
   \begin{enumerate}[(a)]
     \item In terms of this problem, what is the type I error?
     \item Find $\alpha$.
@@ -233,6 +220,7 @@
     \item Find $\beta$ when $p=.4$.
   \end{enumerate}
 \end{problem}
+
 
 \begin{problem}[Exercise 10.3]
   Refer to \cref{problem:exercise-10.2}.
@@ -255,12 +243,14 @@
   a test with level .05.
 \end{problem}
 
+
 \begin{problem}[Exercise 10.37]
   Refer to \cref{problem:exercise-10.19}. If the voltage falls as low as 128,
   serious consequences may result. For testing $H_{0}: \mu=130$ versus
   $H_{a}:\mu=128$, ﬁnd the probability of a type II error, $\beta$ for the
   rejection region used in \cref{problem:exercise-10.19}
 \end{problem}
+
 
 \begin{problem}[Exercise 10.20]
   \label{problem:exercise-10.20}
@@ -274,8 +264,6 @@
 \end{problem}
 
 
-
-
 \begin{problem}[Exercise 10.38]
   Refer to problem \cref{problem:exercise-10.20}. The steel is sufficiently
   hard to meet usage requirements if the mean Rockwell hardness measure does
@@ -283,8 +271,6 @@
   \cref{problem:exercise-10.20}, find $\beta$ for the specific alternative
   $\mu_{a} = 60$.
 \end{problem}
-
-
 
 
 \begin{problem}[Salk Polio Field Trial (1954)]
@@ -301,7 +287,6 @@
   \end{equation}
   We wish to know if there is a relationship between vaccination status and
   the incidience of paralytic polio. The null hypothesis is:
-  
   \begin{equation*}
     H_{0}= \text{vaccination and polio are independent}
   \end{equation*}
@@ -309,9 +294,7 @@
   \begin{equation*}
     H_{a} = \text{ there is a relationship between vaccination and polio.}
   \end{equation*}
-
   Conduct a hypothesis test using the chi-squared statistic to test these hypotheses.
 \end{problem}
-
 
 \end{document}
