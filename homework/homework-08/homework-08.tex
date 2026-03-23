@@ -164,44 +164,8 @@
 \begin{document}
 \begin{center}
   \section*{Math 472: Homework 08}
-  \textit{Due Monday, March 30}
+  \textit{Due Tuesday, March 31}
 \end{center}
-
-
-\begin{problem}[Salk Polio Field Trial (1954)]
-  \label{ex:salk-polio-field-trial-1954}
-  The results of a 1954 polio vaccine trial in $n=401,974$ elementary school
-  students gave the following results:
-  \begin{equation}\label{eq:table-of-observed-values}
-    \begin{tabular}{l|cc}
-      & \textbf{Polio} & \textbf{No Polio} \\
-      \hline
-      \textbf{Vaccinated} & 200,712          & 33            \\
-      \textbf{Unvaccinated}  & 201,114           & 115           
-    \end{tabular} 
-  \end{equation}
-  We wish to know if there is a relationship between vaccination status and
-  the incidience of paralytic polio. The null hypothesis is:
-  
-  \begin{equation*}
-    H_{0}= \text{vaccination and polio are independent}
-  \end{equation*}
-  and the alternative hypothesis is
-  \begin{equation*}
-    H_{a} = \text{ there is a relationship between vaccination and polio.}
-  \end{equation*}
-
-  Conduct a hypothesis test using the chi-squared statistic to test these hypotheses.
-  
-  % \begin{figure}
-  %   \centering
-  %   \includegraphics[scale=.3]{images/salk}
-  %   \caption{Some participants in the 1945 Salk polio vaccine trial conducted
-  %     by the National Foundation for Infantile Paralysis. See
-  %     \url{https://www.randomservices.org/random/data/Polio.html}.}
-  %   \label{fig:salk-picture}
-  % \end{figure}
-\end{problem}
 
 \begin{problem}[Exercise 9.82]
   Let $Y_{1},\ldots,Y_{n}$ be a random sample from the density function given
@@ -223,7 +187,7 @@
     f(x\mid \theta) = \theta x^{-2}, \quad 0<\theta \leq x <\infty.
   \end{equation*}
   \begin{enumerate}[(a)]
-    \item Find a suffificent statistics for $\theta$. 
+    \item Find a suffificent statistic for $\theta$. 
     \item Find the MLE of $\theta$. 
   \end{enumerate}
 \end{problem}
@@ -273,10 +237,12 @@
 
 \begin{problem}[Exercise 10.3]
   Refer to \cref{problem:exercise-10.2}.
-  \item Find the rejection region of the for $\left\{y \leq c\right\}$ so
-  that $\alpha\approx .01$.
-  \item For the the rejection region in part (a), find $\beta$  when $p=.6$.
-  \item For the rejection region in part (a), find $\beta$ when $p=.4$.
+  \begin{enumerate}[(a)]
+    \item Find the rejection region of the for $\left\{y \leq c\right\}$ so
+    that $\alpha\approx .01$.
+    \item For the the rejection region in part (a), find $\beta$  when $p=.6$.
+    \item For the rejection region in part (a), find $\beta$ when $p=.4$.
+  \end{enumerate}
 \end{problem}
 
 
@@ -317,6 +283,35 @@
   not drop below 60. Using the rejection region found in 
   \cref{problem:exercise-10.20}, find $\beta$ for the specific alternative
   $\mu_{a} = 60$.
+\end{problem}
+
+
+
+
+\begin{problem}[Salk Polio Field Trial (1954)]
+  \label{ex:salk-polio-field-trial-1954}
+  The results of a 1954 polio vaccine trial in $n=401,974$ elementary school
+  students gave the following results:
+  \begin{equation}\label{eq:table-of-observed-values}
+    \begin{tabular}{l|cc}
+      & \textbf{Polio} & \textbf{No Polio} \\
+      \hline
+      \textbf{Vaccinated} & 200,712          & 33            \\
+      \textbf{Unvaccinated}  & 201,114           & 115           
+    \end{tabular} 
+  \end{equation}
+  We wish to know if there is a relationship between vaccination status and
+  the incidience of paralytic polio. The null hypothesis is:
+  
+  \begin{equation*}
+    H_{0}= \text{vaccination and polio are independent}
+  \end{equation*}
+  and the alternative hypothesis is
+  \begin{equation*}
+    H_{a} = \text{ there is a relationship between vaccination and polio.}
+  \end{equation*}
+
+  Conduct a hypothesis test using the chi-squared statistic to test these hypotheses.
 \end{problem}
 
 
