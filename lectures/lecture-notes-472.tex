@@ -3767,6 +3767,11 @@ likelihood estimate is the solution to the maximization problem
   \end{itemize}   
 \end{example}
 
+\subsection{Maximum likelihood example}
+\textit{I didn't do this example in class due to time, but it's a good
+  example.}
+
+
 \begin{example}
   Let $Y_{1},\ldots,Y_{n}$ be a random sample from a normal distribution with
   mean $\mu$ and variance $\sigma^{2}$. Find the MLE of $\mu$ and
@@ -3825,6 +3830,757 @@ likelihood estimate is the solution to the maximization problem
   $\widehat{Y}_{\rm MLE} = \overline{Y}$ and
   $\widehat{\sigma^{2}}_{\rm MLE} = \frac{1}{n}\sum_{i=1}^{n}
   (Y_{i}-\overline{Y})^{2}$.
+\end{example}
+
+
+\section{2026-03-23 | Week 10 | Lecture 22}
+
+
+\subsection{Statistical models}
+\textit{Based on chapter 10.2 in the textbook}
+
+
+
+% Suppose we have random variable $X$. How can we represent the distribution of $X$?
+% \begin{enumerate}
+%   \item (As a probability measure). The probability measure \demph{induced} by $X$ is the probability
+%   measure $\P$ given by
+%   \begin{equation*}
+%     \P[B] := \Pr[X\in E]
+%   \end{equation*}
+%   for every event $E\subseteq \R$. The probability measure $\P$ is called the
+%   \demph{law} of $X$. This is one way to represent the distribution of $X$.
+%   \item (As a distribution function). Another way to represent the
+%   distribution of $X$ is to use the cdf $F$. This is equivalent to $\P$
+%   because
+%   \begin{itemize}
+%     \item If you know $\P$ then you know $F$: By taking $E=(-\infty,x]$, we have
+%     \begin{equation*}
+%       \P[(-\infty,x]] = \Pr\left[X \leq x\right] = F(x).
+%     \end{equation*}
+%     \item If you know $F$ then you know $\P[E]$ for every event $E\subseteq \R$:
+%     For example, $E=(a,b]$ then
+%     \begin{equation*}
+%       \P[E] = \P\left[(a,b] \right] = F(b)-F(a).
+%     \end{equation*}
+%     The general case follows by Dynkin's pi-lambda theorem, beyond the scope of
+%     this course.
+%   \end{itemize}
+%   \item[3a.] (As a density). If $X$ is continuous, we have a third way to
+%   represent the distribution of $X$: through its probability density function
+%   $f$. This is also equivalent because
+%   \begin{itemize}
+%     \item If you know $f$ then you know $F$ (and hence $\P$):
+%     $F(x) =\int_{-\infty}^{x}f(t)dt$.
+%     \item If you know $F$ then you know $f$: since $f(x) = F'(x)$.
+%   \end{itemize}
+%   \item[3b.] (As a pmf). If $X$ is discrete, we have the pmf $p(x)$ instead of
+%   the pdf $f(x)$. The idea is the same as in (3a): if you know $p$ then you
+%   know $F$, and vis-versa.
+% \end{enumerate}
+
+
+% In a sense, all of these objects ($\mu$, $F$, $f$ or $p$) are different ways
+% to represent the same underlying object: the \textit{distribution} of the
+% random variable $X$.
+
+
+\begin{definition}[Statistical model]
+  \label{def:statistical-model}
+  A \demph{statistical model} $\mathcal{P}$ is a collection of probability
+  distributions defined on a common sample space; that is,
+  $\mathcal{P} = \left\{\P_{\theta}:\theta\in \Theta\right\}$. The set
+  $\Theta$ is the \demph{parameter space}. If $\Theta\subseteq \R^{k}$ for
+  some $k\in \N$, then we say that $\mathcal{P}$ is a \demph{parametric
+    statistical model}.
+\end{definition}
+\begin{remark}
+  The ``probability distributions'' in \cref{def:statistical-model} may be
+  represented as a collection of cdfs, probability measures, pmfs or pdfs.
+
+  In this class, ``the common sample space'' will always be $\R$.
+\end{remark}
+\begin{example}
+  The collection
+  \begin{equation*}
+    \mathcal{P}= \left\{f_{(\mu,\sigma^{2})}: (\mu,\sigma^{2})\in \R\times (0,\infty)
+    \right\}
+  \end{equation*}
+  where
+  \begin{equation*}
+    f_{(\mu,\sigma^{2})}(x) = \frac{1}{\sqrt{2\pi\sigma^{2}}}\exp \left\{ -\frac{(x-\mu)^{2}}{2\sigma^{2}}\right\}, \quad (x\in \R),
+  \end{equation*}
+  is a parametric statistic model (the family of univariate Guassians).
+\end{example}
+
+\subsection{A geometric persepctive on statistical models}
+\begin{example}[The Hardy-Weinberg Model]
+  \label{ex:hardy-weinberg-model}
+  Flip two coins simultaneoulsy. The sample space is
+  \begin{equation*}
+    S = \left\{\mathtt{HH},\mathtt{HT}, \mathtt{TT}\right\} 
+  \end{equation*}
+  Assume the probability of heads is $p\in [0,1]$. Let $X$ be the number of
+  heads. The pmf of $X$ is
+  \begin{equation*}
+    \P\left[X=2 \right] = p^{2}, \quad \P\left[X=1 \right] = 2p(1-p), \quad \P\left[X=0 \right] = (1-p)^{2}.
+  \end{equation*}
+  In other words, $X\sim \text{Bin}(2,p)$. Abusing notation, we can represent
+  the distribution of $X$ by the vector
+  \begin{equation*}
+    \begin{bmatrix}
+      p^{2}\\
+      2p(1-p)\\
+      (1-p)^{2}
+    \end{bmatrix}\in \R^{3}.
+  \end{equation*}
+  Letting $p$ range over all values between 0 and 1, we obtain a family of
+  distributions
+  \begin{equation*}
+    \mathcal{P} = \left\{
+      \begin{bmatrix}
+        p^{2}\\
+        2p(1-p)\\
+        (1-p)^{2}
+      \end{bmatrix}\in \R^{3}: p\in [0,1]\right\}.
+  \end{equation*}
+  This statistical model is called the Hardy-Weinberg model, and is used to
+  model allele frequencies in population genetics.
+
+  Interestingly, the statistical model $\mathcal{P}$ can be regarded as a
+  geometric object (i.e., as a subset of 3-dimensional space). Consider the
+  parameterization
+  \begin{equation*}
+    x= \P\left[X=2 \right]=p^{2},\quad y= \P\left[X=1 \right]=2p(1-p),\quad z=\P\left[X=0 \right]=(1-p)^{2},
+  \end{equation*}
+  with $p$ ranging  over all values from 0 to 1. Make two observations
+
+  \begin{itemize}
+    \item Observe that for any value of
+    $p$, the probabilities $x,y$ and $z$ must satisfy
+    \begin{equation}\label{eq:27}
+      \left\{ \begin{array}{l@{}l} x+y+1=0\\
+          0 \leq x,y,z \leq 1 \\  \end{array}\right.
+    \end{equation}
+    The set of points satisfying \cref{eq:27} is the grey triangle on the left
+    (the ``2-dimensional simplex'').
+    \item   And it is readily verified that $x,y,z$ also satisfy the equation
+    \begin{equation*}
+      y^{2}-4xz =0,
+    \end{equation*}
+    which is a the blue cone on the plot below right.
+  \end{itemize}  
+  \begin{center}
+    \includegraphics[scale=.2]{images/hardy-2}
+    \includegraphics[scale=.2]{images/hardy-1}
+  \end{center}
+  The Hardy-Weinberg model $\mathcal{P}$ is the blue curve formed by
+  intersecting the quadric surface $y^{2}-4xz=0$ (the blue cone) with the gray
+  triangle.
+
+  Assume the probability of heads is $p=.42$ in our coin-flipping experiment.
+  Then the distribution of $X$ is given by the vector
+  \begin{equation*}
+    \begin{bmatrix}
+      x\\y\\z
+    \end{bmatrix}
+    =
+    \begin{bmatrix}
+      p^{2}\\
+      2p(1-p)\\
+      (1-p)^{2}
+    \end{bmatrix}
+    =
+    \begin{bmatrix}
+      0.1764\\
+      0.4872\\
+      0.3364
+    \end{bmatrix}.
+  \end{equation*}
+  In other words, the true distribution of $X$ is a point on the curve
+  (namely, the red point below).
+
+  Suppose we perform the experiment 100 times, thereby obtaining 100 random
+  samples $X_{1},\ldots,X_{n}\sim \text{Bin}(2,.42)$. Let
+  \begin{align*}
+    \widehat{x} &= \text{the proportion of samples with two heads}\\
+    \widehat{y} &= \text{the proportion of samples with exactly one heads}\\
+    \widehat{z} &= \text{the proportion of samples with zero heads}\\
+  \end{align*}
+  I did this and got $\widehat{x}=.13$, $\widehat{y}=.55$, and
+  $\widehat{z}=.32$. This data is the point $(.13,.55,.32)$, plotted in purple
+  below.
+  \begin{center}
+    \includegraphics[scale=.3]{images/hardy-3}
+  \end{center}
+  Notice how the data is ``close'' to the true point on the model. As the
+  amount of data increases, the points will converge as the observed
+  proportions $(\widehat{x},\widehat{y},\hat{z})$ converge to their expected
+  values $(.1764,.4872,.3364)$ (by the law of large numbers).
+
+  \Fl{Question:} Suppose I gave you some data, $X_{1},\ldots,X_{100}$, and
+  that I claimed that data came from a coin-flipping experiment with
+  probability of heads $p=.42$. Of course, I could be lying: maybe I actually
+  used a different coin, with $p\neq .42$, or maybe I fabricated the data
+  entirely. How would you go about investigating whether I'm being honest with
+  you about the data really came from a coin-flipping experiment with $p=.42$?
+
+  \Fl{Key idea:} Ask whether the data point is ``close'' to the red point.
+  (Since it is improbable that the observed data will be far away from the
+  true probabilities.)
+  \begin{itemize}
+    \item On one hand, if the data point is close to the red point, then you can't reject
+    the possibility that I'm telling you the truth.
+    
+    \item On the other hand, if the data point is very far away from the red
+    point, then I'm probably lying. Of course,
+    there are two ways that I could be dishonest:
+    \begin{itemize}
+      \item If the data point is (1) close to the curve, but (2) far from the
+      red point, then I'm probably lying that $p=.42$. But you can't reject
+      the possibilty that I flipped a coin with a different value of $p$.
+      \item On the other hand, if the data point is not just far from the red
+      point, but far from the curve, (for example, lying in the red region
+      below), then I'm probably lying about having generated the data by
+      flipping coins.
+      \begin{center}
+        \includegraphics[scale=.5]{images/hardy-rejection}
+      \end{center}
+    \end{itemize}
+  \end{itemize}
+  The next few classes will be about formalizing and quantifying the ideas
+  presented in this example.
+\end{example}
+
+\subsection{Hypothesis testing: the general framework}
+\textit{(Based on section 10.2)}
+
+\begin{definition}[Hypothesis Testing]
+  \label{def:hypothesis-testing}
+  Given a parameterized statistical model
+  $\left\{\P_{\theta}: \theta\in \Theta\right\}$, a \demph{hypothesis} is a
+  statement of the form $H: \theta\in \Theta_{0},$ where
+  $\Theta_{0}\subseteq \Theta$. Often there are two mutually exclusive
+  hypothesis: a \demph{null hypothesis}, denoted $H_{0}: \theta_{0}\in \Theta_{0}$, and an alternative
+  hypothesis $H_{a}\in \Theta\backslash \Theta_{0}$.
+
+   
+  A \demph{hypothesis test} is a procedure or decision rule utilizing a
+  statistic $T$ which specifies for which values of $T$ the hypothesis $H_{0}$
+  is rejected, and for which values $H_{0}$ is accepted. The statistic $T$ is
+  called the \demph{test statistic}.
+
+  The \demph{rejection region} (RR) specified the values of the test statistic
+  for which the null hypothesis to be rejected in favor of the alternative
+  hypothesis. That is, if $T\in\mathrm{RR}$, then we reject $H_{0}$. If
+  $T\notin \mathrm{\mathrm{RR}}$, we accept $H_{0}$ (or perhaps, it might be
+  better to say we ``fail to reject'' the null hypothesis).
+\end{definition}
+
+\begin{example}[Coin flipping hypothesis test]
+  \label{ex:coin-flipping-hypothesis-test}
+  Flip a coin 10 times. Let $p$ be the probability of heads. Consider the
+  hypothesis testing problem
+  \begin{equation*}
+    H_{0}: p = \frac{1}{2} \quad \text{versus} \quad H_{a}: p\neq \frac{1}{2}.
+  \end{equation*}
+  Let our test statistic be
+  \begin{equation*}
+    T = \text{(\# of heads)}
+  \end{equation*}
+  So $T$ takes a value between 0 and 10. If $H_{0}$ were true, then there
+  would be about 97.9\% chance of getting between 2 and 8 heads. So it might be
+  reasonable to define our rejection region to be the set
+  \begin{equation*}
+    \text{RR} = \left\{0,1,9,10\right\}
+  \end{equation*}
+  In other words, if $T$ takes one of these values, we reject $H_{0}$ and
+  conclude the coin is not a fair coin.
+
+  
+  This test is not perfect: assuming that $H_{0}$ is true, we will nonetheless
+  reject $H_{0}$ about $2.1\%$ of the time.
+\end{example}
+
+There are two types of decision errors in this framework.
+
+
+\begin{definition}[Decision errors]
+  \label{def:decision-errors}
+  A \demph{type I error} is made if $H_{0}$ is rejected when $H_{0}$ is true.
+  The probability of a type I error is denoted by $\alpha$:
+  \begin{equation*}
+    \alpha = \Pr \left[ \text{Type I error} \right] = \Pr\left[
+      \text{rejecting $H_{0}$ when $H_{0}$ is true}\right]
+    %%%T\in \text{RR} \mid H_{0} \text{ is true}\right].
+  \end{equation*}
+  The value of $\alpha$ is called the \demph{significance level} (or just
+  \demph{level}) of the test.
+
+  Similarly, a
+  \demph{type II error} is made if $H_{0}$ is accepted when $H_{a}$ is true.
+  We denote the probability of this happening by $\beta$:
+  \begin{equation*}
+    \beta = \Pr \left[ \text{Type II error} \right] = \Pr \left[
+      \text{accepting $H_{0}$ when $H_{a}$ is true} \right] 
+    % \P\left[ T\notin \text{RR} \mid H_{a} \text{ is true}\right].
+  \end{equation*}
+  The value $1-\beta$ is called the \demph{power} of the test.
+\end{definition}
+
+
+
+\begin{table}[H]
+  \centering
+  \begin{tabular}{lll}
+    & Reject $H_0$                      & Accept $H_0$                       \\ \cline{2-3} 
+    \multicolumn{1}{l|}{$H_0$ true} & \multicolumn{1}{l|}{\demph{Type-I Error}} & \multicolumn{1}{l|}{Correct}       \\ \cline{2-3} 
+    \multicolumn{1}{l|}{$H_1$ true} & \multicolumn{1}{l|}{Correct}      & \multicolumn{1}{l|}{\demph{Type-II Error}} \\ \cline{2-3} 
+  \end{tabular}
+\end{table}
+
+
+\begin{remark}
+  In \cref{ex:coin-flipping-hypothesis-test}, the level of the test is
+  $\alpha=2.1\%$. Note that $\beta$ is a function of $p$. For example if
+  $p=0.4$, then
+  \begin{align*}
+    \beta 
+    &=\beta(0.4)\\
+    &= \P\left[\text{Type II error}\mid p=0.4 \right]\\
+    &= \P\left[T\notin \text{RR} \mid p=0.4  \right]\\
+    &= \sum_{k=2}^{8} {10\choose k}(0.4)^{k}(1-0.4)^{10-k}\\
+    &=.952
+  \end{align*}
+  Therefore if the true value of $p$ is $.4$, then the power of the the test
+  is $.048$.
+
+  On the other hand if the true value of $p$ is $p=.1$, then $\beta(.1)=.264$,
+  so the power of the test would be $.736$. We generally don't know what the
+  power of the test is. 
+
+  Observe that $\alpha+\beta\neq1$.
+\end{remark}
+
+
+These terms are clarified by an example.
+
+\begin{remark}[Decision Errors]
+  \label{rmk:decision-errors}
+  A Ukrainian drone operator spots an unmarked vehicle traveling down a road.
+  She needs to make a decision about whether to strike the truck. The
+  hypothesis test is the following:
+  \begin{align*}
+    H_{0}:& \text{ the target is not a Russian military vehicle}\\
+    H_{a}:& \text{ the target is a Russian military vehicle}
+  \end{align*}
+  Rejecting $H_{0}$ means giving an order to destroy the target. Accepting
+  $H_{0}$ means `take no action'.
+
+  In this context, a Type-I error occurs when the operator gives the order to
+  destroy the vehicle, but it turns out the vehicle is not Russian military. A
+  Type-II error, on the other hand, has occurred if she doesn't order the
+  strike, but the vehicle really was a Russian military vehicle.
+  \begin{itemize}
+    \item A Type-I error means she killed a civilian or a friendly unit (an
+    error of commission).
+    \item A Type-II error means she missed an opportunity to kill an enemy (an
+    error of ommission).
+  \end{itemize}
+  Here, the terms ``power'' and ``level'' have the following meaning:
+  \begin{itemize}
+    \item The \textbf{power} of the test is the probability that she
+    orders a strike when a Russian military vehicle goes by. (She wants this
+    to be high).
+    \item The \textbf{level} of the test is the probability that she orders a
+    strike when a civilian goes by. (She wants this to be low).
+  \end{itemize}
+  Ideally, the operator would like to eliminite both types of errors
+  (accidentally killing civilians vs failing to kill enemy). That is, she
+  would like
+  \begin{equation*}
+    \Pr\left[\text{Type-I error} \right]= \Pr\left[\text{Type-II error} \right]=0.
+  \end{equation*}
+  Unfortunately, it is impossible to simultaneously eliminate both types of
+  error without perfect information.
+\end{remark}
+
+\subsection{Common large-sample tests}
+\textit{Section 10.3 in the textbook}
+
+\subsubsection{General framework for large-sample tests}
+\label{sec:general-framework-for-large-sample-tests}
+
+\Fl{The problem:} We have data $Y_{1},\ldots,Y_{n}$ and an unbiased estimator
+$\widehat{\theta}$ of a parameter $\theta$. For a fixed number $\theta_{0}\in
+\R$, we want to test whether
+$\theta=\theta_{0}$, or whether $\theta>\theta_{0}$. That is, the hyptothesis
+testing problem is
+\begin{equation*}
+  H_{0}: \theta=\theta_{0} \quad \text{versus} \quad H_{a}: \theta>\theta_{0}.
+\end{equation*}
+\Fl{Setting:} Assume the sampling distribution of $\widehat{\theta}$ is
+approximately normal with mean $\theta$ and standard error
+$\sigma_{\widehat{\theta}}$. This is a reasonably common situation when $n$ is
+large.
+
+Under these assumptions, and assuming that $H_{0}$ is true, the sampling
+distribution of $\widehat{\theta}$ has the following density curve:
+
+\begin{center}
+  \begin{tikzpicture}[x=1.8cm,y=3cm,>=stealth]
+    % Axes
+    \draw[->] (-1.2,0) -- (3.4,0) node[right] {$x$};
+    \draw[->] (0,0) -- (0,0.7);
+
+    % Tick marks
+    \foreach \x in {1}
+    \draw (\x,0.01) -- (\x,-0.01) node[below] {\small $\theta_{0}$ };
+
+    % % Mean marker
+    % \draw[dashed] (2,{1/(0.6*sqrt(2*pi))*exp(-((2-1)^2)/(2*0.6^2))}) -- (2,0)
+    % node[below] {\small $k$ };
+
+    % One standard deviation markers
+    \draw[dashed] (1,0) -- (1,{1/(0.6*sqrt(2*pi))*exp(-((1-1)^2)/(2*0.6^2))});
+
+    % Normal density
+    \draw[smooth,domain=-1:3.4,samples=200,thick]
+    plot(\x,{1/(0.6*sqrt(2*pi))*exp(-((\x-1)^2)/(2*0.6^2))});
+  \end{tikzpicture}
+\end{center}
+
+\Fl{Main idea:} If $\widehat{\theta}$ is much larger than the hypothesized
+value $\theta_{0}$, we should reject $H_{0}$.
+
+\Fl{Constructing the rejection region:} We pick a cutoff $k$ such that we
+reject $H_{0}$ if $\widehat{\theta}>k$. That is, our rejection region take the
+form
+\begin{equation*}
+  \text{RR} = \left[ \widehat{\theta}>k \right]. 
+\end{equation*}
+To pick an appropriate $k$, we first decide the maximum level $\alpha$ of
+type-I errors that we are willing to tolerate. For example, we want say,
+$\alpha= \P\left[\text{Type-I error} \right]=.05$, then we choose $k$ such
+that the shaded region below has area $.05$:
+
+\begin{center}
+  \begin{tikzpicture}[x=1.8cm,y=3cm,>=stealth]
+    % Axes
+    \draw[->] (-1.2,0) -- (3.4,0) node[right] {$x$};
+    \draw[->] (0,0) -- (0,0.7);
+
+    % Tick marks
+    \foreach \x in {1}
+    \draw (\x,0.01) -- (\x,-0.01) node[below] {\small $\theta_{0}$ };
+
+    % Parameters
+    \def\k{2}
+
+    % Shade region to the right of k
+    \fill[blue!20,domain=\k:3.4,samples=200]
+    (\k,0)
+    -- plot(\x,{1/(0.6*sqrt(2*pi))*exp(-((\x-1)^2)/(2*0.6^2))})
+    -- (3.4,0) -- cycle;
+
+    % Mean marker
+    \draw[dashed] (2,{1/(0.6*sqrt(2*pi))*exp(-((2-1)^2)/(2*0.6^2))}) -- (2,0) node[below] {\small $k$ };
+
+    % One standard deviation marker
+    \draw[dashed] (1,0) -- (1,{1/(0.6*sqrt(2*pi))*exp(-((1-1)^2)/(2*0.6^2))});
+
+    % Normal density
+    \draw[smooth,domain=-1:3.4,samples=200,thick]
+    plot(\x,{1/(0.6*sqrt(2*pi))*exp(-((\x-1)^2)/(2*0.6^2))});
+  \end{tikzpicture}
+\end{center}
+
+\subsubsection{Example of a large-sample hypothesis test}
+\begin{example}[Example 10.6 in textbook]
+  \label{ex:example-10.6-textbook}
+  A machine in a factory must be repaired if it produces more than $10\%$
+  defectives. A random sample from yesterday's production contained $15$
+  defectives. The supervisor says the machine must be repaired. Does the
+  sample support this decision? Use a test with level $\alpha=.01$.
+
+  \Fl{Solution:} Let $Y$ be the number of observed defectives. Then $Y$ is
+  binomial random variable with $p$ the probability of a defective item.  The
+  hypothesis test is
+  \begin{equation*}
+    H_{0}: p=.10 \quad \text{vs} \quad H_{a}: p>.10
+  \end{equation*}
+  Let $\widehat{p} = Y/n$. This is an unbiased estimator of $\theta$ which is
+  approximately normal when $n$ is large. Under the assumption that $H_{0}$ is
+  true, $\mu_{\widehat{p}} = .1$ and
+  $\sigma_{\widehat{p}}= \sqrt{\frac{p_{0}(1-p_{0})}{n}}=
+  \sqrt{\frac{.09}{100}}=.03$
+
+  Instead of using $\widehat{p}$ as our test statistic, it will be easier to
+  use the standarization of $\widehat{p}$:
+  \begin{equation*}
+    T = \frac{\widehat{p}-p_{0}}{\sigma_{\widehat{p}}} = \frac{\widehat{p}-.10}{.03}.
+  \end{equation*}
+  Under the assumption that $H_{0}$ is true, the distribution of $T$ is
+  approximately standard normal, with the following density curve:
+
+  \begin{center}
+    \begin{tikzpicture}[x=1cm,y=4cm,>=stealth]
+      % Axes
+      \draw[->] (-3,0) -- (3,0) node[right] {$x$};
+      \draw[->] (0,0) -- (0,0.7);
+
+      % Parameters
+      \def\k{2.33}
+
+      % Shade region to the right of k
+      \fill[blue!20,domain=\k:3,samples=200]
+      (\k,0)
+      -- plot(\x,{1/(sqrt(2*3.14159))*exp(-(\x*\x)/2)})
+      -- (3,0) -- cycle;
+
+      % Marker at k
+      \draw[dashed] (2.33,{1/(sqrt(2*3.14159))*exp(-(2.33^2)/2)}) -- (2.33,-.05) node[below] {\small $k$ };
+
+      % Normal density
+      \draw[smooth,domain=-3:3,samples=200,thick]
+      plot(\x,{1/(sqrt(2*3.14159))*exp(-(\x*\x)/2)});
+    \end{tikzpicture}
+  \end{center}
+  Our rejection region take the form
+  \begin{equation*}
+    \text{RR}=\left[ T>k \right].
+  \end{equation*}
+  To choose $k$, recall the specified level is $\alpha=0.01$. Since
+  $\P\left[Z>2.33 \right]=0.01$, we $k=2.33$. Therefore our rejection region
+  is
+  \begin{equation*}
+    \text{RR}=\left[ T>2.33 \right] 
+  \end{equation*}
+
+  In this case, we observed $\widehat{p}=.15$, so
+  \begin{equation*}
+    T = \frac{.15-.10}{.03} = \frac{5}{3}=1.667.
+  \end{equation*}
+  Since $T<2.33$, we fail to reject the null hypothesis. The evidence does not
+  support the supervisor's decision.
+\end{example}
+
+\begin{definition}[p-value]
+  \label{def:p-value}
+  Let $T$ be a test statistic. The \demph{p-value} associated with an observed
+  value $t_{0}$ of $T$ is the probability of observing a result as or more
+  extreme than $t_{0}$, assuming $H_{0}$ is true.  That is,
+  \begin{equation*}
+    \text{p-value} := \P\left[\text{observing a result at least as extreme as
+        $t_0$ }\mid H_{0} \text{ is true} \right]
+  \end{equation*}
+  (Here, ``extreme'' depends on the test).
+\end{definition}
+
+\begin{example}
+  In \cref{ex:example-10.6-textbook}, we observed $t_{0}=1.667$. The $p$-value
+  for this is
+  \begin{equation*}
+    p = \P\left[ T>1.667\right] = 0.047.
+  \end{equation*}
+  Thus, on about $4.7\%$ of days, an appropriatly functioning machine will
+  nonetheless output 15\% or more defective items. In the case of
+  \cref{ex:example-10.6-textbook}, the $p$-value was greater than the
+  significance level $\alpha=0.01$, so we didn't reject the null hypothesis.
+\end{example}
+
+\section{Test of independence}
+\textit{Based on chapters 14.2-14.4}
+
+Recall that to construct a \textit{binomial} random variable, you flip coins
+$n$ times, and count the number of heads. The coin flip only has two outimes.
+What if, instead of flipping coin, we rolled a dice with $k$ sides, and
+counted the number of times we get $1,2,\ldots,k$? In that case, we get an
+example of what is called \demph{multinomial} random variable. To be precise:
+
+\begin{definition}[Multinomial Distribution]
+  \label{def:multinomial}
+  Consider an experiment with $k$ possible outcomes, labeled $1$ through $k$.
+  These outcomes have probabilities $p_{1},\ldots,p_{k}$, respectively. (So
+  $p_{1}+\cdots+p_{k}=1$). We repeat this experiment $n$ times, and define
+  \begin{equation*}
+    X_{i}= (\# \text{ of times outcome $i$ occurs in the $n$ trials})
+  \end{equation*}
+  for each $i=1,\ldots,k$. Then the random vector
+  \begin{equation*}
+    X = (X_{1},\ldots,X_{k})
+  \end{equation*}
+  is said to have a \demph{multinomial distribution} with parameters
+  $(p_{1},\ldots,p_{k})$ and number of trials $n$.
+\end{definition}
+
+This is an example of a categorical random variable ($k$ categories). 
+
+
+\begin{theorem}
+  \label{thm:chi-squared-theorem}
+  Suppose $X=(X_{1},\ldots,X_{k})$ is a multinomial random variable with
+  parameters $p_{1},\ldots,p_{k}$. Define a new random variable $\chi^{2}$,
+  called the \demph{chi-squared statistic} by 
+  \begin{equation}\label{eq:29}
+    \chi^{2} := \sum_{i=1}^{k} \frac{\left(X_{i}-np_{i}\right)^{2}}{np_{i}}.
+  \end{equation}
+  Assume that $np_{i}\geq 5$ for all $i=1,\ldots,k$. Then $\chi^{2}$ has
+  approximately chi-squared distribution with $k-1$ degrees of freedom
+\end{theorem}
+\begin{remark}
+  Since $\E\left[X_{i} \right]= np_{i}$, the right-hand side of \cref{eq:29} has the form
+  \begin{equation*}
+    \sum_{i=1}^{k} \frac{\left( \text{observed}- \text{expected} \right)^{2} }{ \text{expected}} 
+  \end{equation*}
+\end{remark}
+\begin{proof}[Proof sketech of \cref{thm:chi-squared-theorem}]
+  Key ingredients:
+  \begin{itemize}
+    \item By the central limit theorem, $\frac{X_{i}-np_{i}}{\sqrt{np_{i}}}$
+    is approximately normal.
+    \item So the chi-squared statistic is approximately a sum of squares of
+    independent standard normal random variables.
+    \item Which gives a chi-squared distribution by
+    \cref{thm:chi-squared-sum-squared-normals}.
+  \end{itemize}
+  The details of the proof rely on linear algebra.
+\end{proof}
+
+
+\begin{definition}
+  A \demph{contingency table} is a matrix of with rows labeled as group 1,
+  group 2, and so forth, and columns labeled as outcome 1, outcome 2, etc. The
+  entries of the matrix are \textit{counts}: the $(i,j)$-th entry is the
+  number of times that group $i$ experience outcome $j$.
+\end{definition}
+\begin{example}[Test of independence]
+
+For example, puppose we have a population of $n=54$ students, which we divide
+up according two to factors
+\begin{enumerate}[(i)]
+  \item whether they attended class regularly or not
+  \item whether they pass the class exam or not
+\end{enumerate}
+Then our contingency table is
+
+\begin{equation}\label{eq:table-of-observed-values}
+  \begin{tabular}{l|cc}
+    & \textbf{Pass} & \textbf{Fail} \\
+    \hline
+    \textbf{Attended} & 25          & 6            \\
+    \textbf{Skipped}  & 8           & 15           
+  \end{tabular} 
+\end{equation}
+This is the \demph{table of observed values}. We usually augment the table
+with ``marginal totals'', like so:
+
+
+\begin{center}
+  \begin{tabular}{l|cc|c}
+    & \textbf{Pass} & \textbf{Fail} & \textbf{Total} \\
+    \hline
+    \textbf{Attended} & 25 & 6  & 31 \\
+    \textbf{Skipped}  & 8  & 15 & 23 \\
+    \hline
+    \textbf{Total}    & 33 & 21 & 54
+  \end{tabular}
+\end{center}
+
+
+The null hypothesis is
+\begin{equation*}
+  H_{0}= \text{ attendence and passing are independent}
+\end{equation*}
+and the alternative hypothesis is
+\begin{equation*}
+  H_{a} = \text{ there is a relationship between attendence and passing.}
+\end{equation*}
+
+
+Let $p$ denote the probability that a student regularly attends class, and let
+$q$ denote the probability that a student passes the final exam.
+
+\fl{Important:} We do not know the true value of $p$ and $q$. But we can
+estimate them using the marginal row and column sums from the table:
+\begin{equation*}
+  p \approx \frac{31}{54} \quad \text{and} \quad q\approx \frac{33}{54}
+\end{equation*}
+
+
+\Fl{Question:} What are the expected values of the table, assuming the null
+hypothesis is true?
+
+
+Under the null hypothesis, we can multiply probabilities, e.g., so that the
+probability that a student both regularly attends class AND passes the exam is
+about $pq$. Therefore, since there are $n$ students,
+\begin{align*}
+  &\E\left[\text{\# of students who attend regularly AND pass the exam}\right] \\
+  &= n \P\left[\text{a randomly-selected student attends regularly AND pass the exam} \right]\\
+  &= n \P\left[\text{attends regularly}\right] \P\left[\text{passes the exam} \right]\\
+  &= npq
+\end{align*}
+
+Similar calculations gives us the following table of expected counts:
+\begin{center}
+  \begin{tabular}{l|cc}
+    & \textbf{Pass} & \textbf{Fail} \\
+    \hline
+    \textbf{Attended} & $npq$          & $np(1-q)$            \\
+    \textbf{Skipped}  & $n(1-p)q$           & $n(1-p)(1-q)$            
+  \end{tabular}
+\end{center}
+and plugging in the values $n=56$ and our approximations
+$p\approx \frac{31}{54}$ and $q\approx \frac{33}{54}$ gives
+
+\begin{equation}\label{eq:table-of-estimated-expected-values}
+  \begin{tabular}{l|cc}
+    & \textbf{Pass} & \textbf{Fail} \\
+    \hline
+    \textbf{Attended} & $18.9$          & $12.1$            \\
+    \textbf{Skipped}  & $14.1$           & $8.9$            
+  \end{tabular}
+\end{equation}
+Using the values of
+\Cref{eq:table-of-observed-values,eq:table-of-estimated-expected-values}, we
+compute a chi-squared statistic:
+\begin{align*}
+  \chi^{2} 
+  &= \sum_{\text{all table entries}} \frac{\left( \text{observed
+    value} - \text{expected value} \right)^{2} }{ \text{expected value}} \\
+  &= \frac{\left( 25-18.9 \right)^{2} }{20.2}+ \frac{(6-12.1)^{2}}{12.1}+ \frac{\left( 8-14.1 \right)^{2} }{14.1}+ \frac{\left( 15-8.9 \right)^{2} }{8.9}\\
+  &= 11.7
+\end{align*}
+
+By \cref{thm:chi-squared-theorem}, we know that $\chi^{2}$ has a chi-squared
+distribution. The degrees of freedom thing isn't so clear from that theorem,
+but when working with a contingency table, the degrees of freedom is given by
+the equation
+\begin{equation*}
+  (\text{number of rows} -1)\times (\text{number of columns} -1)
+\end{equation*}
+which in our case, for a $2\times 2$ table, is just 1.
+
+
+Thereore, using \cref{def:chi-squared-distribution}, the p-value is
+\begin{align*}
+  p \text{-value} 
+  &= \int_{11.7}^{\infty} \frac{1}{\sqrt{2\pi}} x^{-\frac{1}{2}}e^{-x/2}dx\\
+  &=0.0006
+\end{align*}
+In other words, if attending and passing were independent, we would see
+results this extreme only 0.06\% of the time. This is very small, so we reject
+the null hypothesis. Our conclusion is that attendance and passing the final
+exam are \textbf{not independent}, i.e., that there is a relationship between
+them.
+
+At this point we are tempted to conclude that regularly attending class
+increases your chance of passing the final exam. This seems obvious and is
+certainly consistent with the data. But it's not a conclusion that follows
+from the test that we did. The test only told us that these two things things
+probably have some relationship; it doesn't give us information about the
+nature of that relationship.
 \end{example}
 
 \end{document}

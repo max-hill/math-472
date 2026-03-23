@@ -627,5 +627,27 @@ rnorm(n=8, mean=990,sd=40)
 Y = c(972, 960, 965, 982, 1006, 1053, 1056, 1062)
 mean(Y)
 
+help(rbinom)
+n=100
+B = rbinom(n,size=2,prob=.42)
+x = sum(B==2)/n
+y = sum(B==1)/n
+z = sum(B==0)/n
+x
+y
+z
 
-1007+1.96*43.7/sqrt(8)
+y^2-4*x*z
+
+
+pbinom(q=8,size=10,prob=.1)- pbinom(q=1,size=10,prob=.1)
+pbinom(q=10,size=10,prob=.2)
+
+1-2*pbinom(q=1,size=10,prob=.5)
+
+
+pnorm(q=-2.33,mean=0,sd=1)
+
+pnorm(q=1.16,lower.tail=FALSE)
+64-2.33*8/7
+7*1.33/8

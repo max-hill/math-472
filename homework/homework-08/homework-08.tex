@@ -163,140 +163,161 @@
 
 \begin{document}
 \begin{center}
-  \section*{Math 472: Homework 06}
-  \textit{Due Wednesday, March 11}
+  \section*{Math 472: Homework 08}
+  \textit{Due Monday, March 30}
 \end{center}
 
 
-\begin{problem}[Exercise 8.50]
-  Refer to example 8.8 in the textbook. In this example, $p_{1}$ and $p_{2}$
-  were used to denote the proportions of refrigerator of brands $A$ and $B$,
-  respectively, that failed during the guarantee periods.
+\begin{problem}[Salk Polio Field Trial (1954)]
+  \label{ex:salk-polio-field-trial-1954}
+  The results of a 1954 polio vaccine trial in $n=401,974$ elementary school
+  students gave the following results:
+  \begin{equation}\label{eq:table-of-observed-values}
+    \begin{tabular}{l|cc}
+      & \textbf{Polio} & \textbf{No Polio} \\
+      \hline
+      \textbf{Vaccinated} & 200,712          & 33            \\
+      \textbf{Unvaccinated}  & 201,114           & 115           
+    \end{tabular} 
+  \end{equation}
+  We wish to know if there is a relationship between vaccination status and
+  the incidience of paralytic polio. The null hypothesis is:
+  
+  \begin{equation*}
+    H_{0}= \text{vaccination and polio are independent}
+  \end{equation*}
+  and the alternative hypothesis is
+  \begin{equation*}
+    H_{a} = \text{ there is a relationship between vaccination and polio.}
+  \end{equation*}
+
+  Conduct a hypothesis test using the chi-squared statistic to test these hypotheses.
+  
+  % \begin{figure}
+  %   \centering
+  %   \includegraphics[scale=.3]{images/salk}
+  %   \caption{Some participants in the 1945 Salk polio vaccine trial conducted
+  %     by the National Foundation for Infantile Paralysis. See
+  %     \url{https://www.randomservices.org/random/data/Polio.html}.}
+  %   \label{fig:salk-picture}
+  % \end{figure}
+\end{problem}
+
+\begin{problem}[Exercise 9.82]
+  Let $Y_{1},\ldots,Y_{n}$ be a random sample from the density function given
+  by
+  \begin{equation*}
+    f(y\mid \theta) = \left\{ \begin{array}{l@{\quad:\quad}l} \left( \frac{1}{\theta} \right)r y^{r-1}e^{-y^{r-1}}e^{-y^{r}/\theta}  & \theta>0, y>0\\ 0& \text{elsewhere.}\end{array}\right.
+  \end{equation*}
+  where $r>0$ is a known positive constant.
   \begin{enumerate}[(a)]
-    \item At the approximate 98\% confidence level, what is the largest
-    ``believable value'' for the difference in the proportions of failures for
-    refrigerators of brands $A$ and $B$?
-    \item At the approximate 98\% conﬁdence level, what is the smallest
-    ``believable value'' for the difference in the proportions of failures for
-    refrigerators of brands $A$ and $B$? 
-    \item If $p_1-p_2$ actually equals $0.2251$, which brand has the larger
-    proportion of failures during the warranty period? How much larger?
-    \item If $p_1-p_2$ actually equals $-0.1451$, which brand has the larger
-    proportion of failures during the warranty period larger? How much larger?
-    \item As observed in Example 8.8, zero is a believable value of the
-    difference. Would you conclude that there is evidence of a difference in the
-    proportions of failures (within the warranty period) for the two brands of
-    refrigerators? Why?
+    \item Find a sufficient statistic for $\theta$.
+    \item Find the MLE of $\theta$. 
   \end{enumerate}
 \end{problem}
 
 
-\begin{problem}[Exercise 8.70]
-  Let $Y$ be a binomial random variable with parameter $p$. Find the sample
-  size necessary to estimate $p$ within $.05$ with probability $.95$ in the
-  following situations:
-  \begin{itemize}
-    \item If $p$ is thought to be approximately $.9$
-    \item If no information is known about $p$ (use $p=.5$ in estimating the
-    variance of $\widehat{p}$).
-  \end{itemize}
-\end{problem}
-
-\begin{problem}[Exercise 8.81]
-  The carapace lengths (in mm) of ten lobsters examined in a study of the
-  infestation of the \textit{Thenus orientalis} lobster by two types of
-  barnacles, \textit{Octolasmis tridens} and \textit{Octolasmis lowei}, are as
-  follows:
-  \begin{center}
-    78 \quad 66 \quad 65 \quad 63 \quad 60 \quad 60 \quad 58 \quad 56 \quad 52
-    \quad 50.
-  \end{center}
-  Find a $95\%$ confidence interval for the mean carapace length (in mm) of
-  \textit{Thenus orientalis} lobsters.
-\end{problem}
-
-\begin{problem}[Exercise 8.85]
-  Two new drugs were given to patients with hypertension. The ﬁrst drug
-  lowered the blood pressure of 16 patients an average of 11 points, with a
-  standard deviation of 6 points. The second drug lowered the blood pressure
-  of 20 other patients an average of 12 points, with a standard deviation of 8
-  points. Determine a 95\% conﬁdence interval for the difference in the
-  mean reductions in blood pressure, assuming that the measurements are
-  normally distributed with equal variances.
-\end{problem}
-
-\begin{problem}[Exercise 9.1]
-  Suppose that $Y_{1},Y_{2},Y_{3}$ are a random sample from an exponential
-  distribution with density function
+\begin{problem}
+  Let $X_{1},\ldots,X_{n}$ be a random sample from the pdf
   \begin{equation*}
-    f(y) = \frac{1}{\theta}e^{-y/\theta}\mathbf{1}_{\left[ y>0 \right] }
+    f(x\mid \theta) = \theta x^{-2}, \quad 0<\theta \leq x <\infty.
   \end{equation*}
-  Consider the following estimators
-  \begin{equation*}
-    \hat{\theta}_{1} =Y_{1}, \quad\quad \widehat{\theta}_{2}= \frac{Y_{1}+Y_{2}}{2}, \quad\quad \widehat{\theta}_{3} = \frac{Y_{1}+2Y_{2}}{3}, \quad\quad \widehat{\theta}_{4} = \min(Y_{1},Y_{2},Y_{3}), \quad\quad \widehat{\theta}_{5}= \overline{Y}
-  \end{equation*}
-  In problem \#8 of homework 4, you showed that
-  $\widehat{\theta}_{1},\widehat{\theta}_{2},\widehat{\theta}_{3}$ and $\widehat{\theta}_{5}$ are
-  unbiased estimators of $\theta$. 
   \begin{enumerate}[(a)]
-    \item Find $\text{eff}(\widehat{\theta}_{1},\widehat{\theta}_{5})$.
-    \item Find $\text{eff}(\widehat{\theta}_{2},\widehat{\theta}_{5})$.
-    \item Find $\text{eff}(\widehat{\theta}_{3},\widehat{\theta}_{5})$.
+    \item Find a suffificent statistics for $\theta$. 
+    \item Find the MLE of $\theta$. 
   \end{enumerate}
 \end{problem}
 
-\begin{problem}[Exercise 9.6]
-  Suppose $Y_{1},\ldots,Y_{n}$ is a random sample of size $n$ from a Poisson
-  distribution with mean $\lambda$. Consider
-  $\widehat{\lambda}_{1}= \frac{Y_{1}+Y_{2}}{2}$ and
-  $\widehat{\lambda}_{2}=\overline{Y}$. Derive the efficiency of
-  $\widehat{\lambda}_{1}$ relative to $\widehat{\lambda}_{2}$.
-\end{problem}
+\begin{problem}[Shifted exponential]
 
-\begin{problem}[Exercise 9.8]
-  Let  $Y_{1},\ldots,Y_{n}$ denote a random sample from a probability density
-  function $f(y)$, which has unknown parameter $\theta$. If $\widehat{\theta}$
-  is an unbiased estimator of $\theta$, then under very general conditions
+  A water supply becomes contaiminated at some unknown time $\mu$.
+  
+  Suppose there are a total of $n$ sensors in the water. After the
+  contamination, these sensors don't immediately start testing positive, but
+  more realistically do so with with some lag times (owing to sensor location,
+  sensitivity, and uneven contaminant concentrations).
+
+  For each $i\in [n]$,
+  let $X_{i}$ be the first time that sensor $i$ tests positive for
+  contamination. Assume that $X_{1},\ldots,X_{n}$ are independent and each
+  have distribution given by the pdf
   \begin{equation*}
-    \Var(\widehat{\theta}) \geq \frac{1}{\mathcal{I}(\theta)}
+    f(x\mid \theta) = e^{-(x-\mu)}\mathbf{1}_{\left[\mu \leq x<\infty\right]}.
   \end{equation*}
-  where
-  \begin{equation*}
-    \mathcal{I}(\theta)= n \E\left[- \frac{\partial^{2}}{\partial \theta^{2} }\Big[\log(f(Y)) \Big]  \right].
-  \end{equation*}
-  (This is known as the Cramer-Rao inequality.) If
-  $\Var(\widehat{\theta})=\frac{1}{\mathcal{I}(\theta)}$, the estimator
-  $\widehat{\theta}$ is said to be \textit{efficient}.
-
-  Suppose that $f(y)$ is the normal density with mean $\mu$ and variance
-  $\sigma^{2}$. Show that $\overline{Y}$ is an efficient estimator of $\mu$.
-\end{problem}
-
-\begin{problem}[Exercise 9.17]
-  Suppose that $X_{1},\ldots,X_{n}$ and $Y_{1},\ldots,Y_{n}$ are independent
-  random samples from populations with means $\mu_{1}$ and $\mu_{2}$ and
-  variances $\sigma^{2}_{1}$ and $\sigma_{2}^{2}$ respectively. Show that
-  $\overline{X}-\overline{Y}$ is a consistent estimator of $\mu_{1}-\mu_{2}$.
-\end{problem}
-
-\begin{problem}[Exercise 9.24]
-  Let $Y_{1},\ldots,Y_{n}$ be independent standard normal random variables.
   \begin{enumerate}[(a)]
-    \item What is the distribution of $\sum_{i=1}^{n} Y_{i}^{2n}$?
-    \item Let $W_{n}= \frac{1}{n} \sum_{i=1}^{n} Y_{i}^{2}$. Does $W_{n}$
-    converge in probability to some constant? If so, what is the value of the
-    constant?
+    \item Show that $X_{(1)}:=\min(X_{1},\ldots,X_{n})$ is a sufficient
+    statistic for $\mu$. 
+    \item Find the MLE of $\mu$.
   \end{enumerate}
 \end{problem}
 
 
-\begin{problem}[Exercise 9.39]
-  Let $X_{1},\ldots,X_{n}$ denote a random sample from a Poisson distribution
-  with parameter $\lambda$.  Show that $\sum_{i=1}^{n} Y_{i}$ is sufficient
-  for $\lambda$. 
+\begin{problem}[Exercise 10.2]
+  \label{problem:exercise-10.2}
+  An experimenter has prepared a drug dosage level that she claims will induce
+  sleep for 80\% of people suffering from insomnia. After examining the
+  dosage, we feel her claims are inflated. In an attempt to disprove her
+  claim, we administer the drug to 20 insomniacs and observe $Y$, the number
+  for whom the drug dose induces sleep. We wish to test the hypothesis
+  $H_{0}:p=.8$ vs the alternative $H_{a}:p<.8$. Assume that the rejection
+  region $\left\{y \leq 12\right\}$ is used.
+
+  \begin{enumerate}[(a)]
+    \item In terms of this problem, what is the type I error?
+    \item Find $\alpha$.
+    \item In terms of this problem, what is the type II error?
+    \item Find $\beta$ when $p=.6$.
+    \item Find $\beta$ when $p=.4$.
+  \end{enumerate}
+\end{problem}
+
+\begin{problem}[Exercise 10.3]
+  Refer to \cref{problem:exercise-10.2}.
+  \item Find the rejection region of the for $\left\{y \leq c\right\}$ so
+  that $\alpha\approx .01$.
+  \item For the the rejection region in part (a), find $\beta$  when $p=.6$.
+  \item For the rejection region in part (a), find $\beta$ when $p=.4$.
 \end{problem}
 
 
+\begin{problem}[Exercise 10.19]
+  \label{problem:exercise-10.19}
+  The output voltage for an electric circuit is speciﬁed to be 130. A sample
+  of 40 independent readings on the voltage for this circuit gave a sample
+  mean 128.6 and standard deviation 2.1. Using the large-sample z-test method
+  described in section 10.3 of the textbook, test the hypothesis that the average
+  output voltage is 130 against the alternative that it is less than 130. Use
+  a test with level .05.
+\end{problem}
+
+\begin{problem}[Exercise 10.37]
+  Refer to \cref{problem:exercise-10.19}. If the voltage falls as low as 128,
+  serious consequences may result. For testing $H_{0}: \mu=130$ versus
+  $H_{a}:\mu=128$, ﬁnd the probability of a type II error, $\beta$ for the
+  rejection region used in \cref{problem:exercise-10.19}
+\end{problem}
+
+\begin{problem}[Exercise 10.20]
+  \label{problem:exercise-10.20}
+  The Rockwell hardness index for steel is determined by pressing a diamond
+  point into the steel and measuring the depth of penetration. For 50
+  specimens of an alloy of steel, the Rockwell hardness index averaged 62 with
+  standard deviation 8. The manufacturer claims that this alloy has an average
+  hardness index of at least 64. Is there sufficient evidence to refute the
+  manufacturer's claim at the 1\% significance level? Use the large-sample
+  z-test method described in section 10.3 of the textbook.
+\end{problem}
+
+
+
+
+\begin{problem}[Exercise 10.38]
+  Refer to problem \cref{problem:exercise-10.20}. The steel is sufficiently
+  hard to meet usage requirements if the mean Rockwell hardness measure does
+  not drop below 60. Using the rejection region found in 
+  \cref{problem:exercise-10.20}, find $\beta$ for the specific alternative
+  $\mu_{a} = 60$.
+\end{problem}
 
 
 \end{document}

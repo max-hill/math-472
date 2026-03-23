@@ -177,15 +177,14 @@
     \quad \text{where} \quad 
     \mathcal{I}(\theta)= n \E\left[- \frac{\partial^{2}}{\partial \theta^{2} }\Big[\log(f(Y)) \Big]  \right].
   \end{equation*}
-  (This is known as the Cramer-Rao inequality.) If
+  (Note that in the definition of $\mathcal{I}(\theta)$, the $Y$ is a random
+  variable with density function $f$.) If
   $\Var(\widehat{\theta})=\frac{1}{\mathcal{I}(\theta)}$, the estimator
   $\widehat{\theta}$ is said to be \textit{efficient}.
 
   Suppose that $p(y)$ is the Poisson probability function with mean
   $\lambda>0$. Show that $\overline{Y}$ is an efficient estimator of $\lambda$. 
 \end{problem}
-
-
 
 
 \begin{problem}
@@ -262,7 +261,7 @@ assume that $f$ and $\phi$ are differentiable, as shown in the next problem.
 \end{problem}
 
 \begin{problem}[Exercise 9.3 and 9.15?]
-  Let $Y_{1},\ldots,Y_{n}$ denote a random sample fro mthe uniform
+  Let $Y_{1},\ldots,Y_{n}$ denote a random sample from the uniform
   distribution on the interval $(\theta,\theta+1)$. Let
   \begin{equation*}
     \widehat{\theta}_{1} 
@@ -271,7 +270,7 @@ assume that $f$ and $\phi$ are differentiable, as shown in the next problem.
   \end{equation*}
   \begin{enumerate}[(a)]
     \item Show that both $\widehat{\theta}_{1}$ and $\widehat{\theta}_{2}$ are
-    unbiased estiamtors of $\theta$.  
+    unbiased estimators of $\theta$.  
     \item Find the efficiency of $\hat{\theta}_{1}$ relative to
     $\widehat{\theta}_{2}$.
     \item Show that both $\hat{\theta}_{1}$ and $\widehat{\theta}_{2}$ are
