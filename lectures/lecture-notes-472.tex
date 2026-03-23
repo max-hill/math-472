@@ -3885,7 +3885,7 @@ likelihood estimate is the solution to the maximization problem
 
 
 \subsection{Hypothesis testing: the general framework}
-\textit{(Based on section 10.2)}
+\textit{(Based on section 10.2 in the textbook)}
 
 
 \subsubsection{What is a statistical model?}
@@ -3914,8 +3914,8 @@ likelihood estimate is the solution to the maximization problem
     f_{(\mu,\sigma^{2})}(x) = \frac{1}{\sqrt{2\pi\sigma^{2}}}
     \exp \left\{ -\frac{(x-\mu)^{2}}{2\sigma^{2}}\right\}, \quad (x\in \R),
   \end{equation*}
-  is a parametric statistic model (the family of real-valued univariate
-  Guassians).
+  is a parametric statistic model (namely, the family of real-valued
+  univariate Guassians).
 \end{example}
 
 \subsubsection{What is a hypothesis test?}
@@ -3954,16 +3954,17 @@ likelihood estimate is the solution to the maximization problem
   \begin{equation*}
     T = \text{(\# of heads)}
   \end{equation*}
-  So $T$ takes a value between 0 and 10. If $H_{0}$ were true, then there
-  would be about 97.9\% chance of getting between 2 and 8 heads. So it might be
-  reasonable to define our rejection region to be the set
+  So $T$ takes a value between 0 and 10. If $H_{0}$ were true, then (one can
+  check that) there would be about 97.9\% chance of getting between 2 and 8
+  heads. So it might be reasonable to define our rejection region to be the
+  set
   \begin{equation*}
     \text{RR} = \left\{0,1,9,10\right\}
   \end{equation*}
-  In other words, if $T$ takes one of these values, we reject $H_{0}$ and
-  conclude the coin is not a fair coin.
+  since it is improbable to get these values with a fair coin. Using this
+  rejection region, if $T=0,1,9$ or $10$, we would reject $H_{0}$ and conclude
+  the coin is not a fair coin.
 
-  
   This test is not perfect: assuming that $H_{0}$ is true, we will nonetheless
   reject $H_{0}$ about $2.1\%$ of the time.
 \end{example}
@@ -4087,7 +4088,7 @@ These terms are clarified by an example.
   \end{equation*}
   Unfortunately, it is impossible to simultaneously eliminate both types of
   error without perfect information. On one hand, the drone operatore could
-  mimize the probability of a type I error by simply never ordering a strike,
+  minimize the probability of a type I error by simply never ordering a strike,
   in which case $\alpha= \Pr\left[ \text{Type I error} \right] = 0$. But this
   is unsatisfactory, since in that case,
   $\beta= \Pr\left[\text{Type II error} \right]=1$. On the other hand, she
