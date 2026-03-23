@@ -14,7 +14,7 @@ permalink: /homework/
 2026-03-02  | [homework-05](homework/homework-05/homework-05.pdf)     | confidence intervals, bias, MSE, Pareto distribution
 2026-03-13  | [homework-06](homework/homework-06/homework-06.pdf)     | confidence intervals, efficiency, Cramer-Rao, sufficiency
 2026-03-23  | [homework-07](homework/homework-07/homework-07.pdf)     | consistency, sufficiency, maxima and critical points, maximum likelihood
-2026-04-30  | [homework-08.pdf](homework/homework-08/homework-08.pdf), [homeowrk-08.tex](homework/homework-08/homework-08.tex)     | MLE, sufficiency, hypothesis testing, large sample hypothesis testing
+2026-03-31  | [homework-08.pdf](homework/homework-08/homework-08.pdf), [homeowrk-08.tex](homework/homework-08/homework-08.tex)     | MLE, sufficiency, hypothesis testing, large sample hypothesis testing
 
  
 

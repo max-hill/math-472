@@ -3885,6 +3885,11 @@ likelihood estimate is the solution to the maximization problem
 % random variable $X$.
 
 
+\subsection{Hypothesis testing: the general framework}
+\textit{(Based on section 10.2)}
+
+
+
 \begin{definition}[Statistical model]
   \label{def:statistical-model}
   A \demph{statistical model} $\mathcal{P}$ is a collection of probability
@@ -3896,9 +3901,8 @@ likelihood estimate is the solution to the maximization problem
 \end{definition}
 \begin{remark}
   The ``probability distributions'' in \cref{def:statistical-model} may be
-  represented as a collection of cdfs, probability measures, pmfs or pdfs.
-
-  In this class, ``the common sample space'' will always be $\R$.
+  represented as a collection of cdfs, probability measures, pmfs or pdfs. In
+  this class, ``the common sample space'' will always be $\R$.
 \end{remark}
 \begin{example}
   The collection
@@ -3908,152 +3912,12 @@ likelihood estimate is the solution to the maximization problem
   \end{equation*}
   where
   \begin{equation*}
-    f_{(\mu,\sigma^{2})}(x) = \frac{1}{\sqrt{2\pi\sigma^{2}}}\exp \left\{ -\frac{(x-\mu)^{2}}{2\sigma^{2}}\right\}, \quad (x\in \R),
+    f_{(\mu,\sigma^{2})}(x) = \frac{1}{\sqrt{2\pi\sigma^{2}}}
+    \exp \left\{ -\frac{(x-\mu)^{2}}{2\sigma^{2}}\right\}, \quad (x\in \R),
   \end{equation*}
   is a parametric statistic model (the family of univariate Guassians).
 \end{example}
 
-\subsection{A geometric persepctive on statistical models}
-\begin{example}[The Hardy-Weinberg Model]
-  \label{ex:hardy-weinberg-model}
-  Flip two coins simultaneoulsy. The sample space is
-  \begin{equation*}
-    S = \left\{\mathtt{HH},\mathtt{HT}, \mathtt{TT}\right\} 
-  \end{equation*}
-  Assume the probability of heads is $p\in [0,1]$. Let $X$ be the number of
-  heads. The pmf of $X$ is
-  \begin{equation*}
-    \P\left[X=2 \right] = p^{2}, \quad \P\left[X=1 \right] = 2p(1-p), \quad \P\left[X=0 \right] = (1-p)^{2}.
-  \end{equation*}
-  In other words, $X\sim \text{Bin}(2,p)$. Abusing notation, we can represent
-  the distribution of $X$ by the vector
-  \begin{equation*}
-    \begin{bmatrix}
-      p^{2}\\
-      2p(1-p)\\
-      (1-p)^{2}
-    \end{bmatrix}\in \R^{3}.
-  \end{equation*}
-  Letting $p$ range over all values between 0 and 1, we obtain a family of
-  distributions
-  \begin{equation*}
-    \mathcal{P} = \left\{
-      \begin{bmatrix}
-        p^{2}\\
-        2p(1-p)\\
-        (1-p)^{2}
-      \end{bmatrix}\in \R^{3}: p\in [0,1]\right\}.
-  \end{equation*}
-  This statistical model is called the Hardy-Weinberg model, and is used to
-  model allele frequencies in population genetics.
-
-  Interestingly, the statistical model $\mathcal{P}$ can be regarded as a
-  geometric object (i.e., as a subset of 3-dimensional space). Consider the
-  parameterization
-  \begin{equation*}
-    x= \P\left[X=2 \right]=p^{2},\quad y= \P\left[X=1 \right]=2p(1-p),\quad z=\P\left[X=0 \right]=(1-p)^{2},
-  \end{equation*}
-  with $p$ ranging  over all values from 0 to 1. Make two observations
-
-  \begin{itemize}
-    \item Observe that for any value of
-    $p$, the probabilities $x,y$ and $z$ must satisfy
-    \begin{equation}\label{eq:27}
-      \left\{ \begin{array}{l@{}l} x+y+1=0\\
-          0 \leq x,y,z \leq 1 \\  \end{array}\right.
-    \end{equation}
-    The set of points satisfying \cref{eq:27} is the grey triangle on the left
-    (the ``2-dimensional simplex'').
-    \item   And it is readily verified that $x,y,z$ also satisfy the equation
-    \begin{equation*}
-      y^{2}-4xz =0,
-    \end{equation*}
-    which is a the blue cone on the plot below right.
-  \end{itemize}  
-  \begin{center}
-    \includegraphics[scale=.2]{images/hardy-2}
-    \includegraphics[scale=.2]{images/hardy-1}
-  \end{center}
-  The Hardy-Weinberg model $\mathcal{P}$ is the blue curve formed by
-  intersecting the quadric surface $y^{2}-4xz=0$ (the blue cone) with the gray
-  triangle.
-
-  Assume the probability of heads is $p=.42$ in our coin-flipping experiment.
-  Then the distribution of $X$ is given by the vector
-  \begin{equation*}
-    \begin{bmatrix}
-      x\\y\\z
-    \end{bmatrix}
-    =
-    \begin{bmatrix}
-      p^{2}\\
-      2p(1-p)\\
-      (1-p)^{2}
-    \end{bmatrix}
-    =
-    \begin{bmatrix}
-      0.1764\\
-      0.4872\\
-      0.3364
-    \end{bmatrix}.
-  \end{equation*}
-  In other words, the true distribution of $X$ is a point on the curve
-  (namely, the red point below).
-
-  Suppose we perform the experiment 100 times, thereby obtaining 100 random
-  samples $X_{1},\ldots,X_{n}\sim \text{Bin}(2,.42)$. Let
-  \begin{align*}
-    \widehat{x} &= \text{the proportion of samples with two heads}\\
-    \widehat{y} &= \text{the proportion of samples with exactly one heads}\\
-    \widehat{z} &= \text{the proportion of samples with zero heads}\\
-  \end{align*}
-  I did this and got $\widehat{x}=.13$, $\widehat{y}=.55$, and
-  $\widehat{z}=.32$. This data is the point $(.13,.55,.32)$, plotted in purple
-  below.
-  \begin{center}
-    \includegraphics[scale=.3]{images/hardy-3}
-  \end{center}
-  Notice how the data is ``close'' to the true point on the model. As the
-  amount of data increases, the points will converge as the observed
-  proportions $(\widehat{x},\widehat{y},\hat{z})$ converge to their expected
-  values $(.1764,.4872,.3364)$ (by the law of large numbers).
-
-  \Fl{Question:} Suppose I gave you some data, $X_{1},\ldots,X_{100}$, and
-  that I claimed that data came from a coin-flipping experiment with
-  probability of heads $p=.42$. Of course, I could be lying: maybe I actually
-  used a different coin, with $p\neq .42$, or maybe I fabricated the data
-  entirely. How would you go about investigating whether I'm being honest with
-  you about the data really came from a coin-flipping experiment with $p=.42$?
-
-  \Fl{Key idea:} Ask whether the data point is ``close'' to the red point.
-  (Since it is improbable that the observed data will be far away from the
-  true probabilities.)
-  \begin{itemize}
-    \item On one hand, if the data point is close to the red point, then you can't reject
-    the possibility that I'm telling you the truth.
-    
-    \item On the other hand, if the data point is very far away from the red
-    point, then I'm probably lying. Of course,
-    there are two ways that I could be dishonest:
-    \begin{itemize}
-      \item If the data point is (1) close to the curve, but (2) far from the
-      red point, then I'm probably lying that $p=.42$. But you can't reject
-      the possibilty that I flipped a coin with a different value of $p$.
-      \item On the other hand, if the data point is not just far from the red
-      point, but far from the curve, (for example, lying in the red region
-      below), then I'm probably lying about having generated the data by
-      flipping coins.
-      \begin{center}
-        \includegraphics[scale=.5]{images/hardy-rejection}
-      \end{center}
-    \end{itemize}
-  \end{itemize}
-  The next few classes will be about formalizing and quantifying the ideas
-  presented in this example.
-\end{example}
-
-\subsection{Hypothesis testing: the general framework}
-\textit{(Based on section 10.2)}
 
 \begin{definition}[Hypothesis Testing]
   \label{def:hypothesis-testing}
@@ -4061,8 +3925,9 @@ likelihood estimate is the solution to the maximization problem
   $\left\{\P_{\theta}: \theta\in \Theta\right\}$, a \demph{hypothesis} is a
   statement of the form $H: \theta\in \Theta_{0},$ where
   $\Theta_{0}\subseteq \Theta$. Often there are two mutually exclusive
-  hypothesis: a \demph{null hypothesis}, denoted $H_{0}: \theta_{0}\in \Theta_{0}$, and an alternative
-  hypothesis $H_{a}\in \Theta\backslash \Theta_{0}$.
+  hypothesis: a \demph{null hypothesis}, denoted
+  $H_{0}: \theta_{0}\in \Theta_{0}$, and an \demph{alternative hypothesis}
+  $H_{a}\in \Theta\backslash \Theta_{0}$.
 
    
   A \demph{hypothesis test} is a procedure or decision rule utilizing a
@@ -4070,7 +3935,7 @@ likelihood estimate is the solution to the maximization problem
   is rejected, and for which values $H_{0}$ is accepted. The statistic $T$ is
   called the \demph{test statistic}.
 
-  The \demph{rejection region} (RR) specified the values of the test statistic
+  The \demph{rejection region} (RR) specifies the values of the test statistic
   for which the null hypothesis to be rejected in favor of the alternative
   hypothesis. That is, if $T\in\mathrm{RR}$, then we reject $H_{0}$. If
   $T\notin \mathrm{\mathrm{RR}}$, we accept $H_{0}$ (or perhaps, it might be
@@ -4583,4 +4448,142 @@ probably have some relationship; it doesn't give us information about the
 nature of that relationship.
 \end{example}
 
+
+
+\subsection{A geometric persepctive on statistical models}
+\begin{example}[The Hardy-Weinberg Model]
+  \label{ex:hardy-weinberg-model}
+  Flip two coins simultaneoulsy. The sample space is
+  \begin{equation*}
+    S = \left\{\mathtt{HH},\mathtt{HT}, \mathtt{TT}\right\} 
+  \end{equation*}
+  Assume the probability of heads is $p\in [0,1]$. Let $X$ be the number of
+  heads. The pmf of $X$ is
+  \begin{equation*}
+    \P\left[X=2 \right] = p^{2}, \quad \P\left[X=1 \right] = 2p(1-p), \quad \P\left[X=0 \right] = (1-p)^{2}.
+  \end{equation*}
+  In other words, $X\sim \text{Bin}(2,p)$. Abusing notation, we can represent
+  the distribution of $X$ by the vector
+  \begin{equation*}
+    \begin{bmatrix}
+      p^{2}\\
+      2p(1-p)\\
+      (1-p)^{2}
+    \end{bmatrix}\in \R^{3}.
+  \end{equation*}
+  Letting $p$ range over all values between 0 and 1, we obtain a family of
+  distributions
+  \begin{equation*}
+    \mathcal{P} = \left\{
+      \begin{bmatrix}
+        p^{2}\\
+        2p(1-p)\\
+        (1-p)^{2}
+      \end{bmatrix}\in \R^{3}: p\in [0,1]\right\}.
+  \end{equation*}
+  This statistical model is called the Hardy-Weinberg model, and is used to
+  model allele frequencies in population genetics.
+
+  Interestingly, the statistical model $\mathcal{P}$ can be regarded as a
+  geometric object (i.e., as a subset of 3-dimensional space). Consider the
+  parameterization
+  \begin{equation*}
+    x= \P\left[X=2 \right]=p^{2},\quad y= \P\left[X=1 \right]=2p(1-p),\quad z=\P\left[X=0 \right]=(1-p)^{2},
+  \end{equation*}
+  with $p$ ranging  over all values from 0 to 1. Make two observations
+
+  \begin{itemize}
+    \item Observe that for any value of
+    $p$, the probabilities $x,y$ and $z$ must satisfy
+    \begin{equation}\label{eq:27}
+      \left\{ \begin{array}{l@{}l} x+y+1=0\\
+          0 \leq x,y,z \leq 1 \\  \end{array}\right.
+    \end{equation}
+    The set of points satisfying \cref{eq:27} is the grey triangle on the left
+    (the ``2-dimensional simplex'').
+    \item   And it is readily verified that $x,y,z$ also satisfy the equation
+    \begin{equation*}
+      y^{2}-4xz =0,
+    \end{equation*}
+    which is a the blue cone on the plot below right.
+  \end{itemize}  
+  \begin{center}
+    \includegraphics[scale=.2]{images/hardy-2}
+    \includegraphics[scale=.2]{images/hardy-1}
+  \end{center}
+  The Hardy-Weinberg model $\mathcal{P}$ is the blue curve formed by
+  intersecting the quadric surface $y^{2}-4xz=0$ (the blue cone) with the gray
+  triangle.
+
+  Assume the probability of heads is $p=.42$ in our coin-flipping experiment.
+  Then the distribution of $X$ is given by the vector
+  \begin{equation*}
+    \begin{bmatrix}
+      x\\y\\z
+    \end{bmatrix}
+    =
+    \begin{bmatrix}
+      p^{2}\\
+      2p(1-p)\\
+      (1-p)^{2}
+    \end{bmatrix}
+    =
+    \begin{bmatrix}
+      0.1764\\
+      0.4872\\
+      0.3364
+    \end{bmatrix}.
+  \end{equation*}
+  In other words, the true distribution of $X$ is a point on the curve
+  (namely, the red point below).
+
+  Suppose we perform the experiment 100 times, thereby obtaining 100 random
+  samples $X_{1},\ldots,X_{n}\sim \text{Bin}(2,.42)$. Let
+  \begin{align*}
+    \widehat{x} &= \text{the proportion of samples with two heads}\\
+    \widehat{y} &= \text{the proportion of samples with exactly one heads}\\
+    \widehat{z} &= \text{the proportion of samples with zero heads}\\
+  \end{align*}
+  I did this and got $\widehat{x}=.13$, $\widehat{y}=.55$, and
+  $\widehat{z}=.32$. This data is the point $(.13,.55,.32)$, plotted in purple
+  below.
+  \begin{center}
+    \includegraphics[scale=.3]{images/hardy-3}
+  \end{center}
+  Notice how the data is ``close'' to the true point on the model. As the
+  amount of data increases, the points will converge as the observed
+  proportions $(\widehat{x},\widehat{y},\hat{z})$ converge to their expected
+  values $(.1764,.4872,.3364)$ (by the law of large numbers).
+
+  \Fl{Question:} Suppose I gave you some data, $X_{1},\ldots,X_{100}$, and
+  that I claimed that data came from a coin-flipping experiment with
+  probability of heads $p=.42$. Of course, I could be lying: maybe I actually
+  used a different coin, with $p\neq .42$, or maybe I fabricated the data
+  entirely. How would you go about investigating whether I'm being honest with
+  you about the data really came from a coin-flipping experiment with $p=.42$?
+
+  \Fl{Key idea:} Ask whether the data point is ``close'' to the red point.
+  (Since it is improbable that the observed data will be far away from the
+  true probabilities.)
+  \begin{itemize}
+    \item On one hand, if the data point is close to the red point, then you can't reject
+    the possibility that I'm telling you the truth.
+    
+    \item On the other hand, if the data point is very far away from the red
+    point, then I'm probably lying. Of course,
+    there are two ways that I could be dishonest:
+    \begin{itemize}
+      \item If the data point is (1) close to the curve, but (2) far from the
+      red point, then I'm probably lying that $p=.42$. But you can't reject
+      the possibilty that I flipped a coin with a different value of $p$.
+      \item On the other hand, if the data point is not just far from the red
+      point, but far from the curve, (for example, lying in the red region
+      below), then I'm probably lying about having generated the data by
+      flipping coins.
+      \begin{center}
+        \includegraphics[scale=.5]{images/hardy-rejection}
+      \end{center}
+    \end{itemize}
+  \end{itemize}
+\end{example}
 \end{document}
