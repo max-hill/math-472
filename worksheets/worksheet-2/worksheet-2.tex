@@ -1,0 +1,554 @@
+
+%%% THIS DOCUMENT NEEDS TO BE COMPILED WITH LUATEX OR LUALATEX ENGINE
+
+\documentclass[10pt]{amsart}
+% Math Packages
+\usepackage{tcolorbox}
+\usepackage{amsmath, mathtools}
+\usepackage{amssymb}
+\usepackage{amsthm}
+\usepackage{amsfonts}
+\usepackage{bbm}
+\usepackage{breqn}
+\usepackage[margin=1in]{geometry}
+\usepackage{graphicx}
+\usepackage{tikz}
+\usetikzlibrary{arrows.meta}
+\usetikzlibrary{calc}
+\usepackage{forest}
+\usepackage{tikz-qtree}
+\graphicspath{ {./images/} }
+\usepackage{hyperref}
+\usepackage[capitalize]{cleveref}
+\usepackage[shortlabels]{enumitem}
+\usetikzlibrary{arrows,matrix,positioning}
+\usepackage{multicol}
+
+% for the pipe symbol
+\usepackage[T1]{fontenc}
+
+% Colorful Notes
+\usepackage{color} \definecolor{Red}{rgb}{1,0,0} \definecolor{Blue}{rgb}{0,0,1}
+\definecolor{Purple}{rgb}{.5,0,.5} \def\red{\color{Red}} \def\blue{\color{Blue}}
+\def\gray{\color{gray}} \def\purple{\color{Purple}}
+\newcommand{\rnote}[1]{{\red [#1]}} % \rnote{foo} gives '[foo]' in red
+\newcommand{\pnote}[1]{{\purple [#1]}} % \pnote{foo} gives '[foo]' in purple
+\newcommand{\bnote}[1]{{\blue #1}} % \bnote{foo} gives 'foo' in blue
+\newcommand{\gnote}[1]{{\gray #1}} % \gnote{foo} gives 'foo' in gray
+\newcommand{\Max}[1]{{\purple [#1]}} % \bnote{foo} then 'foo' is blue
+
+
+% Claim numbering (the counter restarts after each proof environment)
+\newcounter{claimcount}
+\setcounter{claimcount}{0}
+\newenvironment{claim}{\refstepcounter{claimcount}\par\addvspace{\medskipamount}\noindent\textbf{Claim \arabic{claimcount}:}}{}
+\usepackage{etoolbox}
+\AtBeginEnvironment{proof}{\setcounter{claimcount}{0}}
+\newenvironment{claimproof}{\par\addvspace{\medskipamount}\noindent\textit{Proof of Claim  \arabic{claimcount}.}}{\hfill\ensuremath{\qedsymbol} \tiny{Claim}
+
+  \medskip}
+% Add claim support to cleverref
+\crefname{claimcount}{Claim}{Claims}
+
+
+% Math Environments
+\newtheorem{theorem}{Theorem}
+\newtheorem{assumption}[theorem]{Assumption}
+\newtheorem{lemma}[theorem]{Lemma}
+\newtheorem{proposition}[theorem]{Proposition}
+\newtheorem{corollary}[theorem]{Corollary}
+\newtheorem{question}[theorem]{Question}
+\theoremstyle{definition}
+\newtheorem{definition}[theorem]{Definition}
+\newtheorem{remark}[theorem]{Remark}
+\newtheorem{example}[theorem]{Example}
+\newtheorem{notation}[theorem]{Notation}
+\newtheorem{problem}[theorem]{Problem}
+
+% Matrices and Column Vectors. 
+\usepackage{stackengine}
+\setstackgap{L}{1.0\normalbaselineskip}
+\usepackage{tabstackengine}
+\setstackEOL{;}% row separator
+\setstackTAB{,}% column separator
+\setstacktabbedgap{1ex}% inter-column gap
+\setstackgap{L}{1.5\normalbaselineskip}% inter-row baselineskip
+\let\nmatrix\bracketMatrixstack  %Usage: \nmatrix{1,2,3\4,5,6}
+\newcommand\cv[1]{\setstackEOL{,}\bracketMatrixstack{#1}} %usage: \cv{1,2,3}
+
+% table alignment
+\usepackage{array}
+\usepackage{booktabs}
+
+% Custom Math Coqmmands
+\newcommand{\vt}{\vskip 5mm} % vertical space
+\newcommand{\fl}{\noindent\textbf} % first line
+\newcommand{\Fl}{\vt\noindent\textbf} % first line with space above
+\newcommand{\norm}[1]{\left\lVert#1\right\rVert} % norm
+\newcommand{\pnorm}[1]{\left\lVert#1\right\rVert_p} % p-norm
+\newcommand{\qnorm}[1]{\left\lVert#1\right\rVert_q} % q-norm
+\newcommand{\1}[1]{\textbf{1}_{\left[#1\right]}} % indicator function 
+\def\limn{\lim_{n\to\infty}} % shortcut for lim as n-> infinity
+\def\sumn{\sum_{n=1}^{\infty}} % shortcut for sum from n=1 to infinity
+\def\sumkn{\sum_{k=1}^{n}} % shortcut for sum from k=1 to n
+\def\sumin{\sum_{i=1}^{n}} % shortcut for sum from i=1 to n
+\def\SAs{\sigma\text{-algebras}} % shortcut for $\sigma$-algebras
+\def\SA{\sigma\text{-algebra}} % shortcut for $\sigma$-algebra
+\def\Ft{\mathcal{F}_t} % time-indexed sigma-algebra (t)
+\def\Fs{\mathcal{F}_s} % time-indexed sigma-algebra (s)
+\def\F{\mathcal{F}} % sigma-algebra
+\def\G{\mathcal{G}} % sigma-algebra
+\def\R{\mathbb{R}} % Real numbers
+\def\N{\mathbb{N}} % Natural numbers
+\def\Z{\mathbb{Z}} % Integers
+\def\E{\mathbb{E}} % Expectation
+\def\P{\mathbb{P}} % Probability
+\def\Q{\mathbb{Q}} % Q probability
+\def\dist{\text{dist}} %Text 'dist' for things like 'dist(x,y)'
+\newcommand{\indep}{\perp \!\!\! \perp}  %independence symbol
+\def\Var{\mathrm{Var}} % Variance
+\def\tr{\mathrm{tr}} % trace
+
+% Brackets and Parentheses
+\def\[{\left [}
+    \def\]{\right ]}
+% \def\({\left (}
+%   \def\){\right )}
+
+
+
+\usepackage{color}
+\definecolor{Red}{rgb}{1,0,0}
+\definecolor{Blue}{rgb}{0,0,1}
+\definecolor{Purple}{rgb}{.5,0,.5}
+\def\red{\color{Red}}
+\def\blue{\color{Blue}}
+\def\gray{\color{gray}}
+\def\purple{\color{Purple}}
+\definecolor{RoyalBlue}{cmyk}{1, 0.50, 0, 0}
+\newcommand{\dempfcolor}[1]{{\color{RoyalBlue}#1}} 
+\newcommand{\demph}[1]{\dempfcolor{\textbf{\textit{#1}}}}
+
+
+
+\begin{document}
+\begin{center}
+  \section*{Worksheet 2: Hypothesis tests}
+\end{center}
+
+\textit{\textbf{Instructions:} This worksheet presents three examples of
+  hypothesis tests. Please work in groups. You will be asked to turn in your
+  group worksheet on April 10.}
+
+
+
+\phantom{don't write in starlight, cause the words may come out real}
+\begin{center}
+  \begin{tcolorbox}[ width=1\textwidth, colback=white, colframe=black,
+    title=Background on chi-squared statistic, colbacktitle=blue!15,
+    coltitle=black ]
+    Suppose we have a multinomial random variable with $k$ outcomes, labelled
+    $1,\ldots,k$, constructed from $n$ trials such that in each trial outcome
+    $i$ occurs with probability $p_{i}$. Recall, the \demph{chi-squared
+      statistic} is defined as
+    \begin{equation*}
+      \chi^{2}:= \sum_{i=1}^{k} \frac{\left(N_{i}-E_{i}\right)^{2}}{E_{i}},
+    \end{equation*}
+    where $E_{i} = (\text{expected \# of times outcome $i$ occurs})$, and
+    $N_{i}= (\text{\# of times outcome $i$ is observed})$.
+
+    We'll illustrate the use of this statistic in two different types of
+    hypothesis tests:
+    \begin{itemize}
+      \item For a ``goodness of fit test'', $\chi^{2}$ has a chi-squared
+      distribution with $k-1$ degrees of freedom.
+      \item For a ``test of independence'' using an $r\times c$ contingency
+      table, $\chi^{2}$ has a chi-squared distribution with $(r-1)\times(c-1)$
+      degrees of freedom.
+    \end{itemize}
+
+    Recall, the pdf of a chi-squared random variable with $d$ degrees of
+    freedom is
+    \begin{equation*}
+      f(x) = \left\{ \begin{array}{l@{\quad:\quad}l} \frac{1}{2^{d/2}\Gamma(d/2)}x^{\frac{d}{2}-1}e^{-x/2} & x \geq 0\\ 0& x<0\end{array}\right..
+    \end{equation*}
+  \end{tcolorbox}
+\end{center}
+
+\subsection{Hypothesis test type \#1: A ``goodness of fit'' test}
+
+
+\vspace{1em}
+\begin{problem}[Goodness-of-fit test]
+  According to the \textit{Mars Wrigley Confectionery Company}, the five
+  colors of skittles are produced in equal proporitions. Is that really true?
+  
+
+  Let's take their claim to be the null hypothesis.
+  \begin{equation*}
+    H_{0}: p_{\rm green} = p_{\rm yellow}=p_{\rm red} = p_{\rm orange} = p_{\rm purple} = 0.2.
+  \end{equation*}
+  The alternative hypothesis is
+  \begin{equation*}
+    H_{a}: \text{at least one of the probabilities is different from $0.2$}
+  \end{equation*}
+
+  \begin{enumerate}[(a)]
+    \setlength{\itemsep}{1em}
+    \item Go grab a random sample of at least 30 skittles. What is your sample
+    size?
+
+    \item For each
+    $i\in \left\{\text{green}, \text{yellow}, \text{red}, \text{orange},
+      \text{purple}\right\}$, let $E_{i}$ denote the expected number of
+    skittles of color $i$ in your sample, assuming that $H_{0}$ is true. Find
+    $E_{i}$ for all $i$.
+    
+    \item Fill in the following table with expected and observed counts:
+    \begin{center}
+      \begin{tabular}{l|l|l|l|l|l|}
+        & \textbf{green} & \textbf{yellow} & \textbf{  red  } & \textbf{orange} & \textbf{purple} \\ \hline
+        \textbf{expected} &  $\phantom{\displaystyle\int}$ &   &       &   &   \\ \hline
+        \textbf{observed} &  $\phantom{\displaystyle\int}$ &   &       &   &   \\ \hline
+      \end{tabular}
+    \end{center}
+    \item Compute the chi-squared statistic $\chi^{2}$ for your sample of
+    skittles. \label{item:4}
+    \item Circle the correct phrase to complete the sentence: \textit{A large
+      chi-square value means the observed data is (very different from / very
+      similar to) the expected data.}
+    \item Under the null hypothesis of a goodness-of-fit test, $\chi^{2}$ has
+    a chi-squared distribution with $k-1$ degrees of freedom. Set up and
+    evaluate an integral to determine the p-value
+    $\P\left[\chi^{2}\geq u\right]$, where $u$ is the value you got in part \ref{item:4}.
+    \item Write a sentence or two interpreting your result.
+  \end{enumerate}
+\end{problem}
+
+\newpage
+\subsection{Hypothesis test type \#1: A one-sided test of parameter value}
+
+\begin{problem}
+  The organiziation \textit{Physicians for Human Rights} documented attacks on
+  health care facilities during the Syrian civil war. During the period from
+  January 2012 through September 30, 2015, the average rate of such attacks by
+  Syrian government forces was approximately
+  \begin{equation*}
+    \theta_0 = 76 \text{ attacks per year}.
+  \end{equation*}
+  On September 30, 2015, the Russian military began an air campaign in support
+  of the Syrian government, substantially increasing aerial operations. From
+  that date until December 31, 2016 (a period of $t=1.25$ years), there were
+  $X=146$ documented attacks on healthcare facilities by Syrian and Russian
+  forces.
+
+  \begin{enumerate}[(a)]
+    \setlength{\itemsep}{1em}
+
+    \item Let $\theta$ denote the rate of attacks per year during the time
+    period after September 30, 2015. Suppose we wish to assess whether Russian
+    intervention coincided with an increase in the rate of attacks on
+    healthcare facilities, or whether the rate of such attacks stayed the
+    same. State the relevant null and alternative hypotheses.
+    \item Let $\widehat{\theta} = X/t$ be the observed rate of attacks in the later
+    period, and define the test statistic
+    \begin{equation*}
+      T = \frac{\widehat{\theta}- \theta_{0}}{\sqrt{\theta_{0}/t}}.
+    \end{equation*}
+    Make the following two assumptions:
+    \begin{itemize}
+      \item Assume that if the rate of attacks per year is $\theta$, then the
+      number of attacks in a period of $t$ years is Poisson distributed with
+      mean $\lambda=t \theta$; i.e., so that $X\sim \text{Poisson}(t\theta).$
+      \item Assume that if $Y\sim \text{Poisson}(\lambda)$ and $\lambda>5$ then
+      $Y$ is approximately normally distributed with mean $\lambda$ and
+      variance $\lambda$.
+    \end{itemize}
+    Using these two assumptions, show that $T$ has approximately a standard
+    normal distribution if $H_{0}$ is true.
+    \item Using $T$ as a test statistic, formulate a rejection region of the
+    form $\left[ T>k \right]$ at a significance level of $\alpha=.05$. In
+    other words, find the value of $k$ such that
+    \begin{equation*}
+      \P\left[T>k \mid H_{0}\text{ is true}\right] = .05
+    \end{equation*}
+    Sketch a picture to illustrate your choice of $k$.
+    \item Compute the observed value of $T$ and decide whether to reject
+    $H_{0}$ or not.
+    \item Compute the corresponding $p$-value for your test statistic.
+    (Recall, the $p$-value is the probability of observing a value at least as
+    large as what you observed, assuming $H_{0}$ is true.)
+  \end{enumerate}
+\end{problem}
+
+\newpage
+\subsection{Hypothesis test type \#3: Test of independence}
+\begin{problem}[Test of Independence]
+  A 2007 study of $n=186$ autistic Japanese childen examined a possible
+  relationship between the onset of autism-related developmental regression
+  and exposure to the measles mumps rubella (MMR) vaccine.\footnote{Uchiyama
+    et al, \textit{J Autism Dev Disord}, 2007.
+    \url{https://doi.org/10.1007/s10803-006-0157-3}} One of their analyeses
+  involved the following dataset: \Fl{Table of observed values}
+  \begin{center}
+    \begin{tabular}{l|l|l|}
+      & \textbf{Vaccinated} & \textbf{Not Vaccinated} \\ \hline
+      \textbf{Regression}    & $15\phantom{\displaystyle\int}$ & $39$ \\ \hline
+      \textbf{No regression} & $45\phantom{\displaystyle\int}$ & $87$ \\ \hline
+    \end{tabular}
+  \end{center}
+  \vspace{1em}
+  We'll consider the following hypothesis testing problem:
+  \begin{gather*}
+    H_{0}: \text{vaccination status and autistic regression are independent}\\
+    \text{versus}\\
+    H_{a}: \text{there is a relationship between vaccination status and autistic regression}
+  \end{gather*}
+  \begin{enumerate}[(a)]
+    \setlength{\itemsep}{1em}
+    \item From the table of observed values, find:
+    \begin{itemize}
+      \item[]
+      \item the total number of children exhibiting autistic regression
+      \item the total number of children not exhibiting autistic regression
+      \item the total number of vaccinated children
+      \item the total number of unvaccinated children
+      \item the total number of children
+      \item[]  
+    \end{itemize}
+    \item Let $p$ be the probability that a child exhibits autistic
+    regression, and let $q$ be the probability that a child is vaccinated. Use
+    your answers from the previous part to estimate $p$ and $q$.
+    \item If $H_{0}$ is true, then expected number of children who are both
+    vaccinated and exhibit autistic regression is $e_{11} = npq.$ Find
+    $e_{11},e_{12},e_{21},$ and $e_{22}$, and arrange them in the following
+    table:
+    \Fl{Table of expected counts}
+    \begin{center}
+      \begin{tabular}{l|l|l|}
+        & \textbf{Vaccinated} & \textbf{Not Vaccinated} \\ \hline
+        \textbf{Regression}    & $e_{11}=\phantom{\displaystyle\int} $ & $e_{12}=$ \\ \hline
+        \textbf{No regression} & $e_{21}=\phantom{\displaystyle\int}$ & $e_{22}=$ \\ \hline
+      \end{tabular}
+      \vspace{1em}
+    \end{center}
+    \item Compute the chi-squared statistic
+    \begin{equation*}
+      \chi^{2} = \sum_{\text{all }i,j} \frac{\left( o_{ij}-e_{ij} \right)^{2} }{e_{ij}} 
+    \end{equation*}
+    where $o_{11},o_{12},o_{21},$ and $o_{22}$ are the observed values. 
+    \item Set up and evaluate an integral to compute a $p$-value for your
+    $\chi^{2}$ statistic.
+    \item Write a sentence or two interpreting your result.
+  \end{enumerate}
+\end{problem}
+
+
+\newpage
+\begin{problem}[Simpson's Paradox: The Perils of Aggregation]
+
+  In this problem we compare the performance of two medical centers, Hospital
+  A and Hospital B. We have the following survival data for surgery patients from
+  these two hospitals from the last 6 weeks:
+  \begin{center}
+    \vspace{1em}
+    \begin{tabular}{lcc}
+      \hline
+      \textbf{Outcome} & \textbf{Hospital A} & \textbf{Hospital B} \\
+      \hline
+      Died     &   63     & 16       \\
+      Survived & 2037       & 784       \\
+      \hline
+    \end{tabular}
+    \vspace{2em}
+  \end{center}
+  \begin{enumerate}[(a)]
+    \setlength{\itemsep}{1em}
+    \item \label{item:1} Compare the survival rates of the two hospitals: what percentage of
+    patients at Hospital A survive? What about Hospital B?
+    \item Is there a relationship between patient survival and which hospital
+    they go to? Formulate and perform a chi-squared test of independence. What
+    $p$-value do you get? In one or two sentences, state your null hypothesis
+    and draw a conclusion about it.
+    \item We now consider a third factor: the condition of the patient when
+    they are admitted for surgery. Patients are either classified as ``poor
+    condition'' or ``good condition''. Here's the more detailed data:
+
+    \begin{center}
+      \begin{tabular}{cc}
+        \begin{tabular}{lcc}
+          \multicolumn{3}{c}{\textbf{Good Condition}} \\ \hline
+          \textbf{Outcome} & \textbf{Hospital A} & \textbf{Hospital B} \\ \hline
+          Died     &    6    & 8       \\
+          Survived & 594       & 592       \\ \hline
+        \end{tabular}
+                       \quad \quad \quad \quad    &
+                             \begin{tabular}{lcc}
+                               \multicolumn{3}{c}{\textbf{Poor Condition}} \\ \hline
+                               \textbf{Outcome} & \textbf{Hospital A} & \textbf{Hospital B} \\ \hline
+                               Died     &  57      & 8       \\
+                               Survived & 1443       & 192       \\ \hline
+                             \end{tabular}
+      \end{tabular}
+    \end{center}
+    What fraction of Hospital A's patients were classified as good
+    condition? What about Hospital B?
+    \item \label{item:2} Out of the patients in \textbf{good condition} who went to hospital A,
+    what fraction survived? What about hostpial B? Compare these two survival
+    rates.
+    \item \label{item:3} Out of the patients in \textbf{bad condition} who went to hospital A,
+    what fraction survived? What about hostpial B? Compare these two survival
+    rates.
+    \item Compare your answers to parts
+    \ref{item:1}~\ref{item:2}~\ref{item:3}. What you are observing is called
+    \demph{Simpson's Paradox}. How can this discrepancy be
+    explained? If you are facing surgery, should you go to Hospital A or
+    Hospital B?
+    \item Fill in the following contingency table:
+    \begin{center}
+      \vspace{1em}
+      \begin{tabular}{|l|c|c|}
+        \hline
+        \textbf{Outcome} & \textbf{Good Condition} & \textbf{Bad Condition} \\
+        \hline
+        Died     &    $\phantom{\displaystyle\int}$    &        \\
+        \hline
+        Survived &        &        $\phantom{\displaystyle\int}$\\ 
+        \hline
+      \end{tabular}
+    \end{center}
+    \item Is there a relationship between patient survival and the condition
+    that they are admitted for surgery? Formulate and perform a chi-squared
+    test of independence and report a $p$-value.
+  \end{enumerate}
+\end{problem}
+
+
+
+
+\newpage
+\begin{problem}[Another example of Simpson's Paradox]
+  The influence of race on imposition of the death penalty for murder has been
+  much studied and contested in the courts. The following three-way table
+  classifies 326 cases in which the defendant was conficted of
+  murder.\footnote{Data from M. Radelet, \textit{American Sociological Review}, 1981.
+    \url{https://doi.org/10.2307/2095088}} The three variables are the
+  defendant's race, the victim's race, and whether or not hte defendant was
+  sentenced to death.
+
+  \begin{center}
+    \begin{tabular}{cc}
+      \begin{tabular}{lcc}
+        \multicolumn{3}{c}{\textbf{White Defendants}} \\ \hline
+        \textbf{Victim Race} & \textbf{Yes} & \textbf{No} \\ \hline
+        White & 19 & 132 \\
+        Black & 0  & 9   \\ \hline
+      \end{tabular}
+                            \quad \quad \quad \quad &
+                               \begin{tabular}{lcc}
+                                 \multicolumn{3}{c}{\textbf{Black Defendants}} \\ \hline
+                                 \textbf{Victim Race} & \textbf{Yes} & \textbf{No} \\ \hline
+                                 White & 11 & 52  \\
+                                 Black & 6  & 97  \\ \hline
+                               \end{tabular}
+    \end{tabular}
+  \end{center}
+  \vspace{3em}
+  \begin{enumerate}[(a)]
+    \setlength{\itemsep}{7em}
+    \item From these data make a 2-way table of defendant's race by death
+    penalty. Does it look like there is a relationship between these two
+    things? 
+    \item Suppose you performed a chi-squared test of independence and for
+    the table you just made. You get $p=.64$. How do you interpret this
+    result?
+    \item Show that Simpson's paradox holds: specifically, that
+    \begin{itemize}
+      \item a higher percent of white defendants are sentenced to death
+      overall
+      \item but for both black and white victims, a higher percent of black
+      defendants are sentenced to death.
+    \end{itemize}
+    \item Basing your reasoning on the data, explain why the paradox holds
+    in language that a judge could understand.
+  \end{enumerate}
+
+
+ 
+\end{problem}
+
+
+% \newpage
+% \begin{problem}[One True Love]
+  
+%   A poll is taken of $n=2625$ individuals; people were survedy on some
+%   demographic information and also asked whether or not they believed in ``the
+%   one true love''.
+
+%   In this problem, we test whether or not there is a relationshp between the
+%   following two factors
+%   \begin{itemize}
+%     \item Factor 1: education level
+%     \item Factor 2: sentiment about true love
+%   \end{itemize}
+
+%   We can construct a two-way contingency table for these two factors, as follows:
+%   \begin{center}
+%     \begin{tabular}{l|r|r|r|r}
+%       \textbf{Response} & \textbf{HS} & \textbf{Some College} & \textbf{College} & \textbf{Total} \\
+%       \hline
+%       Agree       & 363 & 176 & 196 & 735 \\
+%       Disagree    & 557 & 466 & 789 & 1812 \\
+%       Don't Know  &  20 &  26 &  32 & 78 \\
+%       \hline
+%       \textbf{Total} & 940 & 668 & 1017 & 2625 \\
+%     \end{tabular}
+%   \end{center}
+%   This contingency table has $r=3$ rows and $c=3$ columns (plus a row and
+%   column for totals). The data counts themselves take the form of a $3\times 3$ matrix
+%   \begin{equation*}
+%     \begin{matrix}
+%       Y_{11} & Y_{12} & Y_{13} & \cdots & Y_{1c}\\
+%       Y_{21} & Y_{22} & Y_{23} & \cdots & Y_{2c}\\
+%       \vdots &&&&\vdots \\
+%       Y_{r1} & Y_{r2} & Y_{r3} & \cdots & Y_{rc}\\
+%     \end{matrix}
+%   \end{equation*}
+%   where $Y_{ij}$ is the number of samples for which factor $1$ is $i$ and
+%   factor 2 is $j$. We've also added row and column totals in the margins. We
+%   can construct a coresponding table of ``estimated expected values'' of the form
+
+%   \begin{equation*}
+%     \begin{matrix}
+%       E_{11} & E_{12} & E_{13} & \cdots & E_{1c}\\
+%       E_{21} & E_{22} & E_{23} & \cdots & E_{2c}\\
+%       \vdots &&&&\vdots \\
+%       E_{r1} & E_{r2} & E_{r3} & \cdots & E_{rc}\\
+%     \end{matrix}
+%   \end{equation*}
+%   by the formula
+%   \begin{equation}\label{eq:1}
+%     E_{ij} = n\times \frac{(\text{sum of row }i)}{n} \times \frac{(\text{sum of column }j)}{n}
+%   \end{equation}
+%   which gives us a new table of estimated expected values.
+
+%   \Fl{Fact:} For contingency tables with $r$ rows and $c$ columns, the chi-squared
+%   statistic
+%   \begin{equation*}
+%     \chi^{2} := \sum_{i=1}^{r}\sum_{j=1}^{c} \frac{\left( Y_{ij}-E_{ij} \right)^{2} }{E_{ij}}  
+%   \end{equation*}
+%   has chi-squared distribution with $(r-1)\times(c-1)$ degrees of freedom.
+
+%   \fl{Questions:}
+%   \begin{enumerate}[(a)]
+%     \setlength{\itemsep}{3em}
+%     \item Explain why the formula in \Cref{eq:1} holds.
+%     \item What is the degrees of freedom for the chi-squared statistic in this
+%     problem? Write down the formula for the pdf of the chi-squared statistic.
+%     \item Do the $\chi^{2}$ test of independence (i.e., compute a table of
+%     expected values, find $\chi^{2}$, and use the known distribution of the
+%     statistic to compute a $p$-value). 
+%     \item Intepret your result.
+%   \end{enumerate}
+% \end{problem}
+\end{document}

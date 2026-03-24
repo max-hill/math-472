@@ -39,6 +39,12 @@ title: Lecture Notes
 2026-03-06  | 19   | (Section 9.4) Applications of the factorization criterion
 2026-03-09  | 20   | (Section 9.5) The Rao-Blackwell theorem, MVUE
 2026-03-11  | 21   | (Section 9.7) Maximum likelihood estimation
+2026-03-23  | 22   | (Section 10.2) Hypothesis testing, decision errors
+2026-03-25  | 23   | (Section 10.3) Large sample hypothesis tests
+2026-03-27  | 24   | (Section 14.2-14.4) Chi-squared hypothesis tests
+2026-03-30  |    | [hypothesis-testing-worksheet](worksheets/worksheet-2/worksheet-2.pdf)
+2026-04-01  |    | In-class Midterm 2
+
  
 
 # Other Links
