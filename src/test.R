@@ -654,3 +654,17 @@ pnorm(q=1.16,lower.tail=FALSE)
 
 
 (1/3-1-3/6+1/6)
+
+# Create the contingency table
+M <- matrix(c(15, 39,
+             45, 87),
+            nrow = 2, byrow = TRUE)
+
+# Add labels (optional but helpful)
+rownames(M) <- c("autism", "no autism")
+colnames(M) <- c("vaxxed", "unvax")
+
+M
+
+# Chi-squared test of independence
+chisq.test(M,correct=FALSE)
