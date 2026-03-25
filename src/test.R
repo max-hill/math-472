@@ -668,3 +668,10 @@ M
 
 # Chi-squared test of independence
 chisq.test(M,correct=FALSE)
+
+
+
+t = 1.618
+1/t^2
+.381
+round(x,digits=0)

@@ -4120,13 +4120,29 @@ testing problem is
 \begin{equation*}
   H_{0}: \theta=\theta_{0} \quad \text{versus} \quad H_{a}: \theta>\theta_{0}.
 \end{equation*}
-\Fl{Setting:} Assume the sampling distribution of $\widehat{\theta}$ is
-approximately normal with mean $\theta$ and standard error
-$\sigma_{\widehat{\theta}}$. This is a reasonably common situation when $n$ is
-large.
 
-Under these assumptions, and assuming that $H_{0}$ is true, the sampling
-distribution of $\widehat{\theta}$ has the following density curve:
+\Fl{Key idea:} If $\widehat{\theta}$ is much larger than the hypothesized
+value $\theta_{0}$, we should reject $H_{0}$.
+
+
+\Fl{Normality assumption:} Assume the sampling distribution of
+$\widehat{\theta}$ is approximately normal with mean $\theta$ and standard
+error $\sigma_{\widehat{\theta}}$. Note: we are not assuming that the
+assumption of $Y_{1},\ldots,Y_{n}$ are normal, only that the statistic
+$\widehat{\theta}$ is normally distributed. This is a reasonably common
+situation when $n$ is large.
+
+
+\Fl{Constructing the rejection region:} We pick a cutoff $k$ such that we
+reject $H_{0}$ if $\widehat{\theta}>k$. That is, our rejection region take the
+form
+\begin{equation*}
+  \text{RR} = \left[ \widehat{\theta}>k \right]. 
+\end{equation*}
+
+Under the normality assumption, if $H_{0}$ is true (i.e., when
+$\theta=\theta_{0}$), the sampling distribution of $\widehat{\theta}$ has the
+following density curve:
 
 \begin{center}
   \begin{tikzpicture}[x=1.8cm,y=3cm,>=stealth]
@@ -4151,15 +4167,6 @@ distribution of $\widehat{\theta}$ has the following density curve:
   \end{tikzpicture}
 \end{center}
 
-\Fl{Main idea:} If $\widehat{\theta}$ is much larger than the hypothesized
-value $\theta_{0}$, we should reject $H_{0}$.
-
-\Fl{Constructing the rejection region:} We pick a cutoff $k$ such that we
-reject $H_{0}$ if $\widehat{\theta}>k$. That is, our rejection region take the
-form
-\begin{equation*}
-  \text{RR} = \left[ \widehat{\theta}>k \right]. 
-\end{equation*}
 To pick an appropriate $k$, we first decide the maximum level $\alpha$ of
 type-I errors that we are willing to tolerate. For example, we want say,
 $\alpha= \P\left[\text{Type-I error} \right]=.05$, then we choose $k$ such
@@ -4290,14 +4297,12 @@ that the shaded region below has area $.05$:
   significance level $\alpha=0.01$, so we didn't reject the null hypothesis.
 \end{example}
 
-\section{Test of independence}
-\textit{Based on chapters 14.2-14.4}
-
-Recall that to construct a \textit{binomial} random variable, you flip coins
+\subsection{Multinomial distribution}
+Recall that to construct a \textit{binomial distribution}, you flip coins
 $n$ times, and count the number of heads. The coin flip only has two outimes.
 What if, instead of flipping coin, we rolled a dice with $k$ sides, and
 counted the number of times we get $1,2,\ldots,k$? In that case, we get an
-example of what is called \demph{multinomial} random variable. To be precise:
+example of what is called \demph{multinomial distribution}. To be precise:
 
 \begin{definition}[Multinomial Distribution]
   \label{def:multinomial}
@@ -4316,6 +4321,12 @@ example of what is called \demph{multinomial} random variable. To be precise:
 \end{definition}
 
 This is an example of a categorical random variable ($k$ categories). 
+
+\newpage
+\section{2026-03-27 | Week 10 | Lecture 24}
+\subsection{Tests of independence}
+\textit{Based on chapters 14.2-14.4}
+
 
 
 \begin{theorem}
@@ -4443,9 +4454,9 @@ $p\approx \frac{31}{54}$ and $q\approx \frac{33}{54}$ gives
     \textbf{Skipped}  & $14.1$           & $8.9$            
   \end{tabular}
 \end{equation}
-Using the values of
-\Cref{eq:table-of-observed-values,eq:table-of-estimated-expected-values}, we
-compute a chi-squared statistic:
+Using the values recorded in Tables \ref{eq:table-of-observed-values} and
+\ref{eq:table-of-estimated-expected-values}, we can compute the chi-squared
+statistic:
 \begin{align*}
   \chi^{2} 
   &= \sum_{\text{all table entries}} \frac{\left( \text{observed
@@ -4485,7 +4496,8 @@ nature of that relationship.
 \end{example}
 
 
-
+\newpage
+\section{Future date}
 \subsection{A geometric persepctive on statistical models}
 \begin{example}[The Hardy-Weinberg Model]
   \label{ex:hardy-weinberg-model}
