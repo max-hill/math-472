@@ -4168,7 +4168,8 @@ following density curve:
 \end{center}
 
 To pick an appropriate $k$, we first decide the maximum level $\alpha$ of
-type-I errors that we are willing to tolerate. For example, we want say,
+type-I errors that we are willing to tolerate. Recall from the last lecture
+that this is called the \textit{significance level}. For example, we want say,
 $\alpha= \P\left[\text{Type-I error} \right]=.05$, then we choose $k$ such
 that the shaded region below has area $.05$:
 
@@ -4235,7 +4236,7 @@ that the shaded region below has area $.05$:
     \begin{tikzpicture}[x=1cm,y=4cm,>=stealth]
       % Axes
       \draw[->] (-3,0) -- (3,0) node[right] {$x$};
-      \draw[->] (0,0) -- (0,0.7);
+      \draw[<-] (0,.5) -- (0,0) node[below] {0};
 
       % Parameters
       \def\k{2.33}
@@ -4314,13 +4315,15 @@ example of what is called \demph{multinomial distribution}. To be precise:
   \end{equation*}
   for each $i=1,\ldots,k$. Then the random vector
   \begin{equation*}
-    X = (X_{1},\ldots,X_{k})
+    X =
+    \begin{bmatrix}
+      X_{1}\\X_{2}\\\vdots \\ X_{k}
+    \end{bmatrix}
   \end{equation*}
   is said to have a \demph{multinomial distribution} with parameters
   $(p_{1},\ldots,p_{k})$ and number of trials $n$.
 \end{definition}
 
-This is an example of a categorical random variable ($k$ categories). 
 
 \newpage
 \section{2026-03-27 | Week 10 | Lecture 24}
