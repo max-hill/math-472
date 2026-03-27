@@ -4331,24 +4331,36 @@ example of what is called \demph{multinomial distribution}. To be precise:
 \textit{Based on chapters 14.2-14.4}
 
 
-
-\begin{theorem}
-  \label{thm:chi-squared-theorem}
-  Suppose $X=(X_{1},\ldots,X_{k})$ is a multinomial random variable with
-  parameters $p_{1},\ldots,p_{k}$. Define a new random variable $\chi^{2}$,
-  called the \demph{chi-squared statistic} by 
+\begin{definition}[Chi-squared statistic]
+  Suppose we repeatedly conduct an experiment with $k$ possible outcomes. The
+  \demph{chi-squared statistic} is defined as
   \begin{equation}\label{eq:29}
-    \chi^{2} := \sum_{i=1}^{k} \frac{\left(X_{i}-np_{i}\right)^{2}}{np_{i}}.
+    \chi^{2}:= \sum_{i=1}^{k} \frac{\left(N_{i}-E_{i}\right)^{2}}{E_{i}},
   \end{equation}
-  Assume that $np_{i}\geq 5$ for all $i=1,\ldots,k$. Then $\chi^{2}$ has
-  approximately chi-squared distribution with $k-1$ degrees of freedom
-\end{theorem}
+  where $E_{i} = (\text{expected \# of times outcome $i$ occurs})$, and
+  $N_{i}= (\text{\# of times outcome $i$ is observed})$.
+\end{definition}
+
 \begin{remark}
-  Since $\E\left[X_{i} \right]= np_{i}$, the right-hand side of \cref{eq:29} has the form
+  The right-hand side of \cref{eq:29} has the form
   \begin{equation*}
     \sum_{i=1}^{k} \frac{\left( \text{observed}- \text{expected} \right)^{2} }{ \text{expected}} 
   \end{equation*}
 \end{remark}
+
+\begin{theorem}
+  \label{thm:chi-squared-theorem}
+  If $X=(X_{1},\ldots,X_{k})$ is a multinomial random variable with
+  parameters $p_{1},\ldots,p_{k}$, then 
+  \begin{equation*}
+    \chi^{2} = \sum_{i=1}^{k} \frac{\left(X_{i}-np_{i}\right)^{2}}{np_{i}}.
+  \end{equation*}
+  If $np_{i}\geq 5$ for all $i=1,\ldots,k$. Then $\chi^{2}$ has approximately
+  chi-squared distribution with $k-1$ degrees of freedom.
+\end{theorem}
+
+
+
 \begin{proof}[Proof sketech of \cref{thm:chi-squared-theorem}]
   Key ingredients:
   \begin{itemize}
@@ -4371,7 +4383,7 @@ example of what is called \demph{multinomial distribution}. To be precise:
 \end{definition}
 \begin{example}[Test of independence]
 
-For example, puppose we have a population of $n=54$ students, which we divide
+For example, suppose we have a population of $n=54$ students, which we divide
 up according two to factors
 \begin{enumerate}[(i)]
   \item whether they attended class regularly or not
@@ -4469,14 +4481,13 @@ statistic:
 \end{align*}
 
 By \cref{thm:chi-squared-theorem}, we know that $\chi^{2}$ has a chi-squared
-distribution. The degrees of freedom thing isn't so clear from that theorem,
-but when working with a contingency table, the degrees of freedom is given by
-the equation
+distribution. When computing a chi-squared test statistic from a contingency
+table for a test of independence, the degrees of freedom is given by the
+equation
 \begin{equation*}
-  (\text{number of rows} -1)\times (\text{number of columns} -1)
+  \text{df}=(\text{number of rows} -1)\times (\text{number of columns} -1)
 \end{equation*}
 which in our case, for a $2\times 2$ table, is just 1.
-
 
 Thereore, using \cref{def:chi-squared-distribution}, the p-value is
 \begin{align*}
