@@ -4509,16 +4509,169 @@ probably have some relationship; it doesn't give us information about the
 nature of that relationship.
 \end{example}
 
+\newpage
+\section{2026-04-06 | Week 12 | Lecture 25}
+\textit{Chapter 10.10}
+
+\subsection{Power function}
+The goodness of a hypothesis test is measure by $\alpha$ and $\beta$.
+Typically, the value of $\alpha$ (the significance level) is chosen \textit{a
+  priori}.
+
+\begin{definition}[Power function]
+  Suppose $T$ is a test statistic and $\text{RR}$ is the rejection region for
+  a hypothesis involving a parameter $\theta$. The \demph{power} of the test,
+  denoted $\text{power}(\theta)$, is
+  \begin{equation*}
+    \text{power}(\theta) = \P\left[T \in \text{RR when the parameter value is }\theta \right].
+  \end{equation*}
+  That is, it is the probability of rejecting the null hypothesis when the true
+  parameter value is $\theta$.
+\end{definition}
+
+Consider the hypothesis testing problem
+\begin{equation*}
+  H_{0}: \theta\in \Theta_{0} \quad \text{versus} \quad H_{a}: \theta\in \Theta\backslash \Theta_{0}.
+\end{equation*}
+Let $\theta_{a}\in \Theta\backslash \Theta_{0}$, and let $\beta(\theta_{a})$
+be the probability of type II error. That is,
+\begin{equation*}
+  \beta(\theta_{a}) = \P\left[\text{accept }H_{0}\text{ when }\theta=\theta_{a} \right].
+\end{equation*}
+On the other hand,
+\begin{equation*}
+  \text{power}(\theta_{a}) = \P\left[\text{reject }H_{0}\text{ when }\theta=\theta_{a} \right]
+\end{equation*}
+It follows that
+\begin{proposition}
+  If $\theta_{a}$ is a value of $\theta$ in the alternative hypothesis, then
+  \begin{equation*}
+    \text{power}(\theta_{a}) = 1 - \beta(\theta_{a}).
+  \end{equation*}
+\end{proposition}
+From this relationship, maximizing the power of a test is equivalent to
+minimizing the type II error probability.
+
+The \demph{power curve} is the graph of a power function. If our hypothesis
+test were
+\begin{equation*}
+  H_{0}:\theta=\theta_{0} \quad \text{versus} \quad H_{a}:\theta\neq \theta_{0}
+\end{equation*}
+then a typical power curve might look like this:
+\begin{center}
+  \includegraphics[scale=.5]{images/typical-power-curve}
+\end{center}
+Of course, ideally we'd prefer the power curve to look like this:
+\begin{center}
+  \includegraphics[scale=.5]{images/ideal-power-curve}
+\end{center}
+
+
+\subsection{Neyman-Pearson Lemma}
+
+\begin{definition}[Simple vs composite hypotheses]
+  A \demph{simple hypothesis} is one which uniquely specifie the distribution
+  of population from which the sample is drawn. Any hypothesis which is not a
+  simple hypothesis is called a \demph{composite hypothesis.}
+\end{definition}
+
+\begin{itemize}
+  \item Suppose a random sample  $X_{1},\ldots,X_{n}$ is drawn from an
+  exponential distribution with parameter $\lambda>0$. The hypothesis
+  \begin{equation*}
+    H:\lambda=2
+  \end{equation*}
+  is a simple hypothesis. The hypothesis
+  \begin{equation*}
+    H:\lambda>2
+  \end{equation*}
+  is a composite hypothesis.
+  \item Suppose $Y_{1},\ldots,Y_{n}$ is a random sample from a normal
+  distribution with known variance $\sigma^{2}=1$.  Then $H:\mu=5$ is a simple
+  hypothesis. On the other hand, if $\sigma^{2}$ is unknown, then knowing
+  $\mu$ doesn't uniquely determine the distribution of the population, so in
+  that case $H:\mu=5$ is a composite hypothesis.
+\end{itemize}
+
+For testing simple hypotheses, the following theorem shows how to construct
+the most powerful test:
+
+\begin{theorem}[Neyman-Pearson Lemma]
+  \label{thm:neyman-pearson-lemma}
+  Suppose we wish to test two simple hypotheses:
+  \begin{equation*}
+    H_{0}:\theta=\theta_{0} \quad \text{versus} \quad H_{a}: \theta=\theta_{a},
+  \end{equation*}
+  based on a random sample $X_{1},\ldots,X_{n}$ from a distribution with
+  parameter $\theta$. Let $L(\theta)$ denote the likelihood of the sample when
+  the value of the parameter is $\theta$. Then, for a given $\alpha$, the test
+  that maximizes the power at $\theta_{a}$ has rejection region
+  \begin{equation*}
+    \text{RR} = \left[ \frac{L(\theta_{0})}{L(\theta_{a})}<k \right]. 
+  \end{equation*}
+  The value of $k$ is chosen so that the test has desired value for $\alpha$.
+  Such a test is the most powerful $\alpha$-level test for $H_{0}$ versus $H_{a}$.
+\end{theorem}
+
+\begin{example}
+  Suppose $Y$ represents a single observation from a population with
+  probability density function
+  \begin{equation*}
+    f(y\mid \theta) = \theta y^{\theta-1}\mathbf{1}_{\left[ 0<y<1 \right]}.
+  \end{equation*}
+  We want to test
+  \begin{equation*}
+    H_{0}:\theta=2 \quad \text{versus} \quad H_{a}:\theta=1.
+  \end{equation*}
+  Find the most powerful test with significance level $\alpha=0.05$.
+
+  \Fl{Solution:} The likelihood ratio is
+  \begin{equation*}
+    \frac{L(\theta_{0})}{L(\theta_{a})} = 2y,\quad (0<y<1).
+  \end{equation*}
+  Thus the rejection region takes the form
+  \begin{equation*}
+    \text{RR} = \left[ 2y<k \right] = \left[ y<k^{*} \right] 
+  \end{equation*}
+  where $k^{*}=k/2$.
+
+  Because $\alpha=.05$ is specified, the value of $k^{*}$ is determined by
+  \begin{align*}
+    0.05
+    &= \P\left[\text{type I error} \right]\\
+    &= \P\left[Y\in \text{RR} \text{ when }\theta=2 \right]\\
+    &= \P\left[Y<k^{*} \text{ when }\theta=2 \right]\\
+    &= \int_{0}^{k^{*}}2ydy\\ 
+    &= (k^{*})^{2}
+  \end{align*}
+  So $k^{*} = \sqrt{.05}=.2236$, and the rejection region is
+  \begin{equation*}
+    \text{RR} = \left[ Y< .2236 \right] .
+  \end{equation*}
+  Among all possible tests, this rejection region has the largest possible
+  value for $\text{power}(1)$ (i.e., the smallest type II error probability).
+
+
+  But what is the power?
+
+  \begin{align*}
+    \text{power}(1)
+    &=\P\left[Y\in \text{RR} \text{ when }\theta=1 \right]\\
+    &= \P\left[Y<.2236 \text{ when }\theta=1 \right]\\
+    &= \int_{0}^{.2236} 1 dy\\
+    &= .2236.
+  \end{align*}
+  Thus the type II error probability is $.7764$, which is still very large.
+  This isn't surprising, since the test is based on a single sample.
+\end{example}
+
 
 \newpage
-\section{Future date}
+\section{2026-04-08 | Week 12 | Lecture 26}
 \subsection{A geometric persepctive on statistical models}
 \begin{example}[The Hardy-Weinberg Model]
   \label{ex:hardy-weinberg-model}
-  Flip two coins simultaneoulsy. The sample space is
-  \begin{equation*}
-    S = \left\{\mathtt{HH},\mathtt{HT}, \mathtt{TT}\right\} 
-  \end{equation*}
+  Flip two coins simultaneoulsy. The sample space is $S = \left\{\mathtt{HH},\mathtt{HT}, \mathtt{TT}\right\}$.
   Assume the probability of heads is $p\in [0,1]$. Let $X$ be the number of
   heads. The pmf of $X$ is
   \begin{equation*}
@@ -4546,9 +4699,9 @@ nature of that relationship.
   This statistical model is called the Hardy-Weinberg model, and is used to
   model allele frequencies in population genetics.
 
-  Interestingly, the statistical model $\mathcal{P}$ can be regarded as a
-  geometric object (i.e., as a subset of 3-dimensional space). Consider the
-  parameterization
+  Interestingly, the
+  statistical model $\mathcal{P}$ can be regarded as a geometric object
+  (namely, as a subset of 3-dimensional space). Consider the parameterization
   \begin{equation*}
     x= \P\left[X=2 \right]=p^{2},\quad y= \P\left[X=1 \right]=2p(1-p),\quad z=\P\left[X=0 \right]=(1-p)^{2},
   \end{equation*}
@@ -4570,8 +4723,8 @@ nature of that relationship.
     which is a the blue cone on the plot below right.
   \end{itemize}  
   \begin{center}
-    \includegraphics[scale=.2]{images/hardy-2}
-    \includegraphics[scale=.2]{images/hardy-1}
+    \includegraphics[scale=.17]{images/hardy-2}
+    \includegraphics[scale=.17]{images/hardy-1}
   \end{center}
   The Hardy-Weinberg model $\mathcal{P}$ is the blue curve formed by
   intersecting the quadric surface $y^{2}-4xz=0$ (the blue cone) with the gray
@@ -4599,12 +4752,12 @@ nature of that relationship.
   In other words, the true distribution of $X$ is a point on the curve
   (namely, the red point below).
 
-  Suppose we perform the experiment 100 times, thereby obtaining 100 random
-  samples $X_{1},\ldots,X_{n}\sim \text{Bin}(2,.42)$. Let
+  Repeat the experiment 100 times. We obtain 100 random samples
+  $X_{1},\ldots,X_{n}\sim \text{Bin}(2,.42)$. Let
   \begin{align*}
     \widehat{x} &= \text{the proportion of samples with two heads}\\
     \widehat{y} &= \text{the proportion of samples with exactly one heads}\\
-    \widehat{z} &= \text{the proportion of samples with zero heads}\\
+    \widehat{z} &= \text{the proportion of samples with zero heads}
   \end{align*}
   I did this and got $\widehat{x}=.13$, $\widehat{y}=.55$, and
   $\widehat{z}=.32$. This data is the point $(.13,.55,.32)$, plotted in purple
@@ -4642,10 +4795,188 @@ nature of that relationship.
       point, but far from the curve, (for example, lying in the red region
       below), then I'm probably lying about having generated the data by
       flipping coins.
-      \begin{center}
-        \includegraphics[scale=.5]{images/hardy-rejection}
-      \end{center}
     \end{itemize}
   \end{itemize}
+  \begin{center}
+    \includegraphics[scale=.4]{images/hardy-rejection}
+  \end{center}
 \end{example}
+
+
+\newpage
+\section{2026-04-10 | Week 12 | Lecture 27}
+\subsection{The Likelihood Ratio Test}
+\textit{The material in this section can be found in Chapter 10.11, though I use
+different notation and a different convention for the likelihood ratio test
+than used in the textbook. My treatment is based on Chapter 7.2 of Seth
+Sullivant's textbook \textit{Algebraic Statistics}.}
+
+\begin{definition}[Likelihood ratio test]
+  Consider the hypothesis testing problem
+  \begin{equation*}
+    H_{0}:\theta\in \Theta_{0} \quad \text{versus} \quad H_{a}:\theta\in \Theta\backslash \Theta_{0}.
+  \end{equation*}
+  where $\Theta$ is an open subset of $\R^{d}$ and
+  $\Theta_{0}\subseteq \Theta$. Let
+  $L(\theta) = L(\theta\mid x_{1},\ldots,x_{n})$ denoe the likelihood of the
+  sample given the parameter value of $\theta$. The \demph{likelihood ratio
+    test statistic} for this test is
+  \begin{equation}\label{eq:definition-of-LR-test-statistic}
+    \Lambda = -2 \log\left( \frac{\sup_{\theta\in \Theta_{0}}L(\theta)}{\sup_{\theta\in \Theta}L(\theta)} \right)
+  \end{equation}
+  A \demph{likelihood ratio test} employs $\Lambda$ as a test statistic, and has
+  rejection region of the form
+  \begin{equation*}
+    \text{RR} = \left[ \Lambda \geq k\right] 
+  \end{equation*}
+  for some value of $k$ (determined by the significance level).
+\end{definition}
+
+Observe that
+\begin{itemize}
+  \item $\Lambda$ depends on the sample values and the size of the samples.
+  \item $0 \leq \Lambda \leq +\infty$.
+  \item A large value of $\Lambda$ indicates that the likelihood of the sample
+  is much smaller under $H_{0}$ than under $H_{a}$. Although it is not a
+  metric, we can think of $\Lambda$ as a measure of the ``distance'' between
+  the sample and the null hypothesis.
+  \item  If the observed value of $\Lambda$ is $\lambda$, then the $p$-value for $\lambda$ is
+  \begin{equation*}
+    p
+    = \P\left[\Lambda \geq \lambda \mid H_{0} \text{ is true}\right]
+  \end{equation*}
+  This is the probability of observing results as or more extreme than what
+  was actually observed (namely, $\Lambda=\lambda$), assuming the null
+  hypothesis is true.
+\end{itemize}
+
+\Fl{A wrinkle:} The distribution of $\Lambda$ under the null hypothesis is
+often unknown, making it difficult to determine what $k$ should be.
+Fortunately, under certain regularity conditions, we have the following
+asymptotic result, which tells us the approximate distribution of $\Lambda$
+when $n$ is large:
+
+\begin{theorem}[Asymptotic distribution of $\Lambda$ under $H_{0}$]
+  \label{thm:asymptotic-distribution-lambda-under-H_0}
+  Consider the hypothesis testing problem
+  \begin{equation*}
+    H_{0}: \theta\in \Theta_{0} \quad \text{versus} \quad H_{a}: \theta\in \Theta\backslash \Theta_{0}
+  \end{equation*}
+  where $\Theta$ is an open subset of $\R^{d}$ and
+  $\Theta_{0}\subseteq \Theta$. Let $X_{1},\ldots,X_{n}$ be a random sample
+  with joint likelihood function $L(\theta)$, and let $\Lambda$ be the
+  likelihood ratio test statistic defined in \cref{eq:definition-of-LR-test-statistic}. Then, for large
+  $n$,
+  \begin{equation*}
+    \text{the distribution of }\Lambda 
+    \approx \text{chi-squared distribution with } \text{df} 
+    = d-\dim(\Theta_{0}).
+  \end{equation*}
+  In practical terms, this says that if we observe $\Lambda=\lambda$, then the
+  $p$-value for our data is
+  \begin{align*}
+    \text{p-value}
+    &= \P\left[\Lambda \geq \lambda \mid H_{0} \text{ is true}\right] \\
+    &\approx \P\left[\chi^{2}_{\text{df}=d-\dim(\Theta_{0})}\geq \lambda\right]
+  \end{align*}
+  when $n$ is large. Since the right hand side can be computed, this gives us
+  a way to compute $p$-values when doing likelihod ratio tests (as long as $n$
+  is large).
+\end{theorem}
+
+\begin{example}[Example 10.25 in textbook]
+  A hospital seeks to evaluate a new sterilization protocol. Over 100 weeks,
+  the average number of infections per week is $\overline{x}=22$ before the
+  protocol and $\overline{y}=20$ after. Assume the number of infections per
+  week is Poisson distributed with mean $\theta_{1}$ before the protocol and
+  $\theta_{2}$ after. Test whether the infection rate changed, using a
+  significance level of $\alpha=0.01$.
+
+  \Fl{Solution:} We would like to compare
+  \begin{equation*}
+    H_{0}:\theta_{1}=\theta_{2}
+    \quad \text{versus} \quad
+    H_{a}:\theta_{1}\neq\theta_{2}.
+  \end{equation*}
+  with $\alpha\approx .01$. We'll use the likelihood tatio test.
+
+  Let $\theta=(\theta_{1},\theta_{2})$. The hypotheses can be written as
+  \begin{equation*}
+    H_{0}: \theta\in \Theta_{0}:=\left\{(x,x):x>0\right\}
+    \quad \text{and} \quad
+    H_{a}: \theta\in \R^{2}_{>0}\backslash \Theta_{0}=\left\{(x,y): x,y>0, x\neq y\right\} 
+  \end{equation*}
+  \begin{itemize}
+    \item The joint likelihood of $\theta=(\theta_{1},\theta_{2})$ is
+    \begin{equation}\label{eq:30}
+      L(\theta_{1},\theta_{2}) 
+      = \frac{1}{c} \theta_{1}^{\sum_{i=1}^{n}x_{i} }e^{-n\theta_{1}}\theta_{2}^{\sum_{i=1}^{n}y_{i} }e^{-n\theta_{2}}
+    \end{equation}
+    where $cx_{1}!\cdots x_{n}!y_{1}!\cdots y_{n}!$ and $n=100$. (Here,
+    $x_{i}$ is the number of infections in week $i$ before the new protocol,
+    and $y_{i}$ is the number of infections in week $i$ after).
+
+    This is maximized when $\theta_{1}=\overline{x}=22$ and
+    $\theta_{2}=\overline{y}=20$.
+
+    % In this problem $\overline{x}=22$ and
+    % $\overline{y}=20$, so the maximum is
+    % \begin{equation*}
+    %   L(\overline{x},\overline{y})= L(22,20) = \frac{1}{c}22^{100(22)}e^{-100(22)}20^{100(20)}e^{-100(20)}
+    % \end{equation*}
+    \item Under $H_{0}$, we enforce the constraint that
+    $\theta_{1}=\theta_{2}$, and hence the likelihood in \cref{eq:30} reduces
+    to a function of single parameter $u=\theta_{1}=\theta_{2}$:
+    \begin{equation*}
+      L(u,u) = \frac{1}{c}u^{\sum x_{i}+\sum y_{i}  }e^{-2nu}.
+    \end{equation*}
+    One can check that this function is maximized when
+    $u=\frac{1}{2}(\overline{x}+\overline{y})=21$.
+  \end{itemize}
+  
+  Therefore,
+  \begin{align*}
+    \Lambda 
+    &= -2 \log\left( \frac{\sup_{\theta\in \Theta_{0}}L(\theta)}{\sup_{\theta\in \Theta}L(\theta)} \right)\\
+    &= -2 \log\left( \frac{L(22,20)}{L(21,21)}\right)\\
+  \end{align*}
+  Observing that $\sum x_{i}=100\cdot 22$ and $\sum y_{i}=100\cdot20$, we can
+  plug in the values and simplify, yielding
+  \begin{align*}
+    \Lambda
+    &= -2 \log\left(\frac{21^{4300}}{22^{2200}20^{2000}} \right)\\ 
+    &= 9.53.
+  \end{align*}
+  Next we interpret this by computing a $p$-value. By
+  \cref{thm:asymptotic-distribution-lambda-under-H_0}, under $H_{0}$ the test
+  statistic $\Lambda$ has a chi-squared distribution with $\text{df}=2-1=1$.
+  Therefore the $p$-value for our data is approximately
+  \begin{align*}
+    p 
+    &= \P\left[\Lambda \geq 9.53\right]\\
+    &\approx \P\left[\chi_{\text{df}=1}^{^{2}}\geq 9.53\right]\\
+    &= \int_{9.53}^{\infty}\frac{1}{\sqrt{2\pi}}x^{-1/2}e^{-x/2}dx\\ 
+    &=.0000045
+  \end{align*}
+  Since the $p$-value is less than the significance level $\alpha=.01$, we
+  reject the null hypothesis.
+
+  We conclude that the difference is ``significant'' in the sense that the
+  observed difference (20 vs 22) is very unlikely to have occurred by chance.
+
+  % Is this result ``significant''? It depends on what we mean by significant:
+  % \begin{itemize}
+  %   \item Yes, in the sense that the $p$-value is below the significance
+  %   threshold.
+  %   \item No, in that $20$ is not much smaller than $22$.
+  %   \item Yes, if you are one of the $2$ patients per week who get a
+  %   preventable infection.
+  % \end{itemize}
+
+  
+\end{example}
+% Let $r_{0}$ be the number of free parameters that are specified
+% by $H_{0}:\theta\in \Theta_{0}$ and let $r$ be the number of free parameters
+% specified by the statement $\theta\in \Theta$.
+
 \end{document}
