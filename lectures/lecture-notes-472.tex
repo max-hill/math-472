@@ -4671,11 +4671,15 @@ the most powerful test:
 \subsection{A geometric persepctive on statistical models}
 \begin{example}[The Hardy-Weinberg Model]
   \label{ex:hardy-weinberg-model}
-  Flip two coins simultaneoulsy. The sample space is $S = \left\{\mathtt{HH},\mathtt{HT}, \mathtt{TT}\right\}$.
-  Assume the probability of heads is $p\in [0,1]$. Let $X$ be the number of
-  heads. The pmf of $X$ is
+  Flip two coins simultaneoulsy. The sample space is
+  $S = \left\{\mathtt{HH},\mathtt{HT}, \mathtt{TT}\right\}$. Assume the
+  probability of heads is $p\in [0,1]$. Let $X$ be the number of heads. The
+  pmf of $X$ is
   \begin{equation*}
-    \P\left[X=2 \right] = p^{2}, \quad \P\left[X=1 \right] = 2p(1-p), \quad \P\left[X=0 \right] = (1-p)^{2}.
+    \P\left[X=2 \right] 
+    = p^{2}, \quad \P\left[X=1 \right] 
+    = 2p(1-p), \quad \P\left[X=0 \right] 
+    = (1-p)^{2}.
   \end{equation*}
   In other words, $X\sim \text{Bin}(2,p)$. Abusing notation, we can represent
   the distribution of $X$ by the vector
@@ -4703,7 +4707,11 @@ the most powerful test:
   statistical model $\mathcal{P}$ can be regarded as a geometric object
   (namely, as a subset of 3-dimensional space). Consider the parameterization
   \begin{equation*}
-    x= \P\left[X=2 \right]=p^{2},\quad y= \P\left[X=1 \right]=2p(1-p),\quad z=\P\left[X=0 \right]=(1-p)^{2},
+    x = \P\left[X=2 \right] = p^{2},
+    \quad
+    y = \P\left[X=1 \right] = 2p(1-p),
+    \quad
+    z = \P\left[X=0 \right] = (1-p)^{2},
   \end{equation*}
   with $p$ ranging  over all values from 0 to 1. Make two observations
 
