@@ -45,6 +45,7 @@ title: Lecture Notes
 2026-03-30  |    | [hypothesis-testing-worksheet](worksheets/worksheet-2/worksheet-2.pdf) ([tex-file](worksheets/worksheet-2/worksheet-2.tex))
 2026-04-01  |    | In-class Midterm 2
 2026-04-06  | 25   | (Section 10.10) Power function, simple/composite hypotheses, Neyman-Pearson Lemma
+2026-04-08  | 26   | A geometric perspective on statistical models
 
  
 
