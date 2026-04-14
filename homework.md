@@ -15,6 +15,7 @@ permalink: /homework/
 2026-03-13  | [homework-06](homework/homework-06/homework-06.pdf)     | confidence intervals, efficiency, Cramer-Rao, sufficiency
 2026-03-23  | [homework-07](homework/homework-07/homework-07.pdf)     | consistency, sufficiency, maxima and critical points, maximum likelihood
 2026-03-31  | [homework-08.pdf](homework/homework-08/homework-08.pdf), [homework-08.tex](homework/homework-08/homework-08.tex)     | MLE, sufficiency, hypothesis testing, large sample hypothesis testing
+2026-04-20  | [homework-09.pdf](homework/homework-09/homework-09.pdf), [homework-09.tex](homework/homework-09/homework-09.tex)     | Hypothesis tests, Likelihood ratio test, method of moments, power function
 
  
 

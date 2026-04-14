@@ -4844,14 +4844,16 @@ Observe that
 \begin{itemize}
   \item $\Lambda$ depends on the sample values and the size of the samples.
   \item $0 \leq \Lambda \leq +\infty$.
-  \item A large value of $\Lambda$ indicates that the likelihood of the sample
-  is much smaller under $H_{0}$ than under $H_{a}$. Although it is not a
-  metric, we can think of $\Lambda$ as a measure of the ``distance'' between
-  the sample and the null hypothesis.
-  \item  If the observed value of $\Lambda$ is $\lambda$, then the $p$-value for $\lambda$ is
+  \item A large value of $\Lambda$ is interpreted as evidence against the null
+  hypothesis (since it indicates that the likelihood of the sample is much
+  smaller under $H_{0}$ than under $H_{a}$). Although it is not a metric, we
+  can think of $\Lambda$ as a measure of the ``distance'' between the sample
+  and the null hypothesis.
+  \item If the observed value of $\Lambda$ is $\lambda$, then the $p$-value
+  for $\lambda$ is
   \begin{equation*}
     p
-    = \P\left[\Lambda \geq \lambda \mid H_{0} \text{ is true}\right]
+    = \P\left[\Lambda \geq \lambda \text{ when }H_{0} \text{ is true}\right]
   \end{equation*}
   This is the probability of observing results as or more extreme than what
   was actually observed (namely, $\Lambda=\lambda$), assuming the null
@@ -4884,7 +4886,7 @@ when $n$ is large:
   $p$-value for our data is
   \begin{align*}
     \text{p-value}
-    &= \P\left[\Lambda \geq \lambda \mid H_{0} \text{ is true}\right] \\
+    &= \P\left[\Lambda \geq \lambda \text{ when }H_{0} \text{ is true}\right] \\
     &\approx \P\left[\chi^{2}_{\text{df}=d-\dim(\Theta_{0})}\geq \lambda\right]
   \end{align*}
   when $n$ is large. Since the right hand side can be computed, this gives us
@@ -4914,6 +4916,9 @@ when $n$ is large:
     \quad \text{and} \quad
     H_{a}: \theta\in \R^{2}_{>0}\backslash \Theta_{0}=\left\{(x,y): x,y>0, x\neq y\right\} 
   \end{equation*}
+  Observe that $\Theta_{0}$ is a 1-dimensional curve (it's a straight curve in
+  $\R^{2}$).
+  
   \begin{itemize}
     \item The joint likelihood of $\theta=(\theta_{1},\theta_{2})$ is
     \begin{equation}\label{eq:30}
@@ -4961,7 +4966,7 @@ when $n$ is large:
   Therefore the $p$-value for our data is approximately
   \begin{align*}
     p 
-    &= \P\left[\Lambda \geq 9.53\right]\\
+    &= \P\left[\Lambda \geq 9.53 \text{ when $H_{0}$ is true}\right]\\
     &\approx \P\left[\chi_{\text{df}=1}^{^{2}}\geq 9.53\right]\\
     &= \int_{9.53}^{\infty}\frac{1}{\sqrt{2\pi}}x^{-1/2}e^{-x/2}dx\\ 
     &=.0000045
