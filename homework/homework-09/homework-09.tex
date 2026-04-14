@@ -1,0 +1,287 @@
+\documentclass[10pt]{article}
+% Math Packages
+\usepackage{amsmath, mathtools}
+\usepackage{amssymb}
+\usepackage{amsthm}
+\usepackage{amsfonts}
+\usepackage{bbm}
+\usepackage{breqn}
+\usepackage[margin=1in]{geometry}
+\usepackage{graphicx}
+\usepackage{tikz}
+\usetikzlibrary{arrows.meta}
+\usetikzlibrary{calc}
+\usepackage{forest}
+\usepackage{tikz-qtree}
+\graphicspath{ {./images/} }
+\usepackage{hyperref}
+\usepackage[capitalize]{cleveref}
+\usepackage[shortlabels]{enumitem}
+\usetikzlibrary{arrows,matrix,positioning}
+\usepackage{multicol}
+
+\usepackage{listings}
+\usepackage{xcolor}
+
+\crefname{problem}{Problem}{Problems}
+\Crefname{problem}{Problem}{Problems}
+
+\lstset{
+  language=R,
+  basicstyle=\ttfamily\footnotesize,
+  keywordstyle=\color{blue},
+  commentstyle=\color{gray},
+  stringstyle=\color{red!70!black},
+  framesep=2pt,
+  framexleftmargin=0pt, 
+  frame=single,
+  breaklines=false,
+  showstringspaces=false
+}
+% for the pipe symbol
+\usepackage[T1]{fontenc}
+
+% Colorful Notes
+\usepackage{color} \definecolor{Red}{rgb}{1,0,0} \definecolor{Blue}{rgb}{0,0,1}
+\definecolor{Purple}{rgb}{.5,0,.5} \def\red{\color{Red}} \def\blue{\color{Blue}}
+\def\gray{\color{gray}} \def\purple{\color{Purple}}
+\newcommand{\rnote}[1]{{\red [#1]}} % \rnote{foo} gives '[foo]' in red
+\newcommand{\pnote}[1]{{\purple [#1]}} % \pnote{foo} gives '[foo]' in purple
+\newcommand{\bnote}[1]{{\blue #1}} % \bnote{foo} gives 'foo' in blue
+\newcommand{\gnote}[1]{{\gray #1}} % \gnote{foo} gives 'foo' in gray
+\newcommand{\Max}[1]{{\purple [#1]}} % \bnote{foo} then 'foo' is blue
+
+% Claim numbering (the counter restarts after each proof environment)
+\newcounter{claimcount}
+\setcounter{claimcount}{0}
+\newenvironment{claim}{\refstepcounter{claimcount}\par\addvspace{\medskipamount}\noindent\textbf{Claim \arabic{claimcount}:}}{}
+\usepackage{etoolbox}
+\AtBeginEnvironment{proof}{\setcounter{claimcount}{0}}
+\newenvironment{claimproof}{\par\addvspace{\medskipamount}\noindent\textit{Proof of Claim  \arabic{claimcount}.}}{\hfill\ensuremath{\qedsymbol} \tiny{Claim}
+
+  \medskip}
+% Add claim support to cleverref
+\crefname{claimcount}{Claim}{Claims}
+
+% Math Environments
+\newtheorem{theorem}{Theorem}
+\newtheorem{assumption}[theorem]{Assumption}
+\newtheorem{lemma}[theorem]{Lemma}
+\newtheorem{proposition}[theorem]{Proposition}
+\newtheorem{corollary}[theorem]{Corollary}
+\newtheorem{question}[theorem]{Question}
+\theoremstyle{definition}
+\newtheorem*{definition}{Definition}
+\newtheorem{remark}[theorem]{Remark}
+\newtheorem{example}[theorem]{Example}
+\newtheorem{notation}[theorem]{Notation}
+\newtheorem{problem}[theorem]{Problem}
+
+% Matrices and Column Vectors. 
+\usepackage{stackengine}
+\setstackgap{L}{1.0\normalbaselineskip}
+\usepackage{tabstackengine}
+\setstackEOL{;}% row separator
+\setstackTAB{,}% column separator
+\setstacktabbedgap{1ex}% inter-column gap
+\setstackgap{L}{1.5\normalbaselineskip}% inter-row baselineskip
+\let\nmatrix\bracketMatrixstack  %Usage: \nmatrix{1,2,3\4,5,6}
+\newcommand\cv[1]{\setstackEOL{,}\bracketMatrixstack{#1}} %usage: \cv{1,2,3}
+
+% Custom Math Coqmmands
+\newcommand{\vt}{\vskip 5mm} % vertical space
+\newcommand{\fl}{\noindent\textbf} % first line
+\newcommand{\Fl}{\vt\noindent\textbf} % first line with space above
+\newcommand{\norm}[1]{\left\lVert#1\right\rVert} % norm
+\newcommand{\pnorm}[1]{\left\lVert#1\right\rVert_p} % p-norm
+\newcommand{\qnorm}[1]{\left\lVert#1\right\rVert_q} % q-norm
+\newcommand{\1}[1]{\textbf{1}_{\left[#1\right]}} % indicator function 
+\def\limn{\lim_{n\to\infty}} % shortcut for lim as n-> infinity
+\def\sumn{\sum_{n=1}^{\infty}} % shortcut for sum from n=1 to infinity
+\def\sumkn{\sum_{k=1}^{n}} % shortcut for sum from k=1 to n
+\def\sumin{\sum_{i=1}^{n}} % shortcut for sum from i=1 to n
+\def\SAs{\sigma\text{-algebras}} % shortcut for $\sigma$-algebras
+\def\SA{\sigma\text{-algebra}} % shortcut for $\sigma$-algebra
+\def\Ft{\mathcal{F}_t} % time-indexed sigma-algebra (t)
+\def\Fs{\mathcal{F}_s} % time-indexed sigma-algebra (s)
+\def\F{\mathcal{F}} % sigma-algebra
+\def\G{\mathcal{G}} % sigma-algebra
+\def\R{\mathbb{R}} % Real numbers
+\def\N{\mathbb{N}} % Natural numbers
+\def\Z{\mathbb{Z}} % Integers
+\def\E{\mathbb{E}} % Expectation
+\def\P{\mathbb{P}} % Probability
+\def\Q{\mathbb{Q}} % Q probability
+\def\dist{\text{dist}} %Text 'dist' for things like 'dist(x,y)'
+\newcommand{\indep}{\perp \!\!\! \perp}  %independence symbol
+\def\Var{\mathrm{Var}} % Variance
+\def\tr{\mathrm{tr}} % trace
+
+% Brackets and Parentheses
+\def\[{\left [}
+    \def\]{\right ]}
+% \def\({\left (}
+%   \def\){\right )}
+
+\usepackage{color}
+\definecolor{Red}{rgb}{1,0,0}
+\definecolor{Blue}{rgb}{0,0,1}
+\definecolor{Purple}{rgb}{.5,0,.5}
+\def\red{\color{Red}}
+\def\blue{\color{Blue}}
+\def\gray{\color{gray}}
+\def\purple{\color{Purple}}
+\definecolor{RoyalBlue}{cmyk}{1, 0.50, 0, 0}
+\newcommand{\dempfcolor}[1]{{\color{RoyalBlue}#1}} 
+\newcommand{\demph}[1]{\textcolor{RoyalBlue}{\textbf{\slshape #1}}} % Slanted
+
+\usepackage{emoji}
+% comment exactly one of the following line to show / hide the solutions
+% \newcommand{\solution}[1]{{\purple #1}} % uncomment to show the solutions
+\newcommand{\solution}[1]{} % uncomment to hide the solutions
+
+
+
+
+\begin{document}
+\begin{center}
+  \section*{Math 472: Homework 08}
+  \textit{Due Monday, April 20}
+\end{center}
+
+
+\begin{problem}[Exercise 10.6]
+  \label{problem:exercise-10.6}
+  We are interested in testing whether a coin is balanced based on the number
+  of heads $Y$ in 36 flips; that is, $H_{0}:p=.5$ vs $H_{a}:p\neq 5$. If we
+  use the rejection region $|y-18| \geq 4$, what is
+  \begin{enumerate}[(a)]
+    \item the value of $\alpha$?
+    \item the value of $\beta$ if $p=.7$?
+  \end{enumerate}
+\end{problem}
+
+\begin{problem}
+  Please answer ``true'' or ``false'' to the following questions.
+  \begin{enumerate}[(a)]
+    \item The level of the test computed in \cref{problem:exercise-10.6}(a) is
+    the probability that $H_{0}$ is true.
+    \item The value of $\beta$ in \cref{problem:exercise-10.6}(b) is the
+    probability that $H_{a}$ is true.
+    \item In \cref{problem:exercise-10.6}(b), $\beta$ was computed assuming
+    the null hypothesis was false.
+    \item If $\beta$ was computed when $p=.55$, the value would be larger than
+    the value of $\beta$ obtained in \cref{problem:exercise-10.6}(b).
+    \item The probability that the test mistakenly rejects $H_{0}$ is $\beta$. 
+    \item Suppose the rejection region was changed to $\left| y-18 \right|
+    \geq 2$.
+    \begin{enumerate}[(i)]
+      \item This RR would lead to rejecting the null hypothesis more often
+      than the RR used in \cref{problem:exercise-10.6}.
+      \item If $\alpha$ was comptued using this new RR, the value would be
+      larger than the value obtained in \cref{problem:exercise-10.6}(b).
+      \item If $\beta$ was computed when $p=.7$ and using this new RR, the
+      value would be alrger than the valued obtained in \cref{problem:exercise-10.6}(b).
+    \end{enumerate}
+  \end{enumerate}
+\end{problem}
+
+
+\begin{problem}[Exercise 10.106]\
+  % I love this problem.
+  A survey of voter sentiment was conducted in four political wards to compare
+  the fraction of voters favoring candidate Jones. Random samples of 200
+  voters were polled in each of the four wards, with the results as shown in
+  the following table:
+  \begin{center}
+    \begin{tabular}{lccccc}
+      & \multicolumn{4}{c}{Ward} & \\
+      \cline{2-5}
+      Opinion & 1 & 2 & 3 & 4 & Total \\
+      \hline
+      Favor A & 76 & 53 & 59 & 48 & 236 \\
+      Do not favor A & 124 & 147 & 141 & 152 & 564 \\
+      \hline
+      Total & 200 & 200 & 200 & 200 & 800 \\
+    \end{tabular}
+  \end{center}
+  The number of voters favoring Jones in the four samples can be regarded as
+  four independent binomal random variables $X_{1},X_{2},X_{3},$ and $X_{4}$,
+  of the form $X_{i}\sim \text{Binomial}(200,p_{i})$ for $i=1,2,3,4$, where
+  $p_{i}$ is the proportion of voters in ward $i$ who support Jones.
+  
+  In the following parts we will construct a likelihood ratio test of the
+  hypothesis that the fraction of voters favoring candidate Jones are the same
+  in all four wards. 
+  \begin{enumerate}[(a)]
+    \item State the null and alternative hypotheses.
+    \item Describe the null hypothesis geometrically. What is the dimension of
+    the null hypothesis?
+    \item Write down the joint likelihood of $X_{1},X_{2},X_{3}$ and $X_{4}$
+    and find its maximum.
+    \item Write down the joint likelihood of $X_{1},X_{2},X_{3}$ and $X_{4}$
+    when $H_{0}$ is true, and find its maximum.
+    \item Using your answer to the previous two parts, compute $\Lambda$ as it
+    was defined in lecture:
+    \begin{equation*}
+      \Lambda 
+      = -2\log\left( \frac{\sup_{\theta\in \Theta_{0}}L(\theta)}
+        {\sup_{\theta\in \Theta}L(\theta)}  \right) 
+    \end{equation*}
+    \item Compute a $p$-value for the data, and interpret your result in words.
+  \end{enumerate}
+\end{problem}
+
+
+\begin{problem}[Exercise 10.88]
+  Refer to problem 4 in Homework 8. Find the power of the test for each
+  alternative in $(a)-(d)$:
+  \begin{enumerate}[(a)]
+    \item $H_{a}:p=.4 $
+    \item $H_{a}:p=.5 $
+    \item $H_{a}:p=.6 $
+    \item $H_{a}:p=.7 $
+    \item Sketch a graph of the power function.
+  \end{enumerate}
+\end{problem}
+
+
+\begin{problem}[Method of Moments - exercise 9.69]
+  Let $X$ be the proportion of allotted time that a randomly-selected student
+  spends working on an exam. Suppose that $X$ is a random variable with pdf
+  \begin{equation*}
+    f(x) = \left\{ \begin{array}{l@{\quad:\quad}l} (\theta+1)x^{\theta}
+        &0 \leq x \leq 1 \\ 0& \text{otherwise} \end{array}\right.
+  \end{equation*}
+  where $\theta>-1$ is an unknown parameter. A random sample of 10 students
+  yields data
+  \begin{gather*}
+    x_{1} = .92,\ x_{2} = .79,\ x_{3} = .90,\ x_{4}=.65,\ x_{5}=.86\ \\
+    x_{6}=.47,\ x_{7}=.73,\ x_{8}=.97,\ x_{9}=.94,\ x_{10}=.77
+  \end{gather*}
+  \begin{enumerate}[(a)]
+    \item Use the method of moments to obtain an estimator of $\theta$ and
+    then compute the estimate for this data.
+    \item Use the factorization criterion to show that the statistic
+    $T(X_{1},\ldots,X_{n})= - \sum_{i=1}^{n} \log(Y_{i})$ is sufficient for
+    estimating $\theta$. 
+    \item Is the method of moments estimator a function of $T$? What
+    implications does this have?
+  \end{enumerate}
+\end{problem}
+
+
+
+\begin{problem}[Exercise 9.19]
+  Let $Y_{1},\ldots,Y_{n}$ be a random sample from the pdf
+  \begin{equation*}
+    f(x) = \theta y^{\theta-1}\mathbf{1}_{\left[ 0<y<1 \right]},
+  \end{equation*}
+  where $\theta>0$. Show that $\overline{Y}$ is a consistent estimator of
+  $\frac{\theta}{\theta+1}$.
+\end{problem}
+
+
+\end{document}
+
+% don't write in starlight, cause the words may come out real
