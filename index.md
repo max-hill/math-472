@@ -46,7 +46,8 @@ title: Lecture Notes
 2026-04-01  |    | In-class Midterm 2
 2026-04-06  | 25   | (Section 10.10) Power function, simple/composite hypotheses, Neyman-Pearson Lemma
 2026-04-08  | 26   | A geometric perspective on statistical models
-2026-04-08  | 27   | The likelihood ratio test
+2026-04-13  | 27   | The likelihood ratio test
+2026-04-15  | 28   | Linear regression
 
  
 

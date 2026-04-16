@@ -123,7 +123,7 @@
 \newtheorem{example}[theorem]{Example}
 \newtheorem{notation}[theorem]{Notation}
 \newtheorem{problem}[theorem]{Problem}
-
+ 
 
 \usepackage{skull}
 
@@ -4985,11 +4985,320 @@ when $n$ is large:
   %   \item Yes, if you are one of the $2$ patients per week who get a
   %   preventable infection.
   % \end{itemize}
-
-  
 \end{example}
 % Let $r_{0}$ be the number of free parameters that are specified
 % by $H_{0}:\theta\in \Theta_{0}$ and let $r$ be the number of free parameters
 % specified by the statement $\theta\in \Theta$.
+
+\section{2026-04-15 | Week 13 | Lecture 28}
+
+\subsection{Finding a best fit line with linear regression}
+
+Suppose we have four data points taking the form
+$(\text{time}, \text{observation}=(t_{i},b_{i})$:
+\begin{equation*}
+  (0,0),\ (1,8),\ (3,8),\ (4,20)
+\end{equation*}
+I have plotted these below. We want to find a ``best fit'' line for the data.
+How do we do that?
+
+The equation of a line is
+\begin{equation*}
+  y = C+Dt
+\end{equation*}
+and we want to find the best values of $C$ and $D$ to fit our data. Here's a
+picture of the data points and a general line $y=C+Dt$ which aims to fit to
+the data:
+\begin{center}
+  \begin{tikzpicture}[x=3cm, y=.3cm]
+    % axes
+    \draw[->] (-.2,0) -- (4.3,0) node[right] {$t$}; \draw[->] (0,0) --
+    (0,21.5) node[above] {$y$};
+
+    % x-axis ticks and labels
+    \foreach \x in {0,1,2,3,4} \draw (\x,.2) -- (\x,-0.2) node[below] {\x};
+
+    % y-axis ticks and labels
+    \foreach \y in {8,10,20} \draw (.02,\y) -- (-0.02,\y) node[left] {\y};
+
+    % regression line y = 1 + 4x
+    \draw[blue, dashed, thick] (-.2,.2) -- (4.1,17.4) node[right,blue] {$y=C+Dt$} ;
+
+    % residuals (vertical segments)
+    \draw[red,thick] (0,0) -- (0,1) node[pos=.5, right] {$e_1$};
+    \draw[red,thick] (1,8) -- (1,5) node[pos=.5, right] {$e_2$};
+    \draw[red,thick] (3,8) -- (3,13) node[pos=.5, right] {$e_3$};
+    \draw[red,thick] (4,20) -- (4,17) node[pos=.5, right] {$e_4$};
+
+    % points
+    \fill (0,0) circle[radius=2pt]; \fill (1,8) circle[radius=2pt]
+    node[above,right] {$(1,8)$}; \fill (3,8) circle[radius=2pt]
+    node[above,right] {$(3,8)$}; \fill (4,20) circle[radius=2pt]
+    node[above,right] {$(4,10)$};
+  \end{tikzpicture}
+\end{center}
+
+
+Ideally, our best-fit line would pass through all the points, which occurs
+precisely when $C$ and $D$ satisfy the following system of equations:
+\begin{equation*}
+  \left\{ \begin{array}{l@{}l}
+      C+0\cdot D=0 \\
+      C+1\cdot D=8 \\
+      C+3\cdot D=8 \\
+      C+4\cdot D=20 \\
+    \end{array}\right.
+\end{equation*}
+This is a system of 4 linear equations in 2 unknowns $(C,D)$. We can write it
+in matrix form as
+\begin{equation*}
+  \underbrace{\begin{bmatrix}
+    1&0\\
+    1&1\\
+    1&3\\
+    1&4
+  \end{bmatrix}}_{A}
+  \underbrace{\begin{bmatrix}
+    C\\D
+  \end{bmatrix}}_{x}
+  =
+  \underbrace{\begin{bmatrix}
+    0\\8\\8\\20
+  \end{bmatrix}}_{b}
+\end{equation*}
+Here,
+\begin{equation*}
+  A=
+  \begin{bmatrix}
+    1&t_{1}\\
+    1&t_{2}\\
+    1&t_{3}\\
+    1&t_{4}
+  \end{bmatrix},
+  \quad
+  x =
+  \begin{bmatrix}
+    C\\D
+  \end{bmatrix}
+  \quad \text{and} \quad
+  b=
+  \begin{bmatrix}
+    b_{1}\\b_{2}\\b_{3}\\b_{4}.
+  \end{bmatrix}
+\end{equation*}
+Hence we can write this as
+\begin{equation*}
+  Ax=b
+\end{equation*}
+The bad news is that this system is overdetermined. There is no choice of $C$
+and $D$ which yields equality $Ax=b$. After all, the data points do not lie on
+a line. So instead what we aim for is
+\begin{equation*}
+  Ax\approx b
+\end{equation*}
+or equivalently that
+\begin{equation*}
+  \underbrace{b-Ax}_{e} \approx 0
+\end{equation*}
+Observe that
+\begin{equation*}
+  e =
+  \begin{bmatrix}
+    e_{1}\\
+    e_{2}\\
+    e_{3}\\
+    e_{4}
+  \end{bmatrix}
+\end{equation*}
+where $e_{i} = b_{i}-(C+Dt_{i})$ for $i\in \left\{1,2,3,4\right\}$. In our
+case we have
+\begin{equation*}
+  e =
+  \begin{bmatrix}
+    0-C\\
+    8-(C+D)\\
+    8-(C+3D)\\
+    20-(C+4D)
+  \end{bmatrix}
+\end{equation*}
+This is the vector of vertical distances between the points and the line
+$y=C+Dt$, which are labelled in red on the above plot. The vector $e$ is known
+as the \demph{residual vector}, and the entires of $e$ are
+known as the \demph{residuals}. We want to find values of $C$ and $D$ that
+make this vector as close to zero as possible.
+
+What is typically done is that we try to find values of $C$ and $D$ that
+\textbf{minimize the length} of the residual vector $e$.
+
+The length of $e$ is
+\begin{equation*}
+  \norm{e} = \sqrt{e_{1}^{2}+\ldots+e_{4}^{2}}.
+\end{equation*}
+To minimize this, it will suffice to minimize
+\begin{equation}\label{eq:28}
+  \norm{e}^{2} = e_{1}^{2}+\ldots+e_{4}^{2}.
+\end{equation}
+That is, we want to find values for $C$ and $D$ that minimize \cref{eq:28}.
+We'll present two approaches to doing this.
+
+\Fl{Approach \#1: Calculus}
+
+Let
+\begin{equation*}
+  f(C,D) = \norm{e}^{2} = C^{2}+(8-C-D)^{2}+(8-C-3D)^{2}+(20-C-4D)^{2}
+\end{equation*}
+
+We can use calculus to minimize $f$. To find the critical point of $f$, we set
+$\nabla f=0$ and solve for $C$ and $D$:
+
+\begin{equation*}
+  0\overset{set}{=}\frac{\partial f}{\partial C} = 2C-2(8-C-D)-2(8-C-3D)-2(20-C-4D) =-72+8C+16D
+\end{equation*}
+and
+\begin{equation*}
+  0\overset{set}{=}\frac{\partial f}{\partial D} = -2(8-C-D)-6(8-C-3D)-8(20-C-4D) = -224+16C+52D.
+\end{equation*}
+
+Combining these equations gives
+\begin{equation}\label{eq:31}
+  \left\{ \begin{array}{l@{}l}  8C+16D=72\\16C+52D=224  \end{array}\right.
+\end{equation}
+% or equivalently
+% \begin{equation*}
+%   \left\{ \begin{array}{l@{}l}  C+2D=9\\4C+13D=56  \end{array}\right.
+% \end{equation*}
+% This system of linear equations is called the \demph{normal equations}, and
+Indeed, the system corresponds to two lines which intersect
+at the point $(C,D)=(1,4)$ (shown below) which is the critical point.
+\begin{center}
+  \begin{tikzpicture}[scale=0.6]
+    % axes
+    \draw[->] (0,0) -- (16,0) node[right] {$C$}; \draw[->] (0,0) -- (0,6)
+    node[above] {$D$};
+
+    % line C + 2D = 9
+    \draw[blue, thick] (9,0) -- (0,4.5); \node[blue] at (8,1.5) {$C+2D=9$};
+
+    % line 4C + 13D = 56
+    \draw[red, thick] (14,0) -- (0,56/13); \node[red] at (10,2.5) {$4C+13D=56$};
+
+    % intersection point
+    \fill (1,4) circle (4pt); \node[above right] at (1,4) {$(1,4)$};
+  \end{tikzpicture}
+\end{center}
+Observe that $f$ is a sum of squares, and is therefore an upward-opening
+elliptic paraboloid. That means its graph has a bowl-shape, so it has exactly
+one critical point and the critical point is the global minimim. Therefore $f$
+is minimized at $(C,D)=(1,4)$. The best fitting line for our data is
+\begin{equation*}
+  y=1+4t,
+\end{equation*}
+as this line, out of all possible lines, minimizes the length of the residual
+vector $e$.
+
+\Fl{Approach \#2: Linear Algebra}
+
+Recall we want to solve
+\begin{equation}\label{eq:32}
+  Ax=b
+\end{equation}
+where
+\begin{equation*}
+  A=
+  \begin{bmatrix}
+    1&0\\
+    1&1\\
+    1&3\\
+    1&4
+  \end{bmatrix},
+  \quad
+  b=
+  \begin{bmatrix}
+    0\\8\\8\\20
+  \end{bmatrix}
+  \quad \text{and} \quad
+  x=
+  \begin{bmatrix}
+    C,D
+  \end{bmatrix}.
+\end{equation*}
+Equation \cref{eq:32} does not have a solution, since our data is not
+colinear. However, if we multiply both sides by $A^{T}=
+\begin{bmatrix}
+  1&1&1&1\\
+  0&1&3&4
+\end{bmatrix}
+$
+we get the following system of equations, called the \demph{normal equations}:
+\begin{equation}\label{eq:normal-equations}
+  A^{\top}Ax=A^{\top}b.
+\end{equation}
+Writing out \cref{eq:normal-equations}, we get
+\begin{equation*}
+  \begin{bmatrix}
+    4&8\\
+    8&26
+  \end{bmatrix}
+  \begin{bmatrix}
+    C\\D
+  \end{bmatrix}
+  =
+  \begin{bmatrix}
+    36\\112
+  \end{bmatrix}
+\end{equation*}
+or equivalently,
+\begin{equation*}
+  \left\{ \begin{array}{l@{}l} 4C+8D=36 \\ 8C+26D=112 \end{array}\right.
+\end{equation*}
+This system is the normal equations. Observe that it is the same as
+\cref{eq:31} (up to a constant multiple) and has the same solution:
+$(C,D)=(1,4)$, which is the minimizer of $\norm{e}$.
+
+We can summarize this approach in the following theorem.
+\begin{theorem}
+  If $A$ has linearly independent columns, the vector $x$ that minimizes
+  $\norm{Ax-b}$ is the solution to the normal equations
+  \begin{equation*}
+    A^{\top}Ax=A^{\top}b.
+  \end{equation*}
+  In particular, the solution is
+  \begin{equation*}
+    x=(A^{\top}A)^{-1}A^{\top}b
+  \end{equation*}
+  and we call it the \demph{least squares solution} to $Ax=b$.
+\end{theorem}
+
+\begin{remark}
+  The approach is easy to summarize: if $Ax=b$ has no solution, then multiply
+  through by $A^{\top}$,  giving $A^{\top}Ax=A^{\top}b$. This latter system
+  always has a solution, and it is
+  \begin{equation*}
+    x=(A^{\top}A)^{-1}A^{\top}b.
+  \end{equation*}
+\end{remark}
+
+Essential to the above approach is the following proposition, which implies
+that as long as $A$ has linearly independent columns (always the case in
+problems like this) then normal equations always have a unique solution:
+
+\begin{proposition}
+  If $A$ has linearly independent columns, then $A^{\top}A$ is invertible.
+\end{proposition}
+\begin{proof}
+  Suppose $x\in \ker(A^{\top}A)$. Then $A^{\top}Ax=0$. Multipying by
+  $x^{\top}$ on the left implies
+  \begin{equation*}
+    x^{\top}A^{\top}Ax=0.
+  \end{equation*}
+  Since $x^{\top}A^{\top}Ax=(Ax)^{\top}(Ax)=\norm{Ax}$, it follows that
+  $\norm{Ax}=0$. Therefore
+  \begin{equation*}
+    Ax=0.
+  \end{equation*}
+  Therefore, since $A$ has linearly independent columns, $x=0$. We have shown
+  that $\ker(A^{\top}A)=\left\{0\right\}$. Therefore $A^{\top}A$ is
+  invertible.
+\end{proof}
 
 \end{document}
