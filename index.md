@@ -48,6 +48,7 @@ title: Lecture Notes
 2026-04-08  | 26   | A geometric perspective on statistical models
 2026-04-13  | 27   | The likelihood ratio test
 2026-04-15  | 28   | Linear regression
+2026-04-17  | 29   | General linear model, normal equations, least squares regression
 
  
 
