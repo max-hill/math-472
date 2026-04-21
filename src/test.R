@@ -675,3 +675,22 @@ t = 1.618
 1/t^2
 .381
 round(x,digits=0)
+
+
+# Data
+x <- c(-2, -1, 0, 1, 2)
+y <- c(0, 0, 1, 1, 3)
+
+# Put into a data frame
+df <- data.frame(x = x, y = y)
+
+# Degree-4 polynomial fit
+fit4 <- lm(y ~ x + I(x^2) + I(x^3) + I(x^4), data = df)
+
+coef(fit4)
+summary(fit4)
+5/24
+1/12
+
+-17/24
+14/-0.70833

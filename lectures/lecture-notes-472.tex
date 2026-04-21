@@ -5492,9 +5492,9 @@ example.
 \begin{definition}[Normal Equations]
   Under the general linear model, system of linear equations
   \begin{equation}\label{eq:normal-equations-general}
-    X^{\top} X \tilde{\beta}=X^{\top}Y
+    X^{\top} X \beta=X^{\top}Y
   \end{equation}
-  is called the \demph{normal equations}. (Here $\tilde{\beta}$ is the unknown.)
+  is called the \demph{normal equations}. (Here $\beta$ is the unknown.)
 \end{definition}
 
 The next theorem says that $\widehat{\beta}_{\rm LSE}$ can be obtained by
@@ -5521,17 +5521,25 @@ solving the normal equations.
     \norm{x+y}^{2} = \norm{x}^{2}+\norm{y}^{2} +2
     \left\langle x,y \right\rangle.
   \end{equation*}
-  Take $x=X(\beta^{*}-v)$ and $y= Y-X\beta^{*}$. Then
-  \begin{align*}
-    \left\langle x,y \right\rangle 
-    &= \left\langle X(\beta^{*}-v),Y-X\beta^{*}
-      \right\rangle \\
-    &= \left\langle \beta^{*}-v, X^{\top}Y - X^{\top}X \beta^{*}
-      \right\rangle \\
-    &= \left\langle \beta^{*}-v,0 \right\rangle  &&\text{by \cref{eq:normal-equations-general}} \\
-    &= 0.
-  \end{align*}
-  It follows that
+  Take $x=X(\beta^{*}-v)$ and $y= Y-X\beta^{*}$. Then we make two key
+  observations
+  \begin{itemize}
+    \item First,
+    \begin{equation*}
+      Y-Xv = X(\beta^{*}-v) + (Y-X\beta^{*}) = x+y
+    \end{equation*}
+    \item Second, $x$ and $y$ are orthogonal
+    \begin{align*}
+      \left\langle x,y \right\rangle 
+      &= \left\langle X(\beta^{*}-v),Y-X\beta^{*}
+        \right\rangle \\
+      &= \left\langle \beta^{*}-v, X^{\top}Y - X^{\top}X \beta^{*}
+        \right\rangle \\
+      &= \left\langle \beta^{*}-v,0 \right\rangle  &&\text{by \cref{eq:normal-equations-general}} \\
+      &= 0.
+    \end{align*}    
+  \end{itemize}
+  It follows from these two observations that
   \begin{equation*}
     \norm{Y-Xv}^{2} = \norm{x+y}^{2} = \norm{x}^{2} + \norm{y}^{2} \geq
     \norm{y}^{2} = \norm{Y-X\beta^{*}}^{2}.
@@ -5542,30 +5550,377 @@ solving the normal equations.
   unique minimizer, so the LSE of $\beta$ is unique. 
 \end{proof}
 
-
+\newpage
+\section{2026-04-20 | Week 14 | Lecture 30}
+No typed notes today. I recapped the last two lectures.
 \newpage
 
-\subsection{Specialization: simple linear regression}
+\section{2026-04-22 | Week 14 | Lecture 31}
+\textit{Section 11.3 and 11.10}
 
+\begin{example}[Example 11.1 and 11.13 in textbook]
+  Suppose we have the following data:
+  
+  \begin{minipage}{0.35\textwidth}
+    \centering
+    \begin{tabular}{c|c}
+      $x$ & $y$ \\
+      \hline
+      $-2$ & $0$ \\
+      $-1$ & $0$ \\
+      $0$ & $1$ \\
+      $1$ & $1$ \\
+      $2$ & $3$ \\
+    \end{tabular}
+  \end{minipage}
+  \quad \quad
+  \begin{minipage}{0.4\textwidth}
+    \centering
+    \begin{tikzpicture}[x=1cm,y=1cm]
+      % axes
+      \draw[->] (-2.4,0) -- (2.4,0) node[right] {$x$};
+      \draw[->] (0,-0.2) -- (0,3.4) node[above] {$y$};
+
+      % x-axis ticks
+      \foreach \x in {-2,-1,0,1,2}
+      \draw (\x,0.08) -- (\x,-0.08) node[below] {\x};
+
+      % y-axis ticks
+      \foreach \y in {1,2,3}
+      \draw (0.08,\y) -- (-0.08,\y) node[left] {\y};
+
+      % data points
+      \fill (-2,0) circle (2pt);
+      \fill (-1,0) circle (2pt);
+      \fill (0,1) circle (2pt);
+      \fill (1,1) circle (2pt);
+      \fill (2,3) circle (2pt);
+    \end{tikzpicture}
+  \end{minipage}
+
+  \Fl{Part (a):} Use the method of least squares to fit a straight line to
+  this data.
+
+  \fl{Solution:} We will use \cref{thm:normal-equations-criterion-lse}. We
+  assume our data takes the form
+  \begin{equation*}
+    Y = X\beta +\epsilon
+  \end{equation*}
+  where
+  \begin{equation*}
+    X =
+    \begin{bmatrix}
+      1&-2\\1&-1\\1&0\\1&1\\1&2
+    \end{bmatrix}
+    \quad
+    \beta =
+    \begin{bmatrix}
+      \beta_{0}\\
+      \beta_{1}
+    \end{bmatrix}
+    \quad \text{and} \quad
+    \epsilon =
+    \begin{bmatrix}
+      \epsilon_{1}\\\epsilon_{2}\\\epsilon_{3}\\\epsilon_{4}.
+    \end{bmatrix}
+  \end{equation*}
+  The least squares estimate of $\beta$ is the vector $\widehat{\beta}_{\rm LSE}=
+  \begin{bmatrix}
+    \widehat{\beta}_{0}\\ \widehat{\beta}_{1}
+  \end{bmatrix}
+  $ which minimizes the length of the residual vector $\epsilon = Y-X\beta$.
+  Our ``best fit'' regression line will then be
+  \begin{equation*}
+    y = \beta_{0}+\beta_{1}x.
+  \end{equation*}
+  Here, our observed data are
+  \begin{equation*}
+    Y =
+    \begin{bmatrix}
+      0\\0\\1\\1\\3
+    \end{bmatrix}.
+  \end{equation*}
+  By \cref{eq:normal-equations-general}, the normal equations are
+  \begin{equation*}
+    X^{\top}X\beta = X^{\top}Y
+  \end{equation*}
+  or
+  \begin{equation*}
+    \begin{bmatrix}
+      1&1&1&1&1\\
+      -2&-1&0&1&2
+    \end{bmatrix}
+    \begin{bmatrix}
+      1&-2\\1&-1\\1&0\\1&1\\1&2
+    \end{bmatrix}
+    \begin{bmatrix}
+      \beta_{0}\\\beta_{1}
+    \end{bmatrix}
+    =
+    \begin{bmatrix}
+      1&1&1&1&1\\
+      -2&-1&0&1&2
+    \end{bmatrix}
+    \begin{bmatrix}
+      0\\0\\1\\1\\3
+    \end{bmatrix}.
+  \end{equation*}
+  This simplifies to
+  \begin{equation*}
+    \begin{bmatrix}
+      5&0\\
+      0&10
+    \end{bmatrix}
+    \begin{bmatrix}
+      \beta_{0}\\\beta_{1}
+    \end{bmatrix}
+    =
+    \begin{bmatrix}
+      5\\7
+    \end{bmatrix}
+  \end{equation*}
+  This corresponds to the system
+  \begin{equation*}
+    \begin{bmatrix}
+      5\beta_{0}=5\\
+      10\beta_{1}=7
+    \end{bmatrix}
+  \end{equation*}
+  So $\beta_{0}=1$ and $\beta_{1}=.7$. Hence our best fit regression line is
+  $y=1+.7x$ (shown below).
+  \begin{center}
+    \begin{tikzpicture}[x=1cm,y=1cm]
+      % axes
+      \draw[->] (-2.4,0) -- (2.4,0) node[right] {$x$};
+      \draw[->] (0,-0.2) -- (0,3.4) node[above] {$y$};
+
+      % x-axis ticks
+      \foreach \x in {-2,-1,0,1,2}
+      \draw (\x,0.08) -- (\x,-0.08) node[below] {\x};
+
+      % y-axis ticks
+      \foreach \y in {1,2,3}
+      \draw (0.08,\y) -- (-0.08,\y) node[left] {\y};
+
+      % regression line
+      \draw[blue, thick, domain=-2.2:2.2] plot (\x, {1 + 0.7*\x});
+
+      % data points
+      \fill (-2,0) circle (2pt);
+      \fill (-1,0) circle (2pt);
+      \fill (0,1) circle (2pt);
+      \fill (1,1) circle (2pt);
+      \fill (2,3) circle (2pt);
+    \end{tikzpicture}
+  \end{center}
+
+  
+  \Fl{Part (b).} Perhaps the relationship between $x$ and $y$ looks more
+  parabolic than linear. We can use the same technique to fit a ``best
+  parabola'' to our data. That is, assume the data comes from a model fo the
+  form
+  \begin{equation*}
+    Y = \beta_{0}+\beta_{1}x+\beta_{2}x^{2}+\epsilon.
+  \end{equation*}
+
+  \fl{Solution:} Now, our $X$ matrix is
+  \begin{equation*}
+    X =
+    \begin{array}{c@{\quad}c@{\quad}c}
+    \  x_0\ \ \ \ x\ \ \  x^{2}&  & \\
+      \begin{bmatrix}
+        1 & -2 & 4 \\
+        1 & -1 & 1 \\
+        1 & 0 & 0 \\
+        1 & 1 & 1 \\
+        1 & 2 & 4
+      \end{bmatrix}
+    \end{array}
+  \end{equation*}
+  Hence 
+  \begin{equation*}
+    X^{\top}X =
+    \begin{bmatrix}
+      1&1&1&1&1\\
+      -2&-1&0&1&2\\
+      4&1&0&1&4
+    \end{bmatrix}
+    \begin{bmatrix}
+      1 & -2 & 4 \\
+      1 & -1 & 1 \\
+      1 & 0 & 0 \\
+      1 & 1 & 1 \\
+      1 & 2 & 4
+    \end{bmatrix}
+    =
+    \begin{bmatrix}
+      5&0&10\\
+      0&10&0\\
+      10&0&34
+    \end{bmatrix}
+  \end{equation*}
+  and
+  \begin{equation*}
+    X^{\top}Y =
+    \begin{bmatrix}
+      1&1&1&1&1\\
+      -2&-1&0&1&2\\
+      4&1&0&1&4
+    \end{bmatrix}
+    \begin{bmatrix}
+      0\\0\\1\\1\\3
+    \end{bmatrix}
+    =
+    \begin{bmatrix}
+      5\\7\\13
+    \end{bmatrix}.
+  \end{equation*}
+  Therefore the normal equations are
+  \begin{equation*}
+    \begin{bmatrix}
+      5&0&10\\
+      0&10&0\\
+      10&0&34
+    \end{bmatrix}
+    \begin{bmatrix}
+      \beta_{0}\\\beta_{1}\\\beta_{2}
+    \end{bmatrix}
+    =
+    \begin{bmatrix}
+      5\\7\\13
+    \end{bmatrix}
+  \end{equation*}
+  Solving this linear system (e.g., by row reduction) gives $\beta_{0}=8/14$,
+  $\beta_{1}=7/10$, $\beta_{2}=3/14$. Hence the LSE of $\beta$ is  
+  \begin{equation*}
+    \widehat{\beta}_{LSE} =
+    \begin{bmatrix}
+      8/14\\7/10\\3/14
+    \end{bmatrix}
+  \end{equation*}
+  and the best fit parabola is
+  \begin{equation*}
+    y = \frac{8}{14}+\frac{7}{10}x+\frac{3}{14}x^{2}.
+  \end{equation*}
+  \begin{center}
+    \begin{tikzpicture}[x=1cm,y=1cm]
+      % axes
+      \draw[->] (-2.4,0) -- (2.4,0) node[right] {$x$};
+      \draw[->] (0,-0.2) -- (0,3.6) node[above] {$y$};
+
+      % x-axis ticks
+      \foreach \x in {-2,-1,0,1,2}
+      \draw (\x,0.08) -- (\x,-0.08) node[below] {\x};
+
+      % y-axis ticks
+      \foreach \y in {1,2,3}
+      \draw (0.08,\y) -- (-0.08,\y) node[left] {\y};
+
+      % linear fit
+      \draw[blue, thick, domain=-2.2:2.2]
+      plot (\x, {1 + 0.7*\x});
+
+      % quadratic fit
+      \draw[red, thick, domain=-2.2:2.2]
+      plot (\x, {8/14 + (7/10)*\x + (3/14)*\x*\x});
+
+      % data points
+      \fill (-2,0) circle (2pt);
+      \fill (-1,0) circle (2pt);
+      \fill (0,1) circle (2pt);
+      \fill (1,1) circle (2pt);
+      \fill (2,3) circle (2pt);
+    \end{tikzpicture}
+  \end{center}
+  \Fl{Part (c).} We can keep increasing the degree of our ``best fit''
+  polynomial. If we attempt to fit a degree-four polynomial, something
+  interesting happens. The best fit quartic polynomial is
+  \begin{equation*}
+    y = 1 + \frac{5}{12}x-\frac{17}{24}x^{2}+\frac{1}{12}x^{3}+\frac{5}{24}x^{4}
+  \end{equation*}
+  \begin{center}
+    \begin{tikzpicture}[x=1cm,y=1cm]
+      % axes
+      \draw[->] (-2.4,0) -- (2.4,0) node[right] {$x$};
+      \draw[->] (0,-0.2) -- (0,3.6) node[above] {$y$};
+
+      % x-axis ticks
+      \foreach \x in {-2,-1,0,1,2}
+      \draw (\x,0.08) -- (\x,-0.08) node[below] {\x};
+
+      % y-axis ticks
+      \foreach \y in {1,2,3}
+      \draw (0.08,\y) -- (-0.08,\y) node[left] {\y};
+
+      % % linear fit
+      % \draw[blue, thick, domain=-2.2:2.2]
+      % plot (\x, {1 + 0.7*\x});
+
+      % % quadratic fit
+      % \draw[red, thick, domain=-2.2:2.2]
+      % plot (\x, {8/14 + (7/10)*\x + (3/14)*\x*\x});
+
+      % quartic fit
+      \draw[green!60!black, thick, domain=-2.2:2.2]
+      plot (\x, {1 + (5/12)*\x - (17/24)*\x*\x + (1/12)*\x*\x*\x + (5/24)*\x*\x*\x*\x});
+
+      % data points
+      \fill (-2,0) circle (2pt);
+      \fill (-1,0) circle (2pt);
+      \fill (0,1) circle (2pt);
+      \fill (1,1) circle (2pt);
+      \fill (2,3) circle (2pt);
+    \end{tikzpicture}
+  \end{center}
+  The polynomial fits the data perfectly--the quartic has interpolated (i.e.
+  passes through) the data. This is an example of how too many parametesr can
+  result in ``overfitting''. (Here, the number of parameters here equals the number
+  of data points, allowing us to encode the data perfectly in our parameters).
+  This is undesirable.
+\end{example}
+
+\subsection{Specialization: simple linear regression}
+\textit{Section 11.3}
+
+\begin{definition}[SSE]
+  \label{def:sse}
+  Suppose we have $n$ data points $(x_{1},y_{1}),\ldots, (x_{n},y_{n})$. Given
+  a line $y=\beta_{0}+\beta_{1}x$ purporting to fit the data, the predicted
+  value of $y_{i}$ is
+  \begin{equation*}
+    \widehat{y}_{i} = \widehat{\beta}_{0}+\widehat{\beta}_{1}x_{i}.
+  \end{equation*}
+  The \demph{sum of square errors (SSE)} is
+  \begin{equation*}
+    \text{SSE} = \sum_{i=1}^{n}(y_{i}-\widehat{y}_{i})^{2} = \sum_{i=1}^{n} \left[ y_{i}-(\widehat{\beta}_{i}+\widehat{\beta}_{1}x_{i}) \right]^{2}   
+  \end{equation*}
+\end{definition}
 
 \begin{remark}
-  As we shall see, the most common estimates of $\alpha,\beta$ under the various
-  models of regression are
-  \begin{equation}\label{eq:15}
-    \hat{\alpha}\triangleq
-    \overline{y} - \hat{\beta} \overline{x} \quad \text{and }\quad \hat{\beta} \triangleq \frac{S_{xy}}{S_{xx}} 
-  \end{equation}
-  where $S_{xx}$ and $S_{xy}$ are given by the following definitions:
+  $y_{i}-\widehat{y}_{i}$ is the vertical distance between the line and the
+  data point.
 \end{remark}
+
+The \demph{simple linear regression problem} is the following: given data
+$(x_{1},y_{1}),\ldots, (x_{n},y_{n})$, find the line $y=\beta_{0}+\beta_{1}x$
+which minimizes the sum of squared errors.
+
+
+For simple linear regression (fitting a line $y=\beta_{0}+\beta_{1}x$), the
+least sequared estimate $\widehat{\beta}=
+\begin{bmatrix}
+  \widehat{\beta}_{0}\\ \widehat{\beta}_{1}
+\end{bmatrix}
+$ has a nice formula, which we illustrate next.
 
 \begin{definition}[Sum of squares]
   \label{def:sum-squares}
   For any $x\in \R^n$, define
   \begin{equation*}
     S_{xx} 
-    \triangleq \sum_{i=1}^{n} \left( x_{i}-\overline{x} \right)^2 
+    := \sum_{i=1}^{n} \left( x_{i}-\overline{x} \right)^2 
     = \sum_{i=1}^{n} x_{i}^{2}- \frac{1}{n}\left( \sum_{i=1}^{n} x_{i} \right)^{2} 
-    = \sum_{i=1}^{n} x_{i}^{2} - n\bar{x}^{2}
+    = \sum_{i=1}^{n} x_{i}^{2} - n\overline{x}^{2}
   \end{equation*}
 \end{definition}
 
@@ -5573,36 +5928,30 @@ solving the normal equations.
   \label{def:sum-cross-products}
   For $x,y \in \R^n$, define
   \begin{equation*}
-    S_{xy} \triangleq \sum_{i=1}^{n} \left( x_{i}-\bar{x} \right)\left(
-      y_{i}-\bar{y} \right)
+    S_{xy} := \sum_{i=1}^{n} \left( x_{i}-\overline{x} \right)\left(
+      y_{i}-\overline{y} \right)
     = \sum_{i=1}^{n} x_{i}y_{i} - n \bar{x}\bar{y}
   \end{equation*}
 \end{definition}
-\begin{remark}
-  The second equality in \cref{def:sum-squares} provides a useful alternative
-  form for $S_{xx}$. It follows easily by expanding the square
-  $\left( x_{i}-\overline{x} \right)^{2}$ and simplifying. Similarly for the
-  second equality in \cref{def:sum-cross-products}.
-\end{remark}
+
 Next we apply \cref{thm:normal-equations-criterion-lse} to show that the LSE of
 simple linear regression takes the form identified in \cref{eq:15}
 \begin{theorem}[LSE of Simple Linear Regression]
   For the simple linear regression problem, the least squares estimate is given
   by \cref{eq:15}. That is,
   \begin{equation*}
-    \hat{\beta}_{\rm LSE} 
-    = \cv{\hat{\beta_{1}},\hat{\beta_{2}}} 
-    = \cv{\hat{\alpha},\hat{\beta}} 
+    \widehat{\beta}_{\rm LSE} 
+    = \cv{\widehat{\beta_{0}},\widehat{\beta_{1}}} 
     = \cv{\bar{y} -
-      \hat{\beta}\bar{x}, S_{xy}/S_{xx}}
+      \widehat{\beta}\bar{x}, S_{xy}/S_{xx}}
   \end{equation*}
 \end{theorem}
 \begin{proof}
   By \cref{thm:normal-equations-criterion-lse},
-  $\hat{\beta}_{\rm LSE} = \left( X^{\top}X \right)^{-1}X^{\top}Y$, so it
+  $\widehat{\beta}_{\rm LSE} = \left( X^{\top}X \right)^{-1}X^{\top}Y$, so it
   suffices to compute this quanitity and show that it matches \cref{eq:15}. Indeed,
   \begin{align*}
-    \hat{\beta}_{\rm LSE}
+    \widehat{\beta}_{\rm LSE}
     &= \left( X^{\top}X \right)^{-1}X^{\top}Y\\
     &= \left( \begin{bmatrix}
         1&\cdots&1\\  x_{1}&\cdots&x_{n}\\
@@ -5627,12 +5976,12 @@ simple linear regression takes the form identified in \cref{eq:15}
   \end{align*}
   Now using \cref{def:sum-squares},
   \begin{equation*}
-    |X^{\top}X| = n \sum_{i} x_{i}^{2} - \left( \sum_{i} x_{i}   \right)^{2} =
+    \det(X^{\top}X) = n \sum_{i} x_{i}^{2} - \left( \sum_{i} x_{i}   \right)^{2} =
     n S_{xx} >0.
   \end{equation*}
   Therefore $X^{\top}X$ is invertible (provided the $x_{i}$'s are not all equal) and we obtain
   \begin{align*}
-    \hat{\beta}_{\rm LSE}
+    \widehat{\beta}_{\rm LSE}
     &= \frac{1}{nS_{xx}}
       \begin{bmatrix}
         \sum_{i} x_{i}^{2}&-\sum_{i} x_{i}\\
@@ -5654,5 +6003,173 @@ simple linear regression takes the form identified in \cref{eq:15}
   \end{align*}
   which matches the form of \cref{eq:15}.
 \end{proof}
+
+
+\begin{example}
+  In \cref{ex:simple-linear-regression}, our data gives
+  \begin{equation*}
+    S_{xx} = \sum_{i}x_{i}^{2} - \frac{1}{n} \left( \sum_{i}x_{i}  \right)^{2} = 10  
+  \end{equation*}
+  and
+  \begin{equation*}
+    S_{xy} = \sum_{i}x_{i}y_{i} - \frac{1}{n} \left( \sum_{i}x_{i}  \right) \left( \sum_{i}y_{i}  \right) = 7.
+  \end{equation*}
+  This gives
+  \begin{equation*}
+    \widehat{\beta}_{1} = \frac{S_{xy}}{S_{xx}} = .7
+  \end{equation*}
+  and
+  \begin{equation*}
+    \widehat{\beta}_{0} = \overline{y} - \overline{x}\beta_{1} = 1 - 0 =1.
+  \end{equation*}
+  So the best fit line is
+  \begin{equation*}
+    y = 1 + .7 x.
+  \end{equation*}
+\end{example}
+
+
+\subsection{Statistical properties of least squares estimators}
+
+Consider the general linear model with $k+1$ unknowns
+$\beta_{0},\ldots\beta_{k}$, given by
+\begin{equation*}
+  Y = X\beta+\epsilon, \quad \text{where }Y\in \R^{n\times 1} \text{ and } X\in \R^{n\times k+1},
+\end{equation*}
+and assume that $X$ has linearly independent columns (so that $X^{\top}X$ is
+invertible). The least squares estimator is $\beta =
+(X^{\top}X)^{-1}X^{\top}Y$. Its statistical properties depend on the
+assumptions we make about the errors $\epsilon$.  Here are two common error assumptions
+
+\begin{align*}
+  \mathrm{(A1)} &\quad \epsilon_{1},\ldots, \epsilon_{n} \text{ are
+                  independent random variables with } \E\left[\epsilon_{i}
+                  \right]=0 \text{ and } \Var(\epsilon_{i})=\sigma^{2}\\
+  \mathrm{(A2)} &\quad \epsilon_{1},\ldots, \epsilon_{n} \text{ are
+                  independent normal random variables with } \E\left[\epsilon_{i}
+                  \right]=0 \text{ and } \Var(\epsilon_{i})=\sigma^{2}\\
+\end{align*}
+
+Clearly (A2) is a stronger assumption, since it implies (A1).
+
+\begin{theorem}
+  Under assumption (A1), $\widehat{\beta}_{\rm LSE}$ satisfies the following
+  properties:
+  \begin{itemize}
+    \item $\E\left[\widehat{\beta}_{i} \right]=\beta_{i}$ for $i=0,1,\ldots,k$
+    \item $\Var(\widehat{\beta}_{i})=c_{ii}\sigma^{2}$,  where $c_{ii}$ is the
+    element in the $i^{\rm th}$ row and $i^{\rm th}$ column of
+    $(X^{\top}X)^{-1}$. [Recall this matrix has a row and column numbered
+    $0$].
+    \item $\mathrm{Cov}(\widehat{\beta}_{i},\widehat{\beta}_{j}) = c_{ij}\sigma^{2}$
+    \item The estimator $S^{2}:= \frac{ Y^{\top}Y -
+      \widehat{\beta}^{\top}X^{\top}Y }{n-(k+1)}$ [numerator is sum of squared
+    errors]
+  \end{itemize}
+  In addition, if (A2) holds, we have
+  \begin{itemize}
+    \item Each $\widehat{\beta}_{i}$ is normally distributed
+    \item The random variable
+    \begin{equation*}
+      \frac{[n-(k+1)]S^{2}}{\sigma^{2}}
+    \end{equation*}
+    has chi-squared distribution with $n-(k+1)$ degrees of freedom.
+    \item The statistic $S^{2}$ and $\widehat{\beta}_{i}$ are independent for
+    every $i$. 
+    \item $\widehat{\beta}_{\rm ML}=\widehat{\beta}_{\rm LSE}$. (The least
+    squares estimate is the maximum likelihood estimate.) 
+  \end{itemize} 
+\end{theorem}
+
+
+\section{Logistic regression}
+The outcome $Y$ is \textbf{binary}:
+\begin{equation*}
+  Y = \left\{ \begin{array}{l@{\quad:\quad}l} 1 & \text{the species goes
+        extinct}\\ 0& \text{otherwise} \end{array}\right.
+\end{equation*}
+
+The predictor is a continuous trait:
+\begin{itemize}
+  \item $x= \text{ (range size)}$
+  %\item $x_{2}$: body size
+\end{itemize}
+
+
+The logistic model here is
+\begin{equation*}
+  \P\left[Y=1\mid \text{range size } x \right] = \frac{1}{1+e^{-(\beta_{0}+\beta_{1}x)}}
+\end{equation*}
+
+Here
+\begin{equation*}
+  \beta_{0} = (\text{baseline log-odds extinction risk at $x=0$})
+\end{equation*}
+and
+\begin{equation*}
+  \beta_{1} = (\text{change in log-odds per unit increase in }x)
+\end{equation*}
+
+\begin{itemize}
+  \item If $\beta_{1}=0$ then extinction becomes roughly random with respect
+  to range size.
+  \item If $|\beta_{1}|$ is large, then extinction risk depends strongly on
+  range size.
+  \item If $\beta_{1}<0$ then there is a negative relationship between range
+  size and extinction risk. (Higher range size means less like to go extinct).
+  \item If $\beta_{1}>0$ then there is a positive relationship between range
+  size and extinction risk. (Higher range size means more likely to go
+  extinct).
+\end{itemize}
+
+
+For data a total of 550 trilobyte species, with samples taken from various
+epochs. In particular there were $n_{1}=40$ samples of trilobites during
+epochs of mass extinction, and $n_{2}=13070$ samples from epochs without mass
+extinctions.
+
+Our dataset includes both the geographic range and the bodysize (both of which
+can be inferred from fossils). Samples take the form:
+\begin{center}
+  \begin{tabular}{c|c|c}
+    extinct & log range $(x_{1})$ & log bodysize $(x_{2})$ \\
+    \hline
+    0 & 1.4746192 & 0.09619238 \\
+    1 & -1.2346322 & 0.23356274 \\
+    0 & 0.1033393 & -0.04318684 \\
+    0 & 0.9344750 & -0.03719772 \\
+    0 & 0.0000000 & -0.03181698 \\
+  \end{tabular}
+\end{center}
+The first column indicates whether the species goes extinct during that epoch.
+
+So we can use the following logistic model
+\begin{equation*}
+  \P\left[Y=1\mid x_{1},x_{2} \right] = \frac{1}{1+e^{-(\beta_{0}+\beta_{1}x_{1}+\beta_{2}x_{2})}}
+\end{equation*}
+
+For ``ordinary times'' samples, we obtain
+\begin{equation*}
+  \widehat{\beta}_{0}= -0.426
+  \quad \widehat{\beta}_{1} = -0.349
+  \quad \text{and} \quad \widehat{\beta}_{2} = -0.142
+\end{equation*}
+
+For extinction event samples, we obtain
+\begin{equation*}
+  \widehat{\beta}_{0}= -1.068,
+  \quad \widehat{\beta}_{1} = -0.0353
+  \quad \text{and} \quad \widehat{\beta}_{2} = -0.487
+\end{equation*}
+% Estimate Std. Error z value Pr(>|z|)   
+% (Intercept)  -1.06751    0.37997  -2.809  0.00496 **
+% log_range    -0.03533    0.40099  -0.088  0.92979   
+% log_bodysize -0.48677    0.46108  -1.056  0.29109   
+
+% Coefficients:
+% Estimate Std. Error z value Pr(>|z|)    
+% (Intercept)  -0.42561    0.05648  -7.535 4.89e-14 ***
+% log_range    -0.34892    0.05797  -6.019 1.76e-09 ***
+% log_bodysize -0.14213    0.05749  -2.472   0.0134 *  
 
 \end{document}

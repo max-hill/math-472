@@ -49,6 +49,7 @@ title: Lecture Notes
 2026-04-13  | 27   | The likelihood ratio test
 2026-04-15  | 28   | Linear regression
 2026-04-17  | 29   | General linear model, normal equations, least squares regression
+2026-04-20  | 30   | General linear model recap
 
  
 
