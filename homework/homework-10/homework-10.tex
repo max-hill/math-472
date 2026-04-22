@@ -1,0 +1,249 @@
+\documentclass[10pt]{article}
+% Math Packages
+\usepackage{amsmath, mathtools}
+\usepackage{amssymb}
+\usepackage{amsthm}
+\usepackage{amsfonts}
+\usepackage{bbm}
+\usepackage{breqn}
+\usepackage[margin=1in]{geometry}
+\usepackage{graphicx}
+\usepackage{tikz}
+\usetikzlibrary{arrows.meta}
+\usetikzlibrary{calc}
+\usepackage{forest}
+\usepackage{tikz-qtree}
+\graphicspath{ {./images/} }
+\usepackage{hyperref}
+\usepackage[capitalize]{cleveref}
+\usepackage[shortlabels]{enumitem}
+\usetikzlibrary{arrows,matrix,positioning}
+\usepackage{multicol}
+
+\usepackage{listings}
+\usepackage{xcolor}
+
+\crefname{problem}{Problem}{Problems}
+\Crefname{problem}{Problem}{Problems}
+
+\lstset{
+  language=R,
+  basicstyle=\ttfamily\footnotesize,
+  keywordstyle=\color{blue},
+  commentstyle=\color{gray},
+  stringstyle=\color{red!70!black},
+  framesep=2pt,
+  framexleftmargin=0pt, 
+  frame=single,
+  breaklines=false,
+  showstringspaces=false
+}
+% for the pipe symbol
+\usepackage[T1]{fontenc}
+
+% Colorful Notes
+\usepackage{color} \definecolor{Red}{rgb}{1,0,0} \definecolor{Blue}{rgb}{0,0,1}
+\definecolor{Purple}{rgb}{.5,0,.5} \def\red{\color{Red}} \def\blue{\color{Blue}}
+\def\gray{\color{gray}} \def\purple{\color{Purple}}
+\newcommand{\rnote}[1]{{\red [#1]}} % \rnote{foo} gives '[foo]' in red
+\newcommand{\pnote}[1]{{\purple [#1]}} % \pnote{foo} gives '[foo]' in purple
+\newcommand{\bnote}[1]{{\blue #1}} % \bnote{foo} gives 'foo' in blue
+\newcommand{\gnote}[1]{{\gray #1}} % \gnote{foo} gives 'foo' in gray
+\newcommand{\Max}[1]{{\purple [#1]}} % \bnote{foo} then 'foo' is blue
+
+% Claim numbering (the counter restarts after each proof environment)
+\newcounter{claimcount}
+\setcounter{claimcount}{0}
+\newenvironment{claim}{\refstepcounter{claimcount}\par\addvspace{\medskipamount}\noindent\textbf{Claim \arabic{claimcount}:}}{}
+\usepackage{etoolbox}
+\AtBeginEnvironment{proof}{\setcounter{claimcount}{0}}
+\newenvironment{claimproof}{\par\addvspace{\medskipamount}\noindent\textit{Proof of Claim  \arabic{claimcount}.}}{\hfill\ensuremath{\qedsymbol} \tiny{Claim}
+
+  \medskip}
+% Add claim support to cleverref
+\crefname{claimcount}{Claim}{Claims}
+
+% Math Environments
+\newtheorem{theorem}{Theorem}
+\newtheorem{assumption}[theorem]{Assumption}
+\newtheorem{lemma}[theorem]{Lemma}
+\newtheorem{proposition}[theorem]{Proposition}
+\newtheorem{corollary}[theorem]{Corollary}
+\newtheorem{question}[theorem]{Question}
+\theoremstyle{definition}
+\newtheorem*{definition}{Definition}
+\newtheorem{remark}[theorem]{Remark}
+\newtheorem{example}[theorem]{Example}
+\newtheorem{notation}[theorem]{Notation}
+\newtheorem{problem}[theorem]{Problem}
+
+% Matrices and Column Vectors. 
+\usepackage{stackengine}
+\setstackgap{L}{1.0\normalbaselineskip}
+\usepackage{tabstackengine}
+\setstackEOL{;}% row separator
+\setstackTAB{,}% column separator
+\setstacktabbedgap{1ex}% inter-column gap
+\setstackgap{L}{1.5\normalbaselineskip}% inter-row baselineskip
+\let\nmatrix\bracketMatrixstack  %Usage: \nmatrix{1,2,3\4,5,6}
+\newcommand\cv[1]{\setstackEOL{,}\bracketMatrixstack{#1}} %usage: \cv{1,2,3}
+
+% Custom Math Coqmmands
+\newcommand{\vt}{\vskip 5mm} % vertical space
+\newcommand{\fl}{\noindent\textbf} % first line
+\newcommand{\Fl}{\vt\noindent\textbf} % first line with space above
+\newcommand{\norm}[1]{\left\lVert#1\right\rVert} % norm
+\newcommand{\pnorm}[1]{\left\lVert#1\right\rVert_p} % p-norm
+\newcommand{\qnorm}[1]{\left\lVert#1\right\rVert_q} % q-norm
+\newcommand{\1}[1]{\textbf{1}_{\left[#1\right]}} % indicator function 
+\def\limn{\lim_{n\to\infty}} % shortcut for lim as n-> infinity
+\def\sumn{\sum_{n=1}^{\infty}} % shortcut for sum from n=1 to infinity
+\def\sumkn{\sum_{k=1}^{n}} % shortcut for sum from k=1 to n
+\def\sumin{\sum_{i=1}^{n}} % shortcut for sum from i=1 to n
+\def\SAs{\sigma\text{-algebras}} % shortcut for $\sigma$-algebras
+\def\SA{\sigma\text{-algebra}} % shortcut for $\sigma$-algebra
+\def\Ft{\mathcal{F}_t} % time-indexed sigma-algebra (t)
+\def\Fs{\mathcal{F}_s} % time-indexed sigma-algebra (s)
+\def\F{\mathcal{F}} % sigma-algebra
+\def\G{\mathcal{G}} % sigma-algebra
+\def\R{\mathbb{R}} % Real numbers
+\def\N{\mathbb{N}} % Natural numbers
+\def\Z{\mathbb{Z}} % Integers
+\def\E{\mathbb{E}} % Expectation
+\def\P{\mathbb{P}} % Probability
+\def\Q{\mathbb{Q}} % Q probability
+\def\dist{\text{dist}} %Text 'dist' for things like 'dist(x,y)'
+\newcommand{\indep}{\perp \!\!\! \perp}  %independence symbol
+\def\Var{\mathrm{Var}} % Variance
+\def\tr{\mathrm{tr}} % trace
+
+% Brackets and Parentheses
+\def\[{\left [}
+    \def\]{\right ]}
+% \def\({\left (}
+%   \def\){\right )}
+
+\usepackage{color}
+\definecolor{Red}{rgb}{1,0,0}
+\definecolor{Blue}{rgb}{0,0,1}
+\definecolor{Purple}{rgb}{.5,0,.5}
+\def\red{\color{Red}}
+\def\blue{\color{Blue}}
+\def\gray{\color{gray}}
+\def\purple{\color{Purple}}
+\definecolor{RoyalBlue}{cmyk}{1, 0.50, 0, 0}
+\newcommand{\dempfcolor}[1]{{\color{RoyalBlue}#1}} 
+\newcommand{\demph}[1]{\textcolor{RoyalBlue}{\textbf{\slshape #1}}} % Slanted
+
+\usepackage{emoji}
+% comment exactly one of the following line to show / hide the solutions
+% \newcommand{\solution}[1]{{\purple #1}} % uncomment to show the solutions
+\newcommand{\solution}[1]{} % uncomment to hide the solutions
+
+
+
+
+\begin{document}
+\begin{center}
+  \section*{Math 472: Homework 10}
+  \textit{Due Tuesday, April 28}
+\end{center}
+
+
+\begin{problem}[Exercise 10.91]
+  Let $Y_{1},\ldots,Y_{20}$ be a random sample of size $n=20$ from a normal
+  distribution with unknown mean and known variance $\sigma^{2}=5$. We wish to
+  test $H_{0}:\mu=7$ versus $H_{a}:\mu>7$.
+  \begin{enumerate}[(a)]
+    \item Find the uniformly most powerful test with significance level $.05$.
+    \item For the test in part (a), find the power at each of the following
+    alternative values for $\mu$: $\mu_{a}=7.5, 8.0, 8.5, $ and $9.0$. 
+    \item Sketch a graph of the power function.
+  \end{enumerate}
+\end{problem}
+
+
+\begin{problem}
+  Let $X_1,\ldots,X_n$ be a random sample from the pdf
+  \begin{equation*}
+    f(x|\theta)=\theta x^{-2},\quad 0<\theta\leq x<\infty.
+  \end{equation*}
+  \begin{enumerate}[(a)]
+    \item What is a sufficient statistic for $\theta$?
+    \item Find the MLE of $\theta$.
+  \end{enumerate}
+\end{problem}
+
+
+\begin{problem}
+  In a given city it is assumed that the number of auto accidents in a given
+  year follows a Poisson distribution. In past years, the average number of
+  accidents per year was 15 and this year it was 10. Is it justified to claim
+  that the accident rate has dropped?
+\end{problem}
+
+
+\begin{problem}[Exercise 10.21]
+  \label{problem:exercise-10.21}
+  Shear strength measurements derived from unconﬁned compression tests for two
+  types of soils gave the results shown in the following table (measurements
+  in tons per square foot, with $s$ the sample standard deviation).
+  \begin{center}
+    \begin{tabular}{lccc}
+      \hline
+      \textbf{Soil Type} & \boldmath$n$ & \boldmath$\overline{y}$ & \boldmath$s$ \\
+      \hline
+      I   & 30 & 1.65 & 0.26 \\
+      II  & 35 & 1.43 & 0.22 \\
+      \hline
+    \end{tabular}
+  \end{center}
+  Do the soils appear to differ with respect to average shear strength, at the
+  1\% signiﬁcance level? \textit{[Hint: see example 10.7 in the textbook.]}
+  
+\end{problem}
+
+\begin{problem}
+  Refer to \cref{problem:exercise-10.21}. Construct a 99\% confidence interval
+  for the difference in mean shear strengths for the two soil types.
+  \textit{[Hint: see example 8.8 in the textbook.]}
+  \begin{enumerate}[(a)]
+    \item Is the value $\mu_{1}-\mu_{2}=0$ inside the interval?
+    \item Based on the interval, should the null hypothesis of
+    \cref{problem:exercise-10.21} be rejected? Why?
+    \item How does the conclusion compare with your conclusion
+    \cref{problem:exercise-10.21}?
+  \end{enumerate}
+\end{problem}
+
+% \begin{problem}[Exercise 10.97]
+%   Let $Y_{1},\ldots,Y_{n}$ be independent and identically distributed random
+%   variables with probability mass function $p(y\mid \theta)$ given by
+%   \begin{equation*}
+%     p(1\mid \theta)  = \theta^{2},
+%     \quad
+%     p(2\mid \theta)  = 2\theta(1-\theta)
+%     \quad \text{and} \quad
+%     p(3\mid \theta)  = (1-\theta)^{2},
+%   \end{equation*}
+%   where $\theta\in (0,1)$. Let $N_{i}$ denote the number of observations equal
+%   to $i$ for $i=1,2,3$.
+%   \begin{enumerate}[(a)]
+%     \item Derive the likelihood function $L(\theta)$ as a function of
+%     $N_{1},N_{2},$ and $N_{3}$.
+%     \item Find the most powerful test for testing $H_{0}:\theta=\theta_{0}$
+%     versus $H_{a}:\theta=\theta_{a}$, where $\alpha_{a}>\alpha_{0}$. Show that
+%     your test specifies that $H_{0}$ be rejected for certain values of
+%     $2N_{1}+N_{2}.$
+%     \item How do you determine the value of $k$ so that the test has nominal
+%     level $\alpha$? You do not need to do the actual computation. A clear
+%     description of how to determine $k$ is adequate.
+%     \item Is the test derived in parts (a)-(c) uniformly most powerful for
+%     testing $H_{0}:\theta=\theta_{0}$ versus $H_{a}:\theta>\theta_{0}$? Why or
+%     why not?
+%   \end{enumerate}
+% \end{problem}
+
+
+\end{document}
+% Through the fire and the flames we carry on
