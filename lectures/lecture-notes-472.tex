@@ -175,6 +175,7 @@
 \def\dist{\text{dist}} %Text 'dist' for things like 'dist(x,y)'
 \newcommand{\indep}{\perp \!\!\! \perp}  %independence symbol
 \def\Var{\mathrm{Var}} % Variance
+\def\Cov{\mathrm{Cov}} % Variance
 \def\tr{\mathrm{tr}} % trace
 
 % Brackets and Parentheses
@@ -4993,6 +4994,7 @@ when $n$ is large:
 \section{2026-04-15 | Week 13 | Lecture 28}
 
 \subsection{Finding a best fit line with linear regression}
+\label{sec:finding-best-fit-line-with-linear-regression}
 
 Suppose we have four data points taking the form
 $(\text{time}, \text{observation}=(t_{i},b_{i})$:
@@ -5034,7 +5036,7 @@ the data:
     \fill (0,0) circle[radius=2pt]; \fill (1,8) circle[radius=2pt]
     node[above,right] {$(1,8)$}; \fill (3,8) circle[radius=2pt]
     node[above,right] {$(3,8)$}; \fill (4,20) circle[radius=2pt]
-    node[above,right] {$(4,10)$};
+    node[above,right] {$(4,20)$};
   \end{tikzpicture}
 \end{center}
 
@@ -5377,7 +5379,7 @@ how each of the $k$ independent variables contributes to predicting $Y$.
 
 \begin{definition}[General Linear Model]
   \label{def:general-linear-model}
-  The general linear model is the model given by the equation
+  The \demph{general linear model} is the model given by the equation
   \begin{equation} \label{eq:general-linear-model-equation}
     Y= X\beta +\epsilon
   \end{equation}
@@ -5558,6 +5560,7 @@ No typed notes today. I recapped the last two lectures.
 \section{2026-04-22 | Week 14 | Lecture 31}
 \textit{Section 11.3 and 11.10}
 
+\subsection{Examples of finding least squares estimates}
 \begin{example}[Example 11.1 and 11.13 in textbook]
   Suppose we have the following data:
   
@@ -5816,9 +5819,9 @@ No typed notes today. I recapped the last two lectures.
       \foreach \y in {1,2,3}
       \draw (0.08,\y) -- (-0.08,\y) node[left] {\y};
 
-      % linear fit
-      \draw[blue, thick, domain=-2.2:2.2]
-      plot (\x, {1 + 0.7*\x});
+      % % linear fit
+      % \draw[blue, thick, domain=-2.2:2.2]
+      % plot (\x, {1 + 0.7*\x});
 
       % quadratic fit
       \draw[red, thick, domain=-2.2:2.2]
@@ -5833,11 +5836,13 @@ No typed notes today. I recapped the last two lectures.
     \end{tikzpicture}
   \end{center}
   \Fl{Part (c).} We can keep increasing the degree of our ``best fit''
-  polynomial. If we attempt to fit a degree-four polynomial, something
-  interesting happens. The best fit quartic polynomial is
+  polynomial.
+
+  The best fit cubic polynomial is
   \begin{equation*}
-    y = 1 + \frac{5}{12}x-\frac{17}{24}x^{2}+\frac{1}{12}x^{3}+\frac{5}{24}x^{4}
+    y=\frac{4}{7}+ \frac{5}{12}x + \frac{3}{14}x^{2} + \frac{1}{12}x^{3}
   \end{equation*}
+
   \begin{center}
     \begin{tikzpicture}[x=1cm,y=1cm]
       % axes
@@ -5860,6 +5865,48 @@ No typed notes today. I recapped the last two lectures.
       % \draw[red, thick, domain=-2.2:2.2]
       % plot (\x, {8/14 + (7/10)*\x + (3/14)*\x*\x});
 
+      % cubic fit
+      \draw[blue!60!black, thick, domain=-2.2:2.2]
+      plot (\x, {(4/7) + (5/12)*\x + (3/14)*\x*\x + (1/12)*\x*\x*\x});
+
+      % data points
+      \fill (-2,0) circle (2pt);
+      \fill (-1,0) circle (2pt);
+      \fill (0,1) circle (2pt);
+      \fill (1,1) circle (2pt);
+      \fill (2,3) circle (2pt);
+    \end{tikzpicture}
+  \end{center}
+  As we increase the number of paramters, the curve fits the data better and
+  better.
+  
+  If we attempt to fit a degree-four polynomial, something
+  interesting happens. The best fit quartic polynomial is
+  \begin{equation*}
+    y = 1 + \frac{5}{12}x-\frac{17}{24}x^{2}+\frac{1}{12}x^{3}+\frac{5}{24}x^{4}
+  \end{equation*}
+  \begin{center}
+    \begin{tikzpicture}[x=1cm,y=1cm]
+      % axes
+      \draw[->] (-2.4,0) -- (2.4,0) node[right] {$x$};
+      \draw[->] (0,-0.2) -- (0,3.6) node[above] {$y$};
+
+      % x-axis ticks
+      \foreach \x in {-2,-1,0,1,2}
+      \draw (\x,0.08) -- (\x,-0.08) node[below] {\x};
+
+      % y-axis ticks
+      \foreach \y in {1,2,3}
+      \draw (0.08,\y) -- (-0.08,\y) node[left] {\y};
+
+      % % quadratic fit
+      % \draw[red, thick, domain=-2.2:2.2]
+      % plot (\x, {8/14 + (7/10)*\x + (3/14)*\x*\x});
+
+      % cubic fit
+      \draw[blue!60!black, thick, domain=-2.2:2.2]
+      plot (\x, {(4/7) + (5/12)*\x + (3/14)*\x*\x + (1/12)*\x*\x*\x});
+
       % quartic fit
       \draw[green!60!black, thick, domain=-2.2:2.2]
       plot (\x, {1 + (5/12)*\x - (17/24)*\x*\x + (1/12)*\x*\x*\x + (5/24)*\x*\x*\x*\x});
@@ -5872,42 +5919,457 @@ No typed notes today. I recapped the last two lectures.
       \fill (2,3) circle (2pt);
     \end{tikzpicture}
   \end{center}
-  The polynomial fits the data perfectly--the quartic has interpolated (i.e.
-  passes through) the data. This is an example of how too many parametesr can
-  result in ``overfitting''. (Here, the number of parameters here equals the number
-  of data points, allowing us to encode the data perfectly in our parameters).
-  This is undesirable.
+  The quartic polynomial fits the data perfectly---that is, the curve
+  interpolates (i.e. passes through) the data. This is an example of how too
+  many parametesr can result in ``overfitting''. (Here, the number of
+  parameters here equals the number of data points, allowing us to encode the
+  data, including all the noise, perfectly in our parameters). This is
+  undesirable, since the goal is to detect an underlying trend or general
+  relationship.
 \end{example}
 
-\subsection{Specialization: simple linear regression}
-\textit{Section 11.3}
+Let's return to the following example, where we've fitted a line to four data
+points $(0,0), (1,8), (3,8), (4,10)$ with the assumption of a simple linear
+regression model
+\begin{equation*}
+  Y = \beta_{0}+\beta_{1}x + \epsilon.
+\end{equation*}
+
+By the method of least squares, the best-fit line is
+\begin{equation*}
+  y = \widehat{\beta}_{0}+\widehat{\beta}_{1}x
+\end{equation*}
+where $\hat{\beta}_{\rm LSE} =
+\begin{bmatrix}
+  \widehat{\beta}_{0}\\
+  \widehat{\beta}_{1}
+\end{bmatrix}$. Recall from earlier lecture that we found
+$\widehat{\beta}_{0}=1$ and $\widehat{\beta}_{1}=4$.
+
+\begin{center}
+  \begin{tikzpicture}[x=2cm, y=.2cm]
+    % axes
+    \draw[->] (-.2,0) -- (4.3,0) node[right] {$t$}; \draw[->] (0,0) --
+    (0,21.5) node[above] {$y$};
+
+    % x-axis ticks and labels
+    \foreach \x in {0,1,2,3,4} \draw (\x,.2) -- (\x,-0.2) node[below] {\x};
+
+    % y-axis ticks and labels
+    \foreach \y in {8,10,20} \draw (.02,\y) -- (-0.02,\y) node[left] {\y};
+
+    % regression line y = 1 + 4x
+    \draw[blue, dashed, thick] (-.2,.2) -- (4.1,17.4) node[right,blue] {$y=\widehat{\beta}_{0}+\widehat{\beta}_{1}x$} ;
+
+    % residuals (vertical segments)
+    \draw[red,thick] (0,0) -- (0,1) node[pos=.5, right] {$e_1$};
+    \draw[red,thick] (1,8) -- (1,5) node[pos=.5, right] {$e_2$};
+    \draw[red,thick] (3,8) -- (3,13) node[pos=.5, right] {$e_3$};
+    \draw[red,thick] (4,20) -- (4,17) node[pos=.5, right] {$e_4$};
+
+    % points
+    \fill (0,0) circle[radius=2pt]; \fill (1,8) circle[radius=2pt]
+    node[above,right] {$(1,8)$}; \fill (3,8) circle[radius=2pt]
+    node[above,right] {$(3,8)$}; \fill (4,20) circle[radius=2pt]
+    node[above,right] {$(4,20)$};
+  \end{tikzpicture}
+\end{center}
+
+In doing a regression analysis, our ultimate goal is either to find an
+underlying trend or general relationship between the independent variable $x$
+and the dependent variable $y$. So in this case we may be interested in the
+fact that $\widehat{\beta}_{1}=4>0$, which seems to indicate that there is a
+positive relationship between $x$ and $y$. This inference may seem obvious
+from the data, but we only have $n=4$ data points, so perhaps skepticism is
+warranted.
+
+To evaluate the goodness of this inference, we'd need to apply some statistical
+methods, for example a hypothesis test
+\begin{equation*}
+  H_{0}: \beta_{1}=0 \quad\text{versus}\quad H_{a}:\beta_{1}>0
+\end{equation*}
+or perhaps constructing a 95\% confidence interval
+\begin{equation*}
+  [\widehat{\beta}_{1}-\epsilon, \widehat{\beta}_{1}+\epsilon]
+\end{equation*}
+which could give us plausible values for $\beta_{1}$.
+
+This will be the topic of the next lecture.
+\newpage
+\section{2026-04-22 | Week 14 | Lecture 32}
+
+\subsection{Properties of least squares estimators}
+\textit{(Based on chapter 11.4 and 11.5 in the textbook)}
+
 
 \begin{definition}[SSE]
   \label{def:sse}
   Suppose we have $n$ data points $(x_{1},y_{1}),\ldots, (x_{n},y_{n})$. Given
-  a line $y=\beta_{0}+\beta_{1}x$ purporting to fit the data, the predicted
+  a line $y=\widehat{\beta}_{0}+\widehat{\beta}_{1}x$ purporting to fit the data, the predicted
   value of $y_{i}$ is
   \begin{equation*}
     \widehat{y}_{i} = \widehat{\beta}_{0}+\widehat{\beta}_{1}x_{i}.
   \end{equation*}
   The \demph{sum of square errors (SSE)} is
   \begin{equation*}
-    \text{SSE} = \sum_{i=1}^{n}(y_{i}-\widehat{y}_{i})^{2} = \sum_{i=1}^{n} \left[ y_{i}-(\widehat{\beta}_{i}+\widehat{\beta}_{1}x_{i}) \right]^{2}   
+    \text{SSE} = \sum_{i=1}^{n}(y_{i}-\widehat{y}_{i})^{2} %= \sum_{i=1}^{n} \left[ y_{i}-(\widehat{\beta}_{0}+\widehat{\beta}_{1}x_{i}) \right]^{2}   
   \end{equation*}
 \end{definition}
 
 \begin{remark}
-  $y_{i}-\widehat{y}_{i}$ is the vertical distance between the line and the
-  data point.
+  $e_{i}=y_{i}-\widehat{y}_{i}$ corresponds to the vertical distance between
+  the line and the $i^{\rm th}$ data point, as shown:
+\begin{center}
+  \begin{tikzpicture}[x=3cm, y=.3cm]
+    % axes
+    \draw[->] (-.2,0) -- (4.3,0) node[right] {$t$}; \draw[->] (0,0) --
+    (0,21.5) node[above] {$y$};
+
+    % x-axis ticks and labels
+    \foreach \x in {0,1,2,3,4} \draw (\x,.2) -- (\x,-0.2) node[below] {\x};
+
+    % y-axis ticks and labels
+    \foreach \y in {8,10,20} \draw (.02,\y) -- (-0.02,\y) node[left] {\y};
+
+    % regression line y = 1 + 4x
+    \draw[blue, dashed, thick] (-.2,.2) -- (4.1,17.4) node[below right,blue] {$y=\widehat{\beta}_{0}+\widehat{\beta}_{1}x$} ;
+
+    % residuals (vertical segments)
+    \draw[red,thick] (0,0) -- (0,1) node[pos=.5, right] {$e_1=-1$};
+    \draw[red,thick] (1,8) -- (1,5) node[pos=.5, right] {$e_2=3$};
+    \draw[red,thick] (3,8) -- (3,13) node[pos=.5, right] {$e_3=-5$};
+    \draw[red,thick] (4,20) -- (4,17) node[pos=.5, right] {$e_4=3$};
+
+    % points
+    \fill (0,0) circle[radius=2pt];
+
+    \fill (1,8) circle[radius=2pt] node[above,right] {$(1,8)$};
+
+    \fill (3,8) circle[radius=2pt] node[above,right] {$(3,8)$};
+
+    \fill (4,20) circle[radius=2pt] node[above,right] {$(4,20)$};
+  \end{tikzpicture}
+\end{center}
+For the line $y= 1+4x$,
+\begin{equation}
+  \label{eq:SSE-example}
+  \mathrm{SSE} = (-1)^{2}+ 3^{2}+(-5)^{2}+3^{2} = 44
+\end{equation}
 \end{remark}
 
-The \demph{simple linear regression problem} is the following: given data
-$(x_{1},y_{1}),\ldots, (x_{n},y_{n})$, find the line $y=\beta_{0}+\beta_{1}x$
-which minimizes the sum of squared errors.
+\begin{definition}
+  \label{def:simple-linear-regression-problem}
+  The \demph{simple linear regression problem} is to find the line
+  $y=\widehat{\beta}_{0}+\widehat{\beta}_{1}x$ which minimizes SSE.
+\end{definition}
+We have seen that to solve this problem we use linear algebra to solve the
+normal equations, which gives the estimator
+\begin{equation*}
+  \widehat{\beta}_{\rm LSE} =
+  \begin{bmatrix}
+    \widehat{\beta}_{0}\\\widehat{\beta}_{1}
+  \end{bmatrix}.
+\end{equation*}
+Recall we showed $\widehat{\beta}_{0}=1$ and $\widehat{\beta}_{1}=4$, so
+$y=1+4x$ was the best-fit line. Since $\widehat{\beta}_{1}>0$, one might infer
+that $x$ and $y$ have a positive relationship. To evaluate the ``goodness'' of
+this inference, we need to know the sampling distribution of
+$\widehat{\beta}_{1}$.
+
+\Fl{Question:} What do we know about the sampling distribution of
+$\widehat{\beta}_{0}$ and $\widehat{\beta}_{1}$?
+
+To answer this question, we need to make explicit what are assumptions are.
+Let's assume that the data was drawn from the \textit{simple linear regression
+  model}
+\begin{equation*}
+  Y=\beta_{0}+\beta_{1}x+\epsilon.
+\end{equation*}
+In other words, we assume that
+\begin{equation*}
+  \begin{bmatrix}
+    y_{1}\\
+    \vdots\\
+    y_{n}
+  \end{bmatrix}
+  =
+  \underbrace{\begin{bmatrix}
+      1&x_{1}\\
+      \vdots&\vdots\\
+      1&x_{n}
+    \end{bmatrix}}_{X}
+  \begin{bmatrix}
+    \beta_{0}\\
+    \beta_{1}
+  \end{bmatrix}
+  +
+  \begin{bmatrix}
+    \epsilon_{1}\\
+    \vdots\\
+    \epsilon_{n}
+  \end{bmatrix}
+\end{equation*}
+Two common assumptions about the error term $\epsilon$ are:
+\begin{align*}
+  \mathrm{(A1)} &\quad \epsilon_{1},\ldots, \epsilon_{n} \text{ are
+                  independent random variables with } \E\left[\epsilon_{i}
+                  \right]=0 \text{ and } \Var(\epsilon_{i})=\sigma^{2}\\
+  \mathrm{(A2)} &\quad \epsilon_{1},\ldots,e_{n}\overset{iid}{\sim} \mathcal{N}(0,\sigma^{2})
+\end{align*}
+Clearly (A2) is a stronger assumption, since it implies (A1).
+
+\begin{theorem}[Sampling distribution of the LSE]
+  \label{thm:sampling-distribution-of-LSE-for-simple-linear-regression}
+  Let $(x_{i},y_{i})$, $i=1,\ldots,n$ be a random sample drawn from the simple
+  linear regression model. If assumption (A1) is satisfied, then
+
+  % Further, let
+  % \begin{equation*}
+  %   \Sigma = \left( \Cov(\widehat{\beta}_{i},\widehat{\beta}_{j}) \right)_{0 \leq i,j \leq 1} 
+  % \end{equation*}
+  % be the covariance matrix of $\hat{\beta}_{\rm LSE}=
+  % \begin{bmatrix}
+  %   \widehat{\beta}_{0}\\ \widehat{\beta}_{1}
+  % \end{bmatrix}$, and for simplicity of notation assume the rows and colummns
+  % of this matrix start numbering at $0$.
+  \begin{enumerate}
+    \item $\widehat{\beta}_{0}$ and $\widehat{\beta}_{1}$ are unbiased
+    estimators of $\beta_{0}$ and $\beta_{1}$.  
+    % \item $\Sigma = \sigma^{2} (X^{\top}X)^{-1}$.
+    \item If $C  =
+    \begin{bmatrix}
+      c_{00}&c_{01}\\
+      c_{10}&c_{11}
+    \end{bmatrix}
+    = (X^{\top}X)^{-1}$, then
+    $\Cov(\widehat{\beta}_{i},\widehat{\beta}_{j})= c_{ij}\sigma^{2}$, and in
+    particular $\Var(\widehat{\beta}_{i})=c_{ii}\sigma^{2}$.
+    \item An unbiased estimator of $\sigma^{2}$ is $S^{2}=\frac{\mathrm{SSE}}{n-2}$
+  \end{enumerate}
+  Morover, if assumption (A2) is also satisfied, we also have
+  \begin{enumerate}
+    \setcounter{enumi}{4}
+    \item $\widehat{\beta}_{i}\sim \mathcal{N}(\beta_{i}, c_{ii}\sigma^{2})$,
+    for $i=0,1$.
+    \item \label{item:LSE-6} $S^{2}$ is independent of $\widehat{\beta}_{0},\widehat{\beta}_{1}$
+    and $\frac{(n-2)S^{2}}{\sigma^{2}}$ has chi-squared distribution with $\text{df}=n-2$.
+  \end{enumerate}
+\end{theorem}
+
+
+\begin{remark}
+  This thereom generalizes to mutliple linear regression (i.e., the case where
+  we seek to infer parameters $\beta_{0},\ldots,\beta_{k}$) using the general
+  linear model in \cref{def:general-linear-model}. The only changes are that
+  the matrices get bigger and $(n-2)$ becomes $n - (\text{\# of }\beta_{i}{ parameters})$.
+\end{remark}
+
+
+\subsection{Evaluating inferences made via linear regression}
+\begin{example}
+  In our example first presented in \cref{sec:finding-best-fit-line-with-linear-regression}, recall that we computed
+  \begin{equation*}
+    X^{\top}X =
+    \begin{bmatrix}
+      4&8\\
+      8&24
+    \end{bmatrix},
+  \end{equation*}
+  and hence
+  \begin{equation*}
+    C =
+   (X^{\top}X)^{-1}=
+    \begin{bmatrix}
+      .75 & -.25\\
+      -.25& .125
+    \end{bmatrix}
+  \end{equation*}
+  \cref{thm:sampling-distribution-of-LSE-for-simple-linear-regression} implies
+   $\widehat{\beta}_{\rm LSE}=\begin{bmatrix} 
+    \widehat{\beta}_{0}\\
+    \widehat{\beta}_{1}
+  \end{bmatrix}$
+  has covariance matrix
+  \begin{equation*}
+    \begin{bmatrix}
+      \Var(\widehat{\beta}_{0})& \Cov(\widehat{\beta}_{0},\widehat{\beta}_{1})\\
+      \Cov(\widehat{\beta}_{0},\widehat{\beta}_{1})& \Var(\widehat{\beta}_{1})
+    \end{bmatrix}
+    = \sigma^{2}
+    \begin{bmatrix}
+      c_{00}&c_{01}\\
+      c_{10}&c_{11}
+    \end{bmatrix}=
+    \begin{bmatrix}
+      .75\sigma^{2} & -.25\sigma^{2}\\
+      -.25\sigma^{2}& .125\sigma^{2}
+    \end{bmatrix}
+  \end{equation*}  
+  We don't know $\sigma^{2}$, but
+  \cref{thm:sampling-distribution-of-LSE-for-simple-linear-regression} says we
+  can estimate it as follows:
+  \begin{equation*}
+    S^{2}
+    = \frac{\mathrm{SSE}}{n-2} 
+    = \frac{44}{2} = 22.
+    \quad \quad\text{using \cref{eq:SSE-example}.}
+  \end{equation*}
+  If we further assume (A2), then
+  \begin{equation*}
+    \widehat{\beta}_{0}\sim \mathcal{N}(\beta_{0}, .75\sigma^{2})
+    \quad \text{and} \quad 
+    \widehat{\beta}_{1}\sim \mathcal{N}(\beta_{1}, .125\sigma^{2})
+  \end{equation*}
+  Suppose we want to know whether there is a positive relationship between $x$
+  and $y$. That is, we want to test
+  \begin{equation*}
+    H_{0}: \beta_{1}>0
+    \quad \text{versus} \quad
+    H_{a}: \beta_{1}=0.
+  \end{equation*}
+  
+  \Fl{Question:} How to construct a test statistic?
+
+  First observe that since
+  $\widehat{\beta}_{1}\sim \mathcal{N}(\beta_{1},c_{11}\sigma^{2})$ is normal,
+  we can standardize it as follows:
+  \begin{equation}\label{eq:standardize-LSE}
+    Z := \frac{\widehat{\beta}_{1} -\beta_{1}}{\sqrt{c_{11}\sigma^{2}}} \sim \mathcal{N}(0,1).
+  \end{equation}
+  (Here, $c_{11}=.125$). Alas, we don't know what $\sigma^{2}$ is, but we do
+  have the estimator $S^{2}$. So instead, we will ``approximately
+  standardize'' (AKA: studentize) by
+  replacing $\sigma^{2}$ with $S^{2}$:
+  \begin{equation*}
+    T = \frac{\widehat{\beta}_{1}-\beta_{1}}{\sqrt{c_{11}S^{2}}}
+  \end{equation*}
+  Last time we did this (in
+  \cref{sec:motivation:-approximate-standardization}), we got a
+  $t$-distribution. This time is no different:
+
+  \begin{proposition}
+    \label{prop:t-distribution}
+    $T$ has a $t$-distribution with $n-2$ degrees of freedom.
+  \end{proposition}
+
+  By \cref{prop:t-distribution}, the density cuve of $T$ looks like this
+  (approximately a standard normal, but with heavier tails):
+  \begin{center}
+    \begin{tikzpicture}[x=0.8cm,y=9cm]
+      % shaded region from -4.3 to 4.3
+      \draw[->] (-6.3,0) -- (6.5,0) node[right] {$x$};
+      % density curve
+      \draw[thick] plot[domain=-6:6, samples=300] (\x,{1/(2*sqrt(2))*(1+\x*\x/2)^(-3/2)});
+      % tick marks
+      \foreach \x in {-6,-4,-2,0,2,4,6} \draw (\x,0) -- (\x,-0.01) node[below] {$\x$};
+    \end{tikzpicture}
+  \end{center}
+
+  We've computed $S^{2}=22$, $c_{11} = .125$, and $\widehat{\beta}_{1}=4$.
+  Moreover, under the null hypothesis, $\beta_{1}=0$. Hence
+  \begin{equation*}
+    T = \frac{\widehat{\beta}_{1}-\beta_{1}}{\sqrt{c_{11}S^{2}}} = \frac{4-0}{\sqrt{(.125)(22)}} \approx 2.42.
+  \end{equation*}
+  Using statistical software\footnote{In \texttt{R}, I used \texttt{pt(2.42,
+      df=2, lower.tail=FALSE)}}, we compute the area:
+  \begin{center}
+    \begin{tikzpicture}[x=0.8cm,y=9cm]
+      % shaded region from -4.3 to 4.3
+      \fill[gray!30] (2.42,0) -- plot[domain=2.42:6, samples=200] (\x,{1/(2*sqrt(2))*(1+\x*\x/2)^(-3/2)}) -- (6,0) -- cycle;
+      \draw[->] (-6.3,0) -- (6.5,0) node[right] {$x$};
+      % density curve
+      \draw[thick] plot[domain=-6:6, samples=300] (\x,{1/(2*sqrt(2))*(1+\x*\x/2)^(-3/2)});
+      % tick marks
+      \foreach \x in {-6,-4,-2,0, 4,6} \draw (\x,0) -- (\x,-0.01) node[below] {$\x$};
+      \foreach \x in {2.42} \draw (\x,.048) -- (\x,-0.01) node[below] {$\x$};
+      \node at (0,0.12) {$93.2\%$};
+    \end{tikzpicture}
+  \end{center}  
+  Therefore
+  \begin{align*}
+    \text{p-value} = \P\left[T>2.42 \text{ when }H_{0} \text{ is true} \right] = .068,
+  \end{align*}
+  So we would fail to reject the null hypothesis at significance level
+  $\alpha=.05$.
+  
+  \Fl{Question:} How to construct a confidence interval?
+
+  We can also construct a $95\%$ confidence interval. Again, using statistical
+  software we can determine that the density curve of a t-distribution with 2
+  degrees of freedom has 95\% of its mass between $-4.3$ and
+  $4.3$.\footnote{To check this, run \texttt{qt(.025, df=2,
+      lower.tail=FALSE)}} This is shown as follows:
+  \begin{center}
+    \begin{tikzpicture}[x=0.8cm,y=9cm]
+      % shaded region from -4.3 to 4.3
+      \fill[gray!30] (-4.3,0) -- plot[domain=-4.3:4.3, samples=200] (\x,{1/(2*sqrt(2))*(1+\x*\x/2)^(-3/2)}) -- (4.3,0) -- cycle;
+      \draw[->] (-6.3,0) -- (6.5,0) node[right] {$x$};
+      % density curve
+      \draw[thick] plot[domain=-6:6, samples=300] (\x,{1/(2*sqrt(2))*(1+\x*\x/2)^(-3/2)});
+      % tick marks
+      \foreach \x in {-6,-2,0,2,6} \draw (\x,0) -- (\x,-0.01) node[below] {$\x$};
+      \foreach \x in {-4.3,4.3} \draw (\x,.02) -- (\x,-0.01) node[below] {$\x$};
+      \node at (0,0.12) {$95\%$};
+    \end{tikzpicture}
+  \end{center}
+  Therefore
+  \begin{align*}
+    .95 
+    &= \P\left[-4.3 \leq T \leq 4.3\right] &&\text{by }\\
+    &= \P\left[-4.3 \leq \frac{\widehat{\beta}_{1}-\beta_{1}}{\sqrt{c_{11}S^{2}}} \leq 4.3\right].
+  \end{align*}
+  Plugging in $S^{2}=22$ and $c_{11} = .125$, and then rearranging terms gives
+  \begin{equation*}
+    \P\left[\widehat{\beta}_{1}-7.1\leq \beta_{1}\leq \widehat{\beta}_{1}+7.1\right] = .95.
+  \end{equation*}
+  Therefore, since $\widehat{\beta}=4$, we have the following 95\% confidence
+  interval:
+  \begin{equation*}
+    (\text{95\% confidence interval for $\beta_{1}$)} = [-3.1, 11.1].
+  \end{equation*}
+  Since this interval contains $0$, we conclude that it is plausible that
+  $\beta_{1}=0$, (which would correspond to ``no positive relationship between
+  $x$ and $y$''). One issue here is that our sample size $n=4$ is so small,
+  that there is great uncertainty in any estimates we make.
+\end{example}
+
+\newpage
+\section{2026-04-27 | Week 15 | Lecture 33}
+Finally, we include a proof of \cref{prop:t-distribution}:
+
+  \begin{proof}[Proof of \cref{prop:t-distribution}]
+    By
+    \cref{def:students-t-distribution}, we need to show that
+    \begin{equation*}
+      T = \frac{Z}{\sqrt{\chi^{2}_{\text{df}=2}/(n-2)}}.
+    \end{equation*}
+    where  $Z\indep \chi^{2}_{\text{df}=2}$. 
+    Indeed,
+    \begin{align*}
+      T &=\frac{\widehat{\beta}_{1}-\beta_{1}}{\sqrt{c_{11}S^{2}}}\\
+      % &= \frac{\widehat{\beta}_{1}-\beta_{1}}{\sqrt{c_{11}S^{2}}}\\
+      % &= \frac{\widehat{\beta}_{1}-\beta_{1}}{\sqrt{c_{11}\sigma^{2} \left( \frac{(n-2)S^{2}}{\sigma^{2}} \right)/(n-2)}}\\
+        &= \frac{\left( \frac{\widehat{\beta}_{1}-\beta_{1}}{\sqrt{c_{11}\sigma^{2}}} \right) }{ \sqrt{\left( \frac{(n-2)S^{2}}{\sigma^{2}} \right)/(n-2) }}
+        &&\text{(check this by simplifying the RHS)}\\
+        &= \frac{Z }{ \sqrt{\left( \frac{(n-2)S^{2}}{\sigma^{2}} \right)/(n-2) }} &&\text{by \cref{eq:standardize-LSE}}\\
+        &=\frac{Z }{ \sqrt{\chi^{2}_{\mathrm{df}=2}/(n-2) }} &&\text{by \cref{thm:sampling-distribution-of-LSE-for-simple-linear-regression} part \ref{item:LSE-6}}.\\
+    \end{align*}
+    Since $Z\indep \chi^{2}_{\text{df}=2}$ by
+    \ref{item:LSE-6} of
+    \cref{thm:sampling-distribution-of-LSE-for-simple-linear-regression}, the
+    result follows.
+  \end{proof}
+  
+\newpage
+
+\subsection{Specialization: simple linear regression}
+\textit{Section 11.3}
+
+
 
 
 For simple linear regression (fitting a line $y=\beta_{0}+\beta_{1}x$), the
-least sequared estimate $\widehat{\beta}=
+least squares estimate $\widehat{\beta}=
 \begin{bmatrix}
   \widehat{\beta}_{0}\\ \widehat{\beta}_{1}
 \end{bmatrix}
@@ -5941,7 +6403,7 @@ simple linear regression takes the form identified in \cref{eq:15}
   by \cref{eq:15}. That is,
   \begin{equation*}
     \widehat{\beta}_{\rm LSE} 
-    = \cv{\widehat{\beta_{0}},\widehat{\beta_{1}}} 
+    = \cv{\widehat{\beta}_{0},\widehat{\beta}_{1}} 
     = \cv{\bar{y} -
       \widehat{\beta}\bar{x}, S_{xy}/S_{xx}}
   \end{equation*}
@@ -6045,9 +6507,7 @@ assumptions we make about the errors $\epsilon$.  Here are two common error assu
   \mathrm{(A1)} &\quad \epsilon_{1},\ldots, \epsilon_{n} \text{ are
                   independent random variables with } \E\left[\epsilon_{i}
                   \right]=0 \text{ and } \Var(\epsilon_{i})=\sigma^{2}\\
-  \mathrm{(A2)} &\quad \epsilon_{1},\ldots, \epsilon_{n} \text{ are
-                  independent normal random variables with } \E\left[\epsilon_{i}
-                  \right]=0 \text{ and } \Var(\epsilon_{i})=\sigma^{2}\\
+  \mathrm{(A2)} &\quad \epsilon_{1},\ldots,e_{n}\overset{iid}{\sim} \mathcal{N}(0,\sigma^{2})
 \end{align*}
 
 Clearly (A2) is a stronger assumption, since it implies (A1).
@@ -6172,4 +6632,18 @@ For extinction event samples, we obtain
 % log_range    -0.34892    0.05797  -6.019 1.76e-09 ***
 % log_bodysize -0.14213    0.05749  -2.472   0.0134 *  
 
+
+\subsection{Method of moments}
+
+
+\subsubsection{Capture-recapture}
+Suppose there are $N$ beetles in a forest. We don't know $N$, but want to
+estimate it. We go out into the forest and collect $n$ beetles, perhaps using
+a trap. Then we tag them, perhaps by marking them with a dot, and let them go.
+
+Then, later, we go out and collect another $n$ beetles from the forest.
+
+Let $X$ be the number of recaptured beetles.
+
+Then $\E\left[X \right] = n^{2}\frac{1}{N}$
 \end{document}

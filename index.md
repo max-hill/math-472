@@ -50,6 +50,8 @@ title: Lecture Notes
 2026-04-15  | 28   | Linear regression
 2026-04-17  | 29   | General linear model, normal equations, least squares regression
 2026-04-20  | 30   | General linear model recap
+2026-04-22  | 31   | Examples of finding least squares estimates, overfitting
+2026-04-24  | 32   | Properties of least squares estimators, evaluating inferences made with linear regression
 
  
 
