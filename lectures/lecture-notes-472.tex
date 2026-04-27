@@ -4888,7 +4888,7 @@ when $n$ is large:
   \begin{align*}
     \text{p-value}
     &= \P\left[\Lambda \geq \lambda \text{ when }H_{0} \text{ is true}\right] \\
-    &\approx \P\left[\chi^{2}_{\text{df}=d-\dim(\Theta_{0})}\geq \lambda\right]
+    &\approx \P\left[\chi^{2}_{\mathrm{df}=d-\dim(\Theta_{0})}\geq \lambda\right]
   \end{align*}
   when $n$ is large. Since the right hand side can be computed, this gives us
   a way to compute $p$-values when doing likelihod ratio tests (as long as $n$
@@ -6122,20 +6122,9 @@ Clearly (A2) is a stronger assumption, since it implies (A1).
   \label{thm:sampling-distribution-of-LSE-for-simple-linear-regression}
   Let $(x_{i},y_{i})$, $i=1,\ldots,n$ be a random sample drawn from the simple
   linear regression model. If assumption (A1) is satisfied, then
-
-  % Further, let
-  % \begin{equation*}
-  %   \Sigma = \left( \Cov(\widehat{\beta}_{i},\widehat{\beta}_{j}) \right)_{0 \leq i,j \leq 1} 
-  % \end{equation*}
-  % be the covariance matrix of $\hat{\beta}_{\rm LSE}=
-  % \begin{bmatrix}
-  %   \widehat{\beta}_{0}\\ \widehat{\beta}_{1}
-  % \end{bmatrix}$, and for simplicity of notation assume the rows and colummns
-  % of this matrix start numbering at $0$.
   \begin{enumerate}
     \item $\widehat{\beta}_{0}$ and $\widehat{\beta}_{1}$ are unbiased
     estimators of $\beta_{0}$ and $\beta_{1}$.  
-    % \item $\Sigma = \sigma^{2} (X^{\top}X)^{-1}$.
     \item If $C  =
     \begin{bmatrix}
       c_{00}&c_{01}\\
@@ -6148,7 +6137,7 @@ Clearly (A2) is a stronger assumption, since it implies (A1).
   \end{enumerate}
   Morover, if assumption (A2) is also satisfied, we also have
   \begin{enumerate}
-    \setcounter{enumi}{4}
+    \setcounter{enumi}{3}
     \item $\widehat{\beta}_{i}\sim \mathcal{N}(\beta_{i}, c_{ii}\sigma^{2})$,
     for $i=0,1$.
     \item \label{item:LSE-6} $S^{2}$ is independent of $\widehat{\beta}_{0},\widehat{\beta}_{1}$
@@ -6335,214 +6324,419 @@ Clearly (A2) is a stronger assumption, since it implies (A1).
 
 \newpage
 \section{2026-04-27 | Week 15 | Lecture 33}
+
+\subsection{Tying up a loose end from the previous lecture}
 Finally, we include a proof of \cref{prop:t-distribution}:
 
-  \begin{proof}[Proof of \cref{prop:t-distribution}]
-    By
-    \cref{def:students-t-distribution}, we need to show that
-    \begin{equation*}
-      T = \frac{Z}{\sqrt{\chi^{2}_{\text{df}=2}/(n-2)}}.
-    \end{equation*}
-    where  $Z\indep \chi^{2}_{\text{df}=2}$. 
-    Indeed,
-    \begin{align*}
-      T &=\frac{\widehat{\beta}_{1}-\beta_{1}}{\sqrt{c_{11}S^{2}}}\\
-      % &= \frac{\widehat{\beta}_{1}-\beta_{1}}{\sqrt{c_{11}S^{2}}}\\
-      % &= \frac{\widehat{\beta}_{1}-\beta_{1}}{\sqrt{c_{11}\sigma^{2} \left( \frac{(n-2)S^{2}}{\sigma^{2}} \right)/(n-2)}}\\
-        &= \frac{\left( \frac{\widehat{\beta}_{1}-\beta_{1}}{\sqrt{c_{11}\sigma^{2}}} \right) }{ \sqrt{\left( \frac{(n-2)S^{2}}{\sigma^{2}} \right)/(n-2) }}
-        &&\text{(check this by simplifying the RHS)}\\
-        &= \frac{Z }{ \sqrt{\left( \frac{(n-2)S^{2}}{\sigma^{2}} \right)/(n-2) }} &&\text{by \cref{eq:standardize-LSE}}\\
-        &=\frac{Z }{ \sqrt{\chi^{2}_{\mathrm{df}=2}/(n-2) }} &&\text{by \cref{thm:sampling-distribution-of-LSE-for-simple-linear-regression} part \ref{item:LSE-6}}.\\
-    \end{align*}
-    Since $Z\indep \chi^{2}_{\text{df}=2}$ by
-    \ref{item:LSE-6} of
-    \cref{thm:sampling-distribution-of-LSE-for-simple-linear-regression}, the
-    result follows.
-  \end{proof}
-  
-\newpage
-
-\subsection{Specialization: simple linear regression}
-\textit{Section 11.3}
-
-
-
-
-For simple linear regression (fitting a line $y=\beta_{0}+\beta_{1}x$), the
-least squares estimate $\widehat{\beta}=
-\begin{bmatrix}
-  \widehat{\beta}_{0}\\ \widehat{\beta}_{1}
-\end{bmatrix}
-$ has a nice formula, which we illustrate next.
-
-\begin{definition}[Sum of squares]
-  \label{def:sum-squares}
-  For any $x\in \R^n$, define
+\begin{proposition}
+  \label{prop:distribution-of-LSE-test-statistic}
+  Assume we have data generated under the simple linear regression linear model
   \begin{equation*}
-    S_{xx} 
-    := \sum_{i=1}^{n} \left( x_{i}-\overline{x} \right)^2 
-    = \sum_{i=1}^{n} x_{i}^{2}- \frac{1}{n}\left( \sum_{i=1}^{n} x_{i} \right)^{2} 
-    = \sum_{i=1}^{n} x_{i}^{2} - n\overline{x}^{2}
+    Y=X\beta+\epsilon
   \end{equation*}
-\end{definition}
-
-\begin{definition}[Sum of Cross-Products]
-  \label{def:sum-cross-products}
-  For $x,y \in \R^n$, define
+  with error assumption (A2). Let
   \begin{equation*}
-    S_{xy} := \sum_{i=1}^{n} \left( x_{i}-\overline{x} \right)\left(
-      y_{i}-\overline{y} \right)
-    = \sum_{i=1}^{n} x_{i}y_{i} - n \bar{x}\bar{y}
+    C=(X^{\top}X)^{-1}=
+    \begin{bmatrix}
+      c_{00}&c_{01}\\
+      c_{10}&c_{11}
+    \end{bmatrix},
+    \quad
+    \widehat{\beta}_{\rm LSE} =
+    \begin{bmatrix}
+      \widehat{\beta}_{0}\\  \widehat{\beta}_{1}.
+    \end{bmatrix}
   \end{equation*}
-\end{definition}
-
-Next we apply \cref{thm:normal-equations-criterion-lse} to show that the LSE of
-simple linear regression takes the form identified in \cref{eq:15}
-\begin{theorem}[LSE of Simple Linear Regression]
-  For the simple linear regression problem, the least squares estimate is given
-  by \cref{eq:15}. That is,
+  and let
   \begin{equation*}
-    \widehat{\beta}_{\rm LSE} 
-    = \cv{\widehat{\beta}_{0},\widehat{\beta}_{1}} 
-    = \cv{\bar{y} -
-      \widehat{\beta}\bar{x}, S_{xy}/S_{xx}}
+    S^{2} = \frac{\mathrm{SSE}}{n-2} = \frac{1}{n-2} \sum_{i=1}^{n} \left( y_{i}-\widehat{y}_{i} \right)^{2}. 
   \end{equation*}
+  Suppose that we wish to test the null $H_{0}: \beta_{i}=\beta_{i0}$ (here
+  $\beta_{i0}\in \R$ is some number we get to pick). Then under $H_{0}$, the
+  statistic
+  \begin{equation*}
+    T = \frac{\widehat{\beta}_{i}- \beta_{i0}}{S \sqrt{c_{ii}}}
+  \end{equation*}
+  has a $t$-distribution with $\mathrm{df}=n-2$.
+\end{proposition}
+\begin{proof}[Proof of \cref{prop:t-distribution}]
+  By definition of $t$-distribution (\cref{def:students-t-distribution}), we
+  need to show that
+  \begin{equation*}
+    T = \frac{Z}{\sqrt{\chi^{2}_{\mathrm{df}=n-2}/(n-2)}}.
+  \end{equation*}
+  where $\chi^{2}_{\mathrm{df}=n-2}$ is a chi-squared random variable with $n-2$ degrees of freedom,
+  and $Z\indep \chi^{2}_{\mathrm{df}=n-2}$.
+  Indeed,
+  \begin{align*}
+    T &=\frac{\widehat{\beta}_{i}-\beta_{i0}}{\sqrt{c_{11}S^{2}}}\\
+      &= \frac{\left( \frac{\widehat{\beta}_{i}-\beta_{i0}}{\sqrt{c_{11}\sigma^{2}}} \right) }{ \sqrt{\left( \frac{(n-2)S^{2}}{\sigma^{2}} \right)/(n-2) }}
+      &&\text{(check this by simplifying the RHS)}\\
+      &= \frac{Z }{ \sqrt{\left( \frac{(n-2)S^{2}}{\sigma^{2}} \right)/(n-2)
+        }} &&\text{by standardization (e.g., \cref{eq:standardize-LSE})}\\
+      &=\frac{Z }{ \sqrt{\chi^{2}_{\mathrm{df}=n-2}/(n-2) }} &&\text{by \cref{thm:sampling-distribution-of-LSE-for-simple-linear-regression} part \ref{item:LSE-6}}.\\
+  \end{align*}
+  Since $Z\indep \chi^{2}_{\mathrm{df}=n-2}$ by \ref{item:LSE-6} of
+  \cref{thm:sampling-distribution-of-LSE-for-simple-linear-regression}, the
+  result follows.
+\end{proof}
+\begin{remark}
+  \cref{prop:distribution-of-LSE-test-statistic} generlizes in the natural way
+  to the setting of the general linear model with parameters
+  $\beta_{0},\ldots,\beta_{k}$, with $n-2$ replace by $n-(k+1)$.
+\end{remark}
+
+\subsection{Relationship between MLE and LSE}
+\begin{theorem}
+  Consider data $(x_{i},Y_{i})$, $i=1,\ldots,n$ drawn from the general linear
+  model $Y=X\beta+\epsilon$. Under assumption (A2), the least squares
+  estimator is also the maximum likelihood estimator.
 \end{theorem}
 \begin{proof}
-  By \cref{thm:normal-equations-criterion-lse},
-  $\widehat{\beta}_{\rm LSE} = \left( X^{\top}X \right)^{-1}X^{\top}Y$, so it
-  suffices to compute this quanitity and show that it matches \cref{eq:15}. Indeed,
-  \begin{align*}
-    \widehat{\beta}_{\rm LSE}
-    &= \left( X^{\top}X \right)^{-1}X^{\top}Y\\
-    &= \left( \begin{bmatrix}
-        1&\cdots&1\\  x_{1}&\cdots&x_{n}\\
-      \end{bmatrix}
-    \begin{bmatrix}
-      1&x_{1}\\ \vdots&\vdots\\ 1&x_{n}\\
-    \end{bmatrix} \right)^{-1}
-    \begin{bmatrix}
-      1&\cdots&1\\  x_{1}&\cdots&x_{n}\\
-    \end{bmatrix}
-    \begin{bmatrix}
-      y_{1}\\ \vdots\\ y_{n}
-    \end{bmatrix}\\
-    &= \begin{bmatrix}
-      n&\sum_{i} x_{i}\\
-      \sum_{i} x_{i}& \sum_{i} x_{i}^{2}\\  
-    \end{bmatrix}^{-1}
-    \begin{bmatrix}
-      \sum_{i} y_{i}\\
-      \sum_{i} x_{i}y_{i} \\
-    \end{bmatrix}.
-  \end{align*}
-  Now using \cref{def:sum-squares},
+  We prove this theorem only for the case of the simple linear regression
+  model, where $\sigma^{2}$ is known. That is,
   \begin{equation*}
-    \det(X^{\top}X) = n \sum_{i} x_{i}^{2} - \left( \sum_{i} x_{i}   \right)^{2} =
-    n S_{xx} >0.
-  \end{equation*}
-  Therefore $X^{\top}X$ is invertible (provided the $x_{i}$'s are not all equal) and we obtain
-  \begin{align*}
-    \widehat{\beta}_{\rm LSE}
-    &= \frac{1}{nS_{xx}}
-      \begin{bmatrix}
-        \sum_{i} x_{i}^{2}&-\sum_{i} x_{i}\\
-        -\sum_{i} x_{i}& n \\
-      \end{bmatrix}
     \begin{bmatrix}
-      \sum_{i} y_{i}\\
-      \sum_{i} x_{i}y_{i} \\
-    \end{bmatrix}\\
-    &= \frac{1}{S_{xx}}
-      \begin{bmatrix}
-        \bar{y}S_{xx}- \bar{x} S_{xy}\\
-        S_{xy}\\
-      \end{bmatrix} &&\text{using \cref{def:sum-cross-products,def:sum-squares}}\\
-    &= \begin{bmatrix}
-      \bar{y}- \bar{x} \frac{S_{xy}}{S_{xx}}\\
-      \frac{S_{xy}}{S_{xx}}\\
+      y_{1}\\\vdots \\ y_{n}
     \end{bmatrix}
+    =
+    \begin{bmatrix}
+      1&x_{1}\\
+      \vdots&x_{n}
+    \end{bmatrix}
+    \begin{bmatrix}
+      \beta_{0}\\
+      \beta_{1}
+    \end{bmatrix}
+    +
+    \begin{bmatrix}
+      \epsilon_{1}\\
+      \vdots\\
+      \epsilon_{n}
+    \end{bmatrix}.
+  \end{equation*}
+  Shaking off the matrix notation, we have
+  \begin{equation*}
+    Y_{i} = \beta_{0}+\beta_{1}x_{i}+\epsilon_{i}, \quad \epsilon_{i}\sim \mathcal{N}(0,\sigma^{2}), \quad i=1,\ldots,n.
+  \end{equation*}
+  Then
+  \begin{equation*}
+    Y_{i} \sim \mathcal{N}(\beta_{0}+\beta_{1}x_{i}, \sigma^{2}).
+  \end{equation*}
+  The variables $x_{1},\ldots,x_{n}$ are assumed to be known, so we may regard
+  $Y_{1},\ldots,Y_{n}$ as our random sample and $\beta_{0},\beta_{1}$ as the
+  parameters. Suppose the random sample takes values $y_{1},\ldots,y_{n}$.
+  Then likelihood for $y_{i}$ is
+  \begin{equation*}
+    L(\beta_{0},\beta_{1}\mid y_{i}) = \frac{1}{\sqrt{2\pi \sigma^{2}}} \exp\left\{-\frac{\left( y_{i}- (\beta_{0}+\beta_{1}x_{i}) \right)^{2} }{2\sigma^{2}} \right\}.
+  \end{equation*}
+  Therefore the joint likelihood of the whole sample $y_{1},\ldots,y_{n}$ is
+  \begin{align*}
+    L(\beta_{0},\beta_{1}\mid y_{1},\ldots,y_{n}) 
+    &= \prod_{i=1}^{n}\frac{1}{\sqrt{2\pi \sigma^{2}}} \exp\left\{-\frac{\left[ y_{i}- (\beta_{0}+\beta_{1}x_{i}) \right]^{2} }{2\sigma^{2}} \right\}\\
+    &= \left( \frac{1}{\sqrt{2\pi \sigma^{2}}} \right)^{n} \exp\left\{-\frac{1}{2\sigma^{2}}\underbrace{\sum_{i=1}^{n} \left[ y_{i}- (\beta_{0}+\beta_{1}x_{i}) \right]^{2}}_{\mathrm{SSE}} \right\}.
   \end{align*}
-  which matches the form of \cref{eq:15}.
+  The maximum likelihood estimate $\widehat{\beta}_{\rm MLE} =
+  \begin{bmatrix}
+    \widehat{\beta}_{0}\\
+    \widehat{\beta}_{1}
+  \end{bmatrix}
+  $ is defined as the values of $\beta_{0}$ and $\beta_{1}$ which maximize
+  this quantity. But observe that maximizing the RHS is the same as minimizing
+  \begin{equation*}
+    \mathrm{SSE} =\sum_{i=1}^{n} \left[ y_{i}- (\beta_{0}+\beta_{1}x_{i}) \right]^{2},
+  \end{equation*}
+  and the minimizer of this is the least squares estimat
+  $\widehat{\beta}_{\rm LSE}$. Therefore $\widehat{\beta}_{\rm LSE}=\widehat{\beta}_{\rm MLE}$.
 \end{proof}
 
+\subsection{Logistic Regression}
 
-\begin{example}
-  In \cref{ex:simple-linear-regression}, our data gives
-  \begin{equation*}
-    S_{xx} = \sum_{i}x_{i}^{2} - \frac{1}{n} \left( \sum_{i}x_{i}  \right)^{2} = 10  
-  \end{equation*}
-  and
-  \begin{equation*}
-    S_{xy} = \sum_{i}x_{i}y_{i} - \frac{1}{n} \left( \sum_{i}x_{i}  \right) \left( \sum_{i}y_{i}  \right) = 7.
-  \end{equation*}
-  This gives
-  \begin{equation*}
-    \widehat{\beta}_{1} = \frac{S_{xy}}{S_{xx}} = .7
-  \end{equation*}
-  and
-  \begin{equation*}
-    \widehat{\beta}_{0} = \overline{y} - \overline{x}\beta_{1} = 1 - 0 =1.
-  \end{equation*}
-  So the best fit line is
-  \begin{equation*}
-    y = 1 + .7 x.
-  \end{equation*}
-\end{example}
-
-
-\subsection{Statistical properties of least squares estimators}
-
-Consider the general linear model with $k+1$ unknowns
-$\beta_{0},\ldots\beta_{k}$, given by
+Suppose we have one numerical explanatory variable $x$, which can take a range
+of values, and we are interested in a binary response variable $Y$, which can
+take only values $0$ and $1$. That is $Y$ provides a binary classification.
+For example,
 \begin{equation*}
-  Y = X\beta+\epsilon, \quad \text{where }Y\in \R^{n\times 1} \text{ and } X\in \R^{n\times k+1},
+  X= \text{ number of hours studied} \quad \text{and} \quad Y =
+  \left\{ \begin{array}{l@{\quad:\quad}l}
+      1 &\text{student passes the exam} \\
+      0& \text{student fails} \end{array}\right.
 \end{equation*}
-and assume that $X$ has linearly independent columns (so that $X^{\top}X$ is
-invertible). The least squares estimator is $\beta =
-(X^{\top}X)^{-1}X^{\top}Y$. Its statistical properties depend on the
-assumptions we make about the errors $\epsilon$.  Here are two common error assumptions
 
+For this setting, it doesn't make sense to try to fit a best line, since there
+are only two possible y-values: $0$ and $1$. Instead, we consider the
+probability $p$ as a function of $x$ and try to predict that, with
+$p(x)=\P\left[Y=1\mid X=x \right]$ increasing as $x$ grows.
+
+For example, we might have the following data:
+\begin{center}
+  {\footnotesize
+    \begin{tabular}{c|c}
+    \textbf{Hours ($x_k$)} & \textbf{Pass ($y_k$)} \\
+    \hline
+    0.50 & 0 \\
+    0.75 & 0 \\
+    1.00 & 0 \\
+    1.25 & 0 \\
+    1.50 & 0 \\
+    1.75 & 0 \\
+    1.75 & 1 \\
+    2.00 & 0 \\
+    2.25 & 1 \\
+    2.50 & 0 \\
+    2.75 & 1 \\
+    3.00 & 0 \\
+    3.25 & 1 \\
+    3.50 & 0 \\
+    4.00 & 1 \\
+    4.25 & 1 \\
+    4.50 & 1 \\
+    4.75 & 1 \\
+    5.00 & 1 \\
+    5.50 & 1
+  \end{tabular}}
+\quad \quad \quad
+  \raisebox{-3cm}{\includegraphics[scale=0.2]{images/logistic-example}}
+  \footnotesize{(Source: \url{https://en.wikipedia.org/wiki/Logistic_regression#Example})}
+\end{center}
+
+More generally, we may have more than one covariate $x$, and the general
+setting is the following:
+
+\begin{definition}[Logistic Regression Model]
+  \label{def:logistic-regression-model}
+  Suppose we have $k$ covariates $X_{1},\ldots,X_{k}$ used to predict a random
+  response variable $Y\in \left\{0,1\right\}$. Let
+  \begin{equation*}
+    p= \P\left[Y=1\mid X_{1}=x_{1},\ldots,X_{k}=x_{k} \right].
+  \end{equation*}
+  Under the \demph{logistic regression model}, we assume that
+  \begin{equation*}
+    \log\left(\frac{p}{1-p} \right)  = \beta_{0}+ \beta_{1}x_{1}+\ldots+\beta_{k}x_{k},
+  \end{equation*}
+  or equivalently, that
+  \begin{equation*}
+    p = \frac{1}{1+ e^{-(\beta_{0}+\beta_{1}x_{1}+\ldots+\beta_{k}x_{k})}}.
+    %\frac{e^{\beta_{0}+ \sum_{i=1}^{k}\beta_{i}x_{i}}}{1+e^{\beta_{0}+ \sum_{i=1}^{k}\beta_{i}x_{i}}}.
+  \end{equation*}
+  The parameters of this model are $\beta_{0},\ldots,\beta_{k}$.
+
+  The \demph{logistic regression problem} is to find values of
+  $\beta_{0},\ldots,\beta_{k}$ which best fit the data.
+\end{definition}
+
+
+Hence for this example, we assume that 
+\begin{equation}\label{eq:30}
+  \log\left(\frac{p(x)}{1-p(x)} \right)  \approx \beta_{0}+\beta_{1}x
+\end{equation}
+for some choice of $\beta_{0}$ and $\beta_{1}$.
+
+
+When we found a ``best fit line'' for some data, recall that we looked for
+values of $\beta_{0}$ and $\beta_{1}$ which minimized 
+\begin{equation*}
+  \mathrm{SSE} = \sum_{i=1}^{n} \left( y_{i}-\widehat{y}_{i} \right)^{2} = \sum_{i=1}^{n} \left( y_{i}- \left[ \beta_{0}+\beta_{1}x \right]  \right)^{2}.
+\end{equation*}
+However in the logistic regression setting, minimizing the $\mathrm{SSE}$ is
+suboptimal because it does not yeild efficient estimators of the parameters
+$\beta_{0},\ldots,\beta_{k}$. Hence, for logistic regression, we do something
+different: instead of minimizing $\mathrm{SSE}$, we instead seek to maximize
+the likelihood of the data.
+
+If $(x_{i},Y_{i})$ follows the logistic regression model, then the predicted
+probability that $Y_{i}=1$ is 
+\begin{equation*}
+  p_{i} = \frac{1}{1+e^{-(\beta_{0}+\beta_{1}x_{i})}}.
+\end{equation*}
+Therefore, the likelihood of observing $Y_{i}=y_{i}$ is
+\begin{equation*}
+  L(y_{i}\mid \beta_{0},\beta_{1}) = \P\left[Y_{i}=y_{i}\mid \beta_{0},\beta_{1} \right] = p_{i}^{y_{i}}(1-p_{i})^{1-y_{i}}.
+\end{equation*}
+Therefore given a random sample $(x_{i},y_{i}), \ i=1,\ldots,n$ under the
+logistic regression model, the joint likelihood of the data is
+\begin{equation*}
+  L( y_{1},\ldots,y_{n}\mid \beta_{0},\beta_{1}) 
+  = \prod_{i=1}^{n}  L(y_{i}\mid \beta_{0},\beta_{1}) = \prod_{i=1}^{n}p_{i}^{y_{i}}(1-p_{i})^{1-y_{i}}. 
+\end{equation*}
+We want to find values for $\beta_{0},\beta_{1}$ which maximize this
+likelihood---or equivalently, which minimize the negative log-likelihood:
 \begin{align*}
-  \mathrm{(A1)} &\quad \epsilon_{1},\ldots, \epsilon_{n} \text{ are
-                  independent random variables with } \E\left[\epsilon_{i}
-                  \right]=0 \text{ and } \Var(\epsilon_{i})=\sigma^{2}\\
-  \mathrm{(A2)} &\quad \epsilon_{1},\ldots,e_{n}\overset{iid}{\sim} \mathcal{N}(0,\sigma^{2})
+  -\ell(\beta_{0},\beta_{1}) 
+  &= -\log L( y_{1},\ldots,y_{n}\mid \beta_{0},\beta_{1}) \\
+  &= \sum_{i=1}^{n} - \log\left(p_{i}^{y_{i}}(1-p_{i})^{1-y_{i}}
+    \right)
 \end{align*}
 
-Clearly (A2) is a stronger assumption, since it implies (A1).
+In this expression, the quantity
+\begin{equation*}
+  \ell_{i} := - \log\left(p_{i}^{y_{i}}(1-p_{i})^{1-y_{i}} \right)
+\end{equation*}
+is called the \demph{surprisal} or the \demph{log loss} for data point $i$.
+Observe that
+\begin{equation*}
+  \ell_{i}
+  = \left\{ 
+    \begin{array}{l@{\quad:\quad}l} \log(\frac{1}{p_{i}}) & y_{i}=1\\ \log\left(\frac{1}{1-p_{i}} \right)  & y_{i}=0 \end{array}\right. 
+\end{equation*}
 
-\begin{theorem}
-  Under assumption (A1), $\widehat{\beta}_{\rm LSE}$ satisfies the following
-  properties:
-  \begin{itemize}
-    \item $\E\left[\widehat{\beta}_{i} \right]=\beta_{i}$ for $i=0,1,\ldots,k$
-    \item $\Var(\widehat{\beta}_{i})=c_{ii}\sigma^{2}$,  where $c_{ii}$ is the
-    element in the $i^{\rm th}$ row and $i^{\rm th}$ column of
-    $(X^{\top}X)^{-1}$. [Recall this matrix has a row and column numbered
-    $0$].
-    \item $\mathrm{Cov}(\widehat{\beta}_{i},\widehat{\beta}_{j}) = c_{ij}\sigma^{2}$
-    \item The estimator $S^{2}:= \frac{ Y^{\top}Y -
-      \widehat{\beta}^{\top}X^{\top}Y }{n-(k+1)}$ [numerator is sum of squared
-    errors]
-  \end{itemize}
-  In addition, if (A2) holds, we have
-  \begin{itemize}
-    \item Each $\widehat{\beta}_{i}$ is normally distributed
-    \item The random variable
-    \begin{equation*}
-      \frac{[n-(k+1)]S^{2}}{\sigma^{2}}
-    \end{equation*}
-    has chi-squared distribution with $n-(k+1)$ degrees of freedom.
-    \item The statistic $S^{2}$ and $\widehat{\beta}_{i}$ are independent for
-    every $i$. 
-    \item $\widehat{\beta}_{\rm ML}=\widehat{\beta}_{\rm LSE}$. (The least
-    squares estimate is the maximum likelihood estimate.) 
-  \end{itemize} 
-\end{theorem}
+Observations
+\begin{itemize}
+  \item $\ell_{i}>0$
+  \item $\ell_{i}$ really does measure ``surprise'' in some sense. For
+  example, if $p_{i}\approx 0$  and $y_{i}=0$, then $\ell_{i} \approx
+  \log(1)=0$. But if $p_{i} \approx 1$ and $y_{i}=0$, then $\ell_{i}\approx
+  \log(\text{big number})=\text{big}$. Bigger values means there is more
+  discrepancy between what is predicted by the model and what is observed.
+\end{itemize}
+The negative log-likelihood $\ell(\beta_{0},\beta_{1})$ is sometimes called
+the \demph{total loss}, and is simply the sum of all the surprisals:
+\begin{equation*}
+  \mathrm{Loss}(\beta_{0},\beta_{1}) = \ell_{1}+\ell_{2}+\ldots+\ell_{n}
+\end{equation*}
+Observations
+\begin{itemize}
+  \item $\mathrm{Loss}(\beta_{0},\beta_{1})$ is a complicated function of the
+  parameters $\beta_{0},\beta_{1}$. Our goal when doing logistic regression is
+  to find the parameters $\beta_{0},\beta_{1}$ which minimize the
+  $\mathrm{Loss}(\beta_{0},\beta_{1})$. Doing this requires software and
+  typically cannot be done by hand. We don't have nice closed form solutions
+  like we did for solving the linear regression problem.
+  
+  \item Similarly to the likelihood ratio test statistic,
+  $\mathrm{Loss}(\beta_0,\beta_1)$ may be regarded as a ``distance'' between
+  your observed data and the model with parameters $\beta_0,\beta_1$. The goal
+  is to find the values of $\beta_0,\beta_1$ which minimize this
+  distance---these will give you the ``best'' model for your data.
+
+  \item Minimizing $\textrm{Loss}(\beta_{0},\beta_{1})$ is equivalent to
+  maximizing the likelihood $L(\beta_{0},\beta_{1})$. When
+  $\mathrm{Loss}(\beta_0,\beta_1)$ is large, the observed data
+  $(x_{1},y_{1}),\ldots,(x_{n},y_{n})$ would be unlikely to occur for that
+  choice of $\beta_{0}$ and $\beta_{1}$. But if
+  $\mathrm{Loss}(\beta_0,\beta_1)$ is close to zero, then the model would be
+  more likely to produce data like what was observed.
+  
+\end{itemize}
 
 
-\section{Logistic regression}
+For the exam problem, the best $\beta_{0}$ and $\beta_{1}$ are $\beta_{0} \approx -4.1$ and
+$\beta_{1}\approx 1.5$, this gives the ``best model'' to be
+\begin{equation*}
+  p_{\rm best}(x) = \frac{e^{-4.1+1.5x}}{1+e^{-4.1+1.5x}}
+\end{equation*}
+and which gives the curve graphed above.
+
+This model can then be used to make predictions. For example, if you study 3
+hours, your probability of passing is predicted to be
+\begin{equation*}
+  p_{\rm best}(3) = \frac{e^{-4.1+1.5(3)}}{1+e^{-4.1+1.5(3)}} \approx 0.6.
+\end{equation*}
+
+\subsubsection{Extension to multiple explanatory variables}
+The example we have worked has assumed that there is only one explanatory
+variable $x$. This restriction isn't essential to the theory. Suppose instead that
+we have 2 explanatory variables, $x_{1}$ and $x_{2}$. Now, instead of \cref{eq:30} we have
+\begin{equation*}
+  \log\left(\frac{p(x)}{1-p(x)} \right) \approx \beta_{0}+\beta_{1}x_{1}+ \beta_{2}x_{2}
+\end{equation*}
+So now we must minimize the total loss over all
+$\beta_{0},\beta_{1},\beta_{2}$, rather than just over all $\beta_{0}$ and
+$\beta_{1}$. Nothing else changes. You can add as many explanatory variables
+as you like.
+
+If you have a dataset with lots of possible explanatory variables, how do you
+know which ones to include and which to exclude from a logistic regression
+analysis? For example: $Y$ indicates whether a surgery patient experiences
+complications due to surgery (assume same type of surgery). Possible
+explanatory variables
+\begin{itemize}
+  \item patient age, sex
+  \item surgical device type 
+  \item year that surgery was performed
+  \item attending physician
+  \item preexisting conditions
+  \item innumerable other risk factors
+\end{itemize}
+If you include all of them, you get results that may be overfitted and may be
+hard to interpret. One option is to repeatedly do many analyes with different
+subsets of your explanatory variables, with some penalty applied so that
+models with fewer parameters are preferred (e.g., AIC or BIC).
+
+More precisely, for a model with $m$ parameters,
+$\theta_{1},\ldots,\theta_{m}$ the \demph{AIC score} is defined as
+\begin{equation*}
+  \mathrm{AIC} = -2 \ell(\theta_{1},\ldots,\theta_{m}) + \underbrace{2k}_{\text{penalty term}}
+\end{equation*}
+One then seeks to minimize $\textrm{AIC}$ over all subsets of the parameters
+$\beta_{0},\ldots,\beta_{k}$. This is done numerically using iterative
+methods.
+
+Another approach is to minimzie the \demph{BIC score}, defined similarly to
+the AIC score, but with a different (typically more punishing) penalty term
+for having more parameters:
+\begin{equation*}
+  \mathrm{BIC} = -2 \ell(\theta_{1},\ldots,\theta_{m}) + \underbrace{k\log(n)}_{\text{penalty term}}.
+\end{equation*}
+\subsubsection{Inference for Logistic Regression}
+\textit{(Based on Agresti, Categorical Data Analysis, 1990, Section 4.2.)}
+\begin{itemize}
+  \item When $n$ is large, we can construct a $(1-\alpha)$\% confidence
+  interval for parameters by
+  \begin{equation*}
+    \widehat{\beta}_{i} \pm z_{\alpha/2}\mathrm{ASE}(\widehat{\beta}_{i})
+  \end{equation*}
+  where
+  \begin{equation*}
+    \mathrm{ASE}(\widehat{\beta}_{i}) = \sqrt{\left[ (X^{\top}WX)^{-1} \right]_{ii} }
+  \end{equation*}
+  and
+  \begin{equation*}
+    W = \mathrm{diag}(\widehat{p}_{1}(1-\widehat{p}_{1}),\ldots,\widehat{p}_{i}(1-\widehat{p}_{i})).
+  \end{equation*}
+  To test $H_{0}: \beta_{i}=0$, we can use the test statistic
+  \begin{equation*}
+    T = \frac{\widehat{\beta}_{i}-0}{\text{ASE}(\widehat{\beta}_{i})}
+  \end{equation*}
+  whose distribution is approximately standard normal.
+  \item Suppose $\beta' = (\beta_{i})_{i\in I}$ is a subset of the parameters.
+  To test a null hypothesis of the form $H_{0}:\beta_{i}=0$, $i\in I$ test
+  best approach seems to be to use a likelihood ratio test. The test statistic
+  $\Lambda$ defined in \cref{eq:definition-of-LR-test-statistic} will then
+  have asymptotically a chi-squared distribution with $\mathrm{df}=|I|$.
+\end{itemize}
+
+
+\subsubsection{Odds}
+\begin{remark}[Digression about odds]
+  Suppose $E$ is an event with probability $p$. The \demph{odds} of $E$ is the
+  fraction
+  \begin{equation*}
+    \frac{p}{1-p}.
+  \end{equation*}
+  The idea of \textit{odds} (which can be any positive number) is older than
+  that of \textit{probability}. The very first mathematical text on probability
+  was Cardano's 15-page book entitled ``The Book of Games of Chance'' (1564),
+  which formulated most of its content in terms of odds. When outcomes are
+  equally likely---such as when rolling a dice in a betting game---the
+  \textit{probability} $p$ of winning is understood to be
+  \begin{equation*}
+    \frac{\text{number of favorable outcomes}}{\text{total number of possible outcomes}},
+  \end{equation*}
+  whereas \textit{odds} is
+  \begin{equation*}
+    \frac{\text{number of favorable outcomes}}{\text{number of unfavorable outcomes}}
+  \end{equation*}
+  For example, the probability of rolling a 6 on a dice is $1/6$, and the odds
+  is $1/5$. In some sense knowing the odds gives you the same amount of
+  information as knowing the probability (since if you know one, you can
+  compute the other), but the interpretation is different. For example, odds
+  of $1/5$ tell us that failure is 5 times more likely than success. We would
+  say the odds are ``5-to-1 against''.
+\end{remark}
+\newpage
+
+\section{Logistic regression problem}
 The outcome $Y$ is \textbf{binary}:
 \begin{equation*}
   Y = \left\{ \begin{array}{l@{\quad:\quad}l} 1 & \text{the species goes
@@ -6646,4 +6840,7 @@ Then, later, we go out and collect another $n$ beetles from the forest.
 Let $X$ be the number of recaptured beetles.
 
 Then $\E\left[X \right] = n^{2}\frac{1}{N}$
+
+\newpage
+
 \end{document}

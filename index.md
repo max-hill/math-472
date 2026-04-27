@@ -52,6 +52,7 @@ title: Lecture Notes
 2026-04-20  | 30   | General linear model recap
 2026-04-22  | 31   | Examples of finding least squares estimates, overfitting
 2026-04-24  | 32   | Properties of least squares estimators, evaluating inferences made with linear regression
+2026-04-27  | 33   | Distribution of test statistic for LSE, equivalence of MLE and LSE, introduction to logistic regression
 
  
 
