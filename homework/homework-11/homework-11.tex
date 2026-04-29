@@ -1,0 +1,330 @@
+\documentclass[10pt]{article}
+% Math Packages
+\usepackage{amsmath, mathtools}
+\usepackage{amssymb}
+\usepackage{amsthm}
+\usepackage{amsfonts}
+\usepackage{bbm}
+\usepackage{breqn}
+\usepackage[margin=1in]{geometry}
+\usepackage{graphicx}
+\usepackage{tikz}
+\usetikzlibrary{arrows.meta}
+\usetikzlibrary{calc}
+\usepackage{forest}
+\usepackage{tikz-qtree}
+\graphicspath{ {./images/} }
+\usepackage{hyperref}
+\usepackage[capitalize]{cleveref}
+\usepackage[shortlabels]{enumitem}
+\usetikzlibrary{arrows,matrix,positioning}
+\usepackage{multicol}
+
+\usepackage{listings}
+\usepackage{xcolor}
+
+\crefname{problem}{Problem}{Problems}
+\Crefname{problem}{Problem}{Problems}
+
+\lstset{
+  language=R,
+  basicstyle=\ttfamily\footnotesize,
+  keywordstyle=\color{blue},
+  commentstyle=\color{gray},
+  stringstyle=\color{red!70!black},
+  framesep=2pt,
+  framexleftmargin=0pt, 
+  frame=single,
+  breaklines=false,
+  showstringspaces=false
+}
+% for the pipe symbol
+\usepackage[T1]{fontenc}
+
+% Colorful Notes
+\usepackage{color} \definecolor{Red}{rgb}{1,0,0} \definecolor{Blue}{rgb}{0,0,1}
+\definecolor{Purple}{rgb}{.5,0,.5} \def\red{\color{Red}} \def\blue{\color{Blue}}
+\def\gray{\color{gray}} \def\purple{\color{Purple}}
+\newcommand{\rnote}[1]{{\red [#1]}} % \rnote{foo} gives '[foo]' in red
+\newcommand{\pnote}[1]{{\purple [#1]}} % \pnote{foo} gives '[foo]' in purple
+\newcommand{\bnote}[1]{{\blue #1}} % \bnote{foo} gives 'foo' in blue
+\newcommand{\gnote}[1]{{\gray #1}} % \gnote{foo} gives 'foo' in gray
+\newcommand{\Max}[1]{{\purple [#1]}} % \bnote{foo} then 'foo' is blue
+
+% Claim numbering (the counter restarts after each proof environment)
+\newcounter{claimcount}
+\setcounter{claimcount}{0}
+\newenvironment{claim}{\refstepcounter{claimcount}\par\addvspace{\medskipamount}\noindent\textbf{Claim \arabic{claimcount}:}}{}
+\usepackage{etoolbox}
+\AtBeginEnvironment{proof}{\setcounter{claimcount}{0}}
+\newenvironment{claimproof}{\par\addvspace{\medskipamount}\noindent\textit{Proof of Claim  \arabic{claimcount}.}}{\hfill\ensuremath{\qedsymbol} \tiny{Claim}
+
+  \medskip}
+% Add claim support to cleverref
+\crefname{claimcount}{Claim}{Claims}
+
+% Math Environments
+\newtheorem{theorem}{Theorem}
+\newtheorem{assumption}[theorem]{Assumption}
+\newtheorem{lemma}[theorem]{Lemma}
+\newtheorem{proposition}[theorem]{Proposition}
+\newtheorem{corollary}[theorem]{Corollary}
+\newtheorem{question}[theorem]{Question}
+\theoremstyle{definition}
+\newtheorem*{definition}{Definition}
+\newtheorem{remark}[theorem]{Remark}
+\newtheorem{example}[theorem]{Example}
+\newtheorem{notation}[theorem]{Notation}
+\newtheorem{problem}[theorem]{Problem}
+
+% Matrices and Column Vectors. 
+\usepackage{stackengine}
+\setstackgap{L}{1.0\normalbaselineskip}
+\usepackage{tabstackengine}
+\setstackEOL{;}% row separator
+\setstackTAB{,}% column separator
+\setstacktabbedgap{1ex}% inter-column gap
+\setstackgap{L}{1.5\normalbaselineskip}% inter-row baselineskip
+\let\nmatrix\bracketMatrixstack  %Usage: \nmatrix{1,2,3\4,5,6}
+\newcommand\cv[1]{\setstackEOL{,}\bracketMatrixstack{#1}} %usage: \cv{1,2,3}
+
+% Custom Math Coqmmands
+\newcommand{\vt}{\vskip 5mm} % vertical space
+\newcommand{\fl}{\noindent\textbf} % first line
+\newcommand{\Fl}{\vt\noindent\textbf} % first line with space above
+\newcommand{\norm}[1]{\left\lVert#1\right\rVert} % norm
+\newcommand{\pnorm}[1]{\left\lVert#1\right\rVert_p} % p-norm
+\newcommand{\qnorm}[1]{\left\lVert#1\right\rVert_q} % q-norm
+\newcommand{\1}[1]{\textbf{1}_{\left[#1\right]}} % indicator function 
+\def\limn{\lim_{n\to\infty}} % shortcut for lim as n-> infinity
+\def\sumn{\sum_{n=1}^{\infty}} % shortcut for sum from n=1 to infinity
+\def\sumkn{\sum_{k=1}^{n}} % shortcut for sum from k=1 to n
+\def\sumin{\sum_{i=1}^{n}} % shortcut for sum from i=1 to n
+\def\SAs{\sigma\text{-algebras}} % shortcut for $\sigma$-algebras
+\def\SA{\sigma\text{-algebra}} % shortcut for $\sigma$-algebra
+\def\Ft{\mathcal{F}_t} % time-indexed sigma-algebra (t)
+\def\Fs{\mathcal{F}_s} % time-indexed sigma-algebra (s)
+\def\F{\mathcal{F}} % sigma-algebra
+\def\G{\mathcal{G}} % sigma-algebra
+\def\R{\mathbb{R}} % Real numbers
+\def\N{\mathbb{N}} % Natural numbers
+\def\Z{\mathbb{Z}} % Integers
+\def\E{\mathbb{E}} % Expectation
+\def\P{\mathbb{P}} % Probability
+\def\Q{\mathbb{Q}} % Q probability
+\def\dist{\text{dist}} %Text 'dist' for things like 'dist(x,y)'
+\newcommand{\indep}{\perp \!\!\! \perp}  %independence symbol
+\def\Var{\mathrm{Var}} % Variance
+\def\tr{\mathrm{tr}} % trace
+
+% Brackets and Parentheses
+\def\[{\left [}
+    \def\]{\right ]}
+% \def\({\left (}
+%   \def\){\right )}
+
+\usepackage{color}
+\definecolor{Red}{rgb}{1,0,0}
+\definecolor{Blue}{rgb}{0,0,1}
+\definecolor{Purple}{rgb}{.5,0,.5}
+\def\red{\color{Red}}
+\def\blue{\color{Blue}}
+\def\gray{\color{gray}}
+\def\purple{\color{Purple}}
+\definecolor{RoyalBlue}{cmyk}{1, 0.50, 0, 0}
+\newcommand{\dempfcolor}[1]{{\color{RoyalBlue}#1}} 
+\newcommand{\demph}[1]{\textcolor{RoyalBlue}{\textbf{\slshape #1}}} % Slanted
+
+\usepackage{emoji}
+% comment exactly one of the following line to show / hide the solutions
+% \newcommand{\solution}[1]{{\purple #1}} % uncomment to show the solutions
+\newcommand{\solution}[1]{} % uncomment to hide the solutions
+
+
+
+
+\begin{document}
+\begin{center}
+  \section*{Math 472: Homework 11}
+  \textit{Due Wednesday, May 6}
+\end{center}
+
+\begin{problem}[Exercise 10.117]
+  Lord Rayleigh was one of the earliest scientists to study the density of
+  nitrogen.\footnote{Lord Rayleigh, On an Anomaly Encountered in
+    Determinations of the Density of Nitrogen Gas, \textit{Proceedings of the
+      Royal Society of London}, (1894),
+    \url{http://www.jstor.org/stable/115479}} He employed two types of methods
+  to produce nitrogen gas: (1) a process to derive nitrogen from atmospheric
+  gas via removal of oxygen, and (2) a process which produced nitrogen gas
+  from chemical compounds not involving atmospheric gas.
+
+  In his studies, he noticed something peculiar. The nitrogen densities
+  produced from chemical compounds tended to be smaller than the densities of
+  nitrogen produced from atmospheric gas. Lord Rayleigh's measurements are
+  given in the following table. These measurements correspond to the mass of
+  nitrogen filling a ﬂask of speciﬁed volume under specified temperature and
+  pressure.
+  \begin{center}
+    \centering
+    \begin{tabular}{cc}
+      \hline
+      \textbf{Compound Chemical} & \textbf{Atmosphere} \\
+      \hline
+      2.30143 & 2.31017 \\
+      2.29890 & 2.30986 \\
+      2.29816 & 2.31010 \\
+      2.30182 & 2.31001 \\
+      2.29869 & 2.31024 \\
+      2.29940 & 2.31010 \\
+      2.29849 & 2.31028 \\
+      2.29889 & 2.31163 \\
+      2.30074 & 2.30956 \\
+      2.30054 &         \\
+      \hline
+    \end{tabular} 
+  \end{center}
+  \begin{enumerate}[(a)]
+    \item For the measurements from the chemical compound, the sample mean is
+    $\overline{y} = 2.29971$ and the standard error $s = .001310$; for the measurements from the
+    atmosphere, $\overline{y} = 2.310217$ and $s = .000574$. Is there
+    sufﬁcient evidence to indicate a difference in the mean mass of nitrogen
+    per ﬂask for chemical compounds and air? What can be said about the
+    p-value associated with your test?
+    \item Find a 95\% conﬁdence interval for the difference in mean mass of
+    nitrogen per ﬂask for chemical compounds and air.
+    \item Based on your answer to part (b), at the $\alpha = .05$ level of
+    signiﬁcance, is there sufﬁcient evidence to indicate a difference in mean
+    mass of nitrogen per ﬂask for measurements from chemical compounds and
+    air?
+    \item Is there any conﬂict between your conclusions in parts (a) and (b)?
+    Although the difference in these mean nitrogen masses is small, Lord
+    Rayleigh emphasized this difference rather than ignoring it, and this led
+    to the discovery of inert gases like Argon in the atmosphere.
+  \end{enumerate}
+\end{problem}
+
+
+\begin{problem}
+  The octane number $Y$ of reﬁned petroleum is related to the temperature $x$ of
+  the reﬁning process, but it is also related to the particle size of the
+  catalyst. An experiment with a small-particle catalyst gave a ﬁtted
+  least-squares line of
+  \begin{equation*}
+    \widehat{y} = 9.360 + .155x,
+  \end{equation*}
+  with $n=31$, $\Var(\widehat{\beta}_{1})= (.0202)^{2}$, and $\mathrm{SSE} =
+  2.04$. An independent experiment with a large-particle catalyst gave
+  \begin{equation*}
+    \widehat{y}= 4.265 +.190x,
+  \end{equation*}
+  with $n=11$, $\Var(\widehat{\beta}_{1})= (.0193)^{2}$ and $\mathrm{SSE}
+  =1.86$.
+
+  Test the hypotheses that the slopes are significantly different from
+  zero, with each test at the significance level of $.05$.
+\end{problem}
+% \begin{problem}[Exercise 10.97]
+%   Let $Y_{1},\ldots,Y_{n}$ be independent and identically distributed random
+%   variables with probability mass function $p(y\mid \theta)$ given by
+%   \begin{equation*}
+%     p(1\mid \theta)  = \theta^{2},
+%     \quad
+%     p(2\mid \theta)  = 2\theta(1-\theta)
+%     \quad \text{and} \quad
+%     p(3\mid \theta)  = (1-\theta)^{2},
+%   \end{equation*}
+%   where $\theta\in (0,1)$. Let $N_{i}$ denote the number of observations equal
+%   to $i$ for $i=1,2,3$.
+%   \begin{enumerate}[(a)]
+%     \item Derive the likelihood function $L(\theta)$ as a function of
+%     $N_{1},N_{2},$ and $N_{3}$.
+%     \item Find the most powerful test for testing $H_{0}:\theta=\theta_{0}$
+%     versus $H_{a}:\theta=\theta_{a}$, where $\alpha_{a}>\alpha_{0}$. Show that
+%     your test specifies that $H_{0}$ be rejected for certain values of
+%     $2N_{1}+N_{2}.$
+%     \item How do you determine the value of $k$ so that the test has nominal
+%     level $\alpha$? You do not need to do the actual computation. A clear
+%     description of how to determine $k$ is adequate.
+%     \item Is the test derived in parts (a)-(c) uniformly most powerful for
+%     testing $H_{0}:\theta=\theta_{0}$ versus $H_{a}:\theta>\theta_{0}$? Why or
+%     why not?
+%   \end{enumerate}
+% \end{problem}
+
+\begin{problem}
+  A recent study of collected fossil data\footnote{P. Monarrez, et al. Reduced
+    strength and increased variability of extinction selectivity during mass
+    extinctions, \textit{R Soc Open Sci} (2023)
+    \url{https://royalsocietypublishing.org/rsos/article/10/9/230795/92261}}
+  investigated the relationship between species' traits and their risk of
+  going extinct. In this problem we'll analyze a subset of their dataset,
+  specifically a subset of 550 trilobita species, with fossil samples taken
+  from various epochs. In particular, we'll look at data consisting of
+  $n_{1}=40$ samples of trilobite fossils which date back to epochs of known
+  mass extinctions, and compare them with $n_{2}=13070$ samples from
+  non-mass-extinction epochs.
+
+  Download the trilobita fossil datafiles from
+
+  \begin{quote}
+    {\footnotesize\url{https://github.com/max-hill/math-472/blob/main/datasets/trilobita-fossil-mass-extinctions.csv}}
+
+    {\footnotesize\url{https://github.com/max-hill/math-472/blob/main/datasets/trilobita-fossil-background.csv}}
+
+  \end{quote}
+  The first dataset consists of fossil samples dating to geologic epochs
+  coinciding with mass extinction events. The second dataset consists of
+  samples from ``ordinary times'' (non-mass-extinction epochs).
+  
+  Each row of these datasets correspond to a fossil sample. The column
+  labelled \texttt{extinct} is a boolean variable indicating whether the
+  species represented by that fossil went extinction during that epoch. The
+  columns \texttt{log\_range} and \texttt{log\_bodysize} correspond to the
+  relative geographic range of the species and the body size of the fossil
+  sample, respectively. (Here, \texttt{extinct} is the response variable $Y$;
+  the covariates $x_{1}$ and $x_{2}$ are \texttt{log\_range} and
+  \texttt{log\_bodysize}).
+  
+  
+  \begin{enumerate}[(a)]
+    \item Load the background dataset as a dataframe in \texttt{R} and run a
+    logistic regression using
+
+\begin{verbatim}
+  df_BG = read.csv("trilobita-fossil-background.csv")
+  fit_BG <- glm(extinct ~ log_range + log_bodysize, data=df_BG, family=binomial())
+\end{verbatim}
+
+    \noindent You can view the results of the logistic regression by running:
+
+\begin{verbatim}
+  fit_BG
+  summary(fit_BG)
+\end{verbatim}
+
+    Interpret your results. What is the best fit logistic regression model
+    that you got? What were the estimated coefficients. Which estimates were
+    statistically significant and which were not? How do you interpret the
+    $p$-values?
+
+    \item Can you draw any inferences about the relationship between (1) body
+    size and extinction risk, or (2) between geographic range and body size
+    for this dataset? Consider the signs and magnitudes of your estimates
+    $\widehat{\beta}_{0},\widehat{\beta}_{1},\widehat{\beta}_{2}$ and their
+    $p$-values.
+
+    \item Perform a logistic regression analysis of the mass-extinction epoch
+    dataset. Answer questions (a) and (b) for the fossil samples from the mass
+    extinction epochs.
+
+    \item Make a comparison between the two logistic regression analyses. How
+    does the effect of body size and geographic range on extinction risk
+    differ between (1) eras of mass extinction and (2) eras without mass
+    extinction? Can you draw any biologically interesting conclusions? Explain
+    your results in a way that a biologist would understand.
+  \end{enumerate}
+\end{problem}
+
+\end{document}
+% How your world is turning faster, so much higher you can go
