@@ -6472,30 +6472,30 @@ For example, we might have the following data:
 \begin{center}
   {\footnotesize
     \begin{tabular}{c|c}
-    \textbf{Hours ($x_k$)} & \textbf{Pass ($y_k$)} \\
-    \hline
-    0.50 & 0 \\
-    0.75 & 0 \\
-    1.00 & 0 \\
-    1.25 & 0 \\
-    1.50 & 0 \\
-    1.75 & 0 \\
-    1.75 & 1 \\
-    2.00 & 0 \\
-    2.25 & 1 \\
-    2.50 & 0 \\
-    2.75 & 1 \\
-    3.00 & 0 \\
-    3.25 & 1 \\
-    3.50 & 0 \\
-    4.00 & 1 \\
-    4.25 & 1 \\
-    4.50 & 1 \\
-    4.75 & 1 \\
-    5.00 & 1 \\
-    5.50 & 1
-  \end{tabular}}
-\quad \quad \quad
+      \textbf{Hours ($x_k$)} & \textbf{Pass ($y_k$)} \\
+      \hline
+      0.50 & 0 \\
+      0.75 & 0 \\
+      1.00 & 0 \\
+      1.25 & 0 \\
+      1.50 & 0 \\
+      1.75 & 0 \\
+      1.75 & 1 \\
+      2.00 & 0 \\
+      2.25 & 1 \\
+      2.50 & 0 \\
+      2.75 & 1 \\
+      3.00 & 0 \\
+      3.25 & 1 \\
+      3.50 & 0 \\
+      4.00 & 1 \\
+      4.25 & 1 \\
+      4.50 & 1 \\
+      4.75 & 1 \\
+      5.00 & 1 \\
+      5.50 & 1
+    \end{tabular}}
+  \quad \quad \quad
   \raisebox{-3cm}{\includegraphics[scale=0.2]{images/logistic-example}}
   \footnotesize{(Source: \url{https://en.wikipedia.org/wiki/Logistic_regression#Example})}
 \end{center}
@@ -6517,7 +6517,7 @@ setting is the following:
   or equivalently, that
   \begin{equation*}
     p = \frac{1}{1+ e^{-(\beta_{0}+\beta_{1}x_{1}+\ldots+\beta_{k}x_{k})}}.
-    %\frac{e^{\beta_{0}+ \sum_{i=1}^{k}\beta_{i}x_{i}}}{1+e^{\beta_{0}+ \sum_{i=1}^{k}\beta_{i}x_{i}}}.
+    % \frac{e^{\beta_{0}+ \sum_{i=1}^{k}\beta_{i}x_{i}}}{1+e^{\beta_{0}+ \sum_{i=1}^{k}\beta_{i}x_{i}}}.
   \end{equation*}
   The parameters of this model are $\beta_{0},\ldots,\beta_{k}$.
 
@@ -6531,6 +6531,10 @@ Hence for this example, we assume that
   \log\left(\frac{p(x)}{1-p(x)} \right)  \approx \beta_{0}+\beta_{1}x
 \end{equation}
 for some choice of $\beta_{0}$ and $\beta_{1}$.
+
+\newpage
+\section{2026-04-29 | Week 15 | Lecture 34}
+\subsection{Logistic regression}
 
 
 When we found a ``best fit line'' for some data, recall that we looked for
@@ -6596,18 +6600,20 @@ the \demph{total loss}, and is simply the sum of all the surprisals:
 \end{equation*}
 Observations
 \begin{itemize}
-  \item $\mathrm{Loss}(\beta_{0},\beta_{1})$ is a complicated function of the
-  parameters $\beta_{0},\beta_{1}$. Our goal when doing logistic regression is
-  to find the parameters $\beta_{0},\beta_{1}$ which minimize the
-  $\mathrm{Loss}(\beta_{0},\beta_{1})$. Doing this requires software and
-  typically cannot be done by hand. We don't have nice closed form solutions
-  like we did for solving the linear regression problem.
+  \item Our goal when doing logistic regression is to find the parameters
+  $\beta_{0},\beta_{1}$ which minimize the
+  $\mathrm{Loss}(\beta_{0},\beta_{1})$. Since
+  $\mathrm{Loss}(\beta_{0},\beta_{1})$ is a complicated function of the
+  parameters $\beta_{0},\beta_{1}$, minimizing it requires software and
+  typically cannot be done by hand. In particular, we don't have nice closed
+  form solutions like we did for solving the linear regression problem.
   
-  \item Similarly to the likelihood ratio test statistic,
-  $\mathrm{Loss}(\beta_0,\beta_1)$ may be regarded as a ``distance'' between
-  your observed data and the model with parameters $\beta_0,\beta_1$. The goal
-  is to find the values of $\beta_0,\beta_1$ which minimize this
-  distance---these will give you the ``best'' model for your data.
+  \item$\mathrm{Loss}(\beta_0,\beta_1)$ may be regarded as a ``distance''
+  between your observed data and the model with parameters $\beta_0,\beta_1$.
+  (This was also the case with chi-squared test statistic and the likelihood
+  ratio test statistic). The goal is to find the values of $\beta_0,\beta_1$
+  which minimize this distance---these will give you the ``best'' model for
+  your data.
 
   \item Minimizing $\textrm{Loss}(\beta_{0},\beta_{1})$ is equivalent to
   maximizing the likelihood $L(\beta_{0},\beta_{1})$. When
@@ -6627,16 +6633,29 @@ $\beta_{1}\approx 1.5$, this gives the ``best model'' to be
 \end{equation*}
 and which gives the curve graphed above.
 
+Since $\beta_{1}>0$, $p$ is an increasing function of $x$. We can interpret
+this as saying that there appears to be a positive relationship between hours
+studied and probability of passing the exam. The more hours studied, the more
+likely the student is to pass.
+
+When doing logistic regression with software, we also obtain standard error
+and p-values for the extimates of $\beta_{0}$ and $\beta_{1}$. This allows us
+to analyze whether the inferred positive relationship is statistically
+significant.
+
 This model can then be used to make predictions. For example, if you study 3
 hours, your probability of passing is predicted to be
 \begin{equation*}
   p_{\rm best}(3) = \frac{e^{-4.1+1.5(3)}}{1+e^{-4.1+1.5(3)}} \approx 0.6.
 \end{equation*}
 
-\subsubsection{Extension to multiple explanatory variables}
-The example we have worked has assumed that there is only one explanatory
-variable $x$. This restriction isn't essential to the theory. Suppose instead that
-we have 2 explanatory variables, $x_{1}$ and $x_{2}$. Now, instead of \cref{eq:30} we have
+\newpage
+\section{2026-04-31 | Week 15 | Lecture 35}
+\subsection{Logistic regression with many explanatory variables}
+The example we have worked in the last lecture assumed that there is only one
+explanatory variable $x$. This restriction isn't essential to the theory.
+Suppose instead that we have 2 explanatory variables, $x_{1}$ and $x_{2}$.
+Now, instead of \cref{eq:30} we have
 \begin{equation*}
   \log\left(\frac{p(x)}{1-p(x)} \right) \approx \beta_{0}+\beta_{1}x_{1}+ \beta_{2}x_{2}
 \end{equation*}
@@ -6678,7 +6697,7 @@ for having more parameters:
 \begin{equation*}
   \mathrm{BIC} = -2 \ell(\theta_{1},\ldots,\theta_{m}) + \underbrace{k\log(n)}_{\text{penalty term}}.
 \end{equation*}
-\subsubsection{Inference for Logistic Regression}
+\subsection{Inference for Logistic Regression}
 \textit{(Based on Agresti, Categorical Data Analysis, 1990, Section 4.2.)}
 \begin{itemize}
   \item When $n$ is large, we can construct a $(1-\alpha)$\% confidence
@@ -6707,7 +6726,7 @@ for having more parameters:
 \end{itemize}
 
 
-\subsubsection{Odds}
+\subsection{Odds}
 \begin{remark}[Digression about odds]
   Suppose $E$ is an event with probability $p$. The \demph{odds} of $E$ is the
   fraction
@@ -6736,95 +6755,95 @@ for having more parameters:
 \end{remark}
 \newpage
 
-\section{Logistic regression problem}
-The outcome $Y$ is \textbf{binary}:
-\begin{equation*}
-  Y = \left\{ \begin{array}{l@{\quad:\quad}l} 1 & \text{the species goes
-        extinct}\\ 0& \text{otherwise} \end{array}\right.
-\end{equation*}
+% \section{Logistic regression problem}
+% The outcome $Y$ is \textbf{binary}:
+% \begin{equation*}
+%   Y = \left\{ \begin{array}{l@{\quad:\quad}l} 1 & \text{the species goes
+%         extinct}\\ 0& \text{otherwise} \end{array}\right.
+% \end{equation*}
 
-The predictor is a continuous trait:
-\begin{itemize}
-  \item $x= \text{ (range size)}$
-  %\item $x_{2}$: body size
-\end{itemize}
-
-
-The logistic model here is
-\begin{equation*}
-  \P\left[Y=1\mid \text{range size } x \right] = \frac{1}{1+e^{-(\beta_{0}+\beta_{1}x)}}
-\end{equation*}
-
-Here
-\begin{equation*}
-  \beta_{0} = (\text{baseline log-odds extinction risk at $x=0$})
-\end{equation*}
-and
-\begin{equation*}
-  \beta_{1} = (\text{change in log-odds per unit increase in }x)
-\end{equation*}
-
-\begin{itemize}
-  \item If $\beta_{1}=0$ then extinction becomes roughly random with respect
-  to range size.
-  \item If $|\beta_{1}|$ is large, then extinction risk depends strongly on
-  range size.
-  \item If $\beta_{1}<0$ then there is a negative relationship between range
-  size and extinction risk. (Higher range size means less like to go extinct).
-  \item If $\beta_{1}>0$ then there is a positive relationship between range
-  size and extinction risk. (Higher range size means more likely to go
-  extinct).
-\end{itemize}
+% The predictor is a continuous trait:
+% \begin{itemize}
+%   \item $x= \text{ (range size)}$
+%   %\item $x_{2}$: body size
+% \end{itemize}
 
 
-For data a total of 550 trilobyte species, with samples taken from various
-epochs. In particular there were $n_{1}=40$ samples of trilobites during
-epochs of mass extinction, and $n_{2}=13070$ samples from epochs without mass
-extinctions.
+% The logistic model here is
+% \begin{equation*}
+%   \P\left[Y=1\mid \text{range size } x \right] = \frac{1}{1+e^{-(\beta_{0}+\beta_{1}x)}}
+% \end{equation*}
 
-Our dataset includes both the geographic range and the bodysize (both of which
-can be inferred from fossils). Samples take the form:
-\begin{center}
-  \begin{tabular}{c|c|c}
-    extinct & log range $(x_{1})$ & log bodysize $(x_{2})$ \\
-    \hline
-    0 & 1.4746192 & 0.09619238 \\
-    1 & -1.2346322 & 0.23356274 \\
-    0 & 0.1033393 & -0.04318684 \\
-    0 & 0.9344750 & -0.03719772 \\
-    0 & 0.0000000 & -0.03181698 \\
-  \end{tabular}
-\end{center}
-The first column indicates whether the species goes extinct during that epoch.
+% Here
+% \begin{equation*}
+%   \beta_{0} = (\text{baseline log-odds extinction risk at $x=0$})
+% \end{equation*}
+% and
+% \begin{equation*}
+%   \beta_{1} = (\text{change in log-odds per unit increase in }x)
+% \end{equation*}
 
-So we can use the following logistic model
-\begin{equation*}
-  \P\left[Y=1\mid x_{1},x_{2} \right] = \frac{1}{1+e^{-(\beta_{0}+\beta_{1}x_{1}+\beta_{2}x_{2})}}
-\end{equation*}
+% \begin{itemize}
+%   \item If $\beta_{1}=0$ then extinction becomes roughly random with respect
+%   to range size.
+%   \item If $|\beta_{1}|$ is large, then extinction risk depends strongly on
+%   range size.
+%   \item If $\beta_{1}<0$ then there is a negative relationship between range
+%   size and extinction risk. (Higher range size means less like to go extinct).
+%   \item If $\beta_{1}>0$ then there is a positive relationship between range
+%   size and extinction risk. (Higher range size means more likely to go
+%   extinct).
+% \end{itemize}
 
-For ``ordinary times'' samples, we obtain
-\begin{equation*}
-  \widehat{\beta}_{0}= -0.426
-  \quad \widehat{\beta}_{1} = -0.349
-  \quad \text{and} \quad \widehat{\beta}_{2} = -0.142
-\end{equation*}
 
-For extinction event samples, we obtain
-\begin{equation*}
-  \widehat{\beta}_{0}= -1.068,
-  \quad \widehat{\beta}_{1} = -0.0353
-  \quad \text{and} \quad \widehat{\beta}_{2} = -0.487
-\end{equation*}
-% Estimate Std. Error z value Pr(>|z|)   
-% (Intercept)  -1.06751    0.37997  -2.809  0.00496 **
-% log_range    -0.03533    0.40099  -0.088  0.92979   
-% log_bodysize -0.48677    0.46108  -1.056  0.29109   
+% For data a total of 550 trilobyte species, with samples taken from various
+% epochs. In particular there were $n_{1}=40$ samples of trilobites during
+% epochs of mass extinction, and $n_{2}=13070$ samples from epochs without mass
+% extinctions.
 
-% Coefficients:
-% Estimate Std. Error z value Pr(>|z|)    
-% (Intercept)  -0.42561    0.05648  -7.535 4.89e-14 ***
-% log_range    -0.34892    0.05797  -6.019 1.76e-09 ***
-% log_bodysize -0.14213    0.05749  -2.472   0.0134 *  
+% Our dataset includes both the geographic range and the bodysize (both of which
+% can be inferred from fossils). Samples take the form:
+% \begin{center}
+%   \begin{tabular}{c|c|c}
+%     extinct & log range $(x_{1})$ & log bodysize $(x_{2})$ \\
+%     \hline
+%     0 & 1.4746192 & 0.09619238 \\
+%     1 & -1.2346322 & 0.23356274 \\
+%     0 & 0.1033393 & -0.04318684 \\
+%     0 & 0.9344750 & -0.03719772 \\
+%     0 & 0.0000000 & -0.03181698 \\
+%   \end{tabular}
+% \end{center}
+% The first column indicates whether the species goes extinct during that epoch.
+
+% So we can use the following logistic model
+% \begin{equation*}
+%   \P\left[Y=1\mid x_{1},x_{2} \right] = \frac{1}{1+e^{-(\beta_{0}+\beta_{1}x_{1}+\beta_{2}x_{2})}}
+% \end{equation*}
+
+% For ``ordinary times'' samples, we obtain
+% \begin{equation*}
+%   \widehat{\beta}_{0}= -0.426
+%   \quad \widehat{\beta}_{1} = -0.349
+%   \quad \text{and} \quad \widehat{\beta}_{2} = -0.142
+% \end{equation*}
+
+% For extinction event samples, we obtain
+% \begin{equation*}
+%   \widehat{\beta}_{0}= -1.068,
+%   \quad \widehat{\beta}_{1} = -0.0353
+%   \quad \text{and} \quad \widehat{\beta}_{2} = -0.487
+% \end{equation*}
+% % Estimate Std. Error z value Pr(>|z|)   
+% % (Intercept)  -1.06751    0.37997  -2.809  0.00496 **
+% % log_range    -0.03533    0.40099  -0.088  0.92979   
+% % log_bodysize -0.48677    0.46108  -1.056  0.29109   
+
+% % Coefficients:
+% % Estimate Std. Error z value Pr(>|z|)    
+% % (Intercept)  -0.42561    0.05648  -7.535 4.89e-14 ***
+% % log_range    -0.34892    0.05797  -6.019 1.76e-09 ***
+% % log_bodysize -0.14213    0.05749  -2.472   0.0134 *  
 
 
 \subsection{Method of moments}
@@ -6841,6 +6860,35 @@ Let $X$ be the number of recaptured beetles.
 
 Then $\E\left[X \right] = n^{2}\frac{1}{N}$
 
+\section{ANOVA}
+\textit{Chapter 13.2}
+
+\Fl{Problem:} We have several populations. We want to know if their means are
+all the same.
+
+
+Assume we have two populations, of size $n_{1}$ and $n_{2}$. For now, assume
+$n_{1}=n_{2}$.
+
+Let
+\begin{equation*}
+  Y_{ij} = j^{\rm th}\text{ observation in the sample from population $i$}
+\end{equation*}
+\begin{equation*}
+  \overline{Y}_{i} = \text{mean of sample from population $i$}
+\end{equation*}
+\begin{equation*}
+  \overline{Y} = \text{mean of all $n=2n_{1}$ observations}
+\end{equation*}
+Then
+\begin{align*}
+  \text{Total SS} 
+  &= \sum_{i=1}^{2}\sum_{j=1}^{n_{i}}(Y_{ij}-\overline{Y})^{2}\\
+  &= \underbrace{n_{1}\sum_{i=1}^{n} \left( \overline{Y}_{i}- \overline{Y}\right)^{2}}_{\mathrm{SST}} + \underbrace{\sum_{i=1}^{2}\sum_{j=1}^{n_{1}}\left( Y_{ij}-\overline{Y}_{i} \right)}_{\mathrm{SSE}}
+\end{align*}
+
+
+Suppose we 
 \newpage
 
 \end{document}

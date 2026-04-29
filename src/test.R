@@ -685,14 +685,18 @@ y <- c(0, 0, 1, 1, 3)
 df <- data.frame(x = x, y = y)
 
 # Degree-4 polynomial fit
-fit3 <- lm(y ~ x + I(x^2) + I(x^3), data = df)
-fit4 <- lm(y ~ x + I(x^2) + I(x^3) + I(x^4), data = df)
+fit1 <- glm(y ~ x , data = df)
+fit2 <- glm(y ~ x + I(x^2), data = df)
+fit3 <- glm(y ~ x + I(x^2) + I(x^3), data = df)
+fit4 <- glm(y ~ x + I(x^2) + I(x^3) + I(x^4), data = df)
 
 
-coef(fit3)
-
-coef(fit4)
+summary(fit1)
+summary(fit2)
+summary(fit3)
 summary(fit4)
+
+
 5/24
 1/12
 
