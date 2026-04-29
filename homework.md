@@ -17,6 +17,7 @@ permalink: /homework/
 2026-03-31  | [homework-08.pdf](homework/homework-08/homework-08.pdf), [homework-08.tex](homework/homework-08/homework-08.tex)     | MLE, sufficiency, hypothesis testing, large sample hypothesis testing
 2026-04-20  | [homework-09.pdf](homework/homework-09/homework-09.pdf), [homework-09.tex](homework/homework-09/homework-09.tex)     | Hypothesis tests, Likelihood ratio test, method of moments, power function
 2026-04-29  | [homework-10.pdf](homework/homework-10/homework-10.pdf), [homework-10.tex](homework/homework-10/homework-10.tex)     | Hypothesis tests, confidence intervals, misc
+2026-05-06  | [homework-11.pdf](homework/homework-11/homework-11.pdf), [homework-11.tex](homework/homework-11/homework-11.tex)     | Hypothesis tests, Logistic regresion
 
  
 
