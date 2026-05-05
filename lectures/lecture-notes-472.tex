@@ -5517,20 +5517,55 @@ solving the normal equations.
     \norm{Y-Xv}^{2}\geq \norm{Y-X\beta^{*}}^{2}.
   \end{equation}
   This will imply that $\beta^{*} = \widehat{\beta}_{\rm LSE}$.
-  
-  First observe that for any vectors $x,y$ of the same dimension, we have
-  \begin{equation*}
-    \norm{x+y}^{2} = \norm{x}^{2}+\norm{y}^{2} +2
-    \left\langle x,y \right\rangle.
-  \end{equation*}
+ 
   Take $x=X(\beta^{*}-v)$ and $y= Y-X\beta^{*}$. Then we make two key
-  observations
+  observations:
   \begin{itemize}
     \item First,
     \begin{equation*}
       Y-Xv = X(\beta^{*}-v) + (Y-X\beta^{*}) = x+y
     \end{equation*}
-    \item Second, $x$ and $y$ are orthogonal
+    Geometrically, this expresses the idea that we can decompose the vector
+    $Y-Xv\in \R^{n}$ into the sum of two vectors:
+    \begin{itemize}
+      \item The blue vector $x$, which lies in the column space of $X$.
+      \item The red vector $y$, which is the orthogonal projection of $Y$ onto
+      the column space of $X$, denoted $\mathrm{CS}(X)$ below:
+    \end{itemize}
+
+    \begin{center}
+      \begin{tikzpicture}[scale=1.2]
+        % points
+        \coordinate (O) at (0,0);
+        \coordinate (Q) at (1.2,0);   % Xv
+        \coordinate (P) at (3,0);     % X beta*
+        \coordinate (Y) at (3,2);     % Y
+
+        % column space
+        \draw[-, thick] (-0.5,0) -- (4,0) node[right] {$\mathrm{CS}(X)$};
+
+        % points on column space
+        \fill (Q) circle (1pt) node[below] {$Xv$};
+        \fill (P) circle (1pt) node[below] {$X\beta^*$};
+        \fill (Y) circle (1pt) node[above] {$Y$};
+
+        % vectors
+        \draw[-{Stealth[length=2.5mm,width=1.5mm]}, thick, shorten >=3pt, red] (P) -- (Y)
+        node[midway, right] {$y$};
+
+        \draw[-{Stealth[length=2.5mm,width=1.5mm]}, thick, blue] (Q) -- (P)
+        node[midway, below] {$x$};
+
+        \draw[-{Stealth[length=2.5mm,width=1.5mm]}, dashed, thick, shorten >=3pt] (Q) -- (Y)
+        node[midway, left] {$Y-Xv$};
+
+        % right angle marker
+        %\draw (P) ++(0.18,0) -- ++(0,0.18) -- ++(-0.18,0);
+      \end{tikzpicture}
+    \end{center}
+    
+    \item Our second observation is that $x$ and $y$ are orthogonal. We can
+    check this with the following computation:
     \begin{align*}
       \left\langle x,y \right\rangle 
       &= \left\langle X(\beta^{*}-v),Y-X\beta^{*}
@@ -5539,7 +5574,12 @@ solving the normal equations.
         \right\rangle \\
       &= \left\langle \beta^{*}-v,0 \right\rangle  &&\text{by \cref{eq:normal-equations-general}} \\
       &= 0.
-    \end{align*}    
+    \end{align*}
+    Then, since $x$ and $y$ are orthogonal, we have
+    \begin{equation*}
+        \norm{x+y}^{2} = \norm{x}^{2}+\norm{y}^{2} +2
+        \left\langle x,y \right\rangle = \norm{x}^{2} + \norm{y}^{2}.
+    \end{equation*}
   \end{itemize}
   It follows from these two observations that
   \begin{equation*}
@@ -5551,7 +5591,7 @@ solving the normal equations.
   $\norm{x}^{2} = 0$, or equivalently $v=\beta^{*}$. Thus $\beta^{*}$ is the
   unique minimizer, so the LSE of $\beta$ is unique. 
 \end{proof}
-
+ 
 \newpage
 \section{2026-04-20 | Week 14 | Lecture 30}
 No typed notes today. I recapped the last two lectures.
@@ -6650,31 +6690,45 @@ hours, your probability of passing is predicted to be
 \end{equation*}
 
 \newpage
-\section{2026-04-31 | Week 15 | Lecture 35}
+\section{2026-04-30 | Week 15 | Lecture 35}
 \subsection{Logistic regression with many explanatory variables}
-The example we have worked in the last lecture assumed that there is only one
-explanatory variable $x$. This restriction isn't essential to the theory.
-Suppose instead that we have 2 explanatory variables, $x_{1}$ and $x_{2}$.
-Now, instead of \cref{eq:30} we have
-\begin{equation*}
-  \log\left(\frac{p(x)}{1-p(x)} \right) \approx \beta_{0}+\beta_{1}x_{1}+ \beta_{2}x_{2}
-\end{equation*}
-So now we must minimize the total loss over all
-$\beta_{0},\beta_{1},\beta_{2}$, rather than just over all $\beta_{0}$ and
-$\beta_{1}$. Nothing else changes. You can add as many explanatory variables
-as you like.
-
-If you have a dataset with lots of possible explanatory variables, how do you
-know which ones to include and which to exclude from a logistic regression
-analysis? For example: $Y$ indicates whether a surgery patient experiences
-complications due to surgery (assume same type of surgery). Possible
-explanatory variables
+Recall in the logistic regression problem we assume
 \begin{itemize}
-  \item patient age, sex
+  \item $Y\in \left\{0,1\right\}$ is a response random variable 
+  \item $X_{1},\ldots,X_{k}$ are covariates / predictor variables
+  \item $p = \P\left[Y=1\mid X_{1}=x_{1},\ldots,X_{k}=x_{k} \right]$
+  \item $\log \left( \frac{p}{1-p} \right)=
+  \beta_{0}+\beta_{1}x_{1}+\ldots+\beta_{k}x_{k}$ for unknown parameters $\beta_{0},\ldots,\beta_{k}$.
+\end{itemize}
+We solve this problem numerically by finding values for
+$\beta_{0},\ldots,\beta_{k}$ which minimize
+\begin{equation*}
+  \text{Loss}(\beta_{0},\ldots,\beta_{k}) = -\log L(y_{1},\ldots,y_{n}\mid \beta_{0},\ldots,\beta_{k})
+\end{equation*}
+and we can express this loss function as a sum
+\begin{equation*}
+  \text{Loss}(\beta_{0},\ldots,\beta_{k}) = \ell_{1}+\ldots+\ell_{n},
+\end{equation*}
+where
+\begin{equation*}
+  \ell_{i} = -\log(p_{i}^{y_{i}}(1-p_{i})^{y_{i}}) \geq 0
+\end{equation*}
+is the surprisal (a measure of how good our model predicts the $i^{\rm th}$
+data point).
+
+\Fl{Question:} Suppose you have a dataset with lots of possible explanatory
+variables, how do you know which ones to include and which to exclude from
+your logistic regression analysis?
+
+For example, suppose $Y$ indicates whether a surgery patient experiences
+complications due to a certian type of surgery. Possible explanatory variables
+\begin{itemize}
+  \item patient age
+  \item patient sex
   \item surgical device type 
   \item year that surgery was performed
   \item attending physician
-  \item preexisting conditions
+  \item presence of a preexisting condition
   \item innumerable other risk factors
 \end{itemize}
 If you include all of them, you get results that may be overfitted and may be
@@ -6685,7 +6739,7 @@ models with fewer parameters are preferred (e.g., AIC or BIC).
 More precisely, for a model with $m$ parameters,
 $\theta_{1},\ldots,\theta_{m}$ the \demph{AIC score} is defined as
 \begin{equation*}
-  \mathrm{AIC} = -2 \ell(\theta_{1},\ldots,\theta_{m}) + \underbrace{2k}_{\text{penalty term}}
+  \mathrm{AIC} = 2 \text{Loss}(\beta_{0},\ldots\beta_{k}) + \underbrace{2k}_{\text{penalty term}}
 \end{equation*}
 One then seeks to minimize $\textrm{AIC}$ over all subsets of the parameters
 $\beta_{0},\ldots,\beta_{k}$. This is done numerically using iterative
@@ -6695,10 +6749,12 @@ Another approach is to minimzie the \demph{BIC score}, defined similarly to
 the AIC score, but with a different (typically more punishing) penalty term
 for having more parameters:
 \begin{equation*}
-  \mathrm{BIC} = -2 \ell(\theta_{1},\ldots,\theta_{m}) + \underbrace{k\log(n)}_{\text{penalty term}}.
+  \mathrm{BIC} = 2 \text{Loss}(\beta_{0},\ldots\beta_{k}) + \underbrace{k\log(n)}_{\text{penalty term}}.
 \end{equation*}
-\subsection{Inference for Logistic Regression}
+\subsubsection{Inference for Logistic Regression}
 \textit{(Based on Agresti, Categorical Data Analysis, 1990, Section 4.2.)}
+Here is a brief overview of how to construct confidence intervals and do
+hypothesis tests with logistic regression.
 \begin{itemize}
   \item When $n$ is large, we can construct a $(1-\alpha)$\% confidence
   interval for parameters by
@@ -6711,9 +6767,9 @@ for having more parameters:
   \end{equation*}
   and
   \begin{equation*}
-    W = \mathrm{diag}(\widehat{p}_{1}(1-\widehat{p}_{1}),\ldots,\widehat{p}_{i}(1-\widehat{p}_{i})).
+    W = \mathrm{diag}(\widehat{p}_{1}(1-\widehat{p}_{1}),\ldots,\widehat{p}_{n}(1-\widehat{p}_{n})).
   \end{equation*}
-  To test $H_{0}: \beta_{i}=0$, we can use the test statistic
+  \item Similarly, to test $H_{0}: \beta_{i}=0$, we can use the test statistic
   \begin{equation*}
     T = \frac{\widehat{\beta}_{i}-0}{\text{ASE}(\widehat{\beta}_{i})}
   \end{equation*}
@@ -6726,34 +6782,33 @@ for having more parameters:
 \end{itemize}
 
 
-\subsection{Odds}
-\begin{remark}[Digression about odds]
-  Suppose $E$ is an event with probability $p$. The \demph{odds} of $E$ is the
-  fraction
-  \begin{equation*}
-    \frac{p}{1-p}.
-  \end{equation*}
-  The idea of \textit{odds} (which can be any positive number) is older than
-  that of \textit{probability}. The very first mathematical text on probability
-  was Cardano's 15-page book entitled ``The Book of Games of Chance'' (1564),
-  which formulated most of its content in terms of odds. When outcomes are
-  equally likely---such as when rolling a dice in a betting game---the
-  \textit{probability} $p$ of winning is understood to be
-  \begin{equation*}
-    \frac{\text{number of favorable outcomes}}{\text{total number of possible outcomes}},
-  \end{equation*}
-  whereas \textit{odds} is
-  \begin{equation*}
-    \frac{\text{number of favorable outcomes}}{\text{number of unfavorable outcomes}}
-  \end{equation*}
-  For example, the probability of rolling a 6 on a dice is $1/6$, and the odds
-  is $1/5$. In some sense knowing the odds gives you the same amount of
-  information as knowing the probability (since if you know one, you can
-  compute the other), but the interpretation is different. For example, odds
-  of $1/5$ tell us that failure is 5 times more likely than success. We would
-  say the odds are ``5-to-1 against''.
-\end{remark}
-\newpage
+% \subsection{Odds}
+% \begin{remark}[Digression about odds]
+%   Suppose $E$ is an event with probability $p$. The \demph{odds} of $E$ is the
+%   fraction
+%   \begin{equation*}
+%     \frac{p}{1-p}.
+%   \end{equation*}
+%   The idea of \textit{odds} (which can be any positive number) is older than
+%   that of \textit{probability}. The very first mathematical text on probability
+%   was Cardano's 15-page book entitled ``The Book of Games of Chance'' (1564),
+%   which formulated most of its content in terms of odds. When outcomes are
+%   equally likely---such as when rolling a dice in a betting game---the
+%   \textit{probability} $p$ of winning is understood to be
+%   \begin{equation*}
+%     \frac{\text{number of favorable outcomes}}{\text{total number of possible outcomes}},
+%   \end{equation*}
+%   whereas \textit{odds} is
+%   \begin{equation*}
+%     \frac{\text{number of favorable outcomes}}{\text{number of unfavorable outcomes}}
+%   \end{equation*}
+%   For example, the probability of rolling a 6 on a dice is $1/6$, and the odds
+%   is $1/5$. In some sense knowing the odds gives you the same amount of
+%   information as knowing the probability (since if you know one, you can
+%   compute the other), but the interpretation is different. For example, odds
+%   of $1/5$ tell us that failure is 5 times more likely than success. We would
+%   say the odds are ``5-to-1 against''.
+% \end{remark}
 
 % \section{Logistic regression problem}
 % The outcome $Y$ is \textbf{binary}:
@@ -6848,18 +6903,344 @@ for having more parameters:
 
 \subsection{Method of moments}
 
+\textit{Based on Example 7.2.2. in Casella and Berger, and Chapter 7 of
+  DeGroot and Schervish}
 
-\subsubsection{Capture-recapture}
-Suppose there are $N$ beetles in a forest. We don't know $N$, but want to
-estimate it. We go out into the forest and collect $n$ beetles, perhaps using
-a trap. Then we tag them, perhaps by marking them with a dot, and let them go.
+Next we will discuss a method of estimating parameters called the \textit{method of
+  moments}. We begin our discussion with a motivating exampl.
 
-Then, later, we go out and collect another $n$ beetles from the forest.
+\begin{example}[Mark-and-recapture]
+  \label{ex:mark-and-recapture}
+  Suppose there are $N$ turtles in the ocean by the Island of Lalo. We don't
+  know $N$, but want to estimate it. We set sail and capture $n_{1}$ turtles.
+  Then we tag them, and let them go. Later, we go out and collect another
+  $n_{2}$ turtles from the same area.
 
-Let $X$ be the number of recaptured beetles.
+  For each $i\in \left\{1,\ldots,n_{2}\right\}$, let
+  \begin{equation*}
+    X_{i} = \left\{ \begin{array}{l@{\quad:\quad}l} 1 & \text{the $i^{\rm th}$ turtle in the second sample had a tag}\\ 0& \text{otherwise} \end{array}\right.
+  \end{equation*}
+  Then we ahave
+  \begin{equation*}
+    \P\left[X_{1}=1\mid N \right] \approx \frac{n_{1}}{N},
+  \end{equation*}
+  and hence
+  \begin{equation*}
+    \mu_{1} := \E\left[X_{1} \right] = \frac{n_{1}}{N}.
+  \end{equation*}
+  Moreover,
+  \begin{equation*}
+    m_{1} := \overline{X} = \frac{X_{1}+\ldots+X_{n_{2}}}{n_{2}} = \frac{T}{n_{2}},
+  \end{equation*}
+  where $T= X_{1}+\ldots+X_{n}$ is the number of recaptured turtles.
 
-Then $\E\left[X \right] = n^{2}\frac{1}{N}$
+  The motivation for the method of moments is that when $n$ is large, we have
+  \begin{equation*}
+    \overline{X} \approx \E\left[X \right], \quad (\text{i.e., } m_{1}\approx \mu_{1}.)
+  \end{equation*}
+  So we set $m_{1} = \mu_{1}$ and solve for the desired parameter $N$:
+  \begin{equation*}
+    \frac{T}{n_{2}} = \frac{n_{1}}{N}
+  \end{equation*}
+  Solving for $N$ gives
+  \begin{equation*}
+    N = \frac{n_{1}n_{2}}{T}.
+  \end{equation*}
+  Hence the method of moments estimator for the size of the turtle population
+  is
+  \begin{equation*}
+    \widehat{N}_{\rm MOM} = \frac{n_{1}n_{2}}{T},
+  \end{equation*}
+  where $T$ is the total number of recaptured turtles. 
 
+  
+  For example, suppose $n_{1} = 100$ and $n_{2}=120$, with $T = 24$. Then we
+  obtain the estimate the population of turtles to be
+  \begin{equation*}
+    \widehat{N}_{\rm MOM} = \frac{100\cdot 120}{24} = 500.
+  \end{equation*}
+
+  This estimator is not great. First, it is not always finite, and if we
+  condition it on being finite, then it is not unbiased. Another problem is
+  that its variance is large. Intuitively, this is because small changes in
+  the number of recaptured turtles can lead to large changes in
+  $\widehat{N}_{\rm MOM}$. Calculation of the variance is beyond the scope of
+  this course.
+
+  In the context of estimating population sizes, this estimator is also called
+  the Lincoln-Peterson estimator. Refinements exist. 
+  
+\end{example}
+
+\newpage
+\section{2026-05-03 | Week 16 | Lecture 36}
+\begin{definition}[Method of moments]
+  \label{def:method-moments}
+  Let $\mathcal{P}= \left\{\P_{\theta}:\theta\in \R^{d}\right\}$ be a
+  parametric statistical model, and let
+  $X_{1},\ldots,X_{n}\overset{iid}{\sim}\P_{\theta}$ where $\theta$ is
+  unknown. For each $k=1,\ldots,d$, define
+  \begin{equation*}
+    m_{k} := \frac{1}{n}\sum_{i=1}^{n}X_{i}^{k} 
+    \quad \text{and} \quad 
+    \mu_{k} := \E[X^{k}_{1} \mid \theta]
+  \end{equation*}
+  Assume that the function
+  $M(\theta)= (\mu_{1}(\theta),\ldots,\mu_{d}(\theta))$ is invertible. Then the
+  \demph{method of moments estimator} of $\theta$, denoted
+  $\widehat{\theta}_{\rm MOM}$, is defined to be
+  \begin{equation*}
+    \widehat{\theta}_{\rm MOM} = M^{-1}(m_{1},\ldots,m_{d}).
+  \end{equation*}
+\end{definition}
+\begin{remark}
+  The procedure for finding the method of moments estimator is simple. First,
+  set up the $d$ equations
+  \begin{equation*}
+    m_{j} = \mu_{j}(\theta), \quad j=1,\ldots,d
+  \end{equation*}
+  and then solve for $\theta$.
+\end{remark}
+
+
+
+\begin{example}
+  Suppose we have a random sample  $X_{1},\ldots,X_{n}$ from
+  $X\sim \mathcal{N}(\mu,\sigma^{2})$. Then
+  \begin{align*}
+    \mu_{1} 
+    &:= \E\left[X \right] = \mu \E\left[X^{2} \right] \\
+    \mu_{2}
+    &:= \Var(X)+ \mu^{2} = \sigma^{2}+\mu^{2}
+\end{align*}
+  Here
+  \begin{align*}
+    m_{1}&:= \overline{X}  \\
+    m_{2}&:= \frac{1}{n}\sum_{i=1}^{n} X_{i}^{2}.
+\end{align*}
+  Setting up the system of equations:
+  \begin{align*}
+    m_{1} &= \mu \\
+    m_{2} &= \sigma^{2}+\mu^{2} \\
+  \end{align*}
+  From the first equation, we have $\widehat{\mu}_{\rm MOM}= m_{1} =
+  \overline{X}$. The second equation becomes
+  \begin{align}
+    \sigma^{2} 
+    &= m_{2} - \mu^{2} \nonumber\\
+    &= m_{2} - m_{1}^{2}\nonumber\\
+    &= \left(\frac{1}{n}\sum_{i=1}^{n}X_{i}^{2}\right) - \overline{X}^{2} \label{eq:36}\\
+    &= \frac{1}{n}\sum_{i=1}^{n} (X_{i}-\overline{X})^{2}.\nonumber
+  \end{align}
+  Hence
+  \begin{equation*}
+    \widehat{\sigma^{2}}_{\rm MOM}=\frac{1}{n}\sum_{i=1}^{n}
+    (X_{i}-\overline{X})^{2}.
+  \end{equation*}
+  This is different from the usual sample mean (because we have $\frac{1}{n}$
+  rather than $\frac{1}{n-1}$).
+
+  \begin{claim}
+    $\widehat{\sigma^{2}}_{\rm MOM}$ is a biased estimator.
+  \end{claim}
+  \begin{claimproof}
+    We need to show that
+    \begin{equation*}
+      \E\left[ \frac{1}{n}\sum_{i=1}^{n} (X_{i}-\overline{X})^{2}\right] \neq \sigma^{2}.
+    \end{equation*}
+    By \cref{eq:36},
+    \begin{equation*}
+      \E\left[ \frac{1}{n}\sum_{i=1}^{n} (X_{i}-\overline{X})^{2}\right] 
+      = \underbrace{\E\left[\left(\frac{1}{n}\sum_{i=1}^{n}X_{i}^{2}\right)
+        \right]}_{\text{call it }A} - \underbrace{\E\left[\overline{X}
+        \right]}_{\text{call it }B}.
+    \end{equation*}
+    Next we compute $A$ and $B$ separately, Using the variance shortcut
+    formula
+    $\Var(Y) = \E\left[Y^{2} \right] - \left( \E\left[Y \right] \right)^{2}$,
+    \begin{align*}
+      A 
+      &= \sigma^{2}+\mu^{2}.
+    \end{align*}
+    Using the shortcut formula again,
+    \begin{align*}
+      B 
+      &= \Var(\overline{X}) + \left( \E\left[\overline{X} \right] \right)^{2}\\
+      &= \frac{\sigma^{2}}{n} + \mu^{2} &&\text{using
+                                           \cref{prop:standard-error-sample-mean}
+                                           and $\E\left[\overline{X} \right]=\mu$}\\
+    \end{align*}
+    Putting the $A$ and $B$ calculations together, we have
+    \begin{align*}
+      \E\left[ \frac{1}{n}\sum_{i=1}^{n} (X_{i}-\overline{X})^{2}\right]
+      &= A - B\\
+      &= \left( \sigma^{2}+\mu^{2} \right) - \left( \frac{\sigma^{2}}{n} +\mu^{2} \right)\\  
+      &= \sigma^{2}\left( 1 -\frac{1}{n}\right) 
+    \end{align*}
+    Therefore
+    \begin{equation*}
+      \text{Bias}(\widehat{\sigma^{2}}_{\rm MOM}) 
+      = \sigma^{2}\left( 1 -\frac{1}{n}\right)  - \sigma^{2} 
+      = -\frac{\sigma^{2}}{n} 
+      \neq 0.
+    \end{equation*}
+  \end{claimproof}
+  
+\end{example}
+\begin{example}[Crimes]
+  Each week, there are $k$ crimes committed in a city. Let $p$ be the
+  probability that a crime is reported. Suppose that both $k$ and $p$ are
+  unknown.
+
+  The police department tracks the number of reported crimes each week. Let
+  \begin{equation*}
+    X_{i} = \text{\# of crimes reported in week }i.
+  \end{equation*}
+  for weeks $i=1,\ldots,n$. Then $X_{i}\sim \text{Binomial}(k,p)$.
+  \begin{equation*}
+    \P\left[X_{i}=x \mid k,p \right] = {k\choose x}p^{x}(1-p)^{k-x}, \quad x=0,1,\ldots,k.
+  \end{equation*}
+  Criminologists wish to estimate both $k$ and $p$. There is no obvious
+  estimator for these parameters.
+
+  Observe that if $X\sim \text{Binomial}(k,p)$, then
+  \begin{equation*}
+    \E\left[X \right] = kp 
+  \end{equation*}
+  and
+  \begin{align*}
+    \E\left[X^{2} \right] 
+    &= \Var(X) + \left( \E\left[X \right] \right)^{2}\\
+    &= kp(1-p) + (kp)^{2}
+  \end{align*}
+  We use the method of moments. Setting $\overline{X} = \E\left[X \right]$ and
+  $\frac{1}{n}\sum_{i=1}^{n} X_{i}^{2} = \E\left[X^{2} \right]$ gives the
+  system
+  \begin{equation*}
+    \left\{ \begin{array}{l@{}l} \overline{X}=kp \\ \frac{1}{n}\sum_{i=1}^{n} X_{i}^{2}=kp(1-p)+(kp)^{2} \end{array}\right.
+  \end{equation*}
+  We need to solve for this system for $k$ and $p$. Replacing $kp$ in the
+  second equation by $\overline{X}$ gives
+  \begin{equation*}
+    \frac{1}{n}\sum_{i=1}^{n} X_{i}^{2} = \overline{X}(1-p)+ \overline{X}^{2}.
+  \end{equation*}
+  Substitute $p = \overline{X}/k$:
+  \begin{equation*}
+    \frac{1}{n}\sum_{i=1}^{n} X_{i}^{2} = \overline{X}\left( 1- \frac{\overline{X}}{k} \right) + \overline{X}^{2}.
+  \end{equation*}
+  Solving for $k$ gives
+  \begin{align*}
+    k 
+    &= \frac{\overline{X}^{2}}{\overline{X}+ \left(\overline{X}^{2}- \frac{1}{n}\sum_{i=1}^{n} X_{i}^{2}\right)}\\
+    &= \frac{\overline{X}^{2}}{\overline{X}- \frac{1}{n} \sum_{i=1}^{n}
+      (X_{i}-\overline{X})^{2}} &&\text{by \cref{eq:36}.}\\
+  \end{align*}
+  And we also have
+  \begin{equation*}
+    p = \frac{\overline{X}}{k} = \frac{\overline{X}- \frac{1}{n}\sum_{i=1}^{n} (X_{i}-\overline{X})^{2}}{\overline{X}}.
+  \end{equation*}
+  We conclude that the method of moments estimator of $(\mu,\sigma^{2})$ is
+  \begin{equation*}
+    (\widehat{k}_{\rm MOM}, \widehat{p}_{\rm MOM}) = \left( \frac{\overline{X}^{2}}{\overline{X}- \frac{1}{n} \sum_{i=1}^{n}
+        (X_{i}-\overline{X})^{2}},  \frac{\overline{X}- \frac{1}{n}\sum_{i=1}^{n} (X_{i}-\overline{X})^{2}}{\overline{X}} \right).
+  \end{equation*}
+  This won't always give a reasonable estimator: the values could be negative
+  if the sample variance is alrger than the sample mean.
+
+  For example, suppose the number of crimes reported over the last 8 years was
+  \begin{equation*}
+    X_{1} = 12, \ X_{2}= 9,\ X_{3}=6,\ X_{4}=8,\ X_{5}=11,\ X_{6}=12,\ X_{7}=9,\ X_{8}=7.
+  \end{equation*}
+  With these numbers, we have $n=8$, and we obtain $\overline{X}= 9.25$,
+  $\frac{1}{n}\sum_{i=1}^{n} (X_{i}-\overline{X})^{2}=4.4375$. This gives estimates
+  \begin{equation*}
+    \widehat{k}_{\rm MOM}= \frac{(9.25)^{2}}{9.25 - 4.4375} = 17.8
+  \end{equation*}
+  and
+  \begin{equation*}
+    \widehat{p}_{\rm MOM} = \frac{9.25}{17.8}= 0.52.
+  \end{equation*}
+\end{example}
+\newpage
+\section{2026-05-06 | Week 16 | Lecture 37}
+\subsubsection{Theoretical results for method of moments}
+While method of moments estimators typically do not give the most efficient
+(i.e., lowest-variance) estimators and are not guaranteed to be unbiased, they
+do have two principal strengths:
+\begin{itemize}
+  \item They are typically easy to compute compared to more sophisticaed
+  estimators like MLE which often require numerical algorithms.
+  \item They are consistent: when the sample size is large, they are likly to
+  be close to the true parameter value.
+\end{itemize}
+To prove the second point, we will need the following result.
+\begin{theorem}
+  \label{thm:convergence-in-probability-to-c-preserved-by-continuity}
+  If $g$ is continous at $c$ is a constant and $Y_{n}\overset{P}{\to} c$ as $n\to \infty$,
+  then $g(Y_{n})\overset{P}{\to} g(c)$.
+\end{theorem}
+\begin{proof}
+  Let $\epsilon>0$. By definition of convergence in probability, we need to
+  show that
+  \begin{equation}\label{eq:34}
+    \lim_{n\to\infty} \P\left[ |f(Y_{n})-f(c)| \geq \epsilon \right]=0.
+  \end{equation}
+  By continuity of $g$, there exists $\delta>0$ such that
+  \begin{equation*}
+    |f(y) - f(c)| <\epsilon \text{ whenever } |y-c|<\delta.
+  \end{equation*}
+  Putting on our probability glasses, we can think of this condition in terms
+  of \textit{events}. In particular, it implies that
+  \begin{equation*}
+    \left[ |Y_{n}-c|<\delta \right]  \subseteq \left[ |f(Y_{n})-f(c)|<\epsilon \right].
+  \end{equation*}
+  Taking complements, this is equivalent to
+  \begin{equation*}
+    \left[ |f(Y_{n})-f(c)| \geq \epsilon \right] \subseteq \left[ |Y_{n}-c| \geq \delta \right].
+  \end{equation*}
+  Therefore by monotonicity of $\P$,
+  \begin{equation*}
+    \P\left[ |f(Y_{n})-f(c)| \geq \epsilon \right] \leq \P\left[ |Y_{n}-c| \geq \delta \right].
+  \end{equation*}
+  Since $Y_{n}\overset{P}{\to} \theta$, we have
+  $\P\left[ |Y_{n}-c| \geq \delta \right]\to 0$ as $n\to \infty$. Therefore by
+  the squeeze theorem, \cref{eq:34} holds, and hence
+  $f(Y_{n})\overset{P}{\to} f(c)$.
+\end{proof}
+\begin{remark}
+  \label{rmk:generalization-to-Rd}
+  \cref{thm:convergence-in-probability-to-c-preserved-by-continuity} holds in
+  higher dimensions, i.e., for example when $Y_{n}$ is a random vector with
+  $d$ entries, $g:\R^{d}\to \R^{d}$ and $c\in \R^{d}$. The proof is
+  essentially the same, just replace absolute values by the Euclidean norm.
+\end{remark}
+
+\begin{theorem}[Consistency of MOM]
+  \label{thm:consistency-of-MOM}
+  Assume $\mu_{j}= \E[X_{1}\mid \theta ]$ exists and is finite for all
+  $j\in \left\{1,\ldots,d\right\}$ and all $\theta$ in the parameter space.
+  Further assume that $M^{-1}$ exists and is continuous. Then as
+  $n \to \infty$,
+  \begin{equation*}
+    \widehat{\theta}_{\rm MOM}(X_{1},\ldots,X_{n}) \to \theta
+  \end{equation*}
+  in probability; that is, the method of moments estimator is consistent.
+\end{theorem}
+\begin{proof}
+  By the law of large numbers, $m_{k} = \frac{1}{n}\sum_{i=1}^{n} X_{i}^{k}
+  \overset{\to} \E\left[X^{k}_{1} \right]$ for $k=1,\ldots,d$. Therefore
+  \begin{equation*}
+    (m_{1},\ldots,m_{d}) \overset{P}{\to} (\mu_{1},\ldots,\mu_{d}) \text{ as }n \to \infty.
+  \end{equation*}
+  Therefore by
+  \cref{thm:convergence-in-probability-to-c-preserved-by-continuity} and
+  \cref{rmk:generalization-to-Rd},
+  \begin{equation*}
+    \widehat{\theta}_{\rm MOM}(X_{1},\ldots,X_{n}) = M^{-1}(m_{1},\ldots,m_{d}) \overset{P}{\to} M^{-1}(\mu_{1},\ldots,\mu_{d}) = \theta,
+  \end{equation*}
+  where we have used the fact that $M^{-1}$ is continuous.
+\end{proof}
+\newpage
 \section{ANOVA}
 \textit{Chapter 13.2}
 
@@ -6886,6 +7267,7 @@ Then
   &= \sum_{i=1}^{2}\sum_{j=1}^{n_{i}}(Y_{ij}-\overline{Y})^{2}\\
   &= \underbrace{n_{1}\sum_{i=1}^{n} \left( \overline{Y}_{i}- \overline{Y}\right)^{2}}_{\mathrm{SST}} + \underbrace{\sum_{i=1}^{2}\sum_{j=1}^{n_{1}}\left( Y_{ij}-\overline{Y}_{i} \right)}_{\mathrm{SSE}}
 \end{align*}
+
 
 
 Suppose we 

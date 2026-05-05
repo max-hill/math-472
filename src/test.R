@@ -712,3 +712,4 @@ qt(.025, df=2, lower.tail=FALSE)
 4.3*sqrt(22*.125)
 
 4-7.1
+

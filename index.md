@@ -55,10 +55,23 @@ title: Lecture Notes
 2026-04-27  | 33   | Distribution of test statistic for LSE, equivalence of MLE and LSE, introduction to logistic regression
 2026-04-29  | 34   | Logistic regression
 
+# Quizzes
+
+[quiz-01](/quizzes/quiz-01.pdf)
+[quiz-02](/quizzes/quiz-02.pdf)
+[quiz-03](/quizzes/quiz-03.pdf)
+[quiz-04](/quizzes/quiz-04.pdf)
+[quiz-05](/quizzes/quiz-05.pdf)
+[quiz-06](/quizzes/quiz-06.pdf)
+[quiz-07](/quizzes/quiz-07.pdf)
+[quiz-08](/quizzes/quiz-08.pdf)
+[quiz-09](/quizzes/quiz-09.pdf)
+[quiz-10](/quizzes/quiz-10.pdf)
+[quiz-11](/quizzes/quiz-11.pdf)
 
 # Other Links
 
 [Course syllabus](/syllabus/syllabus.pdf)
 
-Possibly useful: [My old notes for math 372](/lectures/math-372/old-372-lecture-notes.pdf)
+
 
