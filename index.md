@@ -58,15 +58,25 @@ title: Lecture Notes
 # Quizzes
 
 [quiz-01](/quizzes/quiz-01.pdf)
+
 [quiz-02](/quizzes/quiz-02.pdf)
+
 [quiz-03](/quizzes/quiz-03.pdf)
+
 [quiz-04](/quizzes/quiz-04.pdf)
+
 [quiz-05](/quizzes/quiz-05.pdf)
+
 [quiz-06](/quizzes/quiz-06.pdf)
+
 [quiz-07](/quizzes/quiz-07.pdf)
+
 [quiz-08](/quizzes/quiz-08.pdf)
+
 [quiz-09](/quizzes/quiz-09.pdf)
+
 [quiz-10](/quizzes/quiz-10.pdf)
+
 [quiz-11](/quizzes/quiz-11.pdf)
 
 # Other Links
