@@ -7187,12 +7187,12 @@ To prove the second point, we will need the following result.
   \end{equation}
   By continuity of $g$, there exists $\delta>0$ such that
   \begin{equation*}
-    |f(y) - f(c)| <\epsilon \text{ whenever } |y-c|<\delta.
+    |f(y) - f(c)| <\epsilon \text{ whenever }|y-c|<\delta.
   \end{equation*}
   Putting on our probability glasses, we can think of this condition in terms
   of \textit{events}. In particular, it implies that
   \begin{equation*}
-    \left[ |Y_{n}-c|<\delta \right]  \subseteq \left[ |f(Y_{n})-f(c)|<\epsilon \right].
+    \left[ |f(Y_{n})-f(c)|<\epsilon \right] \supseteq \left[ |Y_{n}-c|<\delta \right].
   \end{equation*}
   Taking complements, this is equivalent to
   \begin{equation*}
@@ -7207,14 +7207,53 @@ To prove the second point, we will need the following result.
   the squeeze theorem, \cref{eq:34} holds, and hence
   $f(Y_{n})\overset{P}{\to} f(c)$.
 \end{proof}
+
+
+\begin{definition}
+  If $X_{n}\in \R^{d}$ is sequence of  random vectors, we say that
+  $X_{n}\overset{P}{\to}a\in \R^{d}$ if for all $\epsilon>0$, 
+  \begin{equation*}
+    \P\left[ \norm{X-a}>\epsilon \right] \to 0 \text{ as }n \to \infty.
+  \end{equation*}
+\end{definition}
+
+\begin{theorem}
+  Let $X^{(n)}=(X^{(n)}_{i})_{i=1}^{d} \in \R^{d}$ be a sequence of random
+  vectors. If $X^{(n)}_{i}\to a_{i}\in \R$ for all $i\in [d]$, then
+  $X_{n}\overset{P}{\to}a\in \R^{d}$.
+\end{theorem}
+
 \begin{remark}
   \label{rmk:generalization-to-Rd}
   \cref{thm:convergence-in-probability-to-c-preserved-by-continuity} holds in
-  higher dimensions, i.e., for example when $Y_{n}$ is a random vector with
-  $d$ entries, $g:\R^{d}\to \R^{d}$ and $c\in \R^{d}$. The proof is
+  higher dimensions (i.e., for example when $Y_{n}$ is a random vector with
+  $d$ entries, $g:\R^{d}\to \R^{d}$, and $c\in \R^{d}$). The proof is
   essentially the same, just replace absolute values by the Euclidean norm.
 \end{remark}
 
+Recall the definition of the method of moments estimator.
+\begin{definition}[Method of moments]
+  \label{def:method-moments}
+  Let $\mathcal{P}= \left\{\P_{\theta}:\theta\in \R^{d}\right\}$ be a
+  parametric statistical model, and let
+  $X_{1},\ldots,X_{n}\overset{iid}{\sim}\P_{\theta}$ where $\theta$ is
+  unknown. For each $k=1,\ldots,d$, define
+  \begin{equation*}
+    m_{k} := \frac{1}{n}\sum_{i=1}^{n}X_{i}^{k} 
+    \quad \text{and} \quad 
+    \mu_{k} := \E[X^{k}_{1} \mid \theta]
+  \end{equation*}
+  Assume that the function
+  $M(\theta)= (\mu_{1}(\theta),\ldots,\mu_{d}(\theta))$ is invertible. Then the
+  \demph{method of moments estimator} of $\theta$, denoted
+  $\widehat{\theta}_{\rm MOM}$, is defined to be
+  \begin{equation*}
+    \widehat{\theta}_{\rm MOM} = M^{-1}(m_{1},\ldots,m_{d}).
+  \end{equation*}
+\end{definition}
+
+The next theorem shows that under general conditions, the method of moments
+estimator converges in probability to the true parameter value.
 \begin{theorem}[Consistency of MOM]
   \label{thm:consistency-of-MOM}
   Assume $\mu_{j}= \E[X_{1}\mid \theta ]$ exists and is finite for all
@@ -7222,13 +7261,13 @@ To prove the second point, we will need the following result.
   Further assume that $M^{-1}$ exists and is continuous. Then as
   $n \to \infty$,
   \begin{equation*}
-    \widehat{\theta}_{\rm MOM}(X_{1},\ldots,X_{n}) \to \theta
+    \widehat{\theta}_{\rm MOM}(X_{1},\ldots,X_{n}) \overset{P}{\to} \theta
   \end{equation*}
   in probability; that is, the method of moments estimator is consistent.
 \end{theorem}
 \begin{proof}
   By the law of large numbers, $m_{k} = \frac{1}{n}\sum_{i=1}^{n} X_{i}^{k}
-  \overset{\to} \E\left[X^{k}_{1} \right]$ for $k=1,\ldots,d$. Therefore
+  \overset{P}{\to} \E\left[X^{k}_{1} \right]$ for $k=1,\ldots,d$. Therefore
   \begin{equation*}
     (m_{1},\ldots,m_{d}) \overset{P}{\to} (\mu_{1},\ldots,\mu_{d}) \text{ as }n \to \infty.
   \end{equation*}
@@ -7240,37 +7279,36 @@ To prove the second point, we will need the following result.
   \end{equation*}
   where we have used the fact that $M^{-1}$ is continuous.
 \end{proof}
-\newpage
-\section{ANOVA}
-\textit{Chapter 13.2}
+% \newpage
+% \section{ANOVA}
+% \textit{Chapter 13.2}
 
-\Fl{Problem:} We have several populations. We want to know if their means are
-all the same.
-
-
-Assume we have two populations, of size $n_{1}$ and $n_{2}$. For now, assume
-$n_{1}=n_{2}$.
-
-Let
-\begin{equation*}
-  Y_{ij} = j^{\rm th}\text{ observation in the sample from population $i$}
-\end{equation*}
-\begin{equation*}
-  \overline{Y}_{i} = \text{mean of sample from population $i$}
-\end{equation*}
-\begin{equation*}
-  \overline{Y} = \text{mean of all $n=2n_{1}$ observations}
-\end{equation*}
-Then
-\begin{align*}
-  \text{Total SS} 
-  &= \sum_{i=1}^{2}\sum_{j=1}^{n_{i}}(Y_{ij}-\overline{Y})^{2}\\
-  &= \underbrace{n_{1}\sum_{i=1}^{n} \left( \overline{Y}_{i}- \overline{Y}\right)^{2}}_{\mathrm{SST}} + \underbrace{\sum_{i=1}^{2}\sum_{j=1}^{n_{1}}\left( Y_{ij}-\overline{Y}_{i} \right)}_{\mathrm{SSE}}
-\end{align*}
+% \Fl{Problem:} We have several populations. We want to know if their means are
+% all the same.
 
 
+% Assume we have two populations, of size $n_{1}$ and $n_{2}$. For now, assume
+% $n_{1}=n_{2}$.
 
-Suppose we 
+% Let
+% \begin{equation*}
+%   Y_{ij} = j^{\rm th}\text{ observation in the sample from population $i$}
+% \end{equation*}
+% \begin{equation*}
+%   \overline{Y}_{i} = \text{mean of sample from population $i$}
+% \end{equation*}
+% \begin{equation*}
+%   \overline{Y} = \text{mean of all $n=2n_{1}$ observations}
+% \end{equation*}
+% Then
+% \begin{align*}
+%   \text{Total SS} 
+%   &= \sum_{i=1}^{2}\sum_{j=1}^{n_{i}}(Y_{ij}-\overline{Y})^{2}\\
+%   &= \underbrace{n_{1}\sum_{i=1}^{n} \left( \overline{Y}_{i}- \overline{Y}\right)^{2}}_{\mathrm{SST}} + \underbrace{\sum_{i=1}^{2}\sum_{j=1}^{n_{1}}\left( Y_{ij}-\overline{Y}_{i} \right)}_{\mathrm{SSE}}
+% \end{align*}
+
+
+
 \newpage
 
 \end{document}
